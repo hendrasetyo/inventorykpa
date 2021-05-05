@@ -16,6 +16,7 @@ use App\Http\Controllers\Master\KomoditasController;
 use App\Http\Controllers\Permissions\RoleController;
 use App\Http\Controllers\Permissions\UserController;
 use App\Http\Controllers\Profile\ProfilePicController;
+use App\Http\Controllers\Laporan\LaporanStokController;
 use App\Http\Controllers\Master\ProductGroupController;
 use App\Http\Controllers\Master\KategoriPesananController;
 use App\Http\Controllers\Master\ProductCategoryController;
@@ -461,5 +462,13 @@ Route::middleware('has.role')->prefix('pembayaran')->group(function () {
         Route::post('show', [PembayaranPiutangController::class, 'show'])->name('pembayaranpiutang.show');
         Route::post('delete', [PembayaranPiutangController::class, 'delete'])->name('pembayaranpiutang.delete');
         Route::delete('delete', [PembayaranPiutangController::class, 'destroy'])->name('pembayaranpiutang.destroy');
+    });
+});
+
+Route::middleware('has.role')->prefix('laporan')->group(function () {
+    Route::prefix('laporanstok')->group(function () {
+        Route::get('', [LaporanStokController::class, 'index'])->name('laporanstok.index');
+        Route::get('stokproduk', [LaporanStokController::class, 'stokproduk'])->name('laporanstok.stokproduk');
+        Route::get('{product}/detailstok', [LaporanStokController::class, 'detailstok'])->name('laporanstok.detailstok');
     });
 });
