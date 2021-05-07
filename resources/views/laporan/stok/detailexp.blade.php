@@ -51,12 +51,16 @@
                     <div class="card card-custom gutter-b example example-compact">
                         <div class="card-header">
                             <h3 class="card-title">
-                                Expired Date : &nbsp; <i>{{ " " . $product->kode . " - ".$product->nama }}</i>
+                                Expired Date Detail : &nbsp; <i>{{ " " . $product->kode . " - ".$product->nama }}</i>
                             </h3>
                             <div class="card-toolbar">
-                                <div class="example-tools justify-content-center">
-
-                                </div>
+                                <!--begin::Button-->
+                                <a href="{{ route('laporanstok.detailstok', $product) }}"
+                                    class="btn btn-danger font-weight-bolder ">
+                                    <i class="flaticon2-fast-back"></i>
+                                    Back
+                                </a>
+                                <!--end::Button-->
                             </div>
                         </div>
                         <!--begin::Form-->
@@ -66,17 +70,17 @@
                                     <th>#</th>
                                     <th>Tanggal</th>
                                     <th>Jumlah</th>
-                                    <th>Action</th>
+                                    <th>Penerimaan Barang</th>
+                                    <th>Pengiriman Barang</th>
+
                                 </tr>
-                                @foreach ($stokExp as $index => $item)
+                                @foreach ($stokExpDetail as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $item->tanggal->format("d F Y") }}</td>
+                                    <td>{{ Carbon\Carbon::parse($item->tanggal)->format('d-m-Y ') }}</td>
                                     <td>{{ $item->qty }}</td>
-                                    <td><a
-                                            href="{{ route('laporanstok.detailexp', [$item->id, $item->product_id]) }}">[Detail]</a>
-                                    </td>
-
+                                    <td>{{ $item->kode_pb }}</td>
+                                    <td>{{ $item->kode_sj }}</td>
                                 </tr>
                                 @endforeach
                             </table>

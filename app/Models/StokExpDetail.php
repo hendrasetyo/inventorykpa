@@ -34,4 +34,9 @@ class StokExpDetail extends Model
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
+
+    public function pengiriman()
+    {
+        return $this->belongsTo(PengirimanBarang::class, 'id_sj', 'id');
+    }
 }

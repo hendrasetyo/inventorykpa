@@ -470,5 +470,6 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         Route::get('', [LaporanStokController::class, 'index'])->name('laporanstok.index');
         Route::get('stokproduk', [LaporanStokController::class, 'stokproduk'])->name('laporanstok.stokproduk');
         Route::get('{product}/detailstok', [LaporanStokController::class, 'detailstok'])->name('laporanstok.detailstok');
+        Route::get('{stokexp}/{product}/detailexp', [LaporanStokController::class, 'detailexp'])->name('laporanstok.detailexp');
     });
 });
