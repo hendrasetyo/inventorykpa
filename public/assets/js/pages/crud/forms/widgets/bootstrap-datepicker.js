@@ -69,6 +69,32 @@ var KTBootstrapDatepicker = function () {
             
         });
 
+        $('#tgl2').datepicker({
+            format: 'dd-mm-yyyy',
+            todayBtn: "linked",
+            clearBtn: true,
+            todayHighlight: true,
+            templates: arrows,
+            
+        });
+        $('#tgl3').datepicker({
+            format: 'dd-mm-yyyy',
+            todayBtn: "linked",
+            clearBtn: true,
+            todayHighlight: true,
+            templates: arrows,
+            
+        });
+
+        $('#tgl4').datepicker({
+            format: 'dd-mm-yyyy',
+            todayBtn: "linked",
+            clearBtn: true,
+            todayHighlight: true,
+            templates: arrows,
+            
+        });
+
         // enable clear button for modal demo
         $('#kt_datepicker_3_modal').datepicker({
             rtl: KTUtil.isRTL(),

@@ -471,5 +471,9 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         Route::get('stokproduk', [LaporanStokController::class, 'stokproduk'])->name('laporanstok.stokproduk');
         Route::get('{product}/detailstok', [LaporanStokController::class, 'detailstok'])->name('laporanstok.detailstok');
         Route::get('{stokexp}/{product}/detailexp', [LaporanStokController::class, 'detailexp'])->name('laporanstok.detailexp');
+        Route::get('kartustok', [LaporanStokController::class, 'kartustok'])->name('laporanstok.kartustok');
+        Route::get('{product}/kartustok', [LaporanStokController::class, 'kartustokdetail'])->name('laporanstok.kartustokdetail');
+        Route::get('expstok', [LaporanStokController::class, 'expstok'])->name('laporanstok.expstok');
+        Route::post('expstokresult', [LaporanStokController::class, 'expstokresult'])->name('laporanstok.expstokresult');
     });
 });

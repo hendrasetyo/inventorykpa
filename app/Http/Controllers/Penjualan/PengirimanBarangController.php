@@ -522,7 +522,7 @@ class PengirimanBarangController extends Controller
             $inventoryTrans->qty = $a->qty;
             $inventoryTrans->stok = $stok_baru;
             $inventoryTrans->hpp = $hpp;
-            $inventoryTrans->jenis = "SJ";
+            $inventoryTrans->jenis = "SJ (DEL)";
             $inventoryTrans->jenis_id = $pengirimanbarang_kode;
             $inventoryTrans->save();
             //######### end add INV TRANS ############

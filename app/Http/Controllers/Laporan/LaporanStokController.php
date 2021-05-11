@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Laporan;
 
+use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\StokExp;
 use App\Traits\CodeTrait;
@@ -10,6 +11,7 @@ use App\Models\StokExpDetail;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\InventoryTransaction;
 
 class LaporanStokController extends Controller
 {
@@ -78,5 +80,81 @@ class LaporanStokController extends Controller
         //dd($stokExpDetail);
 
         return view('laporan.stok.detailexp', compact('title',  'product', 'stokExpDetail'));
+    }
+
+    public function kartustok()
+    {
+        $title = "Kartu Stok";
+        $products = Product::with(['categories', 'subcategories']);
+
+        if (request()->ajax()) {
+            return Datatables::of($products)
+                ->addIndexColumn()
+
+                ->addColumn('kategori', function (Product $p) {
+                    return $p->categories->nama;
+                })
+                ->addColumn('subkategori', function (Product $z) {
+                    return $z->subcategories->nama;
+                })
+
+                ->addColumn('action', function ($row) {
+                    $selectUrl = route('laporanstok.kartustokdetail', ['product' => $row->id]);
+                    $id = $row->id;
+                    return view('laporan.stok._actionkartustok', compact('selectUrl', 'id'));
+                })
+                ->make(true);
+        }
+
+
+        return view('laporan.stok.kartustok', compact('title'));
+    }
+
+    public function kartustokdetail(Product $product)
+    {
+        $title = "Laporan Kartu Stok";
+
+        $kartustok = InventoryTransaction::where('product_id', '=', $product->id)->get();
+        if (request()->ajax()) {
+            return Datatables::of($kartustok)
+                ->addIndexColumn()
+                ->editColumn('tanggal', function (InventoryTransaction $inv) {
+                    return $inv->tanggal ? with(new Carbon($inv->tanggal))->format('d-m-Y') : '';
+                })
+                ->make(true);
+        }
+        return view('laporan.stok.kartustokdetail', compact('title', 'product'));
+    }
+
+    public function expstok()
+    {
+        $title = "Expired Date Stok";
+
+        return view('laporan.stok.expstok', compact('title'));
+    }
+
+    public function expstokresult(Request $request)
+    {
+        $title = "Expired Date Stok";
+        $request->validate([
+            'tgl1' => ['required'],
+            'tgl2' => ['required'],
+        ]);
+        $datas = $request->all();
+        $tgl1 = $request->tgl1;
+        if ($tgl1 <> null) {
+            $tgl1 = Carbon::createFromFormat('d-m-Y', $tgl1)->format('Y-m-d');
+        }
+        $tgl2 = $request->tgl2;
+        if ($tgl2 <> null) {
+            $tgl2 = Carbon::createFromFormat('d-m-Y', $tgl2)->format('Y-m-d');
+        }
+
+        $stok = StokExp::with('products')
+            ->whereBetween('tanggal', [$tgl1, $tgl2])
+            ->orderBy('tanggal', 'ASC')->get();
+
+        //dd($stok);
+        return view('laporan.stok.expstokresult', compact('stok', 'title'));
     }
 }

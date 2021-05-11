@@ -537,7 +537,7 @@ class PenerimaanBarangController extends Controller
             $inventoryTrans->qty = ($a->qty * -1);
             $inventoryTrans->stok = $stok_baru;
             $inventoryTrans->hpp = $hpp;
-            $inventoryTrans->jenis = "PB";
+            $inventoryTrans->jenis = "PB (DEL)";
             $inventoryTrans->jenis_id = $penerimaanbarang_kode;
             $inventoryTrans->save();
             //######### end add INV TRANS ############
