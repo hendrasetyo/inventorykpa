@@ -212,6 +212,7 @@ class FakturPenjualanController extends Controller
         $ppn_so = $SOdata->ppn;
         $diskon_rupiah_so = $SOdata->diskon_rupiah;
         $diskon_persen_so = $SOdata->diskon_persen;
+        $sales_id = $SOdata->sales_id;
 
         $FJdetails = TempFaktursos::where('pengiriman_barang_id', '=', $id_sj)
             ->where('user_id', '=', Auth::user()->id)->get();
@@ -245,6 +246,7 @@ class FakturPenjualanController extends Controller
         $datas['grandtotal'] = $grandtotal_header;
         $datas['ppn'] = $ppn_header;
         $datas['ongkir'] = $ongkir_header;
+        $datas['sales_id'] = $sales_id;
         $idFaktur = FakturPenjualan::create($datas)->id;
 
         //$ongkir_header = $ongkir_det;

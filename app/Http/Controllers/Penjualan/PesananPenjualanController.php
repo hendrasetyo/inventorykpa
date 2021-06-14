@@ -18,6 +18,7 @@ use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PesananPenjualanDetail;
+use App\Models\Sales;
 
 class PesananPenjualanController extends Controller
 {
@@ -66,6 +67,7 @@ class PesananPenjualanController extends Controller
         $customers = Customer::get();
         $komoditass = Komoditas::get();
         $kategoris = Kategoripesanan::get();
+        $saless = Sales::get();
         $tglNow = Carbon::now()->format('d-m-Y');
 
         //delete temp
@@ -82,7 +84,7 @@ class PesananPenjualanController extends Controller
         $tempPPN    = TempPpn::create(['jenis' => 'SO', 'persen' => '10', 'user_id' => Auth::user()->id]);
 
 
-        return view('penjualan.pesananpenjualan.create', compact('title', 'tglNow', 'customers', 'pesananpenjualan', 'komoditass', 'kategoris'));
+        return view('penjualan.pesananpenjualan.create', compact('title', 'saless', 'tglNow', 'customers', 'pesananpenjualan', 'komoditass', 'kategoris'));
     }
 
     public function store(Request $request)
@@ -93,6 +95,7 @@ class PesananPenjualanController extends Controller
             'tanggal' => ['required'],
             'komoditas_id' => ['required'],
             'kategoripesanan_id' => ['required'],
+            'sales_id' => ['required'],
         ]);
 
         $datas = $request->all();

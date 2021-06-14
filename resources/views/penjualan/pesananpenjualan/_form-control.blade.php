@@ -120,6 +120,26 @@
             <input type="text" id="ppk" name="ppk" class="form-control" placeholder="Khusus e-Katalog (Jika Ada)" />
         </div>
     </div>
+    <div class="form-group row">
+        <label class="col-lg-1 col-form-label text-right">Sales:</label>
+        <div class="col-lg-4">
+            <select class="form-control select2" id="sales_id" name="sales_id">
+                <option value="">Pilih Sales</option>
+                @foreach ($saless as $cg)
+                @if ($pesananpenjualan->sales_id == $cg->id)
+                <option selected="selected" value="{{ $cg->id }}">{{ $cg->nama }}</option>
+                @else
+                <option value="{{ $cg->id }}">{{ $cg->nama }}</option>
+                @endif
+
+                @endforeach
+            </select>
+            @error('sales_id')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+    </div>
     <div class="text-right mb-3">
         <a href="javascript:caribarang()" class="btn btn-sm btn-primary"><i class="flaticon2-add"></i>Tambah Barang</a>
     </div>
