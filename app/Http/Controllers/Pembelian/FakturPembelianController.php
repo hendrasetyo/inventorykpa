@@ -33,7 +33,7 @@ class FakturPembelianController extends Controller
     public function index()
     {
         $title = "Faktur Pembelian";
-        $fakturpembelian = FakturPembelian::with(['suppliers',  'statusFB', 'po', 'pb']);
+        $fakturpembelian = FakturPembelian::with(['suppliers',  'statusFB', 'po', 'pb'])->orderByDesc('id');
 
         if (request()->ajax()) {
             return Datatables::of($fakturpembelian)

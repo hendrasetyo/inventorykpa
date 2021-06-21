@@ -83,7 +83,7 @@
         </div>
         <label class="col-lg-2 col-form-label text-right">No. Surat Pesanan Penjualan:</label>
         <div class="col-lg-4">
-            <input type="text" id="no_so" name="no_so" class="form-control" readonly
+            <input type="text" id="no_so" name="no_so" class="form-control"
                 placeholder="No. Surat Pesanan Penjualan (Jika Ada)" />
         </div>
     </div>

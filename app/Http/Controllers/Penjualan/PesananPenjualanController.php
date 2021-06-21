@@ -34,7 +34,7 @@ class PesananPenjualanController extends Controller
     public function index()
     {
         $title = "Pesanan Penjualan";
-        $pesananpenjualan = PesananPenjualan::with(['customers', 'kategoripesanan', 'komoditas', 'statusSO']);
+        $pesananpenjualan = PesananPenjualan::with(['customers', 'kategoripesanan', 'komoditas', 'statusSO'])->orderByDesc('id');
 
         if (request()->ajax()) {
             return Datatables::of($pesananpenjualan)

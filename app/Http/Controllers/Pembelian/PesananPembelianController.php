@@ -35,7 +35,7 @@ class PesananPembelianController extends Controller
     {
 
         $title = "Pesanan Pembelian";
-        $pesananpembelian = PesananPembelian::with(['suppliers', 'kategoripesanan', 'komoditas', 'statusPO']);
+        $pesananpembelian = PesananPembelian::with(['suppliers', 'kategoripesanan', 'komoditas', 'statusPO'])->orderByDesc('id');
 
         if (request()->ajax()) {
             return Datatables::of($pesananpembelian)

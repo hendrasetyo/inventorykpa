@@ -33,7 +33,7 @@ class FakturPenjualanController extends Controller
     public function index()
     {
         $title = "Faktur Penjualan";
-        $fakturpenjualan = FakturPenjualan::with(['customers',  'statusFJ', 'so', 'sj']);
+        $fakturpenjualan = FakturPenjualan::with(['customers',  'statusFJ', 'so', 'sj'])->orderByDesc('id');
 
         if (request()->ajax()) {
             return Datatables::of($fakturpenjualan)

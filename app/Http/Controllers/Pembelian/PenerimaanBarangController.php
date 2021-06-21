@@ -35,7 +35,7 @@ class PenerimaanBarangController extends Controller
 
 
         $title = "Penerimaan Barang";
-        $penerimaanbarang = PenerimaanBarang::with(['suppliers',  'statusPB', 'po']);
+        $penerimaanbarang = PenerimaanBarang::with(['suppliers',  'statusPB', 'po'])->orderByDesc('id');
 
         if (request()->ajax()) {
             return Datatables::of($penerimaanbarang)
