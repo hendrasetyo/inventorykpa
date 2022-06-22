@@ -145,7 +145,7 @@ class PengirimanBarangController extends Controller
 
         $product = Product::find($product_id);
 
-        dd($product);
+        //dd($product);
         $stok = $product->stok;
         //dd($stok);
         //validasi
