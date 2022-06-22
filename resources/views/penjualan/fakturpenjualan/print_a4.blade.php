@@ -26,7 +26,7 @@
         <tr>
             <td colspan="4" style=" border-bottom: 1px solid black;">FAKTUR PENJUALAN</td>
             <td colspan="2" style=" border-bottom: 1px solid black; text-align:right">No. Faktur :
-                29012891281</td>
+                1330-22/KPA</td>
         </tr>
         <tr>
             <td colspan="6" style="text-align: center; border-bottom: 1px solid black;">
