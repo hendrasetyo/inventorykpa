@@ -81,7 +81,7 @@ class PesananPenjualanController extends Controller
             ->delete();
         //insertt temp
         $tempDiskon = TempDiskon::create(['jenis' => 'SO', 'persen' => '0', 'rupiah' => '0', 'user_id' => Auth::user()->id]);
-        $tempPPN    = TempPpn::create(['jenis' => 'SO', 'persen' => '10', 'user_id' => Auth::user()->id]);
+        $tempPPN    = TempPpn::create(['jenis' => 'SO', 'persen' => '11', 'user_id' => Auth::user()->id]);
 
 
         return view('penjualan.pesananpenjualan.create', compact('title', 'saless', 'tglNow', 'customers', 'pesananpenjualan', 'komoditass', 'kategoris'));
