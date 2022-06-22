@@ -343,6 +343,7 @@ Route::middleware('has.role')->prefix('pembelian')->group(function () {
         Route::delete('delete_detail', [FakturPembelianController::class, 'destroy_detail'])->name('fakturpembelian.destroy_detail');
 
         Route::get('listpb', [FakturPembelianController::class, 'listpb'])->name('fakturpembelian.listpb');
+        Route::get('{fakturpembelian}/print_a4', [FakturPembelianController::class, 'print_a4'])->name('fakturpembelian.print_a4');
     });
 });
 
@@ -412,6 +413,8 @@ Route::middleware('has.role')->prefix('penjualan')->group(function () {
         Route::post('{stokExp}/{pengirimanbarangdetail}/saveexp', [PengirimanBarangController::class, 'saveexp'])->name('pengirimanbarang.saveexp');
         Route::post('hapusexp', [PengirimanBarangController::class, 'hapusexp'])->name('pengirimanbarang.hapusexp');
         Route::delete('destroy_exp', [PengirimanBarangController::class, 'destroy_exp'])->name('pengirimanbarang.destroy_exp');
+
+        Route::get('{pengirimanbarang}/print_a5', [PengirimanBarangController::class, 'print_a5'])->name('pengirimanbarang.print_a5');
     });
 
 
@@ -434,6 +437,8 @@ Route::middleware('has.role')->prefix('penjualan')->group(function () {
         Route::delete('delete_detail', [FakturPenjualanController::class, 'destroy_detail'])->name('fakturpenjualan.destroy_detail');
 
         Route::get('listsj', [FakturPenjualanController::class, 'listsj'])->name('fakturpenjualan.listsj');
+
+        Route::get('{fakturpenjualan}/print_a4', [FakturPenjualanController::class, 'print_a4'])->name('fakturpenjualan.print_a4');
     });
 
     Route::prefix('pembayaranhutang')->group(function () {

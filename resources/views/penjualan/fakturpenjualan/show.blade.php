@@ -29,8 +29,8 @@
                                     <span class=" d-flex flex-column align-items-md-end opacity-70">
                                         <span>{{ $fakturpenjualan->tanggal->format("d F Y") }}</span>
                                         <span>{{ $fakturpenjualan->creator->name }}</span>
-                                        <span
-                                            class="font-weight-bold font-italic text-primary font-size-h3">{{ $fakturpenjualan->kode }}</span>
+                                        <span class="font-weight-bold font-italic text-primary font-size-h3">{{
+                                            $fakturpenjualan->kode }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -54,180 +54,181 @@
                                 <div class="d-flex flex-column flex-root">
                                     <span class="font-weight-bolder mb-2">KOMODITAS</span>
                                     <span class="opacity-70">{{ $fakturpenjualan->komoditas->nama }}</span>
+                                </div>
+                                <div class="d-flex flex-column flex-root">
+                                    <span class="font-weight-bolder mb-2">TOP</span>
+                                    <span class="opacity-70">{{ $fakturpenjualan->top }} Hari</span>
+                                </div>
+                                <div class="d-flex flex-column flex-root">
+                                    <span class="font-weight-bolder mb-2">SP CUSTOMER</span>
+                                    <span class="opacity-70">{{ $fakturpenjualan->no_so }} </span>
+                                </div>
+                            </div> --}}
                         </div>
-                        <div class="d-flex flex-column flex-root">
-                            <span class="font-weight-bolder mb-2">TOP</span>
-                            <span class="opacity-70">{{ $fakturpenjualan->top }} Hari</span>
-                        </div>
-                        <div class="d-flex flex-column flex-root">
-                            <span class="font-weight-bolder mb-2">SP CUSTOMER</span>
-                            <span class="opacity-70">{{ $fakturpenjualan->no_so }} </span>
-                        </div>
-                    </div> --}}
-                </div>
-            </div>
-            <!-- end: Invoice header-->
-
-            <!-- begin: Invoice body-->
-            <div class="row justify-content-center py-8 px-8 py-md-10 px-md-0">
-                <div class="col-md-9">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="pl-0 font-weight-bold text-muted  text-uppercase">Kode
-                                    </th>
-                                    <th class="text-left font-weight-bold text-muted text-uppercase">Produk
-                                    </th>
-                                    <th class="text-left font-weight-bold text-muted text-uppercase">Satuan
-                                    </th>
-                                    <th class="text-left font-weight-bold text-muted text-uppercase">Qty</th>
-                                    <th class="text-left font-weight-bold text-muted text-uppercase">Harga</th>
-                                    <th class="text-left font-weight-bold text-muted text-uppercase">Disk.(%)
-                                    </th>
-                                    <th class="text-left font-weight-bold text-muted text-uppercase">
-                                        Disk.(Rp.)</th>
-                                    <th class="text-left font-weight-bold text-muted text-uppercase">Subtotal
-                                    </th>
-                                    <th class="text-left font-weight-bold text-muted text-uppercase">Total
-                                        Disc.</th>
-                                    <th class="text-left font-weight-bold text-muted text-uppercase">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($fakturpenjualandetails as $a)
-                                <tr class="font-weight-boldest">
-                                    <td class="pl-0 pt-7">{{ $a->products->kode }}</td>
-                                    <td class="text-left pt-7">{{ $a->products->nama }}</td>
-                                    <td class="text-left pt-7">{{ $a->satuan }}</td>
-                                    <td class=" pt-7 text-left">{{ $a->qty }}</td>
-                                    <td class=" pt-7 text-left">{{ number_format($a->hargabeli, 0, ',', '.') }}
-                                    </td>
-                                    <td class=" pt-7 text-left">{{ $a->diskon_persen }}</td>
-                                    <td class=" pt-7 text-left">{{ $a->diskon_rp }}</td>
-                                    <td class=" pt-7 text-left">{{ number_format($a->subtotal, 0, ',', '.') }}
-                                    </td>
-                                    <td class=" pt-7 text-left">
-                                        {{ number_format($a->total_diskon, 0, ',', '.') }}</td>
-                                    <td class="text-danger pr-0 pt-7 text-right">
-                                        {{ number_format($a->total, 0, ',', '.') }}</td>
-
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
                     </div>
-                </div>
-            </div>
-            <!-- end: Invoice body-->
+                    <!-- end: Invoice header-->
 
-            <!-- begin: Invoice footer-->
-            <div class="row justify-content-center bg-gray-100 py-8 px-8 py-md-10 px-md-0">
-                <div class="col-md-9">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="font-weight-bold text-muted  text-uppercase">SUBTOTAL</th>
-                                    <th class="font-weight-bold text-muted  text-uppercase">DISKON TAMBAHAN</th>
-                                    <th class="font-weight-bold text-muted  text-uppercase">TOTAL</th>
-                                    <th class="font-weight-bold text-muted  text-uppercase">PPN</th>
-                                    <th class="font-weight-bold text-muted  text-uppercase">ONGKIR</th>
-                                    <th class="font-weight-bold text-muted  text-uppercase">GRANDTOTAL</th>
+                    <!-- begin: Invoice body-->
+                    <div class="row justify-content-center py-8 px-8 py-md-10 px-md-0">
+                        <div class="col-md-9">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="pl-0 font-weight-bold text-muted  text-uppercase">Kode
+                                            </th>
+                                            <th class="text-left font-weight-bold text-muted text-uppercase">Produk
+                                            </th>
+                                            <th class="text-left font-weight-bold text-muted text-uppercase">Satuan
+                                            </th>
+                                            <th class="text-left font-weight-bold text-muted text-uppercase">Qty</th>
+                                            <th class="text-left font-weight-bold text-muted text-uppercase">Harga</th>
+                                            <th class="text-left font-weight-bold text-muted text-uppercase">Disk.(%)
+                                            </th>
+                                            <th class="text-left font-weight-bold text-muted text-uppercase">
+                                                Disk.(Rp.)</th>
+                                            <th class="text-left font-weight-bold text-muted text-uppercase">Subtotal
+                                            </th>
+                                            <th class="text-left font-weight-bold text-muted text-uppercase">Total
+                                                Disc.</th>
+                                            <th class="text-left font-weight-bold text-muted text-uppercase">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($fakturpenjualandetails as $a)
+                                        <tr class="font-weight-boldest">
+                                            <td class="pl-0 pt-7">{{ $a->products->kode }}</td>
+                                            <td class="text-left pt-7">{{ $a->products->nama }}</td>
+                                            <td class="text-left pt-7">{{ $a->satuan }}</td>
+                                            <td class=" pt-7 text-left">{{ $a->qty }}</td>
+                                            <td class=" pt-7 text-left">{{ number_format($a->hargabeli, 0, ',', '.') }}
+                                            </td>
+                                            <td class=" pt-7 text-left">{{ $a->diskon_persen }}</td>
+                                            <td class=" pt-7 text-left">{{ $a->diskon_rp }}</td>
+                                            <td class=" pt-7 text-left">{{ number_format($a->subtotal, 0, ',', '.') }}
+                                            </td>
+                                            <td class=" pt-7 text-left">
+                                                {{ number_format($a->total_diskon, 0, ',', '.') }}</td>
+                                            <td class="text-danger pr-0 pt-7 text-right">
+                                                {{ number_format($a->total, 0, ',', '.') }}</td>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="font-weight-bolder">
-                                    <td>{{ number_format($fakturpenjualan->subtotal, 0, ',', '.') }}</td>
-                                    <td>{{ number_format($fakturpenjualan->total_diskon_header, 0, ',', '.') }}
-                                    </td>
-                                    <td>{{ number_format($fakturpenjualan->total, 0, ',', '.') }}</td>
-                                    <td>{{ number_format($fakturpenjualan->ppn, 0, ',', '.') }}</td>
-                                    <td>{{ number_format($fakturpenjualan->ongkir, 0, ',', '.') }}</td>
-                                    <td class="text-danger font-size-h3 font-weight-boldest">
-                                        {{ number_format($fakturpenjualan->grandtotal, 0, ',', '.') }}</td>
-                                </tr>
-                            </tbody>
-
-                        </table>
-                        <br />
-                        <h4>Keterangan :</h4>
-                        <p>{{ $fakturpenjualan->keterangan }} </p>
-                    </div>
-                </div>
-            </div>
-            <!-- end: Invoice footer-->
-            <!-- begin: Invoice footer-->
-            <div class="row justify-content-center  py-8 px-8 py-md-10 px-md-0">
-                <div class="col-md-9">
-                    <div class="border-bottom w-100"></div>
-
-
-                    <div class="card card-custom gutter-b">
-                        <div class="card-header">
-                            <div class="card-title justify-content-center">
-                                <h3 class="card-label  ">
-                                    Info
-
-                                </h3>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th class="font-weight-bold text-muted  text-uppercase">Created at</th>
-                                        <th class="font-weight-bold text-muted  text-uppercase">Created by </th>
-                                        <th class="font-weight-bold text-muted  text-uppercase">Updated At</th>
-                                        <th class="font-weight-bold text-muted  text-uppercase">Updated By</th>
+                    </div>
+                    <!-- end: Invoice body-->
 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="font-weight-bolder">
-                                        <td>{{ $fakturpenjualan->created_at }}</td>
+                    <!-- begin: Invoice footer-->
+                    <div class="row justify-content-center bg-gray-100 py-8 px-8 py-md-10 px-md-0">
+                        <div class="col-md-9">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="font-weight-bold text-muted  text-uppercase">SUBTOTAL</th>
+                                            <th class="font-weight-bold text-muted  text-uppercase">DISKON TAMBAHAN</th>
+                                            <th class="font-weight-bold text-muted  text-uppercase">TOTAL</th>
+                                            <th class="font-weight-bold text-muted  text-uppercase">PPN</th>
+                                            <th class="font-weight-bold text-muted  text-uppercase">ONGKIR</th>
+                                            <th class="font-weight-bold text-muted  text-uppercase">GRANDTOTAL</th>
 
-                                        <td>{{ $fakturpenjualan->creator->name }}</td>
-                                        <td>{{ $fakturpenjualan->updated_at }}</td>
-                                        <td>{{ $fakturpenjualan->updater->name }}</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="font-weight-bolder">
+                                            <td>{{ number_format($fakturpenjualan->subtotal, 0, ',', '.') }}</td>
+                                            <td>{{ number_format($fakturpenjualan->total_diskon_header, 0, ',', '.') }}
+                                            </td>
+                                            <td>{{ number_format($fakturpenjualan->total, 0, ',', '.') }}</td>
+                                            <td>{{ number_format($fakturpenjualan->ppn, 0, ',', '.') }}</td>
+                                            <td>{{ number_format($fakturpenjualan->ongkir, 0, ',', '.') }}</td>
+                                            <td class="text-danger font-size-h3 font-weight-boldest">
+                                                {{ number_format($fakturpenjualan->grandtotal, 0, ',', '.') }}</td>
+                                        </tr>
+                                    </tbody>
 
-                                    </tr>
+                                </table>
+                                <br />
+                                <h4>Keterangan :</h4>
+                                <p>{{ $fakturpenjualan->keterangan }} </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end: Invoice footer-->
+                    <!-- begin: Invoice footer-->
+                    <div class="row justify-content-center  py-8 px-8 py-md-10 px-md-0">
+                        <div class="col-md-9">
+                            <div class="border-bottom w-100"></div>
 
-                                </tbody>
-                            </table>
+
+                            <div class="card card-custom gutter-b">
+                                <div class="card-header">
+                                    <div class="card-title justify-content-center">
+                                        <h3 class="card-label  ">
+                                            Info
+
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="font-weight-bold text-muted  text-uppercase">Created at</th>
+                                                <th class="font-weight-bold text-muted  text-uppercase">Created by </th>
+                                                <th class="font-weight-bold text-muted  text-uppercase">Updated At</th>
+                                                <th class="font-weight-bold text-muted  text-uppercase">Updated By</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="font-weight-bolder">
+                                                <td>{{ $fakturpenjualan->created_at }}</td>
+
+                                                <td>{{ $fakturpenjualan->creator->name }}</td>
+                                                <td>{{ $fakturpenjualan->updated_at }}</td>
+                                                <td>{{ $fakturpenjualan->updater->name }}</td>
+
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
 
                         </div>
                     </div>
+                    <!-- end: Invoice footer-->
+                    <!-- begin: Invoice action-->
+                    <div class="row justify-content-center py-8 px-8 py-md-10 px-md-0">
 
-
-                </div>
-            </div>
-            <!-- end: Invoice footer-->
-            <!-- begin: Invoice action-->
-            <div class="row justify-content-center py-8 px-8 py-md-10 px-md-0">
-
-                <div class="col-md-9">
-                    <div class="d-flex justify-content-between">
-                        <button type="button" class="btn btn-light-primary font-weight-bold"
-                            onclick="window.print();">Download </button>
-                        {{-- <button type="button" class="btn btn-primary font-weight-bold"
-                                    onclick="window.print();">Print </button> --}}
-                        <a class="btn btn-danger font-weight-bold" href="{{ url('penjualan/fakturpenjualan') }}">Back
-                        </a>
+                        <div class="col-md-9">
+                            <div class="d-flex justify-content-between">
+                                <a href="{{ route('fakturpenjualan.print_a4', $fakturpenjualan) }}"
+                                    class="btn btn-primary " target="_blank">
+                                    <i class="flaticon2-print font-weight-bold"></i> Download & Print
+                                </a>
+                                <a class="btn btn-danger font-weight-bold"
+                                    href="{{ url('penjualan/fakturpenjualan') }}">Back
+                                </a>
+                            </div>
+                        </div>
                     </div>
+                    <!-- end: Invoice action-->
+
+                    <!-- end: Invoice-->
                 </div>
             </div>
-            <!-- end: Invoice action-->
-
-            <!-- end: Invoice-->
+            <!-- end::Card-->
         </div>
+        <!--end::Container-->
     </div>
-    <!-- end::Card-->
-</div>
-<!--end::Container-->
-</div>
-<!--end::Entry-->
+    <!--end::Entry-->
 </div>
 <!--end::Content-->
 <div id="modal-confirm-delete">
@@ -260,7 +261,8 @@
                                             <rect fill="#000000" x="11" y="17" width="2" height="2" rx="1" />
                                         </g>
                                     </svg>
-                                    <!--end::Svg Icon--></span>
+                                    <!--end::Svg Icon-->
+                                </span>
                             </div>
                             <div class="col-md-10 " style="display: inline;">
                                 <div class="align-middle">
@@ -290,7 +292,7 @@
 @endsection
 @push('script')
 <script src="{{ asset('/assets/js/pages/crud/forms/widgets/select2.js?v=7.0.6"') }}"></script>
-<script src="{{ asset('/assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6') }}"></script>
+<script src="{{ asset(' /assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6') }}"></script>
 <script src="{{ asset('/assets/js/pages/crud/datatables/extensions/responsive.js?v=7.0.6') }}"></script>
 <script src="{{ asset('/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js?v=7.0.6') }}"></script>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pembelian;
 
 use Carbon\Carbon;
 use App\Models\Hutang;
+use Barryvdh\DomPDF\Facade as PDF;
 use App\Traits\CodeTrait;
 use Illuminate\Http\Request;
 use App\Models\TempFakturpos;
@@ -18,9 +19,11 @@ use App\Models\FakturPembelianDetail;
 use App\Models\PenerimaanBarangDetail;
 use App\Models\PesananPembelianDetail;
 
+
 class FakturPembelianController extends Controller
 {
     use CodeTrait;
+
 
     function __construct()
     {
@@ -335,5 +338,21 @@ class FakturPembelianController extends Controller
         $fakturpembeliandetails = FakturPembelianDetail::with('products')
             ->where('faktur_pembelian_id', '=', $fakturpembelian->id)->get();
         return view('pembelian.fakturpembelian.show', compact('title',  'fakturpembelian', 'fakturpembeliandetails'));
+    }
+
+    public function print_a4(FakturPembelian $fakturpembelian)
+    {
+        $title = "Print Faktur Pembelian";
+        $fakturpembeliandetails = FakturPembelianDetail::with('products')
+            ->where('faktur_pembelian_id', '=', $fakturpembelian->id)->get();
+
+        $data = [
+            'totalPage' => 2,
+            'date' => date('m/d/Y')
+
+        ];
+        $pdf = PDF::loadView('pembelian.fakturpembelian.print_a4', $data)->setPaper('a4', 'potrait');;
+
+        return $pdf->download('fakturpembelian.pdf');
     }
 }

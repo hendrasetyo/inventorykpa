@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Penjualan;
 
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade as PDF;
 use App\Models\Piutang;
 use App\Traits\CodeTrait;
 use Illuminate\Http\Request;
@@ -329,5 +330,26 @@ class FakturPenjualanController extends Controller
         $fakturpenjualandetails = FakturPenjualanDetail::with('products')
             ->where('faktur_penjualan_id', '=', $fakturpenjualan->id)->get();
         return view('penjualan.fakturpenjualan.show', compact('title',  'fakturpenjualan', 'fakturpenjualandetails'));
+    }
+
+    public function print_a4(FakturPenjualan $fakturpenjualan)
+    {
+        $title = "Print Faktur penjualan";
+        $fakturpenjualandetails = FakturPenjualanDetail::with('products')
+            ->where('faktur_penjualan_id', '=', $fakturpenjualan->id)->get();
+        $jmlBaris  = $fakturpenjualandetails->count();
+        $perBaris = 7;
+        $totalPage = ceil($jmlBaris / $perBaris);
+        $data = [
+            'totalPage' => $totalPage,
+            'perBaris' => $perBaris,
+            'date' => date('d/m/Y'),
+            'fakturpenjualan' => $fakturpenjualan,
+            'fakturpenjualandetails' => $fakturpenjualandetails
+        ];
+        $pdf = PDF::loadView('penjualan.fakturpenjualan.print_a4', $data)->setPaper('a4', 'potrait');;
+        return $pdf->download('fakturpenjualan.pdf');
+
+        //return view('penjualan.fakturpenjualan.print_a4', compact('title',  'totalPage'));
     }
 }

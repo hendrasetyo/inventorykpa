@@ -51,7 +51,7 @@ class SatuanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => ['required', 'max:255', 'unique:Satuans']
+            'nama' => ['required', 'max:255', 'unique:satuans']
         ]);
 
         Satuan::create($request->all());

@@ -29,8 +29,8 @@
                                     <span class=" d-flex flex-column align-items-md-end opacity-70">
                                         <span>{{ $pengirimanbarang->tanggal->format("d F Y") }}</span>
                                         <span>{{ $pengirimanbarang->creator->name }}</span>
-                                        <span
-                                            class="font-weight-bold font-italic text-primary">{{ $pengirimanbarang->StatusSJ->nama }}</span>
+                                        <span class="font-weight-bold font-italic text-primary">{{
+                                            $pengirimanbarang->StatusSJ->nama }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -181,10 +181,10 @@
 
                         <div class="col-md-9">
                             <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-light-primary font-weight-bold"
-                                    onclick="window.print();">Download </button>
-                                {{-- <button type="button" class="btn btn-primary font-weight-bold"
-                                    onclick="window.print();">Print </button> --}}
+                                <a href="{{ route('pengirimanbarang.print_a5', $pengirimanbarang) }}"
+                                    class="btn btn-primary " target="_blank">
+                                    <i class="flaticon2-print font-weight-bold"></i> Download & Print
+                                </a>
                                 <a class="btn btn-danger font-weight-bold"
                                     href="{{ url('penjualan/pengirimanbarang') }}">Back </a>
                             </div>
@@ -232,7 +232,8 @@
                                             <rect fill="#000000" x="11" y="17" width="2" height="2" rx="1" />
                                         </g>
                                     </svg>
-                                    <!--end::Svg Icon--></span>
+                                    <!--end::Svg Icon-->
+                                </span>
                             </div>
                             <div class="col-md-10 " style="display: inline;">
                                 <div class="align-middle">
@@ -262,7 +263,7 @@
 @endsection
 @push('script')
 <script src="{{ asset('/assets/js/pages/crud/forms/widgets/select2.js?v=7.0.6"') }}"></script>
-<script src="{{ asset('/assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6') }}"></script>
+<script src="{{ asset(' /assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6') }}"></script>
 <script src="{{ asset('/assets/js/pages/crud/datatables/extensions/responsive.js?v=7.0.6') }}"></script>
 <script src="{{ asset('/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js?v=7.0.6') }}"></script>
 

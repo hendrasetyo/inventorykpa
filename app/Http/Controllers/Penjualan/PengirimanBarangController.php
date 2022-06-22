@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Penjualan;
 
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade as PDF;
 use App\Models\TempSj;
 use App\Models\Product;
 use App\Models\StokExp;
@@ -566,5 +567,30 @@ class PengirimanBarangController extends Controller
             ->where('pengiriman_barang_id', '=', $pengirimanbarang->id)->get();
         $listExp = StokExpDetail::where('id_sj', '=', $pengirimanbarang->id)->get();
         return view('penjualan.pengirimanbarang.show', compact('title', 'listExp', 'pengirimanbarang', 'pengirimanbarangdetails'));
+    }
+
+    public function print_a5(PengirimanBarang $pengirimanbarang)
+    {
+        $title = "Print Surat Jalan";
+        $pengirimanbarangdetails = PengirimanBarangDetail::with('products')
+            ->where('pengiriman_barang_id', '=', $pengirimanbarang->id)->get();
+        $jmlBaris  = $pengirimanbarangdetails->count();
+        $perBaris = 7;
+        $totalPage = ceil($jmlBaris / $perBaris);
+        $listExp = StokExpDetail::where('id_sj', '=', $pengirimanbarang->id)->get();
+        //dd($listExp);
+        $data = [
+            'totalPage' => $totalPage,
+            'perBaris' => $perBaris,
+            'date' => date('m/d/Y'),
+            'listExp' => $listExp,
+            'pengirimanbarang' => $pengirimanbarang,
+            'pengirimanbarangdetails' => $pengirimanbarangdetails
+        ];
+
+        $pdf = PDF::loadView('penjualan.pengirimanbarang.print_a5', $data)->setPaper('a5', 'landscape');;
+        return $pdf->download('pengirimanbarang.pdf');
+
+        //return view('penjualan.fakturpenjualan.print_a4', compact('title',  'totalPage'));
     }
 }
