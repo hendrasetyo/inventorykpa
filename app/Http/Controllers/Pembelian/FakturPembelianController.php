@@ -130,7 +130,7 @@ class FakturPembelianController extends Controller
 
 
 
-        $POdata = PesananPembelian::find($id_po)->get()->first();
+        $POdata = PesananPembelian::find($id_po);
         $ppn_po = $POdata->ppn;
         $diskon_rupiah_po = $POdata->diskon_rupiah;
         $diskon_persen_po = $POdata->diskon_persen;
@@ -142,7 +142,7 @@ class FakturPembelianController extends Controller
             $temp = new TempFakturpos;
 
             $podetail = new PesananPembelianDetail;
-            $podetail = PesananPembelianDetail::find($pb->pesanan_pembelian_detail_id)->get()->first();
+            $podetail = PesananPembelianDetail::find($pb->pesanan_pembelian_detail_id);
             $hargabeli = $podetail->hargabeli;
             $diskon_persen = $podetail->diskon_persen;
             $diskon_rp = $podetail->diskon_rp;
@@ -213,7 +213,7 @@ class FakturPembelianController extends Controller
         }
         // end cek status exp date PB
 
-        $POdata = PesananPembelian::find($id_po)->get()->first();
+        $POdata = PesananPembelian::find($id_po);
         $ppn_po = $POdata->ppn;
         $diskon_rupiah_po = $POdata->diskon_rupiah;
         $diskon_persen_po = $POdata->diskon_persen;

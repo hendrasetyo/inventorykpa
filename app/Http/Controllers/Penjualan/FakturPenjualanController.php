@@ -125,7 +125,7 @@ class FakturPenjualanController extends Controller
         // end cek status exp date SJ
 
 
-        $SOdata = PesananPenjualan::find($id_so)->get()->first();
+        $SOdata = PesananPenjualan::find($id_so);
         $ppn_so = $SOdata->ppn;
         $diskon_rupiah_so = $SOdata->diskon_rupiah;
         $diskon_persen_so = $SOdata->diskon_persen;
@@ -137,7 +137,7 @@ class FakturPenjualanController extends Controller
             $temp = new TempFaktursos;
 
             $sodetail = new PesananPenjualanDetail;
-            $sodetail = PesananPenjualanDetail::find($sj->pesanan_penjualan_detail_id)->get()->first();
+            $sodetail = PesananPenjualanDetail::find($sj->pesanan_penjualan_detail_id);
             $hargajual = $sodetail->hargajual;
             $diskon_persen = $sodetail->diskon_persen;
             $diskon_rp = $sodetail->diskon_rp;
@@ -209,7 +209,7 @@ class FakturPenjualanController extends Controller
         }
         // end cek status exp date SJ
 
-        $SOdata = PesananPenjualan::find($id_so)->get()->first();
+        $SOdata = PesananPenjualan::find($id_so);
         $ppn_so = $SOdata->ppn;
         $diskon_rupiah_so = $SOdata->diskon_rupiah;
         $diskon_persen_so = $SOdata->diskon_persen;

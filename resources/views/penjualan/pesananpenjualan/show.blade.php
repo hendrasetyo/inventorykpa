@@ -29,8 +29,8 @@
                                     <span class=" d-flex flex-column align-items-md-end opacity-70">
                                         <span>{{ $pesananpenjualan->tanggal->format("d F Y") }}</span>
                                         <span>{{ $pesananpenjualan->creator->name }}</span>
-                                        <span
-                                            class="font-weight-bold font-italic text-primary">{{ $pesananpenjualan->StatusSO->nama }}</span>
+                                        <span class="font-weight-bold font-italic text-primary">{{
+                                            $pesananpenjualan->StatusSO->nama }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -129,7 +129,7 @@
                                             <td class="text-left pt-7">{{ $a->products->nama }}</td>
                                             <td class="text-left pt-7">{{ $a->satuan }}</td>
                                             <td class=" pt-7 text-left">{{ $a->qty }}</td>
-                                            <td class=" pt-7 text-left">{{ number_format($a->hargabeli, 0, ',', '.') }}
+                                            <td class=" pt-7 text-left">{{ number_format($a->hargajual, 0, ',', '.') }}
                                             </td>
                                             <td class=" pt-7 text-left">{{ $a->diskon_persen }}</td>
                                             <td class=" pt-7 text-left">{{ $a->diskon_rp }}</td>
@@ -285,7 +285,8 @@
                                             <rect fill="#000000" x="11" y="17" width="2" height="2" rx="1" />
                                         </g>
                                     </svg>
-                                    <!--end::Svg Icon--></span>
+                                    <!--end::Svg Icon-->
+                                </span>
                             </div>
                             <div class="col-md-10 " style="display: inline;">
                                 <div class="align-middle">
@@ -315,7 +316,7 @@
 @endsection
 @push('script')
 <script src="{{ asset('/assets/js/pages/crud/forms/widgets/select2.js?v=7.0.6"') }}"></script>
-<script src="{{ asset('/assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6') }}"></script>
+<script src="{{ asset(' /assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6') }}"></script>
 <script src="{{ asset('/assets/js/pages/crud/datatables/extensions/responsive.js?v=7.0.6') }}"></script>
 <script src="{{ asset('/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js?v=7.0.6') }}"></script>
 
