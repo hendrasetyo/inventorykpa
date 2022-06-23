@@ -81,9 +81,10 @@ class PesananPembelianController extends Controller
         $deletedTempPPN = TempPpn::where('jenis', '=', "PO")
             ->where('user_id', '=', Auth::user()->id)
             ->delete();
+
         //insertt temp
         $tempDiskon = TempDiskon::create(['jenis' => 'PO', 'persen' => '0', 'rupiah' => '0', 'user_id' => Auth::user()->id]);
-        $tempPPN    = TempPpn::create(['jenis' => 'PO', 'persen' => '10', 'user_id' => Auth::user()->id]);
+        $tempPPN    = TempPpn::create(['jenis' => 'PO', 'persen' => '11', 'user_id' => Auth::user()->id]);
 
 
         return view('pembelian.pesananpembelian.create', compact('title', 'tglNow', 'suppliers', 'pesananpembelian', 'komoditass', 'kategoris'));

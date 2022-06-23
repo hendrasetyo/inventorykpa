@@ -95,7 +95,7 @@
                         @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="">
                             <td style="font-size: 70%; class=" text-left">{{ $a->qty }}</td>
                             <td style="font-size: 70%; class=" text-left">{{ $a->products->nama }}</td>
-                            <td style="font-size: 70%; class=" text-left">{{ number_format($a->hargabeli, 0, ',', '.')
+                            <td style="font-size: 70%; class=" text-left">{{ number_format($a->hargajual, 0, ',', '.')
                                 }}</td>
                             <td style="font-size: 70%; class=" text-left">{{ number_format($a->total_diskon, 0, ',',
                                 '.') }}</td>
