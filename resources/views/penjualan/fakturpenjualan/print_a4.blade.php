@@ -71,7 +71,7 @@
                 <div class="isi" style="height: 400px;">
                     <table border="0" class="xyz" style="width:100%; ">
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <hr style="margin-bottom: 0px; margin-top: 0px; border-width: 1px 0px 0px;">
                             </td>
                         </tr>
@@ -84,7 +84,7 @@
                             <td style=" font-size: 75%; border:none; width:15%">JUMLAH</td>
                         </tr>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <hr style="margin-bottom: 0px; margin-top: 0px; border-width: 0.3px 0px 0px;">
                             </td>
                         </tr>
@@ -94,15 +94,15 @@
                         @endphp
                         @foreach($fakturpenjualandetails as $a)
                         @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="">
-                            <td style="font-size: 70%; class=" text-left">{{ $a->qty }}</td>
-                            <td style="font-size: 70%; class=" text-left">{{ $a->products->nama }}</td>
-                            <td style="font-size: 70%; class=" text-left">{{ number_format($a->hargajual, 0, ',', '.')
+                            <td style="font-size: 60%; class=" text-left">{{ $a->qty }}</td>
+                            <td style="font-size: 60%; class=" text-left">{{ $a->products->nama }}</td>
+                            <td style="font-size: 60%; class=" text-left">{{ number_format($a->hargajual, 0, ',', '.')
                                 }}</td>
-                            <td style="font-size: 70%; class=" text-left">{{ number_format($a->subtotal, 0, ',', '.')
+                            <td style="font-size: 60%; class=" text-left">{{ number_format($a->subtotal, 0, ',', '.')
                                 }}</td>
-                            <td style="font-size: 70%; class=" text-left">{{ number_format($a->total_diskon, 0, ',',
+                            <td style="font-size: 60%; class=" text-left">{{ number_format($a->total_diskon, 0, ',',
                                 '.') }}</td>
-                            <td style="font-size: 70%; class=" text-left">{{ number_format($a->total, 0, ',',
+                            <td style="font-size: 60%; class=" text-left">{{ number_format($a->total, 0, ',',
                                 '.') }}</td>
 
 
