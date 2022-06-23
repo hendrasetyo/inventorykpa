@@ -97,8 +97,8 @@
                     <h3>PT KARYA PUTRA ANDALAN</h3>
                     <p>
                         Ruko Purimas - Rungkut Madya Jl. Raya I Gusti Ngurah
-                        Rai Kav. A1. No. 11
-                        Lt. 1 Surabaya
+                        Rai Kav. A1. No. 11-12
+                        Surabaya
                     </p>
                 </td>
                 <td width="25%" style="font-size: 75%; vertical-align: top; text-align: center;">
@@ -110,9 +110,10 @@
                 <td width="20%" style="vertical-align: top; text-align: left; font-family: sans-serif">
                     <table>
                         <tr style="padding:0px;">
-                            <td style="padding:0px;font-size: 70%; "><br /><b>{{ $pengirimanbarang->tanggal->format("d
-                                    F Y")
-                                    }}</b></td>
+                            <td style="padding:0px;font-size: 70%; "><br />Surabaya, {{
+                                $pengirimanbarang->tanggal->format("d
+                                F Y")
+                                }}</td>
                             <td style="padding:0px;font-size: 70%; "></td>
                             <td style="padding:0px;font-size: 70%; ">
 
@@ -179,8 +180,9 @@
                         <td style="font-size: 70%; class=" text-left">{{ $a->products->nama }}</td>
                         <td style="font-size: 70%; class=" text-left">{{ $a->satuan }}</td>
                         <td style="font-size: 70%; class=" text-left">{{ $a->qty }}</td>
-                        <td style="font-size: 70%; class=" text-left">{{ $a->keterangan }} -> @foreach($listExp as $x)
-                            @if($a->product_id == $x->product_id) {{ $x->tanggal->format("m/y") }}({{ $x->qty }}) @endif
+                        <td style="font-size: 60%; class=" text-left">{{ $a->keterangan }} ED: @foreach($listExp as $x)
+                            @if($a->product_id == $x->product_id) {{ $x->tanggal->format("m/y") }}({{ $x->qty * -1 }})
+                            @endif
                             @endforeach
                         </td>
 
@@ -202,10 +204,11 @@
                     <td>
                         <table class="tabelxx">
                             <tr>
-                                <td style="font-size: 70%;  text-align: center; "> PENERIMA </td>
-                                <td style="font-size: 70%; text-align: center;"> HORMAT KAMI </td>
+                                <td style="font-size: 70%;  text-align: center; "> HORMAT KAMI </td>
                                 <td style="font-size: 70%; text-align: center;"> GUDANG </td>
-                                <td style="font-size: 70%;text-align: center;"> SOPIR </td>
+                                <td style="font-size: 70%;text-align: center;"> EKSPEDISI </td>
+                                <td style="font-size: 70%; text-align: center;"> PENERIMA </td>
+
                             </tr>
                             <tr>
                                 <td style="font-size: 75%; vertical-align: top; text-align: center; ">
@@ -227,10 +230,10 @@
                         </table>
                     </td>
                     <td style="font-size: 70%; vertical-align: bottom; text-align: left;">
-                        HAL :
+                        Hal :
                         {{ $i }} /
                         {{ $totalPage }}<br />
-                        USR : {{ Auth::user()->name }}
+                        User : {{ Auth::user()->name }}
                     </td>
                 </tr>
             </table>

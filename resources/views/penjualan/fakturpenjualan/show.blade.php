@@ -101,7 +101,7 @@
                                             <td class="text-left pt-7">{{ $a->products->nama }}</td>
                                             <td class="text-left pt-7">{{ $a->satuan }}</td>
                                             <td class=" pt-7 text-left">{{ $a->qty }}</td>
-                                            <td class=" pt-7 text-left">{{ number_format($a->hargabeli, 0, ',', '.') }}
+                                            <td class=" pt-7 text-left">{{ number_format($a->hargajual, 0, ',', '.') }}
                                             </td>
                                             <td class=" pt-7 text-left">{{ $a->diskon_persen }}</td>
                                             <td class=" pt-7 text-left">{{ $a->diskon_rp }}</td>

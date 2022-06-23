@@ -32,8 +32,8 @@
             <td colspan="6" style="text-align: center; border-bottom: 1px solid black;">
                 <h1 style="margin-top: 5px; margin-bottom: 10px;">PT KARYA PUTRA ANDALAN</h1>
                 <h5 style="margin-top: 0px; margin-bottom: 5px;">Ruko Purimas - Rungkut Madya Jl. Raya I gusti Ngurah
-                    Rai Kav. A1. No. 11
-                    Lt. 1 Surabaya</h5>
+                    Rai Kav. A1. No. 11-12
+                    Surabaya</h5>
                 <h5 style="margin-top: 0px;margin-bottom: 5px;">NPWP : 03.113.119.6-615.000</h5>
             </td>
 
@@ -79,6 +79,7 @@
                             <td style="font-size: 75%; border:none; width:10%">KWANTUM</td>
                             <td style="font-size: 75%; border:none;">NAMA BARANG</td>
                             <td style="font-size: 75%; border:none; width:15%">HARGA</td>
+                            <td style="font-size: 75%; border:none; width:15%">SUBTOTAL</td>
                             <td style="font-size: 75%; border:none; width:15%">DISKON</td>
                             <td style=" font-size: 75%; border:none; width:15%">JUMLAH</td>
                         </tr>
@@ -96,6 +97,8 @@
                             <td style="font-size: 70%; class=" text-left">{{ $a->qty }}</td>
                             <td style="font-size: 70%; class=" text-left">{{ $a->products->nama }}</td>
                             <td style="font-size: 70%; class=" text-left">{{ number_format($a->hargajual, 0, ',', '.')
+                                }}</td>
+                            <td style="font-size: 70%; class=" text-left">{{ number_format($a->subtotal, 0, ',', '.')
                                 }}</td>
                             <td style="font-size: 70%; class=" text-left">{{ number_format($a->total_diskon, 0, ',',
                                 '.') }}</td>
@@ -181,10 +184,10 @@
                         PEMBAYARAN</b>
                     <br /><br /> <br /><br /> <br /> <br /><br /><br /> <br /><br /> <br /> <br />
 
-                    <i>HAL :
+                    <i>Hal. :
                         {{ $i }}
                         {{ $totalPage }}<br />
-                        USR : {{ Auth::user()->name }}</i>
+                        User : {{ Auth::user()->name }}</i>
                 </td>
                 <td style='font-size: 70%; text-align:center; vertical-align:top'>Surabaya, {{ $date }}
 
