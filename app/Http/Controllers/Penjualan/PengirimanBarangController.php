@@ -103,8 +103,9 @@ class PengirimanBarangController extends Controller
     {
         $title = "Pengiriman Barang";
         //delete temp
-        $deletedTempDetil = TempSj::where('created_at', '<', Carbon::today())->delete();
         $deletedTempDetil = TempSj::where('user_id', '=', Auth::user()->id)->delete();
+        //$deletedTempDetil = TempSj::where('created_at', '<', Carbon::today())->delete();
+
 
         //ambil list item SO untuk dimasukkan ke Pengiriman
         $id_so = $pesananpenjualan->id;

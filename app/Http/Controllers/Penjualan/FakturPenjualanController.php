@@ -248,6 +248,8 @@ class FakturPenjualanController extends Controller
         $datas['ppn'] = $ppn_header;
         $datas['ongkir'] = $ongkir_header;
         $datas['sales_id'] = $sales_id;
+        $datas['no_kpa'] = $request->no_kpa;
+        $datas['no_pajak'] = $request->no_pajak;
         $idFaktur = FakturPenjualan::create($datas)->id;
 
         //$ongkir_header = $ongkir_det;

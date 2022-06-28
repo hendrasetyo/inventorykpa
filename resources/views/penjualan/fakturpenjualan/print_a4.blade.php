@@ -26,7 +26,7 @@
         <tr>
             <td colspan="4" style=" border-bottom: 1px solid black;">FAKTUR PENJUALAN</td>
             <td colspan="2" style=" border-bottom: 1px solid black; text-align:right">No. Faktur :
-                1330-22/KPA</td>
+                {{ $fakturpenjualan->no_kpa }}</td>
         </tr>
         <tr>
             <td colspan="6" style="text-align: center; border-bottom: 1px solid black;">
@@ -78,9 +78,9 @@
                         <tr style="">
                             <td style="font-size: 75%; border:none; width:10%">KWANTUM</td>
                             <td style="font-size: 75%; border:none;">NAMA BARANG</td>
-                            <td style="font-size: 75%; border:none; width:15%">HARGA</td>
+                            <td style="font-size: 75%; border:none; width:10%">HARGA</td>
                             <td style="font-size: 75%; border:none; width:15%">SUBTOTAL</td>
-                            <td style="font-size: 75%; border:none; width:15%">DISKON</td>
+                            <td style="font-size: 75%; border:none; width:10%">DISKON</td>
                             <td style=" font-size: 75%; border:none; width:15%">JUMLAH</td>
                         </tr>
                         <tr>
@@ -94,7 +94,7 @@
                         @endphp
                         @foreach($fakturpenjualandetails as $a)
                         @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="">
-                            <td style="font-size: 60%; class=" text-left">{{ $a->qty }}</td>
+                            <td style="font-size: 60%; class=" text-left">{{ $a->qty }} {{ $a->satuan }}</td>
                             <td style="font-size: 60%; class=" text-left">{{ $a->products->nama }}</td>
                             <td style="font-size: 60%; class=" text-left">{{ number_format($a->hargajual, 0, ',', '.')
                                 }}</td>
@@ -180,16 +180,27 @@
         <br /><br />
         <table width="100%">
             <tr>
-                <td style='font-size: 70%; width: 75%; line-height:90%; vertical-align:top'><b>TANGGAL JATUH TEMPO
-                        PEMBAYARAN</b>
-                    <br /><br /> <br /><br /> <br /> <br /><br /><br /> <br /><br /> <br /> <br />
+                <td style='font-size: 70%; width: 15%; line-height:90%; vertical-align:top'>PENERIMA,
 
+                    <br /><br /> <br /><br /> <br /> <br />
+                    <u>(...............................)</u> <br />
+                    <br />
                     <i>Hal. :
                         {{ $i }}
                         {{ $totalPage }}<br />
                         User : {{ Auth::user()->name }}</i>
                 </td>
-                <td style='font-size: 70%; text-align:center; vertical-align:top'>Surabaya, {{ $date }}
+                <td style='font-size: 70%; width: 55%; line-height:90%; vertical-align:top'><b>KETERANGAN : <br />{{
+                        $fakturpenjualan->keterangan }}</b>
+                    <br /> <br /><br /> <br /> <br /><br /><br /> <br /><br /> <br /> <br />
+
+
+                </td>
+
+                <td style='font-size: 70%; text-align:center; vertical-align:top'>Surabaya, {{
+                    $fakturpenjualan->tanggal->format("d
+                    F Y")
+                    }}
 
                     <br /><br /> <br /><br /> <br /> <br />
                     <u>AHMAD MUHTAROM</u> <br />

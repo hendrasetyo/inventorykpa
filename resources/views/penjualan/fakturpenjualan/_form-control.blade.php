@@ -12,7 +12,7 @@
             <div class="input-group date">
                 @if($fakturpenjualan->tanggal <> null)
                     <input type="text" class="form-control form-control-solid" name="tanggal" readonly
-                        value="{{ $fakturpenjualan->tanggal->format("d-m-Y") }}" id="tgl1" />
+                        value="{{ $fakturpenjualan->tanggal->format(" d-m-Y") }}" id="tgl1" />
                     @else
                     <input type="text" class="form-control" name="tanggal" readonly value="{{ $tglNow }}" id="tgl1" />
                     @endif
@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-lg-1 col-form-label text-right">Surat Pesanan:</label>
+        <label class="col-lg-1 col-form-label text-right">No. SP:</label>
         <div class="col-lg-4">
             <input type="text" class="form-control form-control-solid" name="pesanan_penjualan" readonly
                 value="{{ $pengirimanbarang->so->kode }}" id="pesanan_penjualan" />
@@ -43,7 +43,22 @@
             @enderror
         </div>
     </div>
-
+    <div class="form-group row">
+        <label class="col-lg-1 col-form-label text-right">No. KPA:</label>
+        <div class="col-lg-4">
+            <input type="text" class="form-control form-control-solid" name="no_kpa" value="" id="no_kpa" />
+            @error('no_kpa')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <label class="col-lg-2 col-form-label text-right">No. Pajak:</label>
+        <div class="col-lg-4">
+            <input type="text" class="form-control form-control-solid" name="no_pajak" value="" id="no_pajak" />
+            @error('no_pajak')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
 
     <div class="form-group row">
         <div class="col-lg-12">

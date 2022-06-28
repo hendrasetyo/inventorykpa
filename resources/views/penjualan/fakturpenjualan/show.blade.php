@@ -50,20 +50,20 @@
                                     <span class="opacity-70">{{ $fakturpenjualan->SO->kode }}</span>
                                 </div>
                             </div>
-                            {{-- <div class="d-flex justify-content-between pt-6">
+                            <div class="d-flex justify-content-between pt-6">
                                 <div class="d-flex flex-column flex-root">
-                                    <span class="font-weight-bolder mb-2">KOMODITAS</span>
-                                    <span class="opacity-70">{{ $fakturpenjualan->komoditas->nama }}</span>
+                                    <span class="font-weight-bolder mb-2">No. Invoice KPA</span>
+                                    <span class="opacity-70">{{ $fakturpenjualan->no_kpa }}</span>
                                 </div>
                                 <div class="d-flex flex-column flex-root">
-                                    <span class="font-weight-bolder mb-2">TOP</span>
-                                    <span class="opacity-70">{{ $fakturpenjualan->top }} Hari</span>
+                                    <span class="font-weight-bolder mb-2">No. Faktur Pajak</span>
+                                    <span class="opacity-70">{{ $fakturpenjualan->no_pajak }}</span>
                                 </div>
                                 <div class="d-flex flex-column flex-root">
-                                    <span class="font-weight-bolder mb-2">SP CUSTOMER</span>
-                                    <span class="opacity-70">{{ $fakturpenjualan->no_so }} </span>
+                                    <span class="font-weight-bolder mb-2"></span>
+                                    <span class="opacity-70"> </span>
                                 </div>
-                            </div> --}}
+                            </div>
                         </div>
                     </div>
                     <!-- end: Invoice header-->
