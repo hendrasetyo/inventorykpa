@@ -187,10 +187,11 @@
                         </td>
 
                         </tr>
+
+                        @endif
                         @php
                         $n++;
                         @endphp
-                        @endif
                         @endforeach
                 </table>
             </div>

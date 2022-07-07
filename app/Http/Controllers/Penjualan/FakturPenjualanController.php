@@ -340,7 +340,7 @@ class FakturPenjualanController extends Controller
         $fakturpenjualandetails = FakturPenjualanDetail::with('products')
             ->where('faktur_penjualan_id', '=', $fakturpenjualan->id)->get();
         $jmlBaris  = $fakturpenjualandetails->count();
-        $perBaris = 7;
+        $perBaris = 20;
         $totalPage = ceil($jmlBaris / $perBaris);
         $data = [
             'totalPage' => $totalPage,
