@@ -54,7 +54,7 @@ class PengirimanBarangController extends Controller
                     return $sj->tanggal ? with(new Carbon($sj->tanggal))->format('d-m-Y') : '';
                 })
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('pengirimanbarang.edit', ['pengirimanbarang' => $row->id]);
+                    $editUrl = route('pengirimanbarang.edit', ['pengirimanbarang' => $row->id]);                    
                     $expUrl = route('pengirimanbarang.inputexp', ['pengirimanbarang' => $row->id]);
                     $showUrl = route('pengirimanbarang.show', ['pengirimanbarang' => $row->id]);
                     $id = $row->id;
@@ -71,10 +71,12 @@ class PengirimanBarangController extends Controller
     public function listso()
     {
         $title = "Daftar Pesanan Penjualan";
+
         $pesananpenjualans = PesananPenjualan::with('customers', 'statusSO')
             ->where('status_so_id', '<=', '3')
             ->where('status_so_id', '<>', '1')
             ->get();
+
         if (request()->ajax()) {
             return Datatables::of($pesananpenjualans)
                 ->addIndexColumn()
@@ -104,7 +106,7 @@ class PengirimanBarangController extends Controller
         $title = "Pengiriman Barang";
         //delete temp
         $deletedTempDetil = TempSj::where('user_id', '=', Auth::user()->id)->delete();
-        //$deletedTempDetil = TempSj::where('created_at', '<', Carbon::today())->delete();
+        $deletedTempDetil = TempSj::where('created_at', '<', Carbon::today())->delete();
 
 
         //ambil list item SO untuk dimasukkan ke Pengiriman

@@ -31,7 +31,8 @@ class FakturPenjualan extends Model
         'ppn',
         'grandtotal',
         'no_kpa',
-        'no_pajak'
+        'no_pajak',
+        'total_cn'
     ];
 
     protected $dates = ['tanggal'];

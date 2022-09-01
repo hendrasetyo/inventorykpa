@@ -354,4 +354,57 @@ class FakturPenjualanController extends Controller
 
         //return view('penjualan.fakturpenjualan.print_a4', compact('title',  'totalPage'));
     }
+
+    public function editCN(FakturPenjualan $fakturpenjualan)
+    {
+        $title = "Faktur penjualan Detail";
+        $fakturpenjualandetails = FakturPenjualanDetail::with('products')
+            ->where('faktur_penjualan_id', '=', $fakturpenjualan->id)->get();
+
+        
+        return view('penjualan.fakturpenjualan.showCN', compact('title',  'fakturpenjualan', 'fakturpenjualandetails'));
+    }
+
+    public function createCN(Request $request,FakturPenjualanDetail $fakturpenjualandetail)
+    {
+        // dd($fakturpenjualandetail);
+        $data = $request->except('_token');        
+        
+        $subtotal = $fakturpenjualandetail->subtotal;
+        $data['cn_rupiah'] = $subtotal * $data['cn_persen']/100;
+        $data['cn_total'] = $data['cn_rupiah'];
+
+        $fakturpenjualandetail->update($data);   
+
+        $fakturPenjualan = FakturPenjualan::where('id',$fakturpenjualandetail->faktur_penjualan_id)->first();
+        $totalCNFaktur = $fakturPenjualan->total_cn + $data['cn_total'];        
+
+        $fakturPenjualan->update([
+            'total_cn' => $totalCNFaktur
+        ]);
+                     
+        return back();
+    }
+
+    public function updateCN(Request $request,FakturPenjualanDetail $fakturpenjualandetail)
+    {
+        $data = $request->except('_token');        
+        $subtotal = $fakturpenjualandetail->subtotal;
+        $data['cn_rupiah'] = $subtotal * $data['cn_persen']/100;
+        $data['cn_total'] = $data['cn_rupiah'];
+
+        $fakturPenjualan = FakturPenjualan::where('id',$fakturpenjualandetail->faktur_penjualan_id)->first();
+        $totalCNFaktur = $fakturPenjualan->total_cn - $fakturpenjualandetail->cn_total + $data['cn_total'];
+
+        $fakturPenjualan->update([
+            'total_cn' => $totalCNFaktur
+        ]);
+
+        $fakturpenjualandetail->update($data);   
+
+        return back();
+
+    }
+
+ 
 }

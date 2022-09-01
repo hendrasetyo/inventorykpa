@@ -291,6 +291,7 @@ class PenerimaanBarangController extends Controller
             $detail->keterangan = $a->keterangan;
             $detail->status_exp = $status_exp_detil;
             $detail->save();
+            
             // ########## end input detail #############
 
             //######### start update stok ##############

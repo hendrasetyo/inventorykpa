@@ -83,34 +83,56 @@
                                             </th>
                                             <th class="text-left font-weight-bold text-muted text-uppercase">Qty</th>
                                             <th class="text-left font-weight-bold text-muted text-uppercase">Harga</th>
-                                            <th class="text-left font-weight-bold text-muted text-uppercase">Disk.(%)
+                                            {{-- <th class="text-left font-weight-bold text-muted text-uppercase">Disk.(%)
                                             </th>
                                             <th class="text-left font-weight-bold text-muted text-uppercase">
-                                                Disk.(Rp.)</th>
+                                                Disk.(Rp.)</th> --}}
                                             <th class="text-left font-weight-bold text-muted text-uppercase">Subtotal
                                             </th>
-                                            <th class="text-left font-weight-bold text-muted text-uppercase">Total
-                                                Disc.</th>
-                                            <th class="text-left font-weight-bold text-muted text-uppercase">Total</th>
+                                            {{-- <th class="text-left font-weight-bold text-muted text-uppercase">Total
+                                                Disc.</th> --}}
+                                            <th class="text-left font-weight-bold text-muted text-uppercase">Total</th>                                            
+                                            <th class="text-left font-weight-bold text-muted text-uppercase">CN</th>                                            
+                                            <th class="text-left font-weight-bold text-muted text-uppercase">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        
                                         @foreach($fakturpenjualandetails as $a)
-                                        <tr class="font-weight-boldest">
+                                        
+                                        <tr class="font-weight-boldest">                                            
                                             <td class="pl-0 pt-7">{{ $a->products->kode }}</td>
                                             <td class="text-left pt-7">{{ $a->products->nama }}</td>
                                             <td class="text-left pt-7">{{ $a->satuan }}</td>
                                             <td class=" pt-7 text-left">{{ $a->qty }}</td>
                                             <td class=" pt-7 text-left">{{ number_format($a->hargajual, 0, ',', '.') }}
                                             </td>
-                                            <td class=" pt-7 text-left">{{ $a->diskon_persen }}</td>
-                                            <td class=" pt-7 text-left">{{ $a->diskon_rp }}</td>
+                                            {{-- <td class=" pt-7 text-left">{{ $a->diskon_persen }}</td>
+                                            <td class=" pt-7 text-left">{{ $a->diskon_rp }}</td> --}}
                                             <td class=" pt-7 text-left">{{ number_format($a->subtotal, 0, ',', '.') }}
                                             </td>
-                                            <td class=" pt-7 text-left">
-                                                {{ number_format($a->total_diskon, 0, ',', '.') }}</td>
+                                            {{-- <td class=" pt-7 text-left">
+                                                {{ number_format($a->total_diskon, 0, ',', '.') }}</td> --}}
                                             <td class="text-danger pr-0 pt-7 text-right">
                                                 {{ number_format($a->total, 0, ',', '.') }}</td>
+
+                                                <td class=" pr-0 pt-7 text-right">
+                                                    {{$a->cn_persen ? $a->cn_persen : 0 }}%</td>
+                                            <td  class=" pt-7 text-left">
+                                                @if ($a->cn_persen)
+                                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit{{$a->id}}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>                                                                                                        
+                                                @else                                                    
+                                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#tambah{{$a->id}}">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                @endif
+                                                
+                                            </td>
+                                                  
+                                            
+                                            
 
                                         </tr>
                                         @endforeach
@@ -134,8 +156,9 @@
                                             <th class="font-weight-bold text-muted  text-uppercase">PPN</th>
                                             <th class="font-weight-bold text-muted  text-uppercase">ONGKIR</th>
                                             <th class="font-weight-bold text-muted  text-uppercase">GRANDTOTAL</th>
-
                                         </tr>
+
+                                        
                                     </thead>
                                     <tbody>
                                         <tr class="font-weight-bolder">
@@ -147,9 +170,23 @@
                                             <td>{{ number_format($fakturpenjualan->ongkir, 0, ',', '.') }}</td>
                                             <td class="text-danger font-size-h3 font-weight-boldest">
                                                 {{ number_format($fakturpenjualan->grandtotal, 0, ',', '.') }}</td>
-                                        </tr>
+                                        </tr>                                        
                                     </tbody>
 
+                                </table>
+                                {{-- @dd($fakturpenjualandetails) --}}
+
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="font-weight-bold text-muted  text-uppercase">JUMLAH CN</th>                                          
+                                        </tr>                                        
+                                    </thead>
+                                    <tbody>
+                                        <tr class="font-weight-bolder">
+                                            <td>{{ $fakturpenjualan->total_cn ? number_format($fakturpenjualan->total_cn, 0, ',', '.') : '0'}}</td>                                           
+                                        </tr>                                        
+                                    </tbody>
                                 </table>
                                 <br />
                                 <h4>Keterangan :</h4>
@@ -157,6 +194,8 @@
                             </div>
                         </div>
                     </div>
+
+
                     <!-- end: Invoice footer-->
                     <!-- begin: Invoice footer-->
                     <div class="row justify-content-center  py-8 px-8 py-md-10 px-md-0">
@@ -213,12 +252,7 @@
                                     <a href="{{ route('fakturpenjualan.print_a4', $fakturpenjualan) }}"
                                         class="btn btn-primary " target="_blank">
                                         <i class="flaticon2-print font-weight-bold"></i> Download & Print
-                                    </a>
-
-                                    <a href="{{ route('fakturpenjualan.editCN', $fakturpenjualan) }}"
-                                    class="btn btn-warning ml-4" >
-                                        <i class="flaticon2-print font-weight-bold"></i> CN
-                                    </a>
+                                    </a>                                   
 
                                 </div>
                             
@@ -296,6 +330,66 @@
     <!-- Modal-->
 </div>
 
+
+{{-- modal edit CN --}}
+<!-- Modal -->
+@foreach($fakturpenjualandetails as $a)
+<div class="modal fade" id="tambah{{$a->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="{{ route('fakturpenjualan.editCN', ['fakturpenjualandetail'=> $a->id]) }}" method="POST">
+            @csrf
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Masukan Data CN</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                    <label for="">Persen CN</label>
+                    <input type="number" name="cn_persen" class="form-control" placeholder="Masukan CN persen disini !">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+        </form>
+        
+    </div>
+  </div>
+
+  <div class="modal fade" id="edit{{$a->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="{{ route('fakturpenjualan.updateCN', ['fakturpenjualandetail'=> $a->id]) }}" method="POST" >
+            @method('PUT')
+            @csrf
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Masukan Data CN</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                    <label for="">Persen CN</label>
+                    <input type="number" name="cn_persen"  class="form-control" value="{{$a->cn_persen}}">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+        </form>
+        
+    </div>
+  </div>
+@endforeach
+  
 
 
 @endsection

@@ -14,7 +14,7 @@ class AddStokToProducts extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->unsignedBigInteger('stok')->after('disk4')->nullable();
+            $table->unsignedBigInteger('stok')->after('diskon_rp')->nullable();
             $table->string('status')->after('keterangan')->nullable();
         });
     }

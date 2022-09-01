@@ -171,6 +171,7 @@ class FakturPembelianController extends Controller
             $temp->user_id = Auth::user()->id;
             $temp->save();
         }
+
         $FBdetails = TempFakturpos::where('penerimaan_barang_id', '=', $id_pb)
             ->where('user_id', '=', Auth::user()->id)->get();
         //dd($FBdetails);
@@ -270,6 +271,7 @@ class FakturPembelianController extends Controller
             $detil->keterangan = $pb->keterangan;
             $detil->save();
         }
+        
         #################### update Status PB ##################
         $dataPB = PenerimaanBarang::find($id_pb);
         $dataPB->status_pb_id = "2";

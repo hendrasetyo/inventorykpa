@@ -177,6 +177,7 @@ class PesananPembelianController extends Controller
     {
         $products = Product::with(['categories', 'subcategories']);
         $produk = "";
+        
         if (request()->ajax()) {
             return Datatables::of($products)
                 ->addIndexColumn()

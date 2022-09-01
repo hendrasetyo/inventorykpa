@@ -439,6 +439,10 @@ Route::middleware('has.role')->prefix('penjualan')->group(function () {
         Route::get('listsj', [FakturPenjualanController::class, 'listsj'])->name('fakturpenjualan.listsj');
 
         Route::get('{fakturpenjualan}/print_a4', [FakturPenjualanController::class, 'print_a4'])->name('fakturpenjualan.print_a4');
+        Route::get('{fakturpenjualan}/EditCN', [FakturPenjualanController::class, 'editCN'])->name('fakturpenjualan.editCN');
+        Route::POST('{fakturpenjualandetail}/EditCN', [FakturPenjualanController::class, 'createCN'])->name('fakturpenjualan.editCN');
+
+        Route::PUT('{fakturpenjualandetail}/updateCN', [FakturPenjualanController::class, 'updateCN'])->name('fakturpenjualan.updateCN');
     });
 
     Route::prefix('pembayaranhutang')->group(function () {

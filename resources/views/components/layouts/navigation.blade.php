@@ -112,7 +112,6 @@
                             @else
                             <img src="{{ asset('storage/'.Auth::user()->avatar) }}" alt="" />
                             @endif
-
                         </div>
                         <!--end::Symbol-->
 
