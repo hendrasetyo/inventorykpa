@@ -248,13 +248,13 @@
 
                         <div class="col-md-9">
                             <div class="d-flex justify-content-between">
-                                <div class="d-flex justify-content-between">
+                                {{-- <div class="d-flex justify-content-between">
                                     <a href="{{ route('fakturpenjualan.print_a4', $fakturpenjualan) }}"
                                         class="btn btn-primary " target="_blank">
                                         <i class="flaticon2-print font-weight-bold"></i> Download & Print
                                     </a>                                   
 
-                                </div>
+                                </div> --}}
                             
                                 <a class="btn btn-danger font-weight-bold"
                                     href="{{ url('penjualan/fakturpenjualan') }}">Back
