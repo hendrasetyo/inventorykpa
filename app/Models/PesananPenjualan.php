@@ -82,4 +82,9 @@ class PesananPenjualan extends Model
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
+
+    public function sales()
+    {
+        return $this->belongsTo(Sales::class, 'sales_id', 'id');
+    }
 }

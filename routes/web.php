@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Contracts\Role;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Laporan\LaporanPenjualanController;
 use App\Http\Controllers\NavigationController;
 use App\Http\Controllers\Master\MerkController;
 use App\Http\Controllers\Master\SalesController;
@@ -484,5 +485,26 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         Route::get('{product}/kartustok', [LaporanStokController::class, 'kartustokdetail'])->name('laporanstok.kartustokdetail');
         Route::get('expstok', [LaporanStokController::class, 'expstok'])->name('laporanstok.expstok');
         Route::post('expstokresult', [LaporanStokController::class, 'expstokresult'])->name('laporanstok.expstokresult');
+    });
+
+
+    Route::prefix('laporanpenjualan')->group(function () {
+
+        Route::get('', [LaporanPenjualanController::class, 'index'])->name('laporanpenjualan.index');
+        Route::get('penjualan', [LaporanPenjualanController::class, 'filterPenjualan'])->name('laporanpenjualan.filterpenjualan');
+        Route::get('penjualandetail', [LaporanPenjualanController::class, 'filterPenjualanDetail'])->name('laporanpenjualan.filterpenjualandetail');
+        Route::get('penjualancn', [LaporanPenjualanController::class, 'filterPenjualanCN'])->name('laporanpenjualan.filterpenjualancn');        
+        Route::post('penjualan', [LaporanPenjualanController::class, 'filterDataPenjualan'])->name('laporanpenjualan.filterdatapenjualan');
+        Route::post('penjualan/export', [LaporanPenjualanController::class, 'exportPenjualan'])->name('laporanpenjualan.exportpenjualan');
+        Route::post('penjualandetail', [LaporanPenjualanController::class, 'filterDataPenjualanDetail'])->name('laporanpenjualan.filterdatapenjualandetail');
+        Route::post('penjualandetail/export', [LaporanPenjualanController::class, 'exportPenjualanDetail'])->name('laporanpenjualan.exportpenjualandetail');
+        Route::post('penjualancn', [LaporanPenjualanController::class, 'filterDataPenjualanCN'])->name('laporanpenjualan.filterdatapenjualancn');
+
+        // Route::get('{stokexp}/{product}/detailexp', [LaporanStokController::class, 'detailexp'])->name('laporanstok.detailexp');
+        // Route::get('kartustok', [LaporanStokController::class, 'kartustok'])->name('laporanstok.kartustok');
+        // Route::get('{product}/kartustok', [LaporanStokController::class, 'kartustokdetail'])->name('laporanstok.kartustokdetail');
+        // Route::get('expstok', [LaporanStokController::class, 'expstok'])->name('laporanstok.expstok');
+        // Route::post('expstokresult', [LaporanStokController::class, 'expstokresult'])->name('laporanstok.expstokresult');
+        
     });
 });

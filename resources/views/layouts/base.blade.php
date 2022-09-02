@@ -183,6 +183,11 @@
 
     <!--begin::Page Scripts(used by this page)-->
     <script src="{{ asset('assets/js/pages/widgets.js?v=7.0.6') }}"></script>
+
+    
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="{{ asset('assets/js/pages/crud/datatables/basic/scrollable.js?v=7.0.6') }}"></script>
+    <!--end::Page Scripts-->
     @stack('script')
     <!--end::Page Scripts-->
 

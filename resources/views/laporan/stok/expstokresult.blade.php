@@ -77,8 +77,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    
 
                                     @foreach ($stok as $index => $a)
+                                    
                                     <tr>
                                         <td>{{ $index+1 }}</td>
                                         <td>{{ $a->tanggal->format("d-m-Y")  }}</td>

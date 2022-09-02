@@ -25,4 +25,10 @@ class Sales extends Model
     {
         return $this->hasMany(Customer::class);
     }
+
+    
+    public function SO()
+    {
+        return $this->hasMany(PesananPenjualan::class, 'sales_id');
+    }
 }
