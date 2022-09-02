@@ -96,10 +96,11 @@
                                         <th>Total Diskon Detail</th>
                                         <th>Total Diskon Header</th>
                                         <th>Total</th>
-                                        <th>Grand Total</th>
                                         <th>PPN</th>
                                         <th>Ongkir</th>                                                                                
+                                        <th>Grand Total</th>                                        
                                         <th>Nama Produk</th>    
+                                        <th>Kode Produk</th>
                                         <th>Qty</th>
                                         <th>Satuan</th>
                                         <th>Harga Jual Produk</th>
@@ -133,11 +134,12 @@
                                             <td>{{$item->subtotal}}</td>
                                             <td>{{$item->total_diskon_detail}}</td>
                                             <td>{{$item->total_diskon_header}}</td>
-                                            <td>{{$item->total}}</td>                                            
-                                            <td>{{$item->grandtotal}}</td>  
+                                            <td>{{$item->total}}</td>       
                                             <td>{{$item->ppn}}</td>
-                                            <td>{{$item->ongkir}}</td>
+                                            <td>{{$item->ongkir}}</td>                                     
+                                            <td>{{$item->grandtotal}}</td>                                              
                                             <td>{{$item->nama_produk}}</td>
+                                            <td>{{$item->kode_produk}}</td>
                                             <td>{{$item->qty_det}}</td>
                                             <td>{{$item->satuan_det}}</td>
                                             <td>{{$item->hargajual_det}}</td>
