@@ -86,13 +86,13 @@
                             <td>{{ $item->products->nama }}</td>
                             <td>{{ $item->satuan }}</td>
                             <td>{{ $item->qty }}</td>
-                            <td>{{ number_format($item->hargajual, 0, ',', '.') }}</td>
-                            <td>{{ number_format($item->ongkir, 0, ',', '.') }}</td>
+                            <td>{{ number_format($item->hargajual, 2, ',', '.') }}</td>
+                            <td>{{ number_format($item->ongkir, 2, ',', '.') }}</td>
                             <td>{{ $item->diskon_persen }}</td>
                             <td>{{ $item->diskon_rp }}</td>
-                            <td>{{ number_format($item->subtotal, 0, ',', '.') }}</td>
-                            <td>{{ number_format($item->total_diskon, 0, ',', '.') }}</td>
-                            <td>{{ number_format($item->total, 0, ',', '.') }}</td>
+                            <td>{{ number_format($item->subtotal, 2, ',', '.') }}</td>
+                            <td>{{ number_format($item->total_diskon, 2, ',', '.') }}</td>
+                            <td>{{ number_format($item->total, 2, ',', '.') }}</td>
 
                         </tr>
                         @endforeach
@@ -119,7 +119,7 @@
                     <div class="col-lg-5 mb-2">
                         <div id="div_subtotal">
                             <input type="text" id="subtotal" class="form-control text-right" name="subtotal"
-                                readonly="readonly" value="{{ number_format($subtotal_header, 0, ',', '.')  }}">
+                                readonly="readonly" value="{{ number_format($subtotal_header, 2, ',', '.')  }}">
 
                         </div>
                     </div>
@@ -130,7 +130,7 @@
                         <div class="input-group">
 
                             <input type="text" class="form-control text-right" id="diskon" name="diskon"
-                                value="{{ number_format($total_diskon_header, 0, ',', '.')  }}" readonly="readonly">
+                                value="{{ number_format($total_diskon_header, 2, ',', '.')  }}" readonly="readonly">
 
                         </div>
 
@@ -140,7 +140,7 @@
                     <label class="col-lg-7 col-form-label text-right">Total :</label>
                     <div class="col-lg-5 mb-2">
                         <input type="text" id="total" readonly="readonly"
-                            value="{{ number_format($total_header, 0, ',', '.')  }}" name="total"
+                            value="{{ number_format($total_header, 2, ',', '.')  }}" name="total"
                             class="form-control text-right">
                     </div>
                 </div>
@@ -150,14 +150,14 @@
                         <div class="input-group">
 
                             <input type="text" class="form-control text-right" id="ppn" name="ppn"
-                                value="{{ number_format($ppn_header, 0, ',', '.')  }}" readonly="readonly">
+                                value="{{ number_format($ppn_header, 2, ',', '.')  }}" readonly="readonly">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <label class="col-lg-7 col-form-label text-right">Ongkir :</label>
                     <div class="col-lg-5 mb-2">
-                        <input type="text" id="ongkirheader" value="{{ number_format($ongkir_header, 0, ',', '.')  }}"
+                        <input type="text" id="ongkirheader" value="{{ number_format($ongkir_header, 2, ',', '.')  }}"
                             readonly="readonly" name="ongkirheader" class="form-control text-right">
                     </div>
                 </div>
@@ -166,7 +166,7 @@
                     <div class="col-lg-5">
                         <input type="text" id="grandtotal" readonly="readonly" name="grandtotal"
                             class="form-control text-right"
-                            value="{{ number_format($grandtotal_header, 0, ',', '.')  }}">
+                            value="{{ number_format($grandtotal_header, 2, ',', '.')  }}">
                     </div>
                 </div>
             </div>

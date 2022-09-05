@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Laporan;
 
+use App\Exports\LaporanStockExport;
 use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\StokExp;
@@ -12,6 +13,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\InventoryTransaction;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanStokController extends Controller
 {
@@ -156,5 +158,13 @@ class LaporanStokController extends Controller
 
         //dd($stok);
         return view('laporan.stok.expstokresult', compact('stok', 'title'));
+    }
+
+    public function exportStok()
+    {        
+        $now = Carbon::parse(now())->format('Y-m-d');
+
+        return Excel::download(new LaporanStockExport, 'laporanstock-'.$now.'.xlsx');
+
     }
 }

@@ -153,6 +153,13 @@
                         {{ $pengirimanbarang->kode }}
                     </td>
                 </tr>
+
+                <tr style="text-align: end">
+                    <td style="font-size: 70%; vertical-align: top; text-align: left;">No Customer :</td>
+                    <td style="font-size: 70%; vertical-align: top; text-align: left;">
+                        {{ $pengirimanbarang->SO->no_so }}
+                    </td>
+                </tr>
             </table>
             <div style="height:  238px;">
                 <table width="100%">

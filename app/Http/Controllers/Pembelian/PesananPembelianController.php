@@ -199,11 +199,14 @@ class PesananPembelianController extends Controller
     public function inputtemppo(Request $request)
     {
         $datas = $request->all();
-        $harga = $request->hargabeli;
+        $harga1 = $request->hargabeli;
 
-        $harga = str_replace('.', '', $harga) * 1;
-        $ongkir = $request->ongkir;
-        $ongkir = str_replace('.', '', $ongkir) * 1;
+        $harga2 = str_replace('.', '', $harga1);
+        $harga = str_replace(',', '.', $harga2) * 1;
+
+        $ongkir1 = $request->ongkir;
+        $ongkir2 = str_replace('.', '', $ongkir1) ;
+        $ongkir = str_replace('.', ',', $ongkir2) * 1;
 
         $subtotal = $request->qty * $harga;
         $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
@@ -314,7 +317,7 @@ class PesananPembelianController extends Controller
     {
         $subtotal = TempPo::where('user_id', '=', Auth::user()->id)->sum('total');
 
-        return number_format($subtotal, 0, ',', '.');
+        return number_format($subtotal, 2, ',', '.');
     }
 
     public function hitungdiskon(Request $request)
@@ -330,7 +333,7 @@ class PesananPembelianController extends Controller
         if ($total_diskon == 0) {
             return $total_diskon;
         } else {
-            return number_format($total_diskon, 0, ',', '.');
+            return number_format($total_diskon, 2, ',', '.');
         }
     }
 
@@ -348,7 +351,7 @@ class PesananPembelianController extends Controller
         if ($total == 0) {
             return $total;
         } else {
-            return number_format($total, 0, ',', '.');
+            return number_format($total, 2, ',', '.');
         }
     }
 
@@ -373,7 +376,7 @@ class PesananPembelianController extends Controller
         if ($ppn == 0) {
             return $ppn;
         } else {
-            return number_format($ppn, 0, ',', '.');
+            return number_format($ppn, 2, ',', '.');
         }
     }
 
@@ -384,7 +387,7 @@ class PesananPembelianController extends Controller
         if ($ongkir == 0) {
             return $ongkir;
         } else {
-            return number_format($ongkir, 0, ',', '.');
+            return number_format($ongkir, 2, ',', '.');
         }
     }
 
@@ -412,7 +415,7 @@ class PesananPembelianController extends Controller
         if ($grandtotal == 0) {
             return $grandtotal;
         } else {
-            return number_format($grandtotal, 0, ',', '.');
+            return number_format($grandtotal, 2, ',', '.');
         }
     }
 

@@ -337,7 +337,7 @@ class FakturPenjualanController extends Controller
     public function print_a4(FakturPenjualan $fakturpenjualan)
     {
         $title = "Print Faktur penjualan";
-        $fakturpenjualandetails = FakturPenjualanDetail::with('products')
+        $fakturpenjualandetails = FakturPenjualanDetail::with('products')            
             ->where('faktur_penjualan_id', '=', $fakturpenjualan->id)->get();
         $jmlBaris  = $fakturpenjualandetails->count();
         $perBaris = 20;
@@ -350,7 +350,7 @@ class FakturPenjualanController extends Controller
             'fakturpenjualandetails' => $fakturpenjualandetails
         ];
         $pdf = PDF::loadView('penjualan.fakturpenjualan.print_a4', $data)->setPaper('a4', 'potrait');;
-        return $pdf->download('fakturpenjualan.pdf');
+        return $pdf->download($fakturpenjualan->kode.'.pdf');
 
         //return view('penjualan.fakturpenjualan.print_a4', compact('title',  'totalPage'));
     }

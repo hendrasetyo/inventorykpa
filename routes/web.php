@@ -484,6 +484,7 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         Route::get('kartustok', [LaporanStokController::class, 'kartustok'])->name('laporanstok.kartustok');
         Route::get('{product}/kartustok', [LaporanStokController::class, 'kartustokdetail'])->name('laporanstok.kartustokdetail');
         Route::get('expstok', [LaporanStokController::class, 'expstok'])->name('laporanstok.expstok');
+        Route::get('stokproduk/export', [LaporanStokController::class, 'exportStok'])->name('laporanstok.export');
         Route::post('expstokresult', [LaporanStokController::class, 'expstokresult'])->name('laporanstok.expstokresult');
     });
 
@@ -499,6 +500,7 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         Route::post('penjualandetail', [LaporanPenjualanController::class, 'filterDataPenjualanDetail'])->name('laporanpenjualan.filterdatapenjualandetail');
         Route::post('penjualandetail/export', [LaporanPenjualanController::class, 'exportPenjualanDetail'])->name('laporanpenjualan.exportpenjualandetail');
         Route::post('penjualancn', [LaporanPenjualanController::class, 'filterDataPenjualanCN'])->name('laporanpenjualan.filterdatapenjualancn');
+        Route::post('penjualancn/export', [LaporanPenjualanController::class, 'exportPenjualanCN'])->name('laporanpenjualan.exportpenjualancn');
 
         // Route::get('{stokexp}/{product}/detailexp', [LaporanStokController::class, 'detailexp'])->name('laporanstok.detailexp');
         // Route::get('kartustok', [LaporanStokController::class, 'kartustok'])->name('laporanstok.kartustok');

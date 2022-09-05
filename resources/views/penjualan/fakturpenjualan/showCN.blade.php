@@ -60,8 +60,10 @@
                                     <span class="opacity-70">{{ $fakturpenjualan->no_pajak }}</span>
                                 </div>
                                 <div class="d-flex flex-column flex-root">
-                                    <span class="font-weight-bolder mb-2"></span>
-                                    <span class="opacity-70"> </span>
+                                    <div class="d-flex flex-column flex-root">
+                                        <span class="font-weight-bolder mb-2">SO Customer</span>
+                                        <span class="opacity-70">{{ $fakturpenjualan->SO->no_so }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -105,28 +107,42 @@
                                             <td class="text-left pt-7">{{ $a->products->nama }}</td>
                                             <td class="text-left pt-7">{{ $a->satuan }}</td>
                                             <td class=" pt-7 text-left">{{ $a->qty }}</td>
-                                            <td class=" pt-7 text-left">{{ number_format($a->hargajual, 0, ',', '.') }}
+                                            <td class=" pt-7 text-left">{{ number_format($a->hargajual, 2, ',', '.') }}
                                             </td>
                                             {{-- <td class=" pt-7 text-left">{{ $a->diskon_persen }}</td>
                                             <td class=" pt-7 text-left">{{ $a->diskon_rp }}</td> --}}
-                                            <td class=" pt-7 text-left">{{ number_format($a->subtotal, 0, ',', '.') }}
+                                            <td class=" pt-7 text-left">{{ number_format($a->subtotal, 2, ',', '.') }}
                                             </td>
                                             {{-- <td class=" pt-7 text-left">
                                                 {{ number_format($a->total_diskon, 0, ',', '.') }}</td> --}}
                                             <td class="text-danger pr-0 pt-7 text-right">
-                                                {{ number_format($a->total, 0, ',', '.') }}</td>
+                                                {{ number_format($a->total, 2, ',', '.') }}</td>
 
                                                 <td class=" pr-0 pt-7 text-right">
                                                     {{$a->cn_persen ? $a->cn_persen : 0 }}%</td>
                                             <td  class=" pt-7 text-left">
                                                 @if ($a->cn_persen)
-                                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit{{$a->id}}">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>                                                                                                        
+                                                <a type="button" data-toggle="modal" data-target="#edit{{$a->id}}">
+                                                    <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo2\dist/../src/media/svg/icons\Design\Edit.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                            <rect x="0" y="0" width="24" height="24"/>
+                                                            <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>
+                                                            <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>
+                                                        </g>
+                                                    </svg><!--end::Svg Icon--></span>
+                                                    
+                                                </a>                                                                                  
                                                 @else                                                    
-                                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#tambah{{$a->id}}">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
+                                                <a type="button" data-toggle="modal" data-target="#tambah{{$a->id}}">
+                                                    <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo2\dist/../src/media/svg/icons\Design\Edit.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                            <rect x="0" y="0" width="24" height="24"/>
+                                                            <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>
+                                                            <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>
+                                                        </g>
+                                                    </svg><!--end::Svg Icon--></span>
+                                                    
+                                                </a>
                                                 @endif
                                                 
                                             </td>

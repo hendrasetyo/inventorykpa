@@ -21,12 +21,12 @@
             <td>{{ $item->products->nama }}</td>
             <td>{{ $item->satuan }}</td>
             <td>{{ $item->qty }}</td>
-            <td>{{ number_format($item->hargajual, 0, ',', '.') }}</td>
+            <td>{{ number_format($item->hargajual, 2, ',', '.') }}</td>
             <td>{{ $item->diskon_persen }}</td>
             <td>{{ $item->diskon_rp }}</td>
-            <td>{{ number_format($item->subtotal, 0, ',', '.') }}</td>
-            <td>{{ number_format($item->total_diskon, 0, ',', '.') }}</td>
-            <td>{{ number_format($item->total, 0, ',', '.') }}</td>
+            <td>{{ number_format($item->subtotal, 2, ',', '.') }}</td>
+            <td>{{ number_format($item->total_diskon, 2, ',', '.') }}</td>
+            <td>{{ number_format($item->total, 2, ',', '.') }}</td>
             <td>
                 <div style="text-align:center;">
                     <div class="d-flex flex-nowrap">

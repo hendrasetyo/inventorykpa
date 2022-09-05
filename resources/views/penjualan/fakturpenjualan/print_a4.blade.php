@@ -63,6 +63,11 @@
                         <td style="font-size: 75%; width:5%"> :</td>
                         <td style="font-size: 75%;">{{ $fakturpenjualan->customers->npwp }}</td>
                     </tr>
+                    <tr>
+                        <td style="font-size: 75%;width:10%">SO Customer</td>
+                        <td style="font-size: 75%; width:5%"> :</td>
+                        <td style="font-size: 75%;">{{ $fakturpenjualan->SO->no_so }}</td>
+                    </tr>
                 </table>
             </td>
         </tr>
@@ -76,12 +81,12 @@
                             </td>
                         </tr>
                         <tr style="">
-                            <td style="font-size: 75%; border:none; width:10%">KWANTUM</td>
+                            <td style="font-size: 75%; border:none; width:10%;">KWANTUM</td>
                             <td style="font-size: 75%; border:none;">NAMA BARANG</td>
-                            <td style="font-size: 75%; border:none; width:10%">HARGA</td>
-                            <td style="font-size: 75%; border:none; width:15%">SUBTOTAL</td>
-                            <td style="font-size: 75%; border:none; width:10%">DISKON</td>
-                            <td style=" font-size: 75%; border:none; width:15%">JUMLAH</td>
+                            <td style="font-size: 75%; border:none; width:10%;text-align:center">HARGA</td>
+                            <td style="font-size: 75%; border:none; width:15%;text-align:center">SUBTOTAL</td>
+                            <td style="font-size: 75%; border:none; width:10%;text-align:center">DISKON</td>
+                            <td style=" font-size: 75%; border:none; width:15%;text-align:center">JUMLAH</td>
                         </tr>
                         <tr>
                             <td colspan="6">
@@ -94,15 +99,15 @@
                         @endphp
                         @foreach($fakturpenjualandetails as $a)
                         @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="">
-                            <td style="font-size: 60%; class=" text-left">{{ $a->qty }} {{ $a->satuan }}</td>
-                            <td style="font-size: 60%; class=" text-left">{{ $a->products->nama }}</td>
-                            <td style="font-size: 60%; class=" text-left">{{ number_format($a->hargajual, 0, ',', '.')
+                            <td style="font-size: 60%; ">{{ $a->qty }} {{ $a->satuan }}</td>
+                            <td style="font-size: 60%; ">{{ $a->products->nama }}</td>
+                            <td style="font-size: 60%; text-align:right">{{ number_format($a->hargajual, 2, ',', '.')
                                 }}</td>
-                            <td style="font-size: 60%; class=" text-left">{{ number_format($a->subtotal, 0, ',', '.')
+                            <td style="font-size: 60%; text-align:right">{{ number_format($a->subtotal, 2, ',', '.')
                                 }}</td>
-                            <td style="font-size: 60%; class=" text-left">{{ number_format($a->total_diskon, 0, ',',
+                            <td style="font-size: 60%; text-align:right">{{ number_format($a->total_diskon, 2, ',',
                                 '.') }}</td>
-                            <td style="font-size: 60%; class=" text-left">{{ number_format($a->total, 0, ',',
+                            <td style="font-size: 60%; text-align:right">{{ number_format($a->total, 2, ',',
                                 '.') }}</td>
 
 
@@ -125,55 +130,110 @@
         <hr style="margin-bottom: 0px; margin-top: 0px; border-width: 1px 0px 0px;">
         <table width="100%">
             <tr>
-
+                @if ($i==$totalPage)
                 <td style="text-align: right">
                     <table width="100%">
                         <tr>
                             <td style='font-size: 70%; width: 75%; line-height:90%'><b>Total Jumlah</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; line-height:90%; text-align:right'><b>
-                                    {{ number_format($fakturpenjualan->subtotal, 0, ',', '.') }}
+                                    {{ number_format($fakturpenjualan->subtotal, 2, ',', '.') }}
                                 </b></td>
                         </tr>
                         <tr>
                             <td style='font-size: 70%; width: 75%; line-height:90%'><b>Potongan Harga</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; line-height:90%; text-align:right'><b>
-                                    {{ number_format($fakturpenjualan->total_diskon_header, 0, ',', '.') }}
+                                    {{ number_format($fakturpenjualan->total_diskon_header, 2, ',', '.') }}
                                 </b></td>
                         </tr>
                         <tr>
                             <td style='font-size: 70%; width: 75%; line-height:90%'><b>Dasar Pengenaan Pajak</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; line-height:90%; text-align:right'><b>
-                                    {{ number_format($fakturpenjualan->total, 0, ',', '.') }}
+                                    {{ number_format($fakturpenjualan->total, 2, ',', '.') }}
                                 </b></td>
                         </tr>
                         <tr>
                             <td style='font-size: 70%; width: 75%;'><b>PPN</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; text-align:right'><b>
-                                    {{ number_format($fakturpenjualan->ppn, 0, ',', '.') }}
+                                    {{ number_format($fakturpenjualan->ppn, 2, ',', '.') }}
                                 </b></td>
                         </tr>
                         <tr>
                             <td style='font-size: 70%; width: 75%;'><b>Biaya Pengiriman</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; text-align:right'><b>
-                                    {{ number_format($fakturpenjualan->ongkir, 0, ',', '.') }}
+                                    {{ number_format($fakturpenjualan->ongkir, 2, ',', '.') }}
                                 </b></td>
                         </tr>
                         <tr>
                             <td style='font-size: 70%; width: 25%;'><b>Jumlah Yang Harus Dibayar</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; text-align:right'><b>
-                                    {{ number_format($fakturpenjualan->grandtotal, 0, ',', '.') }}
+                                    {{ number_format($fakturpenjualan->grandtotal, 2, ',', '.') }}
                                 </b></td>
                         </tr>
                     </table>
 
 
                 </td>
+                @else
+                <td style="text-align: right">
+                    <table width="100%">
+                        {{-- <tr>
+                            <td style='font-size: 70%; width: 75%; line-height:90%'><b>Total Jumlah</b></td>
+                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
+                            <td style='font-size: 70%; line-height:90%; text-align:right'><b>
+                                    -
+                                </b></td>
+                        </tr>
+                        <tr>
+                            <td style='font-size: 70%; width: 75%; line-height:90%'><b>Potongan Harga</b></td>
+                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
+                            <td style='font-size: 70%; line-height:90%; text-align:right'><b>
+                                    -
+                                </b></td>
+                        </tr>
+                        <tr>
+                            <td style='font-size: 70%; width: 75%; line-height:90%'><b>Dasar Pengenaan Pajak</b></td>
+                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
+                            <td style='font-size: 70%; line-height:90%; text-align:right'><b>
+                                   -
+                                </b></td>
+                        </tr>
+                        <tr>
+                            <td style='font-size: 70%; width: 75%;'><b>PPN</b></td>
+                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
+                            <td style='font-size: 70%; text-align:right'><b>
+                                   -
+                                </b></td>
+                        </tr>
+                        <tr>
+                            <td style='font-size: 70%; width: 75%;'><b>Biaya Pengiriman</b></td>
+                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
+                            <td style='font-size: 70%; text-align:right'><b>
+                                 -
+                                </b></td>
+                        </tr>
+                        <tr>
+                            <td style='font-size: 70%; width: 25%;'><b>Jumlah Yang Harus Dibayar</b></td>
+                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
+                            <td style='font-size: 70%; text-align:right'><b>
+                                -
+                                </b></td>
+                        </tr> --}}
+
+                        <tr>
+                            <td style='font-size: 70%; width: 25%;text-align:center'><i>( HALAMAN SELANJUTNYA )</i></td>
+                        </tr>
+                    </table>
+
+
+                </td>
+                @endif
+              
 
             </tr>
         </table>

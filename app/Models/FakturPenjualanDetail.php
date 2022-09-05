@@ -15,4 +15,10 @@ class FakturPenjualanDetail extends Model
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
+
+   
+    public function fakturpenjualan()
+    {
+        return $this->belongsTo(FakturPenjualan::class, 'faktur_penjualan_id', 'id');
+    }
 }

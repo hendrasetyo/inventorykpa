@@ -48,6 +48,10 @@
                                     <span class="font-weight-bolder mb-2">SO NO.</span>
                                     <span class="opacity-70">{{ $pengirimanbarang->SO->kode }}</span>
                                 </div>
+                                <div class="d-flex flex-column flex-root">
+                                    <span class="font-weight-bolder mb-2">SO CUSTOMER</span>
+                                    <span class="opacity-70">{{ $pengirimanbarang->SO->no_so }}</span>
+                                </div>
 
                             </div>
 

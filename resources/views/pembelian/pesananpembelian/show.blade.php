@@ -100,16 +100,16 @@
                                             <td class="text-left pt-7">{{ $a->products->nama }}</td>
                                             <td class="text-left pt-7">{{ $a->satuan }}</td>
                                             <td class=" pt-7 text-left">{{ $a->qty }}</td>
-                                            <td class=" pt-7 text-left">{{ number_format($a->hargabeli, 0, ',', '.') }}
+                                            <td class=" pt-7 text-left">{{ number_format($a->hargabeli, 2, ',', '.') }}
                                             </td>
                                             <td class=" pt-7 text-left">{{ $a->diskon_persen }}</td>
                                             <td class=" pt-7 text-left">{{ $a->diskon_rp }}</td>
-                                            <td class=" pt-7 text-left">{{ number_format($a->subtotal, 0, ',', '.') }}
+                                            <td class=" pt-7 text-left">{{ number_format($a->subtotal, 2, ',', '.') }}
                                             </td>
                                             <td class=" pt-7 text-left">
-                                                {{ number_format($a->total_diskon, 0, ',', '.') }}</td>
+                                                {{ number_format($a->total_diskon, 2, ',', '.') }}</td>
                                             <td class="text-danger pr-0 pt-7 text-right">
-                                                {{ number_format($a->total, 0, ',', '.') }}</td>
+                                                {{ number_format($a->total, 2, ',', '.') }}</td>
 
                                         </tr>
                                         @endforeach
@@ -138,14 +138,14 @@
                                     </thead>
                                     <tbody>
                                         <tr class="font-weight-bolder">
-                                            <td>{{ number_format($pesananpembelian->subtotal, 0, ',', '.') }}</td>
-                                            <td>{{ number_format($pesananpembelian->total_diskon_header, 0, ',', '.') }}
+                                            <td>{{ number_format($pesananpembelian->subtotal, 2, ',', '.') }}</td>
+                                            <td>{{ number_format($pesananpembelian->total_diskon_header, 2, ',', '.') }}
                                             </td>
-                                            <td>{{ number_format($pesananpembelian->total, 0, ',', '.') }}</td>
-                                            <td>{{ number_format($pesananpembelian->ppn, 0, ',', '.') }} %</td>
-                                            <td>{{ number_format($pesananpembelian->ongkir, 0, ',', '.') }}</td>
+                                            <td>{{ number_format($pesananpembelian->total, 2, ',', '.') }}</td>
+                                            <td>{{ number_format($pesananpembelian->ppn, 2, ',', '.') }} %</td>
+                                            <td>{{ number_format($pesananpembelian->ongkir, 2, ',', '.') }}</td>
                                             <td class="text-danger font-size-h3 font-weight-boldest">
-                                                {{ number_format($pesananpembelian->grandtotal, 0, ',', '.') }}</td>
+                                                {{ number_format($pesananpembelian->grandtotal, 2, ',', '.') }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

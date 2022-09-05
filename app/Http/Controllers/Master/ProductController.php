@@ -33,8 +33,11 @@ class ProductController extends Controller
     {
 
         $title = "PRODUCT";
-        $products = Product::with(['categories', 'subcategories']);
-
+        $products = Product::with(['categories', 'subcategories','podetails','penerimaanBarang'
+                    ,'pengirimanBarang','pesananPenjualan']);    
+        
+                    // $data= $products->get();
+                    // dd($data[0]);
         if (request()->ajax()) {
             return Datatables::of($products)
                 ->addIndexColumn()
@@ -53,7 +56,13 @@ class ProductController extends Controller
                 ->addColumn('action', function ($row) {
                     $editUrl = route('product.edit', ['product' => $row->id]);
                     $id = $row->id;
-                    return view('master.product._formAction', compact('editUrl', 'id'));
+                    $podetail = count($row->podetails);
+                    $penerimaanbarang = count($row->penerimaanBarang);
+                    $pengirimanbarang = count($row->pengirimanBarang);
+                    $pesananPenjualan = count($row->pesananPenjualan);
+
+                    return view('master.product._formAction', compact('editUrl', 'id','penerimaanbarang','pengirimanbarang','pesananPenjualan','podetail'));
+
                 })
                 ->make(true);
         }

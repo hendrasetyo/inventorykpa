@@ -51,8 +51,14 @@
                                         </svg>
                                         <!--end::Svg Icon--></span> </span>
                                 <h3 class="card-label">Daftar Produk</h3>
+                            </div>    
+                            <div>
+                                <a href="{{ route('laporanstok.export') }}" class="btn btn-primary ">
+                                <i class="flaticon-technology"></i>                                  
+                                Export to Excel</a>
                             </div>
-                            <div class="card-toolbar">
+                                                    
+                            <div >
                                 <div class="btn-group mr-2">
                                     <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">Atribut Produk</button>
@@ -87,7 +93,7 @@
                                 @endcan
 
                                 <!--end::Button-->
-                            </div>
+                            </div>                            
                         </div>
                         <div class="card-body">
                             <!--begin: Datatable-->
@@ -121,6 +127,7 @@
 <!--end::Content-->
 <div id="modal-confirm-delete"></div>
 <div id="modal-show-detail"></div>
+
 @endsection
 @push('script')
 <script src="{{ asset('/assets/js/pages/crud/forms/widgets/select2.js?v=7.0.6"') }}"></script>
@@ -213,6 +220,10 @@
                 }
             });
         }
+
+    function show_delete() {
+        $('#notifDelete').modal('show');
+    }
 
 
 

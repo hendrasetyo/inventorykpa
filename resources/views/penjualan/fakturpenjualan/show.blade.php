@@ -42,6 +42,15 @@
                                 </div>
 
                                 <div class="d-flex flex-column flex-root">
+                                    <span class="font-weight-bolder mb-2">NPWP</span>
+                                    <span class="opacity-70">{{ $fakturpenjualan->customers->npwp }}</span>                               </div>
+
+                                <div class="d-flex flex-column flex-root">
+                                    <span class="font-weight-bolder mb-2">ALAMAT</span>
+                                    <span class="opacity-70">{{ $fakturpenjualan->customers->alamat }}</span>
+                                </div>
+
+                                <div class="d-flex flex-column flex-root">
                                     <span class="font-weight-bolder mb-2">PENGIRIMAN BARANG</span>
                                     <span class="opacity-70">{{ $fakturpenjualan->SJ->kode }}</span>
                                 </div>
@@ -60,8 +69,8 @@
                                     <span class="opacity-70">{{ $fakturpenjualan->no_pajak }}</span>
                                 </div>
                                 <div class="d-flex flex-column flex-root">
-                                    <span class="font-weight-bolder mb-2"></span>
-                                    <span class="opacity-70"> </span>
+                                    <span class="font-weight-bolder mb-2">SO Customer</span>
+                                    <span class="opacity-70">{{ $fakturpenjualan->SO->no_so }}</span>
                                 </div>
                             </div>
                         </div>
@@ -101,16 +110,16 @@
                                             <td class="text-left pt-7">{{ $a->products->nama }}</td>
                                             <td class="text-left pt-7">{{ $a->satuan }}</td>
                                             <td class=" pt-7 text-left">{{ $a->qty }}</td>
-                                            <td class=" pt-7 text-left">{{ number_format($a->hargajual, 0, ',', '.') }}
+                                            <td class=" pt-7 text-left">{{ number_format($a->hargajual, 2, ',', '.') }}
                                             </td>
                                             <td class=" pt-7 text-left">{{ $a->diskon_persen }}</td>
                                             <td class=" pt-7 text-left">{{ $a->diskon_rp }}</td>
-                                            <td class=" pt-7 text-left">{{ number_format($a->subtotal, 0, ',', '.') }}
+                                            <td class=" pt-7 text-left">{{ number_format($a->subtotal, 2, ',', '.') }}
                                             </td>
                                             <td class=" pt-7 text-left">
-                                                {{ number_format($a->total_diskon, 0, ',', '.') }}</td>
+                                                {{ number_format($a->total_diskon, 2, ',', '.') }}</td>
                                             <td class="text-danger pr-0 pt-7 text-right">
-                                                {{ number_format($a->total, 0, ',', '.') }}</td>
+                                                {{ number_format($a->total, 2, ',', '.') }}</td>
 
                                         </tr>
                                         @endforeach
@@ -139,14 +148,14 @@
                                     </thead>
                                     <tbody>
                                         <tr class="font-weight-bolder">
-                                            <td>{{ number_format($fakturpenjualan->subtotal, 0, ',', '.') }}</td>
-                                            <td>{{ number_format($fakturpenjualan->total_diskon_header, 0, ',', '.') }}
+                                            <td>{{ number_format($fakturpenjualan->subtotal, 2, ',', '.') }}</td>
+                                            <td>{{ number_format($fakturpenjualan->total_diskon_header, 2, ',', '.') }}
                                             </td>
-                                            <td>{{ number_format($fakturpenjualan->total, 0, ',', '.') }}</td>
-                                            <td>{{ number_format($fakturpenjualan->ppn, 0, ',', '.') }}</td>
-                                            <td>{{ number_format($fakturpenjualan->ongkir, 0, ',', '.') }}</td>
+                                            <td>{{ number_format($fakturpenjualan->total, 2, ',', '.') }}</td>
+                                            <td>{{ number_format($fakturpenjualan->ppn, 2, ',', '.') }}</td>
+                                            <td>{{ number_format($fakturpenjualan->ongkir, 2, ',', '.') }}</td>
                                             <td class="text-danger font-size-h3 font-weight-boldest">
-                                                {{ number_format($fakturpenjualan->grandtotal, 0, ',', '.') }}</td>
+                                                {{ number_format($fakturpenjualan->grandtotal, 2, ',', '.') }}</td>
                                         </tr>
                                     </tbody>
 

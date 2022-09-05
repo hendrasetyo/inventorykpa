@@ -85,7 +85,7 @@
                                     <span class="opacity-70">{{ $pesananpenjualan->top }} Hari</span>
                                 </div>
                                 <div class="d-flex flex-column flex-root">
-                                    <span class="font-weight-bolder mb-2">SP Customer</span>
+                                    <span class="font-weight-bolder mb-2">SO Customer</span>
                                     <span class="opacity-70">{{ $pesananpenjualan->no_so }} </span>
                                 </div>
                             </div>
@@ -129,16 +129,16 @@
                                             <td class="text-left pt-7">{{ $a->products->nama }}</td>
                                             <td class="text-left pt-7">{{ $a->satuan }}</td>
                                             <td class=" pt-7 text-left">{{ $a->qty }}</td>
-                                            <td class=" pt-7 text-left">{{ number_format($a->hargajual, 0, ',', '.') }}
+                                            <td class=" pt-7 text-left">{{ number_format($a->hargajual, 2, ',', '.') }}
                                             </td>
                                             <td class=" pt-7 text-left">{{ $a->diskon_persen }}</td>
                                             <td class=" pt-7 text-left">{{ $a->diskon_rp }}</td>
-                                            <td class=" pt-7 text-left">{{ number_format($a->subtotal, 0, ',', '.') }}
+                                            <td class=" pt-7 text-left">{{ number_format($a->subtotal, 2, ',', '.') }}
                                             </td>
                                             <td class=" pt-7 text-left">
-                                                {{ number_format($a->total_diskon, 0, ',', '.') }}</td>
+                                                {{ number_format($a->total_diskon, 2, ',', '.') }}</td>
                                             <td class="text-danger pr-0 pt-7 text-right">
-                                                {{ number_format($a->total, 0, ',', '.') }}</td>
+                                                {{ number_format($a->total, 2, ',', '.') }}</td>
                                             <td class=" pt-7 text-left">{{ $a->keterangan }}</td>
                                         </tr>
                                         @endforeach
@@ -167,14 +167,14 @@
                                     </thead>
                                     <tbody>
                                         <tr class="font-weight-bolder">
-                                            <td>{{ number_format($pesananpenjualan->subtotal, 0, ',', '.') }}</td>
-                                            <td>{{ number_format($pesananpenjualan->total_diskon_header, 0, ',', '.') }}
+                                            <td>{{ number_format($pesananpenjualan->subtotal, 2, ',', '.') }}</td>
+                                            <td>{{ number_format($pesananpenjualan->total_diskon_header, 2, ',', '.') }}
                                             </td>
-                                            <td>{{ number_format($pesananpenjualan->total, 0, ',', '.') }}</td>
-                                            <td>{{ number_format($pesananpenjualan->ppn, 0, ',', '.') }} %</td>
-                                            <td>{{ number_format($pesananpenjualan->ongkir, 0, ',', '.') }}</td>
+                                            <td>{{ number_format($pesananpenjualan->total, 2, ',', '.') }}</td>
+                                            <td>{{ number_format($pesananpenjualan->ppn, 2, ',', '.') }} %</td>
+                                            <td>{{ number_format($pesananpenjualan->ongkir, 2, ',', '.') }}</td>
                                             <td class="text-danger font-size-h3 font-weight-boldest">
-                                                {{ number_format($pesananpenjualan->grandtotal, 0, ',', '.') }}</td>
+                                                {{ number_format($pesananpenjualan->grandtotal, 2, ',', '.') }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

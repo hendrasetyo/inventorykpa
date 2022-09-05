@@ -17,7 +17,28 @@
         <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
+
+    <div class="form-group">
+        <label>Merk *:</label>
+        <select class="form-control select2" id="merk" name="merk_id">
+            <option value="">Pilih Merk</option>
+            @foreach ($merks as $mrk)
+            @if ($product->merk_id == $mrk->id)
+            <option selected="selected" value="{{ $mrk->id }}">{{ $mrk->nama }}</option>
+            @else
+            <option value="{{ $mrk->id }}">{{ $mrk->nama }}</option>
+            @endif
+
+            @endforeach
+        </select>
+        @error('merk_id')
+        <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
     <div class="separator separator-dashed my-5"></div>
+    
+   
+    
     <div class="form-group">
         <label>Nama Barang *:</label>
         <input type="text" name="nama" value="{{ old('nama') ?? $product->nama }}"
@@ -46,6 +67,7 @@
         @enderror
     </div>
     <div class="separator separator-dashed my-5"></div>
+
     <div class="form-group">
         <label>Sub Kategori *:</label>
         <select class="form-control select2" id="productsubcategory" name="productsubcategory_id">
@@ -61,25 +83,7 @@
         <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
-    <div class="separator separator-dashed my-5"></div>
-    <div class="form-group">
-        <label>Merk *:</label>
-        <select class="form-control select2" id="merk" name="merk_id">
-            <option value="">Pilih Merk</option>
-            @foreach ($merks as $mrk)
-            @if ($product->merk_id == $mrk->id)
-            <option selected="selected" value="{{ $mrk->id }}">{{ $mrk->nama }}</option>
-            @else
-            <option value="{{ $mrk->id }}">{{ $mrk->nama }}</option>
-            @endif
-
-            @endforeach
-        </select>
-        @error('merk_id')
-        <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div>
-    <div class="separator separator-dashed my-5"></div>
+    <div class="separator separator-dashed my-5"></div>   
     <div class="form-group row">
         <div class="col-lg-3">
             <label>Jenis :</label>

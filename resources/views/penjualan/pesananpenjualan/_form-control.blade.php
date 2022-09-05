@@ -2,7 +2,7 @@
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">Customer:</label>
         <div class="col-lg-4">
-            <select class="form-control select2" id="customer_id" name="customer_id">
+            <select class="form-control select2" id="customer_id" name="customer_id" required>
                 <option value="">Pilih Customer</option>
                 @foreach ($customers as $cg)
                 @if ($pesananpenjualan->customer_id == $cg->id)
@@ -22,9 +22,9 @@
             <div class="input-group date">
                 @if($pesananpenjualan->tanggal <> null)
                     <input type="text" class="form-control" name="tanggal" readonly
-                        value="{{ $pesananpenjualan->tanggal->format("d-m-Y") }}" id="tgl1" />
+                        value="{{ $pesananpenjualan->tanggal->format("d-m-Y") }}" id="tgl1" required/>
                     @else
-                    <input type="text" class="form-control" name="tanggal" readonly value="{{ $tglNow }}" id="tgl1" />
+                    <input type="text" class="form-control" name="tanggal" readonly value="{{ $tglNow }}" id="tgl1" required/>
                     @endif
 
                     <div class="input-group-append">
@@ -39,7 +39,7 @@
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">Komoditas:</label>
         <div class="col-lg-4">
-            <select class="form-control select2" id="komoditas" name="komoditas_id">
+            <select class="form-control select2" id="komoditas" name="komoditas_id" required>
                 <option value="">Pilih Komoditas</option>
                 @foreach ($komoditass as $cg)
                 @if ($pesananpenjualan->komoditas_id == $cg->id)
@@ -57,14 +57,14 @@
         <label class="col-lg-2 col-form-label text-right">TOP:</label>
         <div class="col-lg-4">
             <input type="number" name="top" id="top" class="form-control" placeholder="Enter Term of Payment"
-                value="30" />
+                value="30" required />
             <span class="form-text text-muted">Isi Dalam Satuan Hari, Contoh : 30</span>
         </div>
     </div>
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">Kategori:</label>
         <div class="col-lg-4">
-            <select class="form-control select2" id="kategori" name="kategoripesanan_id">
+            <select class="form-control select2" id="kategori" name="kategoripesanan_id" required>
                 <option value="">Pilih Kategori</option>
                 @foreach ($kategoris as $cg)
                 @if ($pesananpenjualan->komoditas_id == $cg->id)
@@ -89,7 +89,7 @@
         <label class="col-lg-1 col-form-label text-right">ID Paket:</label>
         <div class="col-lg-4">
             <input type="text" id="id_paket" name="id_paket" class="form-control"
-                placeholder="Khusus e-Katalog (Jika Ada)" />
+                placeholder="Khusus e-Katalog (Jika Ada)" required />
         </div>
         <label class="col-lg-2 col-form-label text-right">Nama Paket :</label>
         <div class="col-lg-4">

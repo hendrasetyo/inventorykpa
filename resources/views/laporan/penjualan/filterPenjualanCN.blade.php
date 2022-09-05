@@ -64,35 +64,42 @@
                         <!--begin::Form-->
                         <div class="card-body">
 
-                            <form class="form" method="post" action="{{ route('laporanstok.expstokresult') }}">
+                            <form class="form" method="POST" action="{{ route('laporanpenjualan.filterdatapenjualancn') }}">
                                 @csrf
                                 <div class="card-body">
 
                                     <div class="form-group">
                                         <label>Tgl Awal :</label>
                                         <input type="text" class="form-control" name="tgl1" readonly value=""
-                                            id="tgl1" />
+                                            id="tgl1" required/>
 
                                     </div>
 
                                     <div class=" form-group">
                                         <label>Tanggal Akhir :</label>
                                         <input type="text" class="form-control" name="tgl2" readonly value=""
-                                            id="tgl2" />
+                                            id="tgl2" required/>
 
                                     </div>                                    
 
                                     <div class="form-group">
                                         <label for="">Customer</label>
-                                        <select name="customer" id="" class="form-control">
-                                            <option value="all">Semua</option>
+                                        <select name="customer" id="kt_select2_1" class="form-control">
+                                            <option value="all" selected>Semua</option>
+                                            
+                                            @foreach ($customer as $item)
+                                                <option value="{{$item->id}}">{{$item->nama}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="">Sales</label>
-                                        <select name="sales" id="" class="form-control">
-                                            <option value="all">Semua</option>
+                                        <select name="sales" id="kt_select2_2" class="form-control select2">
+                                            <option value="all" selected>Semua</option>
+                                            @foreach ($sales as $item)                                            
+                                                <option value="{{$item->id}}">{{$item->nama}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
 

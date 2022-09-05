@@ -50,7 +50,7 @@ class Product extends Model
 
     public function groups()
     {
-        return $this->belongsTo(Producgroup::class, 'productgroup_id', 'id');
+        return $this->belongsTo(Productgroup::class, 'productgroup_id', 'id');
     }
 
     public function categories()
@@ -72,6 +72,23 @@ class Product extends Model
     {
         return $this->hasMany(PesananPembelianDetail::class, 'product_id', 'id');
     }
+    
+    public function penerimaanBarang()
+    {
+        return $this->hasMany(PenerimaanBarangDetail::class, 'product_id');
+    }
+
+   
+    public function pengirimanBarang()
+    {
+        return $this->hasMany(PengirimanBarangDetail::class, 'product_id');
+    }
+
+    public function pesananPenjualan()
+    {
+        return $this->hasMany(PesananPenjualanDetail::class, 'product_id');
+    }
+
 
     public function temppb()
     {

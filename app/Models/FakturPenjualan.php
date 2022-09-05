@@ -65,5 +65,11 @@ class FakturPenjualan extends Model
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
+
+ 
+    public function fakturpenjualandetail()
+    {
+        return $this->hasMany(FakturPenjualanDetail::class, 'faktur_penjualan_id');
+    }
     
 }
