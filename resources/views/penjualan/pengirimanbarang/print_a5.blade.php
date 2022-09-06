@@ -144,23 +144,23 @@
 
 
                 </td>
+               
             </tr>
-            </table>
-            <table>
-                <tr>
-                    <td style="font-size: 70%; vertical-align: top; text-align: left;">Surat Jalan :</td>
-                    <td style="font-size: 70%; vertical-align: top; text-align: left;">
-                        {{ $pengirimanbarang->kode }}
-                    </td>
-                </tr>
-
-                <tr style="text-align: end">
-                    <td style="font-size: 70%; vertical-align: top; text-align: left;">No Customer :</td>
-                    <td style="font-size: 70%; vertical-align: top; text-align: left;">
-                        {{ $pengirimanbarang->SO->no_so }}
-                    </td>
-                </tr>
-            </table>
+            <tr>
+                <td width="20%" style="font-size: 70%; vertical-align: top;">
+                    Surat Jalan : {{ $pengirimanbarang->kode }}
+                </td>
+                <td width="25%" style="font-size: 75%; vertical-align: top; text-align: center;">
+                    <center><b></b></center>
+                    <center><b>
+                    </b></center>
+                </td>
+                <td width="20%" style="font-size: 70%; vertical-align: top;">
+                    SO Cust. : {{ $pengirimanbarang->SO->no_so }}
+                </td>               
+            </tr>
+            </table>          
+           
             <div style="height:  238px;">
                 <table width="100%">
                     <tr>

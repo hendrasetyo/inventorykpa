@@ -72,8 +72,9 @@ class PenerimaanBarangController extends Controller
         $title = "Daftar Pesanan Pembelian";
         $pesananpembelians = PesananPembelian::with('suppliers', 'statusPO')
             ->where('status_po_id', '<=', '3')
-            ->where('status_po_id', '<>', '1')
-            ->get();
+            ->where('status_po_id', '<>', '1');
+            
+            
         if (request()->ajax()) {
             return Datatables::of($pesananpembelians)
                 ->addIndexColumn()
@@ -108,9 +109,12 @@ class PenerimaanBarangController extends Controller
         //ambil list item PO untuk dimasukkan ke penerimaan
         $id_po = $pesananpembelian->id;
         $POdetails = PesananPembelianDetail::with('products')
-            ->where('pesanan_pembelian_id', '=', $id_po)->get();
-
+                    ->where('pesanan_pembelian_id', '=', $id_po)
+                    ->orderBy('tanggal', 'desc')
+                    ->get();
+    
         return view('pembelian.penerimaanbarang.create', compact('title', 'pesananpembelian', 'POdetails'));
+
     }
 
     public function setbarang(Request $request)

@@ -71,7 +71,6 @@ class PengirimanBarangController extends Controller
     public function listso()
     {
         $title = "Daftar Pesanan Penjualan";
-
         $pesananpenjualans = PesananPenjualan::with('customers', 'statusSO')
             ->where('status_so_id', '<=', '3')
             ->where('status_so_id', '<>', '1')
@@ -595,7 +594,7 @@ class PengirimanBarangController extends Controller
         ];
 
         $pdf = PDF::loadView('penjualan.pengirimanbarang.print_a5', $data)->setPaper('a5', 'landscape');;
-        return $pdf->download('pengirimanbarang.pdf');
+        return $pdf->download($pengirimanbarang->kode.'.pdf');
 
         //return view('penjualan.fakturpenjualan.print_a4', compact('title',  'totalPage'));
     }

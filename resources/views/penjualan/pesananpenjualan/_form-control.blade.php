@@ -57,7 +57,7 @@
         <label class="col-lg-2 col-form-label text-right">TOP:</label>
         <div class="col-lg-4">
             <input type="number" name="top" id="top" class="form-control" placeholder="Enter Term of Payment"
-                value="30" required />
+                value="30"  />
             <span class="form-text text-muted">Isi Dalam Satuan Hari, Contoh : 30</span>
         </div>
     </div>
@@ -89,7 +89,7 @@
         <label class="col-lg-1 col-form-label text-right">ID Paket:</label>
         <div class="col-lg-4">
             <input type="text" id="id_paket" name="id_paket" class="form-control"
-                placeholder="Khusus e-Katalog (Jika Ada)" required />
+                placeholder="Khusus e-Katalog (Jika Ada)" />
         </div>
         <label class="col-lg-2 col-form-label text-right">Nama Paket :</label>
         <div class="col-lg-4">
@@ -123,7 +123,7 @@
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">Sales:</label>
         <div class="col-lg-4">
-            <select class="form-control select2" id="sales_id" name="sales_id">
+            <select class="form-control select2" id="sales_id" name="sales_id" required>
                 <option value="">Pilih Sales</option>
                 @foreach ($saless as $cg)
                 @if ($pesananpenjualan->sales_id == $cg->id)

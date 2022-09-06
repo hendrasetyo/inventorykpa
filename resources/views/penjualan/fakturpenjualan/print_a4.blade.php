@@ -62,12 +62,7 @@
                         <td style="font-size: 75%;width:10%">NPWP</td>
                         <td style="font-size: 75%; width:5%"> :</td>
                         <td style="font-size: 75%;">{{ $fakturpenjualan->customers->npwp }}</td>
-                    </tr>
-                    <tr>
-                        <td style="font-size: 75%;width:10%">SO Customer</td>
-                        <td style="font-size: 75%; width:5%"> :</td>
-                        <td style="font-size: 75%;">{{ $fakturpenjualan->SO->no_so }}</td>
-                    </tr>
+                    </tr>                   
                 </table>
             </td>
         </tr>
@@ -238,7 +233,12 @@
             </tr>
         </table>
         <hr style="margin-bottom: 0px; margin-top: 0px; border-width: 1px 0px 0px;">
-        <br /><br />
+        <table>
+            <tr>
+                <td style="font-size: 50%;">SO Cust. : {{ $fakturpenjualan->SO->no_so }}</td>
+            </tr>
+        </table>
+        <br />    
         <table width="100%">
             <tr>
                 <td style='font-size: 70%; width: 15%; line-height:90%; vertical-align:top'>PENERIMA,
@@ -269,6 +269,10 @@
                 </td>
             </tr>
         </table>
+        <div style="border: 0.5px solid black;width: 100%;line-height:90%">
+            <p style="font-size:55%"><b>   Pembayaran dapat ditransfer ke Rek  : <b>Bank BCA No.675 088 0809</b> , <b>Bank JATIM No.066 088 0809</b> a/n PT.KARYA PUTRA ANDALAN</b></p>
+
+        </div>
 
 
 
