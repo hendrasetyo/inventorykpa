@@ -30,7 +30,7 @@
             <td>
                 <div style="text-align:center;">
                     <div class="d-flex flex-nowrap">
-                        {{-- <a href="javascript:editBarang({{ $item->id }})"
+                        <a href="javascript:editBarang({{ $item->id }})"
                             class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
                             <span class="svg-icon svg-icon-md svg-icon-primary">
                                 <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Write.svg--><svg
@@ -47,7 +47,7 @@
                                             fill="#000000" fill-rule="nonzero" opacity="0.3" />
                                     </g>
                                 </svg>
-                                <!--end::Svg Icon--></span> </a> --}}
+                                <!--end::Svg Icon--></span> </a>
                         <a href="javascript:delete_confirm({{ $item->id }})"
                             class="btn btn-icon btn-light btn-hover-primary btn-sm">
                             <span class="svg-icon svg-icon-md svg-icon-primary">

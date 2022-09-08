@@ -263,7 +263,7 @@
     function editBarang(data_id){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.editbarang') }}',
+                url: '{{ route('pesananpenjualan.editbarangdetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {id:data_id, "_token": "{{ csrf_token() }}"},
@@ -334,11 +334,12 @@
 
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.updatebarang') }}',
+                url: '{{ route('pesananpenjualan.updatebarangdetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
                     "id": id,
+                    "pesanan_id" : idpesanan,
                     "product_id": product_id,
                     "qty": qty,
                     "satuan": satuan,
@@ -405,7 +406,7 @@
     function updateDiskon(){
         var diskon_persen = document.getElementById('diskon_persen_h').value;                        
         var diskon_rupiah = document.getElementById('diskon_rp_h').value;
-               
+
         var id_diskon = document.getElementById('id_diskon').value;        
 
         $.ajax({

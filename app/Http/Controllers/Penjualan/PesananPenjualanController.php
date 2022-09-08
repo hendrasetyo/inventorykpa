@@ -576,7 +576,8 @@ class PesananPenjualanController extends Controller
     {
         // sekali input ke detail maka header nya akan mengubah data total dll nya         
 
-        $datas = $request->all();        
+        $datas = $request->all();     
+        $id = $request->pesanan_penjualan_id;   
 
         $harga1 = $request->hargajual;
 
@@ -598,32 +599,41 @@ class PesananPenjualanController extends Controller
         $datas['total_diskon'] = $total_diskon;
         $datas['total'] = $total;
         $datas['user_id'] = Auth::user()->id;
-        $datas['ongkir'] = $ongkir;
-        
+        $datas['ongkir'] = $ongkir;        
 
 
         // ambil data dulu ke pesananan penjualan buat edit total dan grand totalnya 
-        $pesanan = PesananPenjualan::where('id',$datas['pesanan_penjualan_id'])->first();        
-        $datas['tanggal'] = $pesanan->tanggal;        
+        $pesanan = PesananPenjualan::where('id',$id)->first(); 
         
-        $pesanan->subtotal += $subtotal;
-        $pesanan->total += $total;
+        $datas['tanggal'] = $pesanan->tanggal;
+        // save ke pesananpenjualandetail
+        PesananPenjualanDetail::create($datas);
         
-        $pesanan->ongkir += $ongkir;
-        $pesanan->total_diskon_detail = $total_diskon;
-        $ppn_persen = $pesanan->ppn;
-        $ppn = $total * ($ppn_persen / 100);
-        $ongkir = $pesanan->ongkir;
-        $grandtotal = $pesanan->total + $ppn + $pesanan->ongkir;
+        $totaldetail  = PesananPenjualanDetail::where('pesanan_penjualan_id',$id)->sum('total');
+        $totalongkir  = PesananPenjualanDetail::where('pesanan_penjualan_id',$id)->sum('ongkir');
+        $totaldiskon  = PesananPenjualanDetail::where('pesanan_penjualan_id',$id)->sum('total_diskon');                
+        
 
-        $pesanan->ppn = $ppn_persen;
+        
+        
+        $pesanan->subtotal = $totaldetail;
+        $totaldiskonheader = ($pesanan->subtotal * ($pesanan->diskon_persen / 100)) + $pesanan->diskon_rupiah;
+        $pesanan->total = $pesanan->subtotal - $totaldiskonheader;
+        
+        $pesanan->ongkir = $totalongkir;
+        $pesanan->total_diskon_header = $totaldiskonheader;
+        $pesanan->total_diskon_detail = $totaldiskon;
+        $ppn_persen = $pesanan->ppn;
+        $ppn = $pesanan->total * ($ppn_persen / 100);   
+        
+        $grandtotal = $pesanan->total + $ppn + $pesanan->ongkir;
+        
+        
         $pesanan->grandtotal = $grandtotal;        
         $pesanan->update();        
         // kalkulasi datanya 
-        
-                
-        // save ke pesananpenjualandetail
-        PesananPenjualanDetail::create($datas);
+                        
+      
     }
 
     public function loadPesananDetail(Request $request)
@@ -665,8 +675,9 @@ class PesananPenjualanController extends Controller
 
     public function editBarangDetail(Request $request)
     {
-        $item = PesananPenjualanDetail::where('id', '=', $request->id)->first();
+        $item = PesananPenjualanDetail::where('id', '=', $request->id)->first();        
         $id_product = $item->product_id;
+
         $product = new Product;
         $productx = Product::where('id', '=', $id_product)->first();
         $product_name = $productx->nama;
@@ -677,13 +688,18 @@ class PesananPenjualanController extends Controller
     public function updateBarangDetail(Request $request)
     {
         //dd($request->hargajual);
-        $harga = $request->hargajual;
-        $harga = str_replace('.', '', $harga) * 1;
+        $harga1 = $request->hargajual;        
+        $harga2 = str_replace('.', '', $harga1);
+        $harga = str_replace(',', '.', $harga2) * 1;
+
         $subtotal = $request->qty * $harga;
         $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
+
         $total = $subtotal - $total_diskon;
-        $ongkir = $request->ongkir;
-        $ongkir = str_replace('.', '', $ongkir) * 1;
+
+        $ongkir1 = $request->ongkir;
+        $ongkir2 = str_replace('.', '', $ongkir1);
+        $ongkir = str_replace(',', '.', $ongkir2) * 1;
 
         $PJ = PesananPenjualanDetail::find($request->id);
         $PJ->hargajual = $harga;
@@ -696,17 +712,41 @@ class PesananPenjualanController extends Controller
         $PJ->total_diskon = $total_diskon;
         $PJ->total = $total;
 
-        $PJ->save();
+        $PJ->update();
+
+        // kalkulasi header
+        $totaldetail = PesananPenjualanDetail::where('pesanan_penjualan_id',$request->pesanan_id)->sum('total');
+        $ongkirdetail =PesananPenjualanDetail::where('pesanan_penjualan_id',$request->pesanan_id)->sum('ongkir');        
+        $totalDiskon = PesananPenjualanDetail::where('pesanan_penjualan_id',$request->pesanan_id)->sum('total_diskon');
+        // hitung semua data baru di detail dan kalkulasi total dan ongkir
+        $pesanan = PesananPenjualan::where('id',$request->pesanan_id)->first();
+
+
+        // hitung total di header 
+        $pesanan->ongkir = $ongkirdetail;
+        $pesanan->subtotal = $totaldetail;
+        $pesanan->total_diskon_header = ($pesanan->subtotal * ($pesanan->diskon_persen / 100)) + $pesanan->diskon_rupiah;
+        $pesanan->total_diskon_detail = $totalDiskon;
+        $pesanan->total = $pesanan->subtotal - $pesanan->total_diskon_header;
+        $ppn_persen = $pesanan->ppn;
+        $ppn = $pesanan->total * ($ppn_persen / 100);
+        $ongkir = $pesanan->ongkir;
+        $grandtotal = $pesanan->total + $ppn + $pesanan->ongkir;
+
+        $pesanan->grandtotal = $grandtotal;        
+        $pesanan->update();        
+        // hitung grandtotaldiheader
+
+
     }
 
     public function editDiskonDetail(Request $request)
-    {
+    {  
         $item = PesananPenjualan::where('id',$request->id)->first();        
         // kalkulasi persen diskon        
         $id_diskon = $item->id;
         $diskon_persen = $item->diskon_persen;
-        $diskon_rupiah = $item->diskon_rupiah;
-        // info($diskon_persen);
+        $diskon_rupiah = $item->diskon_rupiah;        
 
         return view('penjualan.pesananpenjualan._setdiskondetail', compact('id_diskon', 'diskon_persen', 'diskon_rupiah'));
     }
