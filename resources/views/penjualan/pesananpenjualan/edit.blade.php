@@ -405,14 +405,7 @@
     function updateDiskon(){
         var diskon_persen = document.getElementById('diskon_persen_h').value;                        
         var diskon_rupiah = document.getElementById('diskon_rp_h').value;
-
-        console.log(diskon_persen);
-        console.log(diskon_rupiah);
-
-        if (diskon_persen !== '0' && diskon_rupiah !== '0' ) {
-            alert('Jika ingin mengubah diskon , pilih salah satu untuk diisi dan 0 kan salah satunya');                         
-            return;
-        }
+               
         var id_diskon = document.getElementById('id_diskon').value;        
 
         $.ajax({
