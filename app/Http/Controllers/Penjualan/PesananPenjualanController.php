@@ -208,13 +208,11 @@ class PesananPenjualanController extends Controller
     {
         $datas = $request->all();
         $harga1 = $request->hargajual;
+        
+        $harga = str_replace(',', '.', $harga1) * 1;
 
-        $harga2 = str_replace('.', '', $harga1);
-        $harga = str_replace(',', '.', $harga2) * 1;
-
-        $ongkir1 = $request->ongkir;
-        $ongkir2 = str_replace('.', '', $ongkir1) ;
-        $ongkir = str_replace('.', ',', $ongkir2) * 1;
+        $ongkir1 = $request->ongkir;        
+        $ongkir = str_replace(',', '.', $ongkir1) * 1;
 
         $subtotal = $request->qty * $harga;
         $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
@@ -277,13 +275,16 @@ class PesananPenjualanController extends Controller
     public function updatebarang(Request $request)
     {
         //dd($request->hargajual);
-        $harga = $request->hargajual;
-        $harga = str_replace('.', '', $harga) * 1;
+        $harga1 = $request->hargajual;        
+        $harga2 = str_replace('.', '', $harga1);
+        $harga = str_replace(',', '.', $harga2) * 1;
         $subtotal = $request->qty * $harga;
         $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
         $total = $subtotal - $total_diskon;
-        $ongkir = $request->ongkir;
-        $ongkir = str_replace('.', '', $ongkir) * 1;
+        
+        $ongkir1 = $request->ongkir;
+        $ongkir2 = str_replace('.', '', $ongkir1);
+        $ongkir = str_replace(',', '.', $ongkir2) * 1;
 
         $temp = TempSo::find($request->id);
         $temp->hargajual = $harga;
@@ -579,12 +580,12 @@ class PesananPenjualanController extends Controller
 
         $harga1 = $request->hargajual;
 
-        $harga2 = str_replace('.', '', $harga1);
-        $harga = str_replace(',', '.', $harga2) * 1;
+        
+        $harga = str_replace(',', '.', $harga1) * 1;
 
         $ongkir1 = $request->ongkir;
-        $ongkir2 = str_replace('.', '', $ongkir1) ;
-        $ongkir = str_replace('.', ',', $ongkir2) * 1;
+    
+        $ongkir = str_replace('.', ',', $ongkir1) * 1;
 
         $subtotal = $request->qty * $harga;
         $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);

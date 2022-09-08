@@ -40,8 +40,8 @@
                             <label class="col-lg-2 col-form-label">Harga</label>
                             <div class="col-lg-10">
                                 <input type="text" class="form-control"
-                                    onkeyup="javascript:formatRupiah(this.value, 'hargabeli')" id="hargabeli"
-                                    name="hargabeli" value="{{ number_format($product->hargabeli, 0, ',', '.') }}" />
+                                    id="hargabeli"
+                                    name="hargabeli" />
                             </div>
                         </div>
                         <div class="form-group row">
@@ -61,7 +61,7 @@
                             <label class="col-lg-2 col-form-label">Ongkir(Rp.)</label>
                             <div class="col-lg-10">
                                 <input type="text" class="form-control" id="ongkir" name="ongkir" value="0"
-                                    onkeyup="javascript:formatRupiah(this.value, 'ongkir')" />
+                                    />
                             </div>
                         </div>
                         <div class="form-group row">
@@ -128,8 +128,8 @@
                             <label class="col-lg-2 col-form-label">Harga</label>
                             <div class="col-lg-10">
                                 <input type="text" class="form-control"
-                                    onkeyup="javascript:formatRupiah(this.value, 'hargabeli')" id="hargabeli"
-                                    name="hargabeli" value="{{ number_format($item->hargabeli, 0, ',', '.') }}" />
+                                     id="hargabeli"
+                                    name="hargabeli" value="{{ number_format($item->hargabeli, 2, ',','') }}" />
                             </div>
                         </div>
                         <div class="form-group row">
@@ -150,8 +150,8 @@
                             <label class="col-lg-2 col-form-label">Ongkir(Rp.)</label>
                             <div class="col-lg-10">
                                 <input type="text" class="form-control" id="ongkir" name="ongkir"
-                                    value="{{ number_format($item->ongkir, 0, ',', '.') }}"
-                                    onkeyup="javascript:formatRupiah(this.value, 'ongkir')" />
+                                    value="{{ number_format($item->ongkir, 2, ',','') }}"
+                                     />
                             </div>
                         </div>
                         <div class="form-group row">
