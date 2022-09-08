@@ -501,9 +501,11 @@ class PengirimanBarangController extends Controller
         $pengirimanbarang = PengirimanBarang::find($id);
         $pengirimanbarang_kode = $pengirimanbarang->kode;
         $pesanan_penjualan_id = $pengirimanbarang->pesanan_penjualan_id;
+
         //validasi :
         $jmlExp = StokExpDetail::where('id_sj', '=', $id)->count();
         //dd($jmlExp);
+        
         if ($jmlExp > 0) {
             return redirect()->route('pengirimanbarang.index')->with('gagal', 'Gagal Menghapus Pengiriman Barang, Silahkan hapus data expired date terlebih dahulu !');
         }
@@ -520,6 +522,7 @@ class PengirimanBarangController extends Controller
 
             $pesanan_penjualan_detail_id = $a->pesanan_penjualan_detail_id;
             $stok_baru = $stok + $a->qty;
+
             //input inv trans
             //######### start add INV TRANS ############
             $inventoryTrans = new InventoryTransaction;

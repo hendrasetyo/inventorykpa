@@ -108,16 +108,12 @@
                         </b></center>
                 </td>
                 <td width="20%" style="vertical-align: top; text-align: left; font-family: sans-serif">
-                    <table>
+                    <table border="1">
                         <tr style="padding:0px;">
-                            <td style="padding:0px;font-size: 70%; "><br />Surabaya, {{
+                            <td style="padding:0px;font-size: 70%; " colspan="3"><br />Surabaya, {{
                                 $pengirimanbarang->tanggal->format("d
                                 F Y")
-                                }}</td>
-                            <td style="padding:0px;font-size: 70%; "></td>
-                            <td style="padding:0px;font-size: 70%; ">
-
-                            </td>
+                                }}</td>                            
                         </tr>
                         <tr style="padding:0px;">
                             <td style="padding:0px;font-size: 70%; ">KEPADA :</td>

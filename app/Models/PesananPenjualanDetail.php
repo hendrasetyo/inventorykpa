@@ -18,6 +18,7 @@ class PesananPenjualanDetail extends Model
         'tanggal',
         'product_id',
         'qty',
+        'qty_sisa',
         'satuan',
         'hargajual',
         'diskon_persen',

@@ -78,10 +78,10 @@
                         <tr style="">
                             <td style="font-size: 75%; border:none; width:10%;">KWANTUM</td>
                             <td style="font-size: 75%; border:none;">NAMA BARANG</td>
-                            <td style="font-size: 75%; border:none; width:10%;text-align:center">HARGA</td>
-                            <td style="font-size: 75%; border:none; width:15%;text-align:center">SUBTOTAL</td>
-                            <td style="font-size: 75%; border:none; width:10%;text-align:center">DISKON</td>
-                            <td style=" font-size: 75%; border:none; width:15%;text-align:center">JUMLAH</td>
+                            <td style="font-size: 75%; border:none; width:10%;text-align:right">HARGA</td>
+                            <td style="font-size: 75%; border:none; width:15%;text-align:right">SUBTOTAL</td>
+                            <td style="font-size: 75%; border:none; width:10%;text-align:right">DISKON</td>
+                            <td style=" font-size: 75%; border:none; width:15%;text-align:right">JUMLAH</td>
                         </tr>
                         <tr>
                             <td colspan="6">
@@ -235,7 +235,7 @@
         <hr style="margin-bottom: 0px; margin-top: 0px; border-width: 1px 0px 0px;">
         <table>
             <tr>
-                <td style="font-size: 50%;">SO Cust. : {{ $fakturpenjualan->SO->no_so }}</td>
+                <td style="font-size: 70%;">SO Cust. : {{ $fakturpenjualan->SO->no_so ? $fakturpenjualan->SO->no_so : '-' }}</td>
             </tr>
         </table>
         <br />    

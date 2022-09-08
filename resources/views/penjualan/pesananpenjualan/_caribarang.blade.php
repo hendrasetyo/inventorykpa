@@ -15,7 +15,7 @@
                 <table class="table  yajra-datatable collapsed ">
                     <thead class="datatable-head">
                         <tr>
-                            <th>Kode</th>
+                            <th>itu aku</th>
                             <th>Nama Barang</th>
                             <th>Katalog</th>
                         </tr>
@@ -24,28 +24,28 @@
                     </tbody>
                 </table>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" href="{{ route('routeName', ['id'=>1]) }}">
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 
 </div>
-<script>
+{{-- <script>
     $(function () {
-          
+        //   console.log(id)
+
           var table = $('.yajra-datatable').DataTable({
               responsive: true,
               processing: true,
               serverSide: true,
-              ajax: "{{ route('pesananpenjualan.caribarang') }}",
+              ajax:"{{ route('pesananpenjualan.caribarangdetail',['id'=> id ]) }}",
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                  {data: 'kode', name: 'kode'},
+                  {data: 'tes', name: 'kode'},
                   {data: 'nama', name: 'nama'},
                   {data: 'katalog', name: 'katalog'},
 
-                  
               ],
               columnDefs: [
 
@@ -67,5 +67,5 @@
         txt.innerHTML=data;
         return txt.value;
     }
-</script>
+</script> --}}
 <!-- Modal-->
