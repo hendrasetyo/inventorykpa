@@ -69,6 +69,7 @@
                                 <thead class="datatable-head">
                                     <tr>
                                         <th>Tanggal Expired</th>
+                                        <th>Lot</th>
                                         <th style="width: 15%">Qty</th>
                                         <th style="width: 10%">Action</th>
                                     </tr>
@@ -77,6 +78,7 @@
                                     @foreach ($stokExp as $item)
                                     <tr>
                                         <td>{{ $item->tanggal->format("d F Y") }}</td>
+                                        <td>{{ $item->lot }}</td>
                                         <td>{{ $item->qty }}</td>
                                         <td>
                                             <div style="text-align:center;">

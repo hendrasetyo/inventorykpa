@@ -364,7 +364,7 @@ class PenerimaanBarangController extends Controller
         $penerimaanbarangdetail_id = $penerimaanbarangdetail->id;
         $penerimaanbarang_id = $penerimaanbarangdetail->penerimaan_barang_id;
         $penerimaanbarang = PenerimaanBarang::find($penerimaanbarang_id);
-        $listExp = StokExpDetail::where('id_pb_detail', '=', $penerimaanbarangdetail_id)->get();
+        $listExp = StokExpDetail::with('stockExp')->where('id_pb_detail', '=', $penerimaanbarangdetail_id)->get();
         return view('pembelian.penerimaanbarang.setexp', compact('penerimaanbarangdetail', 'title', 'listExp', 'penerimaanbarang'));
     }
 
@@ -381,9 +381,10 @@ class PenerimaanBarangController extends Controller
             'tanggal' => ['required'],
         ]);
 
-        $datas = $request->all();
+        $datas = $request->all();        
 
         $tanggal = $request->tanggal;
+        $lot = $request->lot;
         if ($tanggal <> null) {
             $tanggal = Carbon::createFromFormat('d-m-Y', $tanggal)->format('Y-m-d');
         }
@@ -403,10 +404,14 @@ class PenerimaanBarangController extends Controller
         $totalQtyExp = StokExpDetail::where('id_pb_detail', '=', $penerimaanbarangdetail_id)->sum('qty');
         $qtyExpNow = $totalQtyExp + $qty;
 
+        // untuk ngecek apakah qty nya melebihi atau tidak
         if ($qtyExpNow <= $qty_diterima) {
+            
             $mainStokExp = StokExp::where('tanggal', '=', $tanggal)
                 ->where('product_id', '=', $product_id)
+                ->where('lot',$lot)
                 ->count();
+
             if ($mainStokExp > 0) {
                 //ada data, tinggal update stok
                 $stokExp =  StokExp::where('tanggal', '=', $tanggal)
@@ -424,11 +429,13 @@ class PenerimaanBarangController extends Controller
                 $stokExpDetail->id_pb = $penerimaanbarang_id;
                 $stokExpDetail->id_pb_detail = $penerimaanbarangdetail_id;
                 $stokExpDetail->save();
+
             } else {
                 //tidak ada data, harus insert stok
                 $datas['tanggal'] = $tanggal;
                 $datas['product_id'] = $product_id;
                 $datas['qty'] = $qty;
+                $datas['lot'] = $lot;
                 $id_stokExp = StokExp::create($datas)->id;
 
                 //insert detail;
@@ -440,13 +447,16 @@ class PenerimaanBarangController extends Controller
                 $stokExpDetail->id_pb = $penerimaanbarang_id;
                 $stokExpDetail->id_pb_detail = $penerimaanbarangdetail_id;
                 $stokExpDetail->save();
+
             }
 
+            // cek jumlah quantity di exp dan ubah status_exp dari penerimaan barang.
             if ($qtyExpNow == $qty_diterima) {
                 $penerimaanbarangdetail = PenerimaanBarangDetail::find($penerimaanbarangdetail_id);
                 $penerimaanbarangdetail->status_exp = "1";
                 $penerimaanbarangdetail->save();
             }
+
         } else {
             return redirect()->route('penerimaanbarang.setexp', $penerimaanbarangdetail)->with('status', 'Qty Expired Date Melebihi Qty Pesanan');
         }
@@ -471,14 +481,17 @@ class PenerimaanBarangController extends Controller
         $stokExp_id = $stokExpDetail->stok_exp_id;
         $qtyDetail  = $stokExpDetail->qty;
 
-        StokExpDetail::destroy($id);
+        
 
         $stokExp = StokExp::find($stokExp_id);
         $stokMain = $stokExp->qty;
         $stokSisa = $stokMain - $qtyDetail;
         $penerimaanbarangdetail = PenerimaanBarangDetail::find($penerimaanbarangdetail_id);
+
+        
         //dd($stokSisa);
         if ($stokSisa >= 0) {
+            StokExpDetail::destroy($id);
             //masih ada sisa stok, boleh dihapus
             $stokExp->qty = $stokSisa;
             $stokExp->save();

@@ -39,4 +39,10 @@ class StokExpDetail extends Model
     {
         return $this->belongsTo(PengirimanBarang::class, 'id_sj', 'id');
     }
+
+   
+    public function stockExp()
+    {
+        return $this->belongsTo(StokExp::class, 'stok_exp_id', 'id');
+    }
 }

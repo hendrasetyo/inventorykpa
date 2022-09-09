@@ -15,7 +15,8 @@ class StokExp extends Model
     protected $fillable = [
         'tanggal',
         'product_id',
-        'qty'
+        'qty',
+        'lot'
     ];
 
     protected $dates = ['tanggal'];
@@ -23,5 +24,11 @@ class StokExp extends Model
     public function products()
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+
+   
+    public function stokExpDetail()
+    {
+        return $this->hasMany(StokExpDetail::class, 'stok_exp_id', 'id');
     }
 }

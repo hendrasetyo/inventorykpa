@@ -2,7 +2,7 @@
     <div class="form-group ">
         <label>Tanggal :</label>
         <div class="input-group date">
-            <input type="text" class="form-control col-lg-3" name="tanggal" readonly value="" id="tgl1" />
+            <input type="text" class="form-control col-lg-3" name="tanggal" readonly value="" id="tgl1" required/>
             <div class="input-group-append">
                 <span class="input-group-text">
                     <i class="la la-calendar"></i>
@@ -15,8 +15,16 @@
     </div>
     <div class="form-group">
         <label>Qty :</label>
-        <input type="number" name="qty" value="" class="form-control @error('qty') is-invalid @enderror" />
+        <input type="number" name="qty" value="" class="form-control @error('qty') is-invalid @enderror" required/>
         @error('qty')
+        <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label>Lot :</label>
+        <input type="text" name="lot" value="" class="form-control @error('lot') is-invalid @enderror" />
+        @error('lot')
         <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>

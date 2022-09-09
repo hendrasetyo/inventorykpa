@@ -67,7 +67,7 @@
                                     <td>{{ $pengirimanbarangdetail->products->nama }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Qty Diterima</th>
+                                    <th>Qty Dikirim</th>
                                     <td>:</td>
                                     <td>{{ $pengirimanbarangdetail->qty }}</td>
                                 </tr>
@@ -126,7 +126,8 @@
                                 <thead class="datatable-head">
                                     <tr>
                                         <th>Tanggal</th>
-                                        <th>Qty</th>
+                                        <th>Lot</th>
+                                        <th>Qty</th>                                        
                                         <th style="width: 15%">Action</th>
                                     </tr>
                                 </thead>
@@ -134,6 +135,7 @@
                                     @foreach ($listExp as $item)
                                     <tr>
                                         <td>{{ $item->tanggal->format("d F Y")  }}</td>
+                                        <td>{{ $item->stockExp->lot }}</td>
                                         <td>{{ $item->qty * -1 }}</td>
                                         <td>
                                             <div style="text-align:center;">

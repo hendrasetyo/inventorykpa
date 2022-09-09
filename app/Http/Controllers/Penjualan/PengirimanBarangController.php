@@ -36,7 +36,7 @@ class PengirimanBarangController extends Controller
 
 
         $title = "Pengiriman Barang";
-        $pengirimanbarang = PengirimanBarang::with(['customers',  'statusSJ', 'so'])->orderByDesc('tanggal');
+        $pengirimanbarang = PengirimanBarang::with(['customers',  'statusSJ', 'so'])->orderByDesc('id');
 
         if (request()->ajax()) {
             return Datatables::of($pengirimanbarang)
@@ -366,7 +366,7 @@ class PengirimanBarangController extends Controller
         $pengirimanbarangdetail_id = $pengirimanbarangdetail->id;
         $pengirimanbarang_id = $pengirimanbarangdetail->pengiriman_barang_id;
         $pengirimanbarang = PengirimanBarang::find($pengirimanbarang_id);
-        $listExp = StokExpDetail::where('id_sj_detail', '=', $pengirimanbarangdetail_id)->get();
+        $listExp = StokExpDetail::with('stockExp')->where('id_sj_detail', '=', $pengirimanbarangdetail_id)->get();        
         return view('penjualan.pengirimanbarang.setexp', compact('pengirimanbarangdetail', 'title', 'listExp', 'pengirimanbarang'));
     }
     public function listexp(PengirimanBarangDetail $pengirimanbarangdetail)
