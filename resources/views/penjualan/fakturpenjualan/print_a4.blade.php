@@ -270,7 +270,7 @@
             </tr>
         </table>
         <div style="border: 0.5px solid black;width: 100%;line-height:90%">
-            <p style="font-size:55%"><b>   Pembayaran dapat ditransfer ke Rek  : <b>Bank BCA No.675 088 0809</b> , <b>Bank JATIM No.066 088 0809</b> a/n PT.KARYA PUTRA ANDALAN</b></p>
+            <p style="font-size:55%;text-align:center"><b>   Pembayaran dapat ditransfer ke Rek  : <b>Bank BCA No.675 088 0809</b> , <b>Bank JATIM No.066 088 0809</b> a/n PT.KARYA PUTRA ANDALAN</b></p>
 
         </div>
 

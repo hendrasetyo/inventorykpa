@@ -94,7 +94,7 @@
                                                 </g>
                                             </svg><!--end::Svg Icon--></span> </span>
                                         <span class="nav-text font-size-lg py-2 font-weight-bold text-center">
-                                            Laporan Pembayaran Hutang
+                                            Laporan Pembayaran Hutang Detail
                                         </span>
                                     </a>
                                 </li>
@@ -148,7 +148,7 @@
                                             </svg><!--end::Svg Icon--></span> </span>
                                             
                                         <span class="nav-text font-size-lg py-2 font-weight-bolder text-center">
-                                            Laporan Pembayaran Piutang
+                                            Laporan Pembayaran Piutang Detail
                                         </span>
                                     </a>
                                 </li>
