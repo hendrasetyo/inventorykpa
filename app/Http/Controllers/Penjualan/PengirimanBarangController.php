@@ -554,12 +554,14 @@ class PengirimanBarangController extends Controller
 
         //############# start update status PO #############
         $jmlSJinSO = PengirimanBarang::where('pesanan_penjualan_id', '=', $pesanan_penjualan_id)->count();
+        
         if ($jmlSJinSO > 0) {
+            info('process');
             $status = "3";
         } else {
+            info('posted');
             $status = "2";
-        }
-        $status = "3";
+        }        
         $SOmain = PesananPenjualan::find($pesanan_penjualan_id);
         $SOmain->status_so_id = $status;
         $SOmain->save();
