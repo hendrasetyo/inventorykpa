@@ -18,6 +18,7 @@ use App\Http\Controllers\Permissions\RoleController;
 use App\Http\Controllers\Permissions\UserController;
 use App\Http\Controllers\Profile\ProfilePicController;
 use App\Http\Controllers\Laporan\LaporanStokController;
+use App\Http\Controllers\LaporanPembayaranController;
 use App\Http\Controllers\Master\ProductGroupController;
 use App\Http\Controllers\Master\KategoriPesananController;
 use App\Http\Controllers\Master\ProductCategoryController;
@@ -540,4 +541,24 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         // Route::post('expstokresult', [LaporanStokController::class, 'expstokresult'])->name('laporanstok.expstokresult');
         
     });
+
+    Route::prefix('laporanpembayaran')->group(function () {
+
+        Route::get('', [LaporanPembayaranController::class, 'index'])->name('laporanpembayaran.index');
+        Route::get('pembayaran', [LaporanPembayaranController::class, 'filterPenjualan'])->name('laporanpembayaran.filterpenjualan');
+        Route::get('penjualandetail', [LaporanPembayaranController::class, 'filterPenjualanDetail'])->name('laporanpembayaran.filterpenjualandetail');        
+        Route::post('pembayaran', [LaporanPembayaranController::class, 'filterDataPenjualan'])->name('laporanpembayaran.filterdatapenjualan');
+        Route::post('pembayaran/export', [LaporanPembayaranController::class, 'exportPenjualan'])->name('laporanpembayaran.exportpenjualan');
+        Route::post('penjualandetail', [LaporanPembayaranController::class, 'filterDataPenjualanDetail'])->name('laporanpembayaran.filterdatapenjualandetail');
+        Route::post('penjualandetail/export', [LaporanPembayaranController::class, 'exportPenjualanDetail'])->name('laporanpembayaran.exportpenjualandetail');        
+
+        // Route::get('{stokexp}/{product}/detailexp', [LaporanStokController::class, 'detailexp'])->name('laporanstok.detailexp');
+        // Route::get('kartustok', [LaporanStokController::class, 'kartustok'])->name('laporanstok.kartustok');
+        // Route::get('{product}/kartustok', [LaporanStokController::class, 'kartustokdetail'])->name('laporanstok.kartustokdetail');
+        // Route::get('expstok', [LaporanStokController::class, 'expstok'])->name('laporanstok.expstok');
+        // Route::post('expstokresult', [LaporanStokController::class, 'expstokresult'])->name('laporanstok.expstokresult');
+        
+    });
+
+
 });
