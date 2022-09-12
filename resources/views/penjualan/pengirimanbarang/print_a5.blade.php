@@ -184,7 +184,7 @@
                         <td style="font-size: 70%; class=" text-left">{{ $a->satuan }}</td>
                         <td style="font-size: 70%; class=" text-left">{{ $a->qty }}</td>
                         <td style="font-size: 60%; class=" text-left">{{ $a->keterangan }} ED: @foreach($listExp as $x)
-                            @if($a->product_id == $x->product_id) {{ $x->tanggal->format("m/y") }}({{ $x->qty * -1 }})
+                            @if($a->product_id == $x->product_id) {{ $x->tanggal->format("m/y") }}({{ $x->qty * -1 }})-{{$x->stockExp->lot}} 
                             @endif
                             @endforeach
                         </td>

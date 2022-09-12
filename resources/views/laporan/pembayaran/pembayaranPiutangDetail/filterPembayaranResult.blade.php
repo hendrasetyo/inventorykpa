@@ -51,18 +51,20 @@
                                                 </g>
                                             </svg>
                                             <!--end::Svg Icon--></span> </span>
-                                    <h3 class="card-label">Laporan Penjualan CN</h3>
+                                    <h3 class="card-label">Laporan Pembayaran Piutang Detail</h3>
                                 
 
                             </div>                           
                             
                             <div>
-                                <form action="{{ route('laporanpenjualan.exportpenjualancn') }}" method="POST">
+                                <form action="{{ route('laporanpembayaran.exportpembayaranpiutangdetail') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="tgl1" value="{{$form['tgl1']}}"> 
                                     <input type="hidden" name="tgl2" value="{{$form['tgl2']}}"> 
                                     <input type="hidden" name="customer" value="{{$form['customer']}}"> 
+                                    <input type="hidden" name="no_faktur" value="{{$form['no_faktur']}}"> 
                                     <input type="hidden" name="sales" value="{{$form['sales']}}"> 
+
 
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <span class="svg-icon svg-icon-default svg-icon-1x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo2\dist/../src/media/svg/icons\Files\Import.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -85,80 +87,50 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Tanggal</th>
-                                        <th>Kode Faktur</th>
+                                        <th>Customer</th>
                                         <th>Kode SO</th>
                                         <th>Kode SJ</th>
-                                        <th>No Pajak</th>
-                                        <th>Customer</th>                                        
-                                        <th>Diskon Rupiah</th>
-                                        <th>Diskon Persen</th>
-                                        <th>Subtotal</th>
-                                        <th>Total Diskon Detail</th>
-                                        <th>Total Diskon Header</th>
-                                        <th>Total</th>
+                                        <th>Kode Faktur</th>
+                                        <th>DPP</th>                                        
                                         <th>PPN</th>
-                                        <th>Ongkir</th>                                                                                
-                                        <th>Grand Total</th>                                        
-                                        <th>Nama Produk</th>    
-                                        <th>Kode Produk</th>
-                                        <th>Qty</th>
-                                        <th>Satuan</th>
-                                        <th>Harga Jual Produk</th>
-                                        <th>Diskon Persen Produk</th>
-                                        <th>Diskon Rupiah Produk</th>
-                                        <th>Subtotal Produk</th>
-                                        <th>Total Diskon Produk</th>
-                                        <th>Total Produk</th>
-                                        <th>Ongkir Produk</th>
-                                        <th>CN Persen</th>
-                                        <th>CN Rupiah</th>
-                                        <th>CN Total</th>
-                                        <th>Sales</th>
-                                        <th>Pembuat</th>                                        
-                                        <th>Keterangan</th>                                          
-                                        <th>Keterangan Produk</th>
+                                        <th>Total</th>                                        
+                                        <th>Telah Dibayar</th>
+                                        <th>Sisa</th>
+                                        <th>Bank</th>
+                                        <th>Nominal Pembayaran</th>                                        
+                                        <th>Sales</th>                                        
+                                        <th>Status</th>                                                                                
+                                        <th>Keterangan</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
                                         $no=1;
                                     @endphp
-                                    @foreach ($penjualan as $item)
+                                    @foreach ($hutang as $item)
                                         <tr>
                                             <td>{{$no++}}</td>
                                             <td>{{ date('d F Y', strtotime($item->tanggal)) }}</td>
-                                            <td>{{$item->kode}}</td>
-                                            <td>{{$item->kode_SP}}</td>
-                                            <td>{{$item->kode_SJ}}</td>
-                                            <td>{{$item->no_pajak}}</td>
                                             <td>{{$item->nama_customer}}</td>
-                                            <td>{{$item->diskon_rupiah}}</td>
-                                            <td>{{$item->diskon_persen}}</td>
-                                            <td>{{$item->subtotal}}</td>
-                                            <td>{{$item->total_diskon_detail}}</td>
-                                            <td>{{$item->total_diskon_header}}</td>
-                                            <td>{{$item->total}}</td>       
-                                            <td>{{$item->ppn}}</td>
-                                            <td>{{$item->ongkir}}</td>                                     
-                                            <td>{{$item->grandtotal}}</td>                                              
-                                            <td>{{$item->nama_produk}}</td>
-                                            <td>{{$item->kode_produk}}</td>
-                                            <td>{{$item->qty_det}}</td>
-                                            <td>{{$item->satuan_det}}</td>
-                                            <td>{{$item->hargajual_det}}</td>
-                                            <td>{{$item->dikson_persen_det}}</td>
-                                            <td>{{$item->diskon_rp_det}}</td>
-                                            <td>{{$item->subtotal_det}}</td>
-                                            <td>{{$item->total_diskon_det}}</td>
-                                            <td>{{$item->total_det}}</td>
-                                            <td>{{$item->ongkir_det}}</td>
-                                            <td>{{$item->cn_persen ? $item->cn_persen : 0}}%</td>
-                                            <td>{{$item->cn_rupiah ? $item->cn_rupiah : 0}}</td>
-                                            <td>{{$item->cn_total ? $item->cn_total : 0}}</td>
+                                            <td>{{$item->kode_pp}}</td>
+                                            <td>{{$item->kode_pb}}</td>
+                                            <td>{{$item->kode_fp}}</td>                                            
+                                            <td>{{number_format($item->dpp, 2, ',', '.')}}</td>
+                                            <td>{{number_format($item->ppn, 2, ',', '.')}}</td>
+                                            <td>{{number_format($item->total, 2, ',', '.')}}</td>
+                                            <td>{{number_format($item->dibayar, 2, ',', '.')}}</td>
+                                            <td>{{number_format($item->total - $item->dibayar, 2, ',', '.')}}</td>                                                                                  
+                                            <td>{{$item->nama_bank}}</td>
+                                            <td>{{number_format($item->nominal_pembayaran, 2, ',', '.')}}</td>
                                             <td>{{$item->nama_sales}}</td>
-                                            <td>{{$item->nama_pembuat}}</td>
-                                            <td>{{$item->keterangan}}</td>                                            
-                                            <td>{{$item->keterangan_det}}</td>
+                                            <td>
+                                                @if ($item->status == 1)
+                                                    Belum Lunas
+                                                @else
+                                                    Lunas
+                                                @endif
+                                            </td>                                        
+                                            <td>{{$item->keterangan}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
