@@ -19,6 +19,7 @@ use App\Http\Controllers\Permissions\UserController;
 use App\Http\Controllers\Profile\ProfilePicController;
 use App\Http\Controllers\Laporan\LaporanStokController;
 use App\Http\Controllers\Laporan\LaporanPembayaranController;
+use App\Http\Controllers\Laporan\LaporanPembelianController;
 use App\Http\Controllers\Master\ProductGroupController;
 use App\Http\Controllers\Master\KategoriPesananController;
 use App\Http\Controllers\Master\ProductCategoryController;
@@ -527,18 +528,13 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         Route::get('penjualan', [LaporanPenjualanController::class, 'filterPenjualan'])->name('laporanpenjualan.filterpenjualan');
         Route::get('penjualandetail', [LaporanPenjualanController::class, 'filterPenjualanDetail'])->name('laporanpenjualan.filterpenjualandetail');
         Route::get('penjualancn', [LaporanPenjualanController::class, 'filterPenjualanCN'])->name('laporanpenjualan.filterpenjualancn');        
+
         Route::post('penjualan', [LaporanPenjualanController::class, 'filterDataPenjualan'])->name('laporanpenjualan.filterdatapenjualan');
         Route::post('penjualan/export', [LaporanPenjualanController::class, 'exportPenjualan'])->name('laporanpenjualan.exportpenjualan');
         Route::post('penjualandetail', [LaporanPenjualanController::class, 'filterDataPenjualanDetail'])->name('laporanpenjualan.filterdatapenjualandetail');
         Route::post('penjualandetail/export', [LaporanPenjualanController::class, 'exportPenjualanDetail'])->name('laporanpenjualan.exportpenjualandetail');
         Route::post('penjualancn', [LaporanPenjualanController::class, 'filterDataPenjualanCN'])->name('laporanpenjualan.filterdatapenjualancn');
-        Route::post('penjualancn/export', [LaporanPenjualanController::class, 'exportPenjualanCN'])->name('laporanpenjualan.exportpenjualancn');
-
-        // Route::get('{stokexp}/{product}/detailexp', [LaporanStokController::class, 'detailexp'])->name('laporanstok.detailexp');
-        // Route::get('kartustok', [LaporanStokController::class, 'kartustok'])->name('laporanstok.kartustok');
-        // Route::get('{product}/kartustok', [LaporanStokController::class, 'kartustokdetail'])->name('laporanstok.kartustokdetail');
-        // Route::get('expstok', [LaporanStokController::class, 'expstok'])->name('laporanstok.expstok');
-        // Route::post('expstokresult', [LaporanStokController::class, 'expstokresult'])->name('laporanstok.expstokresult');
+        Route::post('penjualancn/export', [LaporanPenjualanController::class, 'exportPenjualanCN'])->name('laporanpenjualan.exportpenjualancn');        
         
     });
 
@@ -558,14 +554,23 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         Route::post('pembayaranpiutang', [LaporanPembayaranController::class, 'filterDataPiutang'])->name('laporanpembayaran.filterpembayaranpiutang');
         Route::post('pembayaranpiutang/export', [LaporanPembayaranController::class, 'exportPembayaranPiutang'])->name('laporanpembayaran.exportpembayaranpiutang'); 
         Route::post('pembayaranpiutangdetail', [LaporanPembayaranController::class, 'filterPembayaranPiutangDetail'])->name('laporanpembayaran.filterpembayaranpiutangdetail');
-        Route::post('pembayaranpiutangdetail/export', [LaporanPembayaranController::class, 'exportPembayaranPiutangDetail'])->name('laporanpembayaran.exportpembayaranpiutangdetail');        
-
-        // Route::get('{stokexp}/{product}/detailexp', [LaporanStokController::class, 'detailexp'])->name('laporanstok.detailexp');
-        // Route::get('kartustok', [LaporanStokController::class, 'kartustok'])->name('laporanstok.kartustok');
-        // Route::get('{product}/kartustok', [LaporanStokController::class, 'kartustokdetail'])->name('laporanstok.kartustokdetail');
-        // Route::get('expstok', [LaporanStokController::class, 'expstok'])->name('laporanstok.expstok');
-        // Route::post('expstokresult', [LaporanStokController::class, 'expstokresult'])->name('laporanstok.expstokresult');
+        Route::post('pembayaranpiutangdetail/export', [LaporanPembayaranController::class, 'exportPembayaranPiutangDetail'])->name('laporanpembayaran.exportpembayaranpiutangdetail');                
         
+    });
+
+    Route::prefix('laporanpembelian')->group(function () {
+
+        // GET
+        Route::get('', [LaporanPembelianController::class, 'index'])->name('laporanpembelian.index');
+        Route::get('pembelian', [LaporanPembelianController::class, 'filterPembelian'])->name('laporanpembelian.filterpembelian');
+        Route::get('pembeliandetail', [LaporanPembelianController::class, 'filterPembelianDetail'])->name('laporanpembelian.filterpembeliandetail');
+
+        // POST
+        Route::post('pembelian', [LaporanPembelianController::class, 'filterDataPembelian'])->name('laporanpembelian.filterdatapembelian');
+        Route::post('pembelian/export', [LaporanPembelianController::class, 'exportPembelian'])->name('laporanpembelian.exportpembelian');
+        Route::post('pembeliandetail', [LaporanPembelianController::class, 'filterDataPembelianDetail'])->name('laporanpembelian.filterdatapembeliandetail');
+        Route::post('pembeliandetail/export', [LaporanPembelianController::class, 'exportPembelianDetail'])->name('laporanpembelian.exportpembeliandetail');
+
     });
 
 

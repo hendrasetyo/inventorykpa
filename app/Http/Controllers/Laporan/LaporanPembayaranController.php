@@ -18,6 +18,14 @@ use Maatwebsite\Excel\Facades\Excel;
 class LaporanPembayaranController extends Controller
 {
 
+    function __construct()
+    {
+        $this->middleware('permission:pembayaran-list');        
+        // $this->middleware('permission:laporanstokkartu-list', ['only' => ['edit', 'update']]);
+        // $this->middleware('permission:laporanstokexp-list', ['only' => ['destroy']]);
+    }
+
+    
     public function index()
     {
         return view('laporan.pembayaran.index');

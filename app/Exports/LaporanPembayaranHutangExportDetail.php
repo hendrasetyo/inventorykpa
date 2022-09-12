@@ -24,7 +24,7 @@ class LaporanPembayaranHutangExportDetail implements FromView
         $tgl1 = Carbon::parse($this->data['tgl1'])->format('Y-m-d');
         $tgl2 = Carbon::parse($this->data['tgl2'])->format('Y-m-d');                
 
-        $pembayaran = DB::table('Hutangs as h')
+        $pembayaran = DB::table('hutangs as h')
                     ->join('pembayaran_hutangs as ph','h.id','=','ph.hutang_id')  
                     ->join('pesanan_pembelians as pp','h.pesanan_pembelian_id','=','pp.id') 
                     ->join('banks as b','ph.bank_id','=','b.id')                   
