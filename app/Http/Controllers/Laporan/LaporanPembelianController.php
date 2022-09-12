@@ -83,7 +83,7 @@ class LaporanPembelianController extends Controller
             return redirect()->back()->with('status_danger', 'Data tidak ditemukan');
         }        
 
-        return view('laporan.pembelian.laporanPembelian.filterPembelianResult',[
+        return view('laporan.pembelian.laporanpembelian.filterPembelianResult',[
             'pembelian' => $filter,
             'title' => $title,
             'form' => $data
