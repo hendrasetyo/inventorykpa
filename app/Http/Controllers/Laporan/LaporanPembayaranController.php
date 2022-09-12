@@ -29,7 +29,7 @@ class LaporanPembayaranController extends Controller
 
         // dd($supplier[0]);
         return view('laporan.pembayaran.pembayaranHutang.filterHutang',[
-            'supplier' =>$supplier,
+            'suppliers' =>$supplier,
             'title' => $title
         ]);
     }
@@ -40,7 +40,7 @@ class LaporanPembayaranController extends Controller
         $supplier = Supplier::with('namakota')->select('id','nama','kota')->get();
 
         return view('laporan.pembayaran.pembayaranHutangDetail.filterHutangDetail',[
-            'customers' =>$supplier,
+            'suppliers' =>$supplier,
             'title' => $title
         ]);
     }
