@@ -32,7 +32,7 @@ class LaporanPembelianController extends Controller
         $title = "Laporan Pembelian";
         $supplier = Supplier::with('namakota')->select('id','nama','kota')->get();        
 
-        return view('laporan.pembelian.laporanPembelian.filterPembelian', [
+        return view('laporan.pembelian.laporanpembelian.filterPembelian', [
             'supplier' => $supplier,        
             'title' => $title
         ]);
