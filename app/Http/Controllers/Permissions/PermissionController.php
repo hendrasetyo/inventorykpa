@@ -21,6 +21,7 @@ class PermissionController extends Controller
         request()->validate([
             'name' => 'required'
         ]);
+
         Permission::create([
             'name' => request('name'),
             'guard_name' => request('guard_name') ?? 'web'
@@ -32,6 +33,7 @@ class PermissionController extends Controller
     public function edit(Permission $permission)
     {
         $permissions = Permission::get();
+        
         return view('permissions.permission.edit', [
             'permissions' => $permissions,
             'permission' => $permission,

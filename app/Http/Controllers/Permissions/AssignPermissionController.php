@@ -45,8 +45,10 @@ class AssignPermissionController extends Controller
                 }
             }
         }
+        
         //$roles = Role::get();
         //dd($role->permissions());
+
         return view('permissions.assign.sync', compact('datas', 'role'));
     }
 

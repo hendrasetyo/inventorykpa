@@ -22,12 +22,11 @@ class LaporanPembelianExport implements FromView
         $tgl1 = Carbon::parse($this->data['tgl1'])->format('Y-m-d');
         $tgl2 = Carbon::parse($this->data['tgl2'])->format('Y-m-d');                
         $penjualan = DB::table('faktur_pembelians as fp')        
-                    ->join('penerimaan_barangs as pb','fp.penerimaan_barang_id','=','pb.id')
-                    ->join('pesanan_pembelians as pp','fp.pesanan_pembelian_id','=','pp.id')
-                    ->join('users as u','fp.created_by','=','u.id')
-                    ->where('fp.tanggal','>=',$tgl1)
-                    ->where('fp.tanggal','<=',$tgl2);  
-        
+                ->join('penerimaan_barangs as pb','fp.penerimaan_barang_id','=','pb.id')
+                ->join('pesanan_pembelians as pp','fp.pesanan_pembelian_id','=','pp.id')
+                ->join('users as u','fp.created_by','=','u.id')
+                ->where('fp.tanggal','>=',$tgl1)
+                ->where('fp.tanggal','<=',$tgl2);  
         
     
         // dd($penjualan->get());

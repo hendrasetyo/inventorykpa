@@ -73,7 +73,7 @@
                         <!--begin::Form-->
                         <div class="card-body">
 
-                            <form class="form" method="POST" action="{{ route('laporanpenjualan.filterdatapenjualan') }}">
+                            <form class="form" method="POST" action="{{ route('laporanpembelian.filterdatapembeliandetail') }}">
                                 @csrf
                                 <div class="card-body">
 

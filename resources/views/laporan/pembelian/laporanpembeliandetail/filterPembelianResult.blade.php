@@ -57,12 +57,12 @@
                             </div>                           
                             
                             <div>
-                                <form action="{{ route('laporanpenjualan.exportpenjualan') }}" method="POST">
+                                <form action="{{ route('laporanpembelian.exportpembeliandetail') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="tgl1" value="{{$form['tgl1']}}"> 
                                     <input type="hidden" name="tgl2" value="{{$form['tgl2']}}"> 
-                                    <input type="hidden" name="customer" value="{{$form['customer']}}"> 
-                                    <input type="hidden" name="sales" value="{{$form['sales']}}"> 
+                                    <input type="hidden" name="supplier" value="{{$form['supplier']}}"> 
+                                    
 
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <span class="svg-icon svg-icon-default svg-icon-1x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo2\dist/../src/media/svg/icons\Files\Import.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -86,49 +86,67 @@
                                         <th>#</th>
                                         <th>Tanggal</th>
                                         <th>Kode Faktur</th>
-                                        <th>Kode SO</th>
-                                        <th>Kode SJ</th>
-                                        <th>No Pajak</th>
-                                        <th>Customer</th>                                        
+                                        <th>Kode PO</th>
+                                        <th>Kode PB</th>
+                                        <th>Supplier</th>   
+                                        <th>Nama Produk</th>                                     
+                                        <th>Qty Produk</th>     
+                                        <th>Satuan</th>                                                                          
                                         <th>Diskon Rupiah</th>
                                         <th>Diskon Persen</th>
                                         <th>Subtotal</th>
                                         <th>Total Diskon Detail</th>
                                         <th>Total Diskon Header</th>
                                         <th>Total</th>
-                                        <th>Grand Total</th>
                                         <th>PPN</th>
-                                        <th>Ongkir</th>                                        
-                                        <th>Sales</th>
+                                        <th>Ongkir</th>  
+                                        <th>Grand Total</th>                                          
+                                        <th>Harga Beli Produk</th>
+                                        <th>Diskon Persen Produk</th>
+                                        <th>Diskon Rupiah Produk</th>
+                                        <th>Subtotal Produk</th>
+                                        <th>Total Diskon Produk</th>
+                                        <th>Total Produk</th>
+                                        <th>Ongkir Produk</th>
                                         <th>Pembuat</th>
                                         <th>Keterangan</th>                                        
+                                        <th>Keterangan Produk</th>                                        
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
                                         $no=1;
                                     @endphp
-                                    @foreach ($penjualan as $item)
+                                    @foreach ($pembelian as $item)
                                         <tr>
                                             <td>{{$no++}}</td>
                                             <td>{{ date('d F Y', strtotime($item->tanggal)) }}</td>
                                             <td>{{$item->kode}}</td>
                                             <td>{{$item->kode_SP}}</td>
-                                            <td>{{$item->kode_SJ}}</td>
-                                            <td>{{$item->no_pajak}}</td>
-                                            <td>{{$item->nama_customer}}</td>
+                                            <td>{{$item->kode_SJ}}</td>                                            
+                                            <td>{{$item->nama_supplier}}</td>
+                                            <td>{{$item->nama_produk}}</td>
+                                            <td>{{$item->qty_produk}}</td>
+                                            <td>{{$item->satuan_produk}}</td>
                                             <td>{{$item->diskon_rupiah}}</td>
                                             <td>{{$item->diskon_persen}}</td>
                                             <td>{{$item->subtotal}}</td>
                                             <td>{{$item->total_diskon_detail}}</td>
                                             <td>{{$item->total_diskon_header}}</td>
-                                            <td>{{$item->total}}</td>                                            
-                                            <td>{{$item->grandtotal}}</td>  
+                                            <td>{{$item->total}}</td>       
                                             <td>{{$item->ppn}}</td>
-                                            <td>{{$item->ongkir}}</td>
-                                            <td>{{$item->nama_sales}}</td>
+                                            <td>{{$item->ongkir}}</td>                                     
+                                            <td>{{$item->grandtotal}}</td>  
+                                            <td>{{$item->hargabeli_produk}}</td>  
+                                            <td>{{$item->diskon_persen_produk}}</td>  
+                                            <td>{{$item->diskon_rp_produk}}</td>  
+                                            <td>{{$item->subtotal_produk}}</td>  
+                                            <td>{{$item->total_diskon_produk}}</td>  
+                                            <td>{{$item->total_produk}}</td>  
+                                            <td>{{$item->ongkir_produk}}</td>  
                                             <td>{{$item->nama_pembuat}}</td>
                                             <td>{{$item->keterangan}}</td>                                            
+                                            <td>{{$item->keterangan_produk}}</td> 
                                         </tr>
                                     @endforeach
                                 </tbody>
