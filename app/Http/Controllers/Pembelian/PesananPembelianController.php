@@ -103,6 +103,7 @@ class PesananPembelianController extends Controller
         $datas = $request->all();
 
         $subtotal = TempPo::where('user_id', '=', Auth::user()->id)->sum('total');
+        $ongkir = TempPo::where('user_id', '=', Auth::user()->id)->sum('ongkir');
         $diskon = TempDiskon::where('jenis', '=', "PO")
             ->where('user_id', '=', Auth::user()->id)
             ->get()->first();
@@ -113,14 +114,14 @@ class PesananPembelianController extends Controller
         $total_diskon_header = $total_diskon;
         $total_diskon_detail = TempPo::where('user_id', '=', Auth::user()->id)->sum('total_diskon');
 
-        $total = $subtotal - $total_diskon;
+        $total = $subtotal - $total_diskon + $ongkir;
+
         $ppnData = TempPpn::where('jenis', '=', "PO")
             ->where('user_id', '=', Auth::user()->id)
             ->get()->first();
         $ppn_persen = $ppnData->persen;
-        $ppn = $total * ($ppn_persen / 100);
-        $ongkir = TempPo::where('user_id', '=', Auth::user()->id)->sum('ongkir');
-        $grandtotal = $total + $ppn + $ongkir;
+        $ppn = $total * ($ppn_persen / 100);        
+        $grandtotal = $total + $ppn;
 
         $tanggal = $request->tanggal;
         if ($tanggal <> null) {
@@ -166,8 +167,8 @@ class PesananPembelianController extends Controller
             $detail->total = $a->total;
             $detail->ongkir = $a->ongkir;
             $detail->keterangan = $a->keterangan;
-
             $detail->save();
+            
         }
 
         return redirect()->route('pesananpembelian.index')->with('status', 'Pesanan Pembelian (Purchase Order) berhasil dibuat !');
@@ -341,6 +342,7 @@ class PesananPembelianController extends Controller
     public function hitungtotal(Request $request)
     {
         $subtotal = TempPo::where('user_id', '=', Auth::user()->id)->sum('total');
+        $ongkir = TempPo::where('user_id', '=', Auth::user()->id)->sum('ongkir');
         $diskon = TempDiskon::where('jenis', '=', "PO")
             ->where('user_id', '=', Auth::user()->id)
             ->get()->first();
@@ -348,7 +350,7 @@ class PesananPembelianController extends Controller
         $diskon_rupiah = $diskon->rupiah;
 
         $total_diskon = ($subtotal * ($diskon_persen / 100)) + $diskon_rupiah;
-        $total = $subtotal - $total_diskon;
+        $total = $subtotal - $total_diskon + $ongkir;
         if ($total == 0) {
             return $total;
         } else {
@@ -359,6 +361,7 @@ class PesananPembelianController extends Controller
     public function hitungppn(Request $request)
     {
         $subtotal = TempPo::where('user_id', '=', Auth::user()->id)->sum('total');
+        $ongkir = TempPo::where('user_id', '=', Auth::user()->id)->sum('ongkir');
         $diskon = TempDiskon::where('jenis', '=', "PO")
             ->where('user_id', '=', Auth::user()->id)
             ->get()->first();
@@ -366,7 +369,7 @@ class PesananPembelianController extends Controller
         $diskon_rupiah = $diskon->rupiah;
 
         $total_diskon = ($subtotal * ($diskon_persen / 100)) + $diskon_rupiah;
-        $total = $subtotal - $total_diskon;
+        $total = $subtotal - $total_diskon + $ongkir;
 
         $item = TempPpn::where('jenis', '=', "PO")
             ->where('user_id', '=', Auth::user()->id)
@@ -395,6 +398,7 @@ class PesananPembelianController extends Controller
     public function hitunggrandtotal(Request $request)
     {
         $subtotal = TempPo::where('user_id', '=', Auth::user()->id)->sum('total');
+        $ongkir = TempPo::where('user_id', '=', Auth::user()->id)->sum('ongkir');
         $diskon = TempDiskon::where('jenis', '=', "PO")
             ->where('user_id', '=', Auth::user()->id)
             ->get()->first();
@@ -402,7 +406,7 @@ class PesananPembelianController extends Controller
         $diskon_rupiah = $diskon->rupiah;
 
         $total_diskon = ($subtotal * ($diskon_persen / 100)) + $diskon_rupiah;
-        $total = $subtotal - $total_diskon;
+        $total = $subtotal - $total_diskon + $ongkir; 
 
         $item = TempPpn::where('jenis', '=', "PO")
             ->where('user_id', '=', Auth::user()->id)
@@ -411,7 +415,7 @@ class PesananPembelianController extends Controller
         $ppn = $total * ($persen / 100);
 
         $ongkir = TempPo::where('user_id', '=', Auth::user()->id)->sum('ongkir');
-        $grandtotal = $total + $ppn + $ongkir;
+        $grandtotal = $total + $ppn;
 
         if ($grandtotal == 0) {
             return $grandtotal;

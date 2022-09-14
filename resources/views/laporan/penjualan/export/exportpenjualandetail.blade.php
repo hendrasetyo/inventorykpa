@@ -14,8 +14,8 @@
             <th>Total Diskon Detail Faktur</th>
             <th>Total Diskon Header Faktur</th>
             <th>Total Faktur</th>
-            <th>PPN Faktur</th>
-            <th>Ongkir Faktur</th>                                                                                
+            <th>Ongkir Faktur</th>  
+            <th>PPN Faktur</th>                                                                                          
             <th>Grand Total Faktur</th>                    
             <th>Nama Produk</th> 
             <th>Kode Produk</th>   
@@ -53,8 +53,8 @@
                 <td>{{$item->total_diskon_detail}}</td>
                 <td>{{$item->total_diskon_header}}</td>
                 <td>{{$item->total}}</td>       
-                <td>{{$item->ppn}}</td>         
-                <td>{{$item->ongkir}}</td>                            
+                <td>{{$item->ongkir}}</td>  
+                <td>{{$item->ppn}}</td>                                                   
                 <td>{{$item->grandtotal}}</td>                  
                 <td>{{$item->nama_produk}}</td>
                 <td>{{$item->kode_produk}}</td>

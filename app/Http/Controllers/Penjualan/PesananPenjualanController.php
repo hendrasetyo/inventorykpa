@@ -104,6 +104,7 @@ class PesananPenjualanController extends Controller
         
         // subtotal
         $subtotal = TempSo::where('user_id', '=', Auth::user()->id)->sum('total');
+        $ongkir = TempSo::where('user_id', '=', Auth::user()->id)->sum('ongkir');
 
         // ambil diskon dari temporary
         $diskon = TempDiskon::where('jenis', '=', "SO")
@@ -117,7 +118,8 @@ class PesananPenjualanController extends Controller
         $total_diskon_header = $total_diskon;
         $total_diskon_detail = TempSo::where('user_id', '=', Auth::user()->id)->sum('total_diskon');
 
-        $datatotal = $subtotal - $total_diskon;
+        $datatotal = $subtotal - $total_diskon + $ongkir;
+
         $total=sprintf("%.2f", $datatotal);
 
         $ppnData = TempPpn::where('jenis', '=', "SO")
@@ -125,9 +127,8 @@ class PesananPenjualanController extends Controller
             ->get()->first();
 
         $ppn_persen = $ppnData->persen;
-        $ppn = $total * ($ppn_persen / 100);
-        $ongkir = TempSo::where('user_id', '=', Auth::user()->id)->sum('ongkir');
-        $grandtotal = $total + $ppn + $ongkir;
+        $ppn = $total * ($ppn_persen / 100);        
+        $grandtotal = $total + $ppn ;
 
         $tanggal = $request->tanggal;
         if ($tanggal <> null) {
@@ -135,6 +136,7 @@ class PesananPenjualanController extends Controller
         }
 
         $dataTemp = TempSo::where('user_id', '=', Auth::user()->id)->get();
+
         $jmlTemp = $dataTemp->count();
         if ($jmlTemp < 1) {
             return redirect()->route('pesananpenjualan.index')->with('gagal', 'Tidak ada barang yang diinputkan, Pesanan Penjualan Gagal Disimpan!');
@@ -279,13 +281,14 @@ class PesananPenjualanController extends Controller
         $harga2 = str_replace('.', '', $harga1);
         $harga = str_replace(',', '.', $harga2) * 1;
         $subtotal = $request->qty * $harga;
-        $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
-        $total = $subtotal - $total_diskon;
-        
+
         $ongkir1 = $request->ongkir;
         $ongkir2 = str_replace('.', '', $ongkir1);
         $ongkir = str_replace(',', '.', $ongkir2) * 1;
 
+        $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
+        $total = $subtotal - $total_diskon;        
+                
         $temp = TempSo::find($request->id);
         $temp->hargajual = $harga;
         $temp->qty = $request->qty;
@@ -296,8 +299,8 @@ class PesananPenjualanController extends Controller
         $temp->subtotal = $subtotal;
         $temp->total_diskon = $total_diskon;
         $temp->total = $total;
-
         $temp->save();
+
     }
 
     public function editdiskon(Request $request)
@@ -327,16 +330,16 @@ class PesananPenjualanController extends Controller
             ->where('user_id', '=', Auth::user()->id)
             ->get()->first();
         $id_ppn = $item->id;
-        $persen = $item->persen;
+        $ppn = $item->persen;
 
-        return view('penjualan.pesananpenjualan._setppn', compact('id_ppn', 'persen'));
+        return view('penjualan.pesananpenjualan._setppn', compact('id_ppn', 'ppn'));
     }
 
     public function updateppn(Request $request)
     {
         $id_ppn = $request->id_ppn;
         $ppn = TempPpn::find($id_ppn);
-        $ppn->persen = $request->persen;
+        $ppn->persen = $request->persen;        
         $ppn->save();
     }
 
@@ -367,14 +370,16 @@ class PesananPenjualanController extends Controller
     public function hitungtotal(Request $request)
     {
         $subtotal = TempSo::where('user_id', '=', Auth::user()->id)->sum('total');
+        $ongkir = TempSo::where('user_id', '=', Auth::user()->id)->sum('ongkir');
         $diskon = TempDiskon::where('jenis', '=', "SO")
             ->where('user_id', '=', Auth::user()->id)
             ->get()->first();
+
         $diskon_persen = $diskon->persen;
         $diskon_rupiah = $diskon->rupiah;
 
         $total_diskon = ($subtotal * ($diskon_persen / 100)) + $diskon_rupiah;
-        $total = $subtotal - $total_diskon;
+        $total = $subtotal - $total_diskon + $ongkir;
         if ($total == 0) {
             return $total;
         } else {
@@ -388,15 +393,19 @@ class PesananPenjualanController extends Controller
         $diskon = TempDiskon::where('jenis', '=', "SO")
             ->where('user_id', '=', Auth::user()->id)
             ->get()->first();
+        $ongkir = TempSo::where('user_id', '=', Auth::user()->id)->sum('ongkir');
+
+
         $diskon_persen = $diskon->persen;
         $diskon_rupiah = $diskon->rupiah;
 
         $total_diskon = ($subtotal * ($diskon_persen / 100)) + $diskon_rupiah;
-        $total = $subtotal - $total_diskon;
+        $total = $subtotal - $total_diskon + $ongkir;
 
         $item = TempPpn::where('jenis', '=', "SO")
             ->where('user_id', '=', Auth::user()->id)
             ->get()->first();
+
         $persen = $item->persen;
         $ppn = $total * ($persen / 100);
 
@@ -421,23 +430,25 @@ class PesananPenjualanController extends Controller
     public function hitunggrandtotal(Request $request)
     {
         $subtotal = TempSo::where('user_id', '=', Auth::user()->id)->sum('total');
+        $ongkir = TempSo::where('user_id', '=', Auth::user()->id)->sum('ongkir');
         $diskon = TempDiskon::where('jenis', '=', "SO")
             ->where('user_id', '=', Auth::user()->id)
             ->get()->first();
+
         $diskon_persen = $diskon->persen;
         $diskon_rupiah = $diskon->rupiah;
 
         $total_diskon = ($subtotal * ($diskon_persen / 100)) + $diskon_rupiah;
-        $total = $subtotal - $total_diskon;
+        $total = $subtotal - $total_diskon + $ongkir;
 
         $item = TempPpn::where('jenis', '=', "SO")
             ->where('user_id', '=', Auth::user()->id)
             ->get()->first();
+
         $persen = $item->persen;
         $ppn = $total * ($persen / 100);
 
-        $ongkir = TempSo::where('user_id', '=', Auth::user()->id)->sum('ongkir');
-        $grandtotal = $total + $ppn + $ongkir;
+        $grandtotal = $total + $ppn;
 
         if ($grandtotal == 0) {
             return $grandtotal;
@@ -449,6 +460,7 @@ class PesananPenjualanController extends Controller
     public function delete(Request $request)
     {
         $data = PesananPenjualan::where('id', '=', $request->id)->get()->first();
+
         $id = $request->id;
         $status_so_id = $data->status_so_id;
         if ($status_so_id >= 3) {
@@ -480,6 +492,7 @@ class PesananPenjualanController extends Controller
     public function posting(Request $request)
     {
         $data = PesananPenjualan::where('id', '=', $request->id)->get()->first();
+
         $id = $request->id;
         $status_so_id = $data->status_so_id;
         if ($status_so_id == 1) {
@@ -618,7 +631,7 @@ class PesananPenjualanController extends Controller
         
         $pesanan->subtotal = $totaldetail;
         $totaldiskonheader = ($pesanan->subtotal * ($pesanan->diskon_persen / 100)) + $pesanan->diskon_rupiah;
-        $pesanan->total = $pesanan->subtotal - $totaldiskonheader;
+        $pesanan->total = $pesanan->subtotal - $totaldiskonheader + $totalongkir;
         
         $pesanan->ongkir = $totalongkir;
         $pesanan->total_diskon_header = $totaldiskonheader;
@@ -626,7 +639,7 @@ class PesananPenjualanController extends Controller
         $ppn_persen = $pesanan->ppn;
         $ppn = $pesanan->total * ($ppn_persen / 100);   
         
-        $grandtotal = $pesanan->total + $ppn + $pesanan->ongkir;
+        $grandtotal = $pesanan->total + $ppn;
         
         
         $pesanan->grandtotal = $grandtotal;        
@@ -658,15 +671,14 @@ class PesananPenjualanController extends Controller
           $pesanan = PesananPenjualan::where('id',$idpesanan)->first();                         
 
           $pesanan->subtotal = $total;
+          $pesanan->ongkir = $ongkir;    
         //   grandtotal
-          $pesanan->total = $pesanan->subtotal - $pesanan->total_diskon_header;                    
+          $pesanan->total = $pesanan->subtotal - $pesanan->total_diskon_header + $pesanan->ongkir;                    
 
           $ppn_persen = $pesanan->ppn;
           $ppn = $pesanan->total * ($ppn_persen / 100);          
-
-          $pesanan->ongkir = $ongkir;                    
-          $grandtotal = $pesanan->total + $ppn + $pesanan->ongkir;
-        
+                          
+          $grandtotal = $pesanan->total + $ppn ;        
           $pesanan->grandtotal = $grandtotal;        
           $pesanan->update();        
           // kalkulasi datanya 
@@ -692,14 +704,14 @@ class PesananPenjualanController extends Controller
         $harga2 = str_replace('.', '', $harga1);
         $harga = str_replace(',', '.', $harga2) * 1;
 
+        $ongkir1 = $request->ongkir;
+        $ongkir2 = str_replace('.', '', $ongkir1);
+        $ongkir = str_replace(',', '.', $ongkir2) * 1;
+
         $subtotal = $request->qty * $harga;
         $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
 
         $total = $subtotal - $total_diskon;
-
-        $ongkir1 = $request->ongkir;
-        $ongkir2 = str_replace('.', '', $ongkir1);
-        $ongkir = str_replace(',', '.', $ongkir2) * 1;
 
         $PJ = PesananPenjualanDetail::find($request->id);
         $PJ->hargajual = $harga;
@@ -727,11 +739,11 @@ class PesananPenjualanController extends Controller
         $pesanan->subtotal = $totaldetail;
         $pesanan->total_diskon_header = ($pesanan->subtotal * ($pesanan->diskon_persen / 100)) + $pesanan->diskon_rupiah;
         $pesanan->total_diskon_detail = $totalDiskon;
-        $pesanan->total = $pesanan->subtotal - $pesanan->total_diskon_header;
+        $pesanan->total = $pesanan->subtotal - $pesanan->total_diskon_header + $ongkirdetail;
         $ppn_persen = $pesanan->ppn;
         $ppn = $pesanan->total * ($ppn_persen / 100);
         $ongkir = $pesanan->ongkir;
-        $grandtotal = $pesanan->total + $ppn + $pesanan->ongkir;
+        $grandtotal = $pesanan->total + $ppn;
 
         $pesanan->grandtotal = $grandtotal;        
         $pesanan->update();        
@@ -761,7 +773,7 @@ class PesananPenjualanController extends Controller
 
 
         $total_diskon = (($pesanan->subtotal * ( $diskon_persen / 100)) + $diskon_rupiah);
-        $total = $pesanan->subtotal - $total_diskon;   
+        $total = $pesanan->subtotal - $total_diskon + $pesanan->ongkir;
         $pesanan->diskon_persen = $diskon_persen;
         $pesanan->diskon_rupiah = $diskon_rupiah;
         $pesanan->total_diskon_header = $total_diskon;
@@ -772,7 +784,7 @@ class PesananPenjualanController extends Controller
 
         $ppn = $pesanan->total * ($ppn_persen / 100);
         $ongkir = $pesanan->ongkir;
-        $pesanan->grandtotal = $pesanan->total + $ppn + $pesanan->ongkir;
+        $pesanan->grandtotal = $pesanan->total + $ppn;
         $pesanan->update();
         
     }
@@ -793,7 +805,7 @@ class PesananPenjualanController extends Controller
         $pesanan->ppn = $request->persen;
 
         $ppn = $pesanan->total * ($request->persen / 100);          
-        $grandtotal = $pesanan->total + $ppn + $pesanan->ongkir;        
+        $grandtotal = $pesanan->total + $ppn;        
 
         $pesanan->grandtotal = $grandtotal;        
         $pesanan->update();                

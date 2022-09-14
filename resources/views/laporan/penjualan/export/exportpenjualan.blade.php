@@ -14,9 +14,9 @@
             <th>Total Diskon Detail</th>
             <th>Total Diskon Header</th>
             <th>Total</th>
-            <th>Grand Total</th>
-            <th>PPN</th>
-            <th>Ongkir</th>                                        
+            <th>Ongkir</th>
+            <th>PPN</th>            
+            <th>Grand Total</th>                                                    
             <th>Sales</th>
             <th>Pembuat</th>
             <th>Keterangan</th>                                        
@@ -40,10 +40,10 @@
                 <td>{{$item->subtotal}}</td>
                 <td>{{$item->total_diskon_detail}}</td>
                 <td>{{$item->total_diskon_header}}</td>
-                <td>{{$item->total}}</td>                                            
-                <td>{{$item->grandtotal}}</td>  
-                <td>{{$item->ppn}}</td>
+                <td>{{$item->total}}</td>       
                 <td>{{$item->ongkir}}</td>
+                <td>{{$item->ppn}}</td>                                                     
+                <td>{{$item->grandtotal}}</td>                  
                 <td>{{$item->nama_sales}}</td>
                 <td>{{$item->nama_pembuat}}</td>
                 <td>{{$item->keterangan}}</td>                                            

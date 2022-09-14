@@ -25,8 +25,9 @@
                         <li class="menu-item  menu-item-open menu-item-rel" aria-haspopup="true">
                             <a href="/" class="menu-link"><span class=" menu-text">Dashboard</span><i
                                     class="menu-arrow"></i></a>
-                        </li>
+                        </li>                    
                         @foreach ($navigations as $navigation)
+                       
                         @can($navigation->permission_name)
                         <li class="menu-item  menu-item-submenu menu-item-rel" data-menu-toggle="click"
                             aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><span
@@ -44,8 +45,6 @@
                                             </span></a>
                                     </li>
                                     @endforeach
-
-
                                 </ul>
                             </div>
                         </li>

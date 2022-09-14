@@ -25,6 +25,7 @@ class Nav extends Component
     public function render()
     {
         $navigations = Navigation::with('children')->where('url', null)->orderBy('urut', 'asc')->get();
+        
         return view('components.layouts.navigation', compact('navigations'));
     }
 }

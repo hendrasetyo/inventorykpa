@@ -51,7 +51,7 @@
             <label>URL:</label>
             <div class="input-group">
                 <input type="text" name="url" value="{{ old('url') ?? $navigation->url }}" class="form-control"
-                    placeholder="Enter your URL" required />
+                    placeholder="Enter your URL" />
                 <div class="input-group-append"><span class="input-group-text"><i class="la la-bookmark-o"></i></span>
                 </div>
             </div>

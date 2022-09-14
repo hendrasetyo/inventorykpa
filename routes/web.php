@@ -575,3 +575,14 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
 
 
 });
+
+Route::middleware('has.role')->prefix('canvassing')->group(function () {
+    Route::prefix('canvassingpesanan')->group(function () {
+        Route::get('', [PembayaranHutangController::class, 'index'])->name('canvassingpesanan.index');
+    });
+
+    Route::prefix('canvassingpengembalian')->group(function () {
+
+    });
+});
+

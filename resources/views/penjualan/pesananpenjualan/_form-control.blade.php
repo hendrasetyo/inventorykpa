@@ -203,6 +203,15 @@
 
                     </div>
                 </div>
+
+                <div class="row">
+                    <label class="col-lg-7 col-form-label text-right">Ongkir :</label>
+                    <div class="col-lg-5 mb-2">
+                        <input type="text" id="ongkirheader" readonly="readonly" name="ongkirheader"
+                            class="form-control text-right">
+                    </div>
+                </div>
+                
                 <div class="row">
                     <label class="col-lg-7 col-form-label text-right">Total :</label>
                     <div class="col-lg-5 mb-2">
@@ -220,14 +229,7 @@
                                 readonly="readonly">
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <label class="col-lg-7 col-form-label text-right">Ongkir :</label>
-                    <div class="col-lg-5 mb-2">
-                        <input type="text" id="ongkirheader" readonly="readonly" name="ongkirheader"
-                            class="form-control text-right">
-                    </div>
-                </div>
+                </div>              
                 <div class="row">
                     <label class="col-lg-7 col-form-label text-right">Grand Total :</label>
                     <div class="col-lg-5">

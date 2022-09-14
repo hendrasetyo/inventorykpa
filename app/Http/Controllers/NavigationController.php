@@ -66,6 +66,7 @@ class NavigationController extends Controller
         // ]);
 
         Navigation::create($request->all());
+        
         return redirect()->route('navigation.index')->with('status', 'Navigations Saved');
     }
 
