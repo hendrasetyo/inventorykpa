@@ -15,6 +15,7 @@ use App\Models\PengirimanBarang;
 use App\Models\PesananPenjualan;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use App\Models\InventoryTransaction;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PengirimanBarangDetail;
@@ -245,6 +246,8 @@ class PengirimanBarangController extends Controller
         $pesanan_penjualan_id = $pesananpenjualan->id;
         $customer_id = $pesananpenjualan->customer_id;
 
+        $customer_name = Customer::findOrFail($customer_id)->first();
+
         $dataTemp = TempSj::where('user_id', '=', Auth::user()->id)->get();
         $jmlTemp = $dataTemp->count();
         if ($jmlTemp < 1) {
@@ -321,6 +324,9 @@ class PengirimanBarangController extends Controller
             $inventoryTrans->hpp = $hpp;
             $inventoryTrans->jenis = "SJ";
             $inventoryTrans->jenis_id = $kode;
+            $inventoryTrans->jenis_id = $kode;
+            $inventoryTrans->customer=$customer_name->nama;
+            
 
             $inventoryTrans->save();
             //######### end add INV TRANS ############
@@ -499,8 +505,12 @@ class PengirimanBarangController extends Controller
         $tglNow = Carbon::now()->format('Y-m-d');
         $id = $request->id;
         $pengirimanbarang = PengirimanBarang::find($id);
+        $customer = Customer::findOrFail($pengirimanbarang->customer_id);
+        
         $pengirimanbarang_kode = $pengirimanbarang->kode;
         $pesanan_penjualan_id = $pengirimanbarang->pesanan_penjualan_id;
+
+
 
         //validasi :
         $jmlExp = StokExpDetail::where('id_sj', '=', $id)->count();
@@ -510,7 +520,7 @@ class PengirimanBarangController extends Controller
             return redirect()->route('pengirimanbarang.index')->with('gagal', 'Gagal Menghapus Pengiriman Barang, Silahkan hapus data expired date terlebih dahulu !');
         }
 
-        $detailSJ = PengirimanBarangDetail::where('pengiriman_barang_id', '=', $id)->get();
+        $detailSJ = PengirimanBarangDetail::where('pengiriman_barang_id', '=', $id)->get();        
         foreach ($detailSJ as $a) {
             //update stok
             $product = new Product;
@@ -533,6 +543,8 @@ class PengirimanBarangController extends Controller
             $inventoryTrans->hpp = $hpp;
             $inventoryTrans->jenis = "SJ (DEL)";
             $inventoryTrans->jenis_id = $pengirimanbarang_kode;
+            $inventoryTrans->customer = $customer->nama;
+
             $inventoryTrans->save();
             //######### end add INV TRANS ############
 
@@ -556,10 +568,9 @@ class PengirimanBarangController extends Controller
         $jmlSJinSO = PengirimanBarang::where('pesanan_penjualan_id', '=', $pesanan_penjualan_id)->count();
         
         if ($jmlSJinSO > 0) {
-            info('process');
+            
             $status = "3";
-        } else {
-            info('posted');
+        } else {            
             $status = "2";
         }        
         $SOmain = PesananPenjualan::find($pesanan_penjualan_id);
@@ -603,4 +614,17 @@ class PengirimanBarangController extends Controller
 
         //return view('penjualan.fakturpenjualan.print_a4', compact('title',  'totalPage'));
     }
+
+    public function showData($id)
+    {
+        $pengirimanbarang = PengirimanBarang::where('kode',$id)->first();
+        
+        $title = "pengiriman Barang Detail";
+        $pengirimanbarangdetails = PengirimanBarangDetail::with('products')
+            ->where('pengiriman_barang_id', '=', $pengirimanbarang->id)->get();            
+        $listExp = StokExpDetail::where('id_sj', '=', $pengirimanbarang->id)->get();
+
+        return view('penjualan.pengirimanbarang.show', compact('title', 'listExp', 'pengirimanbarang', 'pengirimanbarangdetails'));
+    }
 }
+

@@ -164,6 +164,13 @@
                                 </b></td>
                         </tr>
                         <tr>
+                            <td style='font-size: 70%; width: 75%;'><b>Biaya Lain-Lain</b></td>
+                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
+                            <td style='font-size: 70%; text-align:right'><b>
+                                    {{ number_format(floor($fakturpenjualan->biaya_lain), 0, ',', '.') }}
+                                </b></td>
+                        </tr>
+                        <tr>
                             <td style='font-size: 70%; width: 25%;'><b>Jumlah Yang Harus Dibayar</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; text-align:right'><b>

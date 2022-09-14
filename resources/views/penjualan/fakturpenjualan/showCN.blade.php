@@ -171,6 +171,7 @@
                                             <th class="font-weight-bold text-muted  text-uppercase">TOTAL</th>
                                             <th class="font-weight-bold text-muted  text-uppercase">PPN</th>
                                             <th class="font-weight-bold text-muted  text-uppercase">ONGKIR</th>
+                                            <th class="font-weight-bold text-muted  text-uppercase">BIAYA LAIN-LAIN</th>
                                             <th class="font-weight-bold text-muted  text-uppercase">GRANDTOTAL</th>
                                         </tr>
 
@@ -184,7 +185,8 @@
                                             <td>{{ number_format($fakturpenjualan->total, 0, ',', '.') }}</td>
                                             <td>{{ number_format($fakturpenjualan->ppn, 0, ',', '.') }}</td>
                                             <td>{{ number_format($fakturpenjualan->ongkir, 0, ',', '.') }}</td>
-                                            <td class="text-danger font-size-h3 font-weight-boldest">
+                                            <td>{{ number_format($fakturpenjualan->biaya_lain, 0, ',', '.') }}</td>
+                                            <td class="text-danger font-size-h5 font-weight-boldest">
                                                 {{ number_format($fakturpenjualan->grandtotal, 0, ',', '.') }}</td>
                                         </tr>                                        
                                     </tbody>
@@ -197,11 +199,17 @@
                                         <tr>
                                             <th class="font-weight-bold text-muted  text-uppercase">JUMLAH CN</th>                                          
                                         </tr>                                        
+                                        <tr>
+                                            <th class="font-weight-bold text-muted  text-uppercase">Saldo Harga Bersih</th>                                          
+                                        </tr>                                        
                                     </thead>
                                     <tbody>
                                         <tr class="font-weight-bolder">
                                             <td>{{ $fakturpenjualan->total_cn ? number_format($fakturpenjualan->total_cn, 0, ',', '.') : '0'}}</td>                                           
                                         </tr>                                        
+                                        <td>
+                                            <td>{{ number_format($fakturpenjualan->grandtotal - $fakturpenjualan->total_cn, 0, ',', '.') : '0'}}</td>                                           
+                                        </td>
                                     </tbody>
                                 </table>
                                 <br />

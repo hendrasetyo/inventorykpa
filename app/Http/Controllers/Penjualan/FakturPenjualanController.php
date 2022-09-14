@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\FakturPenjualanDetail;
 use App\Models\PengirimanBarangDetail;
 use App\Models\PesananPenjualanDetail;
-
+use App\Models\TempBiaya;
 
 class FakturPenjualanController extends Controller
 {
@@ -48,9 +48,11 @@ class FakturPenjualanController extends Controller
                 ->addColumn('kode_sj', function (FakturPenjualan $sj) {
                     return $sj->sj->kode;
                 })
-
                 ->editColumn('tanggal', function (FakturPenjualan $sj) {
                     return $sj->tanggal ? with(new Carbon($sj->tanggal))->format('d-m-Y') : '';
+                })
+                ->editColumn('no_kpa', function (FakturPenjualan $sj) {
+                    return $sj->no_kpa;
                 })
                 ->addColumn('action', function ($row) {
                     //$editUrl = route('fakturpembelian.edit', ['fakturpembelian' => $row->id]);
@@ -99,18 +101,33 @@ class FakturPenjualanController extends Controller
 
     public function create(PengirimanBarang $pengirimanbarang)
     {
-        $title = "Faktur Pembelian";
+        $title = "Faktur Penjualan";
         $fakturpenjualan = new FakturPenjualan;
         $tglNow = Carbon::now()->format('d-m-Y');
+
+        
+        
         //delete temp
         $deletedTempDetil = TempFaktursos::where('created_at', '<', Carbon::today())->delete();
+        $deletedTempBiaya = TempBiaya::where('created_at', '<', Carbon::today())->delete();
         $deletedTempDetil = TempFaktursos::where('user_id', '=', Auth::user()->id)->delete();
+        $deletedTempBiaya = TempBiaya::where('user_id', '=', Auth::user()->id)->delete();        
+
 
         //masukkan tempDetil Faktur
         $id_sj = $pengirimanbarang->id;
         $id_so = $pengirimanbarang->pesanan_penjualan_id;
 
         $SJdetails = PengirimanBarangDetail::where('pengiriman_barang_id', '=', $id_sj)->get();
+
+        // input temp biaya
+        $idtempbiaya = TempBiaya::create([
+                        'jenis' => 'FJ',
+                        'rupiah' => 0,
+                        'user_id' => auth()->user()->id,
+                        'pengiriman_barang_id' => $id_sj
+                    ])->rupiah;
+                
 
         //start cek status exp date SJ :
         $status_exp_sj = 1;
@@ -122,6 +139,7 @@ class FakturPenjualanController extends Controller
         if ($status_exp_sj == 0) {
             return redirect()->route('fakturpenjualan.listsj')->with('gagal', 'Terdapat Pengiriman Barang Yang Belum Diinputkan Exp. Date! Silahkah hubungi bagian Logistik untuk menginputnya !');
         }
+        
         // end cek status exp date SJ
 
 
@@ -166,8 +184,10 @@ class FakturPenjualanController extends Controller
             $temp->user_id = Auth::user()->id;
             $temp->save();
         }
+
         $FJdetails = TempFaktursos::where('pengiriman_barang_id', '=', $id_sj)
             ->where('user_id', '=', Auth::user()->id)->get();
+
         //dd($FBdetails);
         $subtotal_header = $total_det;
         $ongkir_header = $ongkir_det;
@@ -176,17 +196,27 @@ class FakturPenjualanController extends Controller
         $ppn_header = round(($total_header * ($ppn_so / 100)), 2);
         $grandtotal_header = $total_header + $ppn_header + $ongkir_header;
 
-        return view('penjualan.fakturpenjualan.create', compact('title', 'FJdetails', 'tglNow', 'fakturpenjualan', 'pengirimanbarang', 'SJdetails', 'subtotal_header', 'ongkir_header', 'total_diskon_header', 'total_header', 'ppn_header', 'grandtotal_header'));
+        return view('penjualan.fakturpenjualan.create', 
+                    compact('title', 'FJdetails', 'tglNow', 'fakturpenjualan', 
+                    'pengirimanbarang', 'SJdetails', 'subtotal_header', 'ongkir_header', 
+                    'total_diskon_header', 'total_header', 'ppn_header', 'grandtotal_header','idtempbiaya'));
     }
 
     public function store(Request $request, PengirimanBarang $pengirimanbarang)
     {
         $request->validate([
-            'tanggal' => ['required'],
+            'tanggal' => ['required'],            
         ]);
 
         $datas = $request->all();
         $tanggal = $request->tanggal;
+
+        $biaya = TempBiaya::where('jenis', '=', "FJ")
+                ->where('user_id', '=', Auth::user()->id)
+                ->first();
+
+        $biayalainlain = $biaya->rupiah;
+
         if ($tanggal <> null) {
             $tanggal = Carbon::createFromFormat('d-m-Y', $tanggal)->format('Y-m-d');
         }
@@ -204,6 +234,7 @@ class FakturPenjualanController extends Controller
                 $status_exp_sj = 0;
             }
         }
+
         if ($status_exp_sj == 0) {
             return redirect()->route('fakturpenjualan.listsj')->with('gagal', 'Terdapat Pengiriman Barang Yang Belum Diinputkan Exp. Date! Silahkah hubungi bagian Logistik untuk menginputnya !');
         }
@@ -229,7 +260,7 @@ class FakturPenjualanController extends Controller
         $total_diskon_header = ($subtotal_header * ($diskon_persen_so / 100)) + $diskon_rupiah_so;
         $total_header = $subtotal_header - $total_diskon_header;
         $ppn_header = round(($total_header * ($ppn_so / 100)), 2);
-        $grandtotal_header = $total_header + $ppn_header + $ongkir_header;
+        $grandtotal_header = $total_header + $ppn_header + $ongkir_header + $biayalainlain;
 
         $datas['kode'] = $kode;
         $datas['tanggal'] = $tanggal;
@@ -250,7 +281,9 @@ class FakturPenjualanController extends Controller
         $datas['sales_id'] = $sales_id;
         $datas['no_kpa'] = $request->no_kpa;
         $datas['no_pajak'] = $request->no_pajak;
+        $datas['biaya_lain'] = $biayalainlain;
         $idFaktur = FakturPenjualan::create($datas)->id;
+        
 
         //$ongkir_header = $ongkir_det;
         foreach ($FJdetails as $pb) {
@@ -275,6 +308,7 @@ class FakturPenjualanController extends Controller
         $dataPB->status_sj_id = "2";
         $dataPB->save();
         #################### END update status PB ##############
+
         #################### update Piutang ##################
         $piutang = new Piutang;
         $piutang->tanggal = $tanggal;
@@ -404,6 +438,58 @@ class FakturPenjualanController extends Controller
 
         return back();
 
+    }
+
+    public function editbiaya(Request $request)
+    {
+        $item = TempBiaya::where('jenis', '=', "FJ")
+        ->where('user_id', '=', Auth::user()->id)
+        ->get()->first();
+
+        $id_biaya = $item->id;
+        $biaya = $item->rupiah;        
+
+        return view('penjualan.fakturpenjualan._setbiaya', compact('id_biaya', 'biaya'));
+    }
+
+    public function updatebiaya(Request $request)
+    {        
+        $id_biaya = $request->id_biaya;        
+    
+        $biaya = TempBiaya::find($id_biaya);        
+        $biaya->rupiah = $request->biaya;
+        $biaya->save();                  
+    }
+
+    public function hitungbiaya(Request $request)
+    {        
+        $biaya = TempBiaya::where('jenis', '=', "FJ")
+                ->where('user_id', '=', Auth::user()->id)
+                ->first();
+            
+        $total_biaya = $biaya->rupiah;
+
+        if ($total_biaya == 0) {
+            return $total_biaya;
+        } else {
+            return number_format($total_biaya, 2, ',', '.');
+        }
+    }
+
+    public function hitunggrandtotal(Request $request)
+    {
+        $grandtotal = $request->grandtotal;
+        $biaya = TempBiaya::where('jenis', '=', "FJ")
+                ->where('user_id', '=', Auth::user()->id)
+                ->first();
+    
+        $totalgrandtotal = $biaya->rupiah + $grandtotal;
+
+        if ($totalgrandtotal == 0) {
+            return $totalgrandtotal;
+        } else {
+            return number_format($totalgrandtotal, 2, ',', '.');
+        }
     }
 
  

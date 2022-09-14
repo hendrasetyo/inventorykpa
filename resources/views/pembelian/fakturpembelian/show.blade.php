@@ -133,6 +133,7 @@
                                             <th class="font-weight-bold text-muted  text-uppercase">TOTAL</th>
                                             <th class="font-weight-bold text-muted  text-uppercase">PPN</th>
                                             <th class="font-weight-bold text-muted  text-uppercase">ONGKIR</th>
+                                            <th class="font-weight-bold text-muted  text-uppercase">BIAYA LAIN-LAIN</th>
                                             <th class="font-weight-bold text-muted  text-uppercase">GRANDTOTAL</th>
 
                                         </tr>
@@ -145,6 +146,7 @@
                                             <td>{{ number_format($fakturpembelian->total, 2, ',', '.') }}</td>
                                             <td>{{ number_format($fakturpembelian->ppn, 2, ',', '.') }}</td>
                                             <td>{{ number_format($fakturpembelian->ongkir, 2, ',', '.') }}</td>
+                                            <td>{{ number_format($fakturpembelian->biaya_lain, 2, ',', '.') }}</td>
                                             <td class="text-danger font-size-h3 font-weight-boldest">
                                                 {{ number_format($fakturpembelian->grandtotal, 2, ',', '.') }}</td>
                                         </tr>

@@ -380,6 +380,7 @@ class PesananPenjualanController extends Controller
 
         $total_diskon = ($subtotal * ($diskon_persen / 100)) + $diskon_rupiah;
         $total = $subtotal - $total_diskon + $ongkir;
+        
         if ($total == 0) {
             return $total;
         } else {

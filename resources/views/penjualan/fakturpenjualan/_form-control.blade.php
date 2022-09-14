@@ -23,7 +23,7 @@
                         </span>
                     </div>
             </div>
-        </div>
+        </div>       
     </div>
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">No. SP:</label>
@@ -58,6 +58,7 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+
     </div>
 
     <div class="form-group row">
@@ -128,7 +129,6 @@
                     <label class="col-lg-7 col-form-label text-right">Diskon :</label>
                     <div class="col-lg-5 mb-2">
                         <div class="input-group">
-
                             <input type="text" class="form-control text-right" id="diskon" name="diskon"
                                 value="{{ number_format($total_diskon_header, 2, ',', '.')  }}" readonly="readonly">
 
@@ -136,6 +136,15 @@
 
                     </div>
                 </div>
+
+                <div class="row">
+                    <label class="col-lg-7 col-form-label text-right">Ongkir :</label>
+                    <div class="col-lg-5 mb-2">
+                        <input type="text" id="ongkirheader" value="{{ number_format($ongkir_header, 2, ',', '.')  }}"
+                            readonly="readonly" name="ongkirheader" class="form-control text-right">
+                    </div>
+                </div>
+
                 <div class="row">
                     <label class="col-lg-7 col-form-label text-right">Total :</label>
                     <div class="col-lg-5 mb-2">
@@ -153,14 +162,20 @@
                                 value="{{ number_format($ppn_header, 2, ',', '.')  }}" readonly="readonly">
                         </div>
                     </div>
-                </div>
+                </div>              
                 <div class="row">
-                    <label class="col-lg-7 col-form-label text-right">Ongkir :</label>
+                    <label class="col-lg-7 col-form-label text-right">Biaya lain-lain (Rp) :</label>
                     <div class="col-lg-5 mb-2">
-                        <input type="text" id="ongkirheader" value="{{ number_format($ongkir_header, 2, ',', '.')  }}"
-                            readonly="readonly" name="ongkirheader" class="form-control text-right">
+                        <div class="input-group">
+                            <a href="javascript:editbiaya();" class="btn  btn-icon btn-primary mr-1">
+                                <i class="flaticon-edit"></i>
+                            </a>
+                            <input type="text" class="form-control text-right" id="biaya" name="biaya" value="0"
+                                readonly="readonly">
+                        </div>
                     </div>
-                </div>
+                </div>    
+
                 <div class="row">
                     <label class="col-lg-7 col-form-label text-right">Grand Total :</label>
                     <div class="col-lg-5">

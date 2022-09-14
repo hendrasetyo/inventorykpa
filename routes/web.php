@@ -300,6 +300,7 @@ Route::middleware('has.role')->prefix('pembelian')->group(function () {
         Route::get('{penerimaanbarang}/edit', [PenerimaanBarangController::class, 'edit'])->name('penerimaanbarang.edit');
         Route::put('{penerimaanbarang}/edit', [PenerimaanBarangController::class, 'update'])->name('penerimaanbarang.update');
         Route::get('{penerimaanbarang}/show', [PenerimaanBarangController::class, 'show'])->name('penerimaanbarang.show');
+        Route::get('{penerimaanbarang}/showdata', [PenerimaanBarangController::class, 'showData'])->name('penerimaanbarang.detail');
 
 
         Route::post('delete', [PenerimaanBarangController::class, 'delete'])->name('penerimaanbarang.delete');
@@ -342,6 +343,11 @@ Route::middleware('has.role')->prefix('pembelian')->group(function () {
 
         Route::post('inputtemppb', [FakturPembelianController::class, 'inputtemppb'])->name('fakturpembelian.inputtemppb');
         Route::post('loadtemppb', [FakturPembelianController::class, 'loadtemppb'])->name('fakturpembelian.loadtemppb');
+
+        Route::post('editbiaya', [FakturPembelianController::class, 'editbiaya'])->name('fakturpembelian.editbiaya');
+        Route::post('updatebiaya', [FakturPembelianController::class, 'updatebiaya'])->name('fakturpembelian.updatebiaya');
+        Route::post('hitungbiaya', [FakturPembelianController::class, 'hitungbiaya'])->name('fakturpembelian.hitungbiaya');
+        Route::post('hitunggrandtotal', [FakturPembelianController::class, 'hitunggrandtotal'])->name('fakturpembelian.hitunggrandtotal');
 
         Route::delete('delete_detail', [FakturPembelianController::class, 'destroy_detail'])->name('fakturpembelian.destroy_detail');
 
@@ -425,6 +431,7 @@ Route::middleware('has.role')->prefix('penjualan')->group(function () {
         Route::get('{pengirimanbarang}/edit', [PengirimanBarangController::class, 'edit'])->name('pengirimanbarang.edit');
         Route::put('{pengirimanbarang}/edit', [PengirimanBarangController::class, 'update'])->name('pengirimanbarang.update');
         Route::get('{pengirimanbarang}/show', [PengirimanBarangController::class, 'show'])->name('pengirimanbarang.show');
+        Route::get('{pengirimanbarang}/showData', [PengirimanBarangController::class, 'showData'])->name('pengirimanbarang.showData');
 
         Route::post('delete', [PengirimanBarangController::class, 'delete'])->name('pengirimanbarang.delete');
         Route::delete('delete', [PengirimanBarangController::class, 'destroy'])->name('pengirimanbarang.destroy');
@@ -465,6 +472,11 @@ Route::middleware('has.role')->prefix('penjualan')->group(function () {
         Route::post('editbarang', [FakturPenjualanController::class, 'editbarang'])->name('fakturpenjualan.editbarang');
         Route::post('updatebarang', [FakturPenjualanController::class, 'updatebarang'])->name('fakturpenjualan.updatebarang');
 
+        Route::post('editbiaya', [FakturPenjualanController::class, 'editbiaya'])->name('fakturpenjualan.editbiaya');
+        Route::post('updatebiaya', [FakturPenjualanController::class, 'updatebiaya'])->name('fakturpenjualan.updatebiaya');
+        Route::post('hitungbiaya', [FakturPenjualanController::class, 'hitungbiaya'])->name('fakturpenjualan.hitungbiaya');
+        Route::post('hitunggrandtotal', [FakturPenjualanController::class, 'hitunggrandtotal'])->name('fakturpenjualan.hitunggrandtotal');
+
         Route::post('inputtempsj', [FakturPenjualanController::class, 'inputtemppb'])->name('fakturpenjualan.inputtempsj');
         Route::post('loadtempsj', [FakturPenjualanController::class, 'loadtemppb'])->name('fakturpenjualan.loadtempsj');
 
@@ -472,10 +484,11 @@ Route::middleware('has.role')->prefix('penjualan')->group(function () {
 
         Route::get('listsj', [FakturPenjualanController::class, 'listsj'])->name('fakturpenjualan.listsj');
 
+        // cn
+
         Route::get('{fakturpenjualan}/print_a4', [FakturPenjualanController::class, 'print_a4'])->name('fakturpenjualan.print_a4');
         Route::get('{fakturpenjualan}/EditCN', [FakturPenjualanController::class, 'editCN'])->name('fakturpenjualan.editCN');
         Route::POST('{fakturpenjualandetail}/EditCN', [FakturPenjualanController::class, 'createCN'])->name('fakturpenjualan.editCN');
-
         Route::PUT('{fakturpenjualandetail}/updateCN', [FakturPenjualanController::class, 'updateCN'])->name('fakturpenjualan.updateCN');
     });
 

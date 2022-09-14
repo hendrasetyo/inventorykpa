@@ -64,11 +64,15 @@
                             <table class="table yajra-datatable collapsed ">
                                 <thead class="datatable-head">
                                     <tr>
+                                        <th>ID</th>
                                         <th>Tanggal</th>
                                         <th>Qty</th>
                                         <th>Stok</th>
                                         <th>Transaksi</th>
                                         <th>Kode Transaksi</th>
+                                        <th>Customer</th>
+                                        <th>Supplier</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -110,12 +114,22 @@
               ajax: "{{ route('laporanstok.kartustokdetail', $product) }}",
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                {data: 'tanggal', name: 'tanggal'},
+                  {data: 'id', name: 'id'},
+                  {data: 'tanggal', name: 'tanggal'},
                   {data: 'qty', name: 'qty'},
                   {data: 'stok', name: 'stok'},
 
                   {data: 'jenis', name: 'jenis'},
                   {data: 'jenis_id', name: 'jenis_id'},
+                  {data: 'customer', name: 'customer'},
+                  {data: 'supplier', name: 'supplier'},
+                  {
+                      data: 'action', 
+                      render: function(data){
+                          return htmlDecode(data);
+                      },
+                      className:"nowrap",
+                  },
                  
               ],
               columnDefs: [

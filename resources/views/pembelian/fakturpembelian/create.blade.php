@@ -141,6 +141,7 @@
     <div id="modal-setbarang"></div>
     <div id="modal-setdiskon"></div>
     <div id="modal-setppn"></div>
+    <div id="modal-setbiaya"></div>
 
     <div id="xcontohmodal">
         <!-- Modal-->
@@ -192,7 +193,10 @@
 
 
     <script type="text/javascript">
-        /* Fungsi formatRupiah */
+
+    let grandtotal = {{ $grandtotal_header }};
+
+        /* Fungsi formatRupiah */        
 	function formatRupiah(angka, elemenid){
             //alert(angka);
             var prefix = 'Rp. ';
@@ -214,6 +218,108 @@
             document.getElementById(elemenid).value = rupiah;
 			//return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
 		}
+
+    function editbiaya(){            
+        let idbiaya = '';
+        $.ajax({
+                type: 'POST',
+                url: '{{ route('fakturpembelian.editbiaya') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {
+                        id:idbiaya,                         
+                        "_token": "{{ csrf_token() }}"}
+                    ,
+                
+                success: function (data){
+                    console.log(data);
+                    $('#modal-setbiaya').html(data);
+                    $('#setBiayaModal').modal('show');
+                },
+                error: function(data){
+                    console.log(data);
+                }
+        });
+    }
+
+    function updateBiaya(){
+        let biaya = document.getElementById('biaya_rupiah').value;            
+
+        let idbiaya = document.getElementById('idbiaya').value;
+        //alert(diskon_persen);
+        $.ajax({
+                type: 'POST',
+                url: '{{ route('fakturpembelian.updatebiaya') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {
+                    "id_biaya": idbiaya,
+                    "biaya": biaya,                
+                     "_token": "{{ csrf_token() }}"
+                    },
+                
+                success: function (data){
+                    console.log(data);
+                    $('#setBiayaModal').modal('hide');
+                    //$('#diskon').val(data);
+                    hitungAll();
+
+                },
+                error: function(data){
+                    console.log(data);
+                }
+        });
+    }
+
+    function hitungBiaya(){
+        $.ajax({
+                type: 'POST',
+                url: '{{ route('fakturpembelian.hitungbiaya') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {
+                     "_token": "{{ csrf_token() }}"
+                    },
+                
+                success: function (data){
+                    console.log(data);
+                    $('#biaya').val(data);
+
+                },
+                error: function(data){
+                    console.log(data);
+                }
+        });
+    }
+
+    function hitunggrandtotal() {
+        $.ajax({
+                type: 'POST',
+                url: '{{ route('fakturpembelian.hitunggrandtotal') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {                    
+                     "grandtotal":grandtotal,
+                     "_token": "{{ csrf_token() }}"
+                    },
+
+                success: function (data){
+                    console.log(data);
+                    $('#grandtotal').val(data);
+
+                },
+                error: function(data){
+                    console.log(data);
+                }
+        });
+    }
+
+    function hitungAll(){     
+
+        hitungBiaya(); 
+        hitunggrandtotal();
+
+    }
     
     
     </script>

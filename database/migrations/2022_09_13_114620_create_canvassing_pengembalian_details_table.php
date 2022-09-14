@@ -16,7 +16,7 @@ class CreateCanvassingPengembalianDetailsTable extends Migration
         Schema::create('canvassing_pengembalian_details', function (Blueprint $table) {
 
             $table->id();
-            $table->foreignId('canvassing_pengembalian_id')->constrained('canvassing_pesanans');
+            $table->foreignId('canvassing_kembali_id')->constrained('canvassing_pengembalians');
             $table->foreignId('product_id')->constrained('products');
             $table->date('tanggal');
             $table->double('qty');

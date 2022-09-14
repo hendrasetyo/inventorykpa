@@ -30,8 +30,7 @@
             <th>Ongkir Produk</th>
             <th>CN Persen</th>
             <th>CN Rupiah</th>
-            <th>CN Total</th>
-            <th>Saldo Harga Bersih</th>
+            <th>CN Total</th>            
             <th>Sales</th>
             <th>Pembuat</th>                                        
             <th>Keterangan</th>                                          

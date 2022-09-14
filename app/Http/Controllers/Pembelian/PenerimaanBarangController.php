@@ -17,6 +17,7 @@ use App\Models\InventoryTransaction;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PenerimaanBarangDetail;
 use App\Models\PesananPembelianDetail;
+use App\Models\Supplier;
 
 class PenerimaanBarangController extends Controller
 {
@@ -243,6 +244,8 @@ class PenerimaanBarangController extends Controller
 
         $id_pb = PenerimaanBarang::create($datas)->id;
 
+        $supplier = Supplier::findOrFail($supplier_id);
+
         //isi detail
         $test = "";
         foreach ($dataTemp as $a) {
@@ -318,6 +321,7 @@ class PenerimaanBarangController extends Controller
             $inventoryTrans->hpp = $hpp_baru;
             $inventoryTrans->jenis = "PB";
             $inventoryTrans->jenis_id = $kode;
+            $inventoryTrans->supplier = $supplier->nama;
 
             $inventoryTrans->save();
             //######### end add INV TRANS ############
@@ -528,8 +532,11 @@ class PenerimaanBarangController extends Controller
         $penerimaanbarang = PenerimaanBarang::find($id);
         $penerimaanbarang_kode = $penerimaanbarang->kode;
         $pesanan_pembelian_id = $penerimaanbarang->pesanan_pembelian_id;
+
+        $supplier = Supplier::findOrFail($penerimaanbarang->supplier_id);
         //validasi :
         $jmlExp = StokExpDetail::where('id_pb', '=', $id)->count();
+
         //dd($jmlExp);
         if ($jmlExp > 0) {
             return redirect()->route('penerimaanbarang.index')->with('gagal', 'Gagal Menghapus Penerimaan Barang, Silahkan hapus data expired date terlebih dahulu !');
@@ -557,6 +564,7 @@ class PenerimaanBarangController extends Controller
             $inventoryTrans->hpp = $hpp;
             $inventoryTrans->jenis = "PB (DEL)";
             $inventoryTrans->jenis_id = $penerimaanbarang_kode;
+            $inventoryTrans->supplier =  $supplier->nama;
             $inventoryTrans->save();
             //######### end add INV TRANS ############
 
@@ -594,6 +602,20 @@ class PenerimaanBarangController extends Controller
     public function show(PenerimaanBarang $penerimaanbarang)
     {
         $title = "Penerimaan Barang Detail";
+        $penerimaanbarangdetails = PenerimaanBarangDetail::with('products')
+            ->where('penerimaan_barang_id', '=', $penerimaanbarang->id)->get();
+        $listExp = StokExpDetail::where('id_pb', '=', $penerimaanbarang->id)->get();
+        return view('pembelian.penerimaanbarang.show', compact('title', 'listExp', 'penerimaanbarang', 'penerimaanbarangdetails'));
+    }
+
+    public function showData($id)
+    {
+        $title = "Penerimaan Barang Detail";
+        $penerimaanbarang = PenerimaanBarang::where('kode',$id)->first();
+        if (!$penerimaanbarang) {
+            return back()->with('status', 'Data Tidak Ditemukan !');
+        }        
+        
         $penerimaanbarangdetails = PenerimaanBarangDetail::with('products')
             ->where('penerimaan_barang_id', '=', $penerimaanbarang->id)->get();
         $listExp = StokExpDetail::where('id_pb', '=', $penerimaanbarang->id)->get();

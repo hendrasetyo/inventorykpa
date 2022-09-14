@@ -31,6 +31,7 @@
             <th>CN Persen</th>
             <th>CN Rupiah</th>
             <th>CN Total</th>
+            <th>Saldo Harga Bersih</th>
             <th>Sales</th>
             <th>Pembuat</th>                                        
             <th>Keterangan</th>                                          
@@ -73,6 +74,7 @@
                 <td>{{$item->cn_persen ? $item->cn_persen : 0}}%</td>
                 <td>{{$item->cn_rupiah ? $item->cn_rupiah : 0}}</td>
                 <td>{{$item->cn_total ? $item->cn_total : 0}}</td>
+                <td>{{$item->grandtotal - ($item->cn_total ? $item->cn_total : 0)}}</td>
                 <td>{{$item->nama_sales}}</td>
                 <td>{{$item->nama_pembuat}}</td>
                 <td>{{$item->keterangan}}</td>                                            

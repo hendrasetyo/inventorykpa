@@ -72,6 +72,7 @@
                                 <thead class="datatable-head">
                                     <tr>
                                         <th>Kode</th>
+                                        <th>No KPA</th>
                                         <th>Tanggal</th>
                                         <th>No. Surat Pesanan</th>
                                         <th>No. Pengiriman</th>
@@ -117,6 +118,7 @@
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                   {data: 'kode', name: 'kode'},
+                  {data: 'no_kpa', name: 'no_kpa'},
                   {data: 'tanggal', name: 'tanggal'},
                   {data: 'kode_so', name: 'so.kode'},
                   {data: 'kode_sj', name: 'sj.kode'},

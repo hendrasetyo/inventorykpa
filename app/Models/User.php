@@ -43,4 +43,11 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+   
+    public function tempbiaya()
+    {
+        return $this->hasMany(TempBiaya::class, 'id');
+    }
 }

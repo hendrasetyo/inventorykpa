@@ -130,6 +130,14 @@
                     </div>
                 </div>
                 <div class="row">
+                    <label class="col-lg-7 col-form-label text-right">Ongkir :</label>
+                    <div class="col-lg-5 mb-2">
+                        <input type="text" id="ongkirheader" value="{{ number_format($ongkir_header, 2, ',', '.')  }}"
+                            readonly="readonly" name="ongkirheader" class="form-control text-right">
+                    </div>
+                </div>
+
+                <div class="row">
                     <label class="col-lg-7 col-form-label text-right">PPN (%) :</label>
                     <div class="col-lg-5 mb-2">
                         <div class="input-group">
@@ -139,13 +147,20 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
-                    <label class="col-lg-7 col-form-label text-right">Ongkir :</label>
+                    <label class="col-lg-7 col-form-label text-right">Biaya lain-lain (Rp) :</label>
                     <div class="col-lg-5 mb-2">
-                        <input type="text" id="ongkirheader" value="{{ number_format($ongkir_header, 2, ',', '.')  }}"
-                            readonly="readonly" name="ongkirheader" class="form-control text-right">
+                        <div class="input-group">
+                            <a href="javascript:editbiaya();" class="btn  btn-icon btn-primary mr-1">
+                                <i class="flaticon-edit"></i>
+                            </a>
+                            <input type="text" class="form-control text-right" id="biaya" name="biaya" value="0"
+                                readonly="readonly">
+                        </div>
                     </div>
-                </div>
+                </div>                 
+               
                 <div class="row">
                     <label class="col-lg-7 col-form-label text-right">Grand Total :</label>
                     <div class="col-lg-5">

@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\FakturPembelianDetail;
 use App\Models\PenerimaanBarangDetail;
 use App\Models\PesananPembelianDetail;
-
+use App\Models\TempBiaya;
 
 class FakturPembelianController extends Controller
 {
@@ -127,7 +127,17 @@ class FakturPembelianController extends Controller
         //delete temp
         $deletedTempDetil = TempFakturpos::where('created_at', '<', Carbon::today())->delete();
         $deletedTempDetil = TempFakturpos::where('user_id', '=', Auth::user()->id)->delete();
+        $deletedTempBiaya = TempBiaya::where('created_at', '<', Carbon::today())->delete();
+        $deletedTempBiaya = TempBiaya::where('user_id', '=', Auth::user()->id)->delete();        
 
+
+         // input temp biaya
+         $idtempbiaya = TempBiaya::create([
+            'jenis' => 'FB',
+            'rupiah' => 0,
+            'user_id' => auth()->user()->id,
+            'pengiriman_barang_id' => $id_pb
+        ])->rupiah;
 
 
         $POdata = PesananPembelian::find($id_po);
@@ -182,7 +192,7 @@ class FakturPembelianController extends Controller
         $ppn_header = round(($total_header * ($ppn_po / 100)), 2);
         $grandtotal_header = $total_header + $ppn_header + $ongkir_header;
 
-        return view('pembelian.fakturpembelian.create', compact('title', 'FBdetails', 'tglNow', 'fakturpembelian', 'penerimaanbarang', 'PBdetails', 'subtotal_header', 'ongkir_header', 'total_diskon_header', 'total_header', 'ppn_header', 'grandtotal_header'));
+        return view('pembelian.fakturpembelian.create', compact('title', 'FBdetails', 'tglNow', 'fakturpembelian', 'penerimaanbarang', 'PBdetails', 'subtotal_header', 'ongkir_header', 'total_diskon_header', 'total_header', 'ppn_header', 'grandtotal_header','idtempbiaya'));
     }
 
     public function store(Request $request, PenerimaanBarang $penerimaanbarang)
@@ -193,6 +203,14 @@ class FakturPembelianController extends Controller
 
         $datas = $request->all();
         $tanggal = $request->tanggal;
+
+        $biaya = TempBiaya::where('jenis', '=', "FB")
+        ->where('user_id', '=', Auth::user()->id)
+        ->first();
+
+
+        $biayalainlain = $biaya->rupiah;
+
         if ($tanggal <> null) {
             $tanggal = Carbon::createFromFormat('d-m-Y', $tanggal)->format('Y-m-d');
         }
@@ -233,7 +251,7 @@ class FakturPembelianController extends Controller
         $total_diskon_header = ($subtotal_header * ($diskon_persen_po / 100)) + $diskon_rupiah_po;
         $total_header = $subtotal_header - $total_diskon_header;
         $ppn_header = round(($total_header * ($ppn_po / 100)), 2);
-        $grandtotal_header = $total_header + $ppn_header + $ongkir_header;
+        $grandtotal_header = $total_header + $ppn_header + $ongkir_header + $biayalainlain ;
 
         $datas['kode'] = $kode;
         $datas['tanggal'] = $tanggal;
@@ -251,6 +269,7 @@ class FakturPembelianController extends Controller
         $datas['grandtotal'] = $grandtotal_header;
         $datas['ppn'] = $ppn_header;
         $datas['ongkir'] = $ongkir_header;
+        $datas['biaya_lain'] = $biayalainlain;
         $idFaktur = FakturPembelian::create($datas)->id;
 
         //$ongkir_header = $ongkir_det;
@@ -357,4 +376,58 @@ class FakturPembelianController extends Controller
 
         return $pdf->download('fakturpembelian.pdf');
     }
+
+    public function editbiaya(Request $request)
+    {
+        $item = TempBiaya::where('jenis', '=', "FB")
+        ->where('user_id', '=', Auth::user()->id)
+        ->get()->first();
+
+        $id_biaya = $item->id;
+        $biaya = $item->rupiah;        
+
+        return view('penjualan.fakturpenjualan._setbiaya', compact('id_biaya', 'biaya'));
+    }
+
+    public function updatebiaya(Request $request)
+    {        
+        $id_biaya = $request->id_biaya;        
+    
+        $biaya = TempBiaya::find($id_biaya);                
+        $biaya->rupiah = $request->biaya;
+        $biaya->save();                  
+    }
+
+    public function hitungbiaya(Request $request)
+    {        
+        $biaya = TempBiaya::where('jenis', '=', "FB")
+                ->where('user_id', '=', Auth::user()->id)
+                ->first();
+            
+        $total_biaya = $biaya->rupiah;
+
+        if ($total_biaya == 0) {
+            return $total_biaya;
+        } else {
+            return number_format($total_biaya, 2, ',', '.');
+        }
+    }
+
+    public function hitunggrandtotal(Request $request)
+    {
+        $grandtotal = $request->grandtotal;
+        $biaya = TempBiaya::where('jenis', '=', "FB")
+                ->where('user_id', '=', Auth::user()->id)
+                ->first();
+    
+        $totalgrandtotal = $biaya->rupiah + $grandtotal;
+
+        if ($totalgrandtotal == 0) {
+            return $totalgrandtotal;
+        } else {
+            return number_format($totalgrandtotal, 2, ',', '.');
+        }
+    }
+
+
 }

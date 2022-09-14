@@ -115,16 +115,33 @@ class LaporanStokController extends Controller
     public function kartustokdetail(Product $product)
     {
         $title = "Laporan Kartu Stok";
+        
+        $kartustok = InventoryTransaction::where('product_id', '=', $product->id)
+                    ->orderByDesc('id');
 
-        $kartustok = InventoryTransaction::where('product_id', '=', $product->id)->get();
         if (request()->ajax()) {
             return Datatables::of($kartustok)
                 ->addIndexColumn()
                 ->editColumn('tanggal', function (InventoryTransaction $inv) {
                     return $inv->tanggal ? with(new Carbon($inv->tanggal))->format('d-m-Y') : '';
                 })
+                ->addColumn('action', function ($row) {
+                    $status = 1;
+                    if ($row->jenis == 'PB') {
+                        $selectUrl = route('penerimaanbarang.detail', ['penerimaanbarang' => $row->jenis_id]);    
+                    }elseif ($row->jenis == 'SJ') {
+                        $selectUrl = route('pengirimanbarang.detail', ['pengirimanbarang' => $row->jenis_id]);    
+                    }else{
+                        $selectUrl = '';    
+                        $status = 0;
+                    }
+                    
+                    $id = $row->id;
+                    return view('laporan.stok._actionkartustokdetail', compact('selectUrl', 'id','status'));
+                })
                 ->make(true);
         }
+        
         return view('laporan.stok.kartustokdetail', compact('title', 'product'));
     }
 
