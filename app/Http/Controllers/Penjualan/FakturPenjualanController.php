@@ -224,8 +224,13 @@ class FakturPenjualanController extends Controller
         $kode = $this->getKodeTransaksi("faktur_penjualans", "FJ");
         $id_sj = $pengirimanbarang->id;
         $id_so = $pengirimanbarang->pesanan_penjualan_id;
+        $tanggalPengiriman = $pengirimanbarang->tanggal;
 
-        $SJdetails = PengirimanBarangDetail::where('pengiriman_barang_id', '=', $id_sj)->get();
+        $pesanan = PesananPenjualan::where('id',$id_so)->first();
+        $tanggal_top = date("Y-m-d", strtotime("+".$pesanan->top." days" . $tanggalPengiriman));        
+
+        $SJdetails = PengirimanBarangDetail::where('pengiriman_barang_id', '=', $id_sj)->get();        
+
 
         //start cek status exp date SJ :
         $status_exp_sj = 1;
@@ -320,7 +325,8 @@ class FakturPenjualanController extends Controller
         $piutang->ppn = $ppn_header;
         $piutang->total = $grandtotal_header;
         $piutang->dibayar = "0";
-        $piutang->status = "1"; //1 = belum lunas ; 2= lunas
+        $piutang->status = "1"; //1 = belum lunas ; 2= lunas        
+        $piutang->tanggal_top= $tanggal_top;
         $piutang->save();
         #################### end update Piutang ##################
 
@@ -384,7 +390,7 @@ class FakturPenjualanController extends Controller
             'fakturpenjualandetails' => $fakturpenjualandetails
         ];
         $pdf = PDF::loadView('penjualan.fakturpenjualan.print_a4', $data)->setPaper('a4', 'potrait');;
-        return $pdf->download($fakturpenjualan->kode.'.pdf');
+        return $pdf->download($fakturpenjualan->no_kpa.'-'.$fakturpenjualan->kode.'.pdf');
 
         //return view('penjualan.fakturpenjualan.print_a4', compact('title',  'totalPage'));
     }

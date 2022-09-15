@@ -19,7 +19,9 @@ class Hutang extends Model
         'ppn',
         'total',
         'dibayar',
-        'status'
+        'status',
+        'nominal_toleransi',
+        'tanggal_top'
     ];
     protected $dates = ['tanggal'];
 

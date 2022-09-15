@@ -51,18 +51,21 @@
                                                 </g>
                                             </svg>
                                             <!--end::Svg Icon--></span> </span>
-                                    <h3 class="card-label">Laporan Pembayaran Hutang</h3>
+                                    <h3 class="card-label">Laporan Piutang</h3>
                                 
 
                             </div>                           
                             
                             <div>
-                                <form action="{{ route('laporanpembayaran.exportpembayaranhutang') }}" method="POST">
+                                <form action="{{ route('laporanhutangpiutang.exportpiutang') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="tgl1" value="{{$form['tgl1']}}"> 
                                     <input type="hidden" name="tgl2" value="{{$form['tgl2']}}"> 
-                                    <input type="hidden" name="supplier" value="{{$form['supplier']}}"> 
+                                    <input type="hidden" name="customer" value="{{$form['customer']}}"> 
                                     <input type="hidden" name="no_faktur" value="{{$form['no_faktur']}}"> 
+                                    <input type="hidden" name="sales" value="{{$form['sales']}}">  
+                                    <input type="hidden" name="status" value="{{$form['status']}}"> 
+                                    
 
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <span class="svg-icon svg-icon-default svg-icon-1x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo2\dist/../src/media/svg/icons\Files\Import.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -84,8 +87,8 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Tanggal</th>
-                                        <th>Supplier</th>
+                                        <th>Tanggal TOP</th>
+                                        <th>Customer</th>
                                         <th>Kode SO</th>
                                         <th>Kode SJ</th>
                                         <th>Kode Faktur</th>
@@ -93,7 +96,9 @@
                                         <th>PPN</th>
                                         <th>Total</th>                                        
                                         <th>Telah Dibayar</th>
-                                        <th>Sisa</th>
+                                        <th>Sisa</th>                                        
+                                        <th>Nominal Toleransi</th>
+                                        <th>Sales</th>
                                         <th>Status</th>                                                                                
                                     </tr>
                                 </thead>
@@ -104,8 +109,8 @@
                                     @foreach ($hutang as $item)
                                         <tr>
                                             <td>{{$no++}}</td>
-                                            <td>{{ date('d F Y', strtotime($item->tanggal)) }}</td>
-                                            <td>{{$item->nama_supplier}}</td>
+                                            <td>{{$item->tanggal_top ? date('d F Y', strtotime($item->tanggal_top))  : 'tidak ada' }}</td>
+                                            <td>{{$item->nama_customer}}</td>
                                             <td>{{$item->kode_pp}}</td>
                                             <td>{{$item->kode_pb}}</td>
                                             <td>{{$item->kode_fp}}</td>                                            
@@ -113,7 +118,9 @@
                                             <td>{{number_format($item->ppn, 2, ',', '.')}}</td>
                                             <td>{{number_format($item->total, 2, ',', '.')}}</td>
                                             <td>{{number_format($item->dibayar, 2, ',', '.')}}</td>
-                                            <td>{{number_format($item->total - $item->dibayar, 2, ',', '.')}}</td>                                            
+                                            <td>{{number_format($item->total - $item->dibayar, 2, ',', '.')}}</td>                                                                                  
+                                            <td>{{$item->nominal_toleransi}}</td>
+                                            <td>{{$item->nama_sales}}</td>                                            
                                             <td>
                                                 @if ($item->status == 1)
                                                     Belum Lunas

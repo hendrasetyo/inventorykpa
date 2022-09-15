@@ -73,7 +73,7 @@
                         <!--begin::Form-->
                         <div class="card-body">
 
-                            <form class="form" method="POST" action="{{ route('laporanpembayaran.filterpembayaranpiutang') }}">
+                            <form class="form" method="POST" action="{{ route('laporanpembayaran.filterlogtoleransi') }}">
                                 @csrf
                                 <div class="card-body">
 
@@ -89,35 +89,16 @@
                                             id="tgl2" required/>
 
                                     </div>     
-                                    
+                                                                    
+                                  
                                     <div class="form-group">
-                                        <label for="">Kode Faktur * <i style="font-size: 90%">(jika tidak dipakai kosongi saja)</i></label>
-                                       <input type="text" class="form-control" name="no_faktur">
-                                    </div> 
-
-                                    <div class="form-group">
-                                        <label for="">Customer</label>
-                                        <select name="customer" id="kt_select2_2" class="form-control">
-                                            <option value="all">Semua</option>
-                                            
-                                            @foreach ($customer as $item)
-                                                <option value="{{$item->id}}">{{$item->nama}} - {{$item->namakota->name}}</option>
-                                            @endforeach
+                                        <label for="">Jenis</label>
+                                        <select name="jenis" id="kt_select2_2" class="form-control">                                            
+                                            <option value="hutang">Hutang</option>
+                                            <option value="piutang">Piutang</option>                                                                                     
                                         </select>
                                     </div>
-
-                                    <div class="form-group">
-                                        <label for="">Sales</label>
-                                        <select name="sales" id="kt_select2_1" class="form-control">
-                                            <option value="all">Semua</option>                                            
-                                            @foreach ($sales as $item)
-                                                <option value="{{$item->id}}">{{$item->nama}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                   
-
+                                                                
                                 </div>
 
                         </div>

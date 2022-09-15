@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
 
-class LaporanPembayaranPiutangExport implements FromView
+class LaporanPiutangExport implements FromView
 {
     protected $data;
 
@@ -19,11 +19,8 @@ class LaporanPembayaranPiutangExport implements FromView
 
     public function view(): View
     { 
-        $title = 'Laporan Pembayaran Piutang Detail';        
-        
-        $tgl1 = Carbon::parse($this->data['tgl1'])->format('Y-m-d');
-        $tgl2 = Carbon::parse($this->data['tgl2'])->format('Y-m-d');                
-
+        $title = 'Laporan Pembayaran Hutang';        
+                        
         $tgl1 = Carbon::parse($this->data['tgl1'])->format('Y-m-d');
         $tgl2 = Carbon::parse($this->data['tgl2'])->format('Y-m-d');                
 
@@ -33,10 +30,29 @@ class LaporanPembayaranPiutangExport implements FromView
                     ->where('p.tanggal','>=',$tgl1)
                     ->where('p.tanggal','<=',$tgl2);
                     
-        
+
+        if ($this->data['tgl1']) {            
+            if (!$this->data['tgl2']) {
+                $tanggalFilter=$pembayaran->where('p.tanggal_top','>=',$tgl1);
+                                
+            }else{
+                $tanggalFilter=$pembayaran->where('p.tanggal_top','>=',$tgl1)
+                                ->where('p.tanggal_top','<=',$tgl2);
+            }
+        }elseif($this->data['tgl2']){
+            if (!$this->data['tgl1']) {
+                $tanggalFilter=$pembayaran->where('p.tanggal_top','<=',$tgl2);
+            }else{
+                $tanggalFilter=$pembayaran->where('p.tanggal_top','>=',$tgl1)
+                                ->where('p.tanggal_top','<=',$tgl2);
+            }
+        }else{
+            $tanggalFilter = $pembayaran;
+        }
+
         if ($this->data['customer'] == 'all') {  
 
-            $customerfilter = $pembayaran->join('customers as c','p.customer_id','=','c.id');
+            $customerfilter = $tanggalFilter->join('customers as c','p.customer_id','=','c.id');
 
             if ($this->data['no_faktur'] <> null) {                
                 $filter =  $customerfilter->join('faktur_penjualans as fp','p.faktur_penjualan_id','=','fp.id')
@@ -91,16 +107,20 @@ class LaporanPembayaranPiutangExport implements FromView
             }
         }
 
-        $datafilter = $salesfilter->select('c.nama as nama_customer','pp.kode as kode_pp','pb.kode as kode_pb','fp.kode as kode_fp','p.*','s.nama as nama_sales')->get();
+
+        $statusFilter = $salesfilter->where('status','=',$this->data['status']);
+
+        $datafilter = $statusFilter->select('c.nama as nama_customer','pp.kode as kode_pp','pb.kode as kode_pb','fp.kode as kode_fp','p.*','s.nama as nama_sales')->get();
 
         if (count($datafilter) <= 0) {
                 return redirect()->back()->with('status_danger', 'Data tidak ditemukan atau belum melakukan pembayaran');
         }
         
-        return view('laporan.pembayaran.export.exportPembayaranPiutang',[
-            'title' => $title,
-            'hutang' => $datafilter,  
+
+        return view('laporan.hutangpiutang.export.piutang',[            
+            'hutang' => $datafilter,            
         ]);
+        
     }
 
 

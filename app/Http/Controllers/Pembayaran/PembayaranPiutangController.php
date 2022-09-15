@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Models\PembayaranPiutang;
 use App\Http\Controllers\Controller;
+use App\Models\FakturPenjualan;
+use App\Models\LogToleransi;
 use Illuminate\Support\Facades\Auth;
 
 class PembayaranPiutangController extends Controller
@@ -67,6 +69,7 @@ class PembayaranPiutangController extends Controller
         $piutangs = Piutang::with('customers', 'fakturSO')
             ->where('status', '=', '1')
             ->get();
+
         if (request()->ajax()) {
             return Datatables::of($piutangs)
                 ->addIndexColumn()
@@ -88,6 +91,9 @@ class PembayaranPiutangController extends Controller
                 ->editColumn('sisa', function (Piutang $pb) {
                     $sisa = $pb->total - $pb->dibayar;
                     return $sisa ? with(number_format($sisa, 0, ',', '.')) : '0';
+                })
+                ->editColumn('tanggal_top', function (Piutang $pb) {                    
+                    return $pb->tanggal_top ? with(new Carbon($pb->tanggal_top))->format('d-m-Y') : '';
                 })
                 ->addColumn('action', function ($row) {
                     $pilihUrl = route('pembayaranpiutang.create', ['piutang' => $row->id]);
@@ -129,11 +135,13 @@ class PembayaranPiutangController extends Controller
         $nominal = str_replace('.', '', $request->nominal) * 1;
         $dibayar_baru = $dibayar + $nominal;
 
-        if ($sisa > $nominal) {
-            $status = '1';
-        } else {
+        $toleransi = $dibayar_baru - $total_piutang ;
+              
+        if ($toleransi >= 500 || $toleransi<=500) {
             $status = '2';
-        }
+        } else {
+            $status = '1';
+        }       
 
         //insert pembayaran
         $datas['tanggal'] = $tanggal;
@@ -150,6 +158,17 @@ class PembayaranPiutangController extends Controller
         $datapiutang->status = $status;
         $datapiutang->dibayar = $dibayar_baru;
         $datapiutang->save();
+
+        $faktur = FakturPenjualan::where('id',$piutang->faktur_penjualan_id)->first();
+
+        if ($status == '2') {
+            LogToleransi::create([
+                'tanggal' => $tanggal,                
+                'rupiah' => $toleransi,
+                'jenis' => 'Piutang',
+                'jenis_id' => $faktur->kode, 
+            ]);
+        }
 
         return redirect()->route('pembayaranpiutang.index')->with('status', 'Pembayaran Piutang Berhasil Dibuat !');
     }

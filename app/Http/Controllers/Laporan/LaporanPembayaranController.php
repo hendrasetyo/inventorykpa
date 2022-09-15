@@ -8,6 +8,7 @@ use App\Exports\LaporanPembayaranPiutangDetailExport;
 use App\Exports\LaporanPembayaranPiutangExport;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\LogToleransi;
 use App\Models\Sales;
 use App\Models\Supplier;
 use Carbon\Carbon;
@@ -392,7 +393,76 @@ class LaporanPembayaranController extends Controller
         return Excel::download(new LaporanPembayaranPiutangDetailExport($data), 'laporanpembayaranpiutangdetail-'.$now.'.xlsx');
 
     }
+    
+    public function logToleransi()
+    {
+        $title = 'Laporan Log Toleransi';
+        return view('laporan.pembayaran.logToleransi.filterlogtoleransi',[
+            'title' => $title
+        ]);
+    }
+    
+    public function filterLogToleransi(Request $request)
+    {
+        $title = 'Laporan Log Toleransi';
+        $data = $request->all();        
+        
+        $tgl1 = Carbon::parse($data['tgl1'])->format('Y-m-d');
+        $tgl2 = Carbon::parse($data['tgl2'])->format('Y-m-d');                
+        
+        $pembayaran = DB::table('log_toleransis as lt');
 
+        if ($data['tgl1']) {            
+            if (!$data['tgl2']) {
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1);
+                                
+            }else{
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1)
+                                ->where('p.tanggal','<=',$tgl2);
+            }
+        }elseif($data['tgl2']){
+            if (!$data['tgl1']) {
+                $tanggalFilter=$pembayaran->where('p.tanggal','<=',$tgl2);
+            }else{
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1)
+                                ->where('p.tanggal','<=',$tgl2);
+            }
+        }else{
+            $tanggalFilter = $pembayaran;
+        }
+
+        if ($data['jenis'] == 'hutang') {
+            $jenis=$tanggalFilter->where('jenis','=','hutang');
+        }elseif ($data['jenis'] == 'piutang') {
+            $jenis=$tanggalFilter->where('jenis','=','piutang');
+        }        
+
+        $dataLog = $jenis->get();
+        
+        // if (request()->ajax()) {
+        //     return Datatables::of($dataLog)
+        //         ->addIndexColumn()
+        //         ->addColumn('tanggal', function ($p) {
+        //             return $p->tanggal;
+        //         })
+        //         ->addColumn('rupiah', function ($p) {
+        //             return $p->rupiah;
+        //         })
+        //         ->addColumn('jenis', function ($z) {
+        //             return $z->jenis;
+        //         })           
+        //         ->addColumn('jenis_id', function ($z) {
+        //             return $z->jenis_id;
+        //         })                 
+        //         ->make(true);
+        // }
+
+        return view('laporan.pembayaran.logToleransi.filterlogtoleransiresult', [
+            'datalog' => $dataLog,
+            'title' => $title
+        ]);                    
+                    
+    }
 
 
 

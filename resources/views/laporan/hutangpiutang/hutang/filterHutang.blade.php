@@ -73,22 +73,22 @@
                         <!--begin::Form-->
                         <div class="card-body">
 
-                            <form class="form" method="POST" action="{{ route('laporanpembayaran.filterdatapembayaranhutang') }}">
+                            <form class="form" method="POST" action="{{ route('laporanhutangpiutang.filterhutang') }}">
                                 @csrf
                                 <div class="card-body">
 
                                     <div class="form-group">
                                         <label>Tgl Awal :</label>
                                         <input type="text" class="form-control" name="tgl1" readonly value=""
-                                            id="tgl1" required/>
+                                            id="tgl1" />
+
                                     </div>
 
                                     <div class=" form-group">
                                         <label>Tanggal Akhir :</label>
                                         <input type="text" class="form-control" name="tgl2" readonly value=""
-                                            id="tgl2" required/>
-
-                                    </div>     
+                                            id="tgl2" />
+                                    </div>        
                                     
                                     <div class="form-group">
                                         <label for="">Kode Faktur * <i style="font-size: 90%">(jika tidak dipakai kosongi saja)</i></label>
@@ -100,13 +100,19 @@
                                         <select name="supplier" id="kt_select2_1" class="form-control">
                                             <option value="all">Semua</option>
                                             
-                                            @foreach ($suppliers as $item)
+                                            @foreach ($supplier as $item)
                                                 <option value="{{$item->id}}">{{$item->nama}} - {{$item->namakota->name}}</option>
                                             @endforeach
                                         </select>
-                                    </div>
-
-                                   
+                                    </div>  
+                                    
+                                    <div class="form-group">
+                                        <label for="">Status*</label>
+                                        <select name="status" id="kt_select2_2" class="form-control">                                                                                        
+                                            <option value="1" selected>Belum Lunas</option>
+                                            <option value="2" >Lunas</option>
+                                        </select>
+                                    </div>  
 
                                 </div>
 

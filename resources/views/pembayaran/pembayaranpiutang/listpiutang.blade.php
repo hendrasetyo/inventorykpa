@@ -70,6 +70,7 @@
                                         <th>Total</th>
                                         <th>Terbayar</th>
                                         <th>Sisa</th>
+                                        <th>Tanggal TOP</th>
                                         <th style="width: 15%">Action</th>
                                     </tr>
                                 </thead>
@@ -117,6 +118,7 @@
                   {data: 'total', name: 'total'},
                   {data: 'dibayar', name: 'dibayar'},
                   {data: 'sisa', name: 'sisa'},
+                  {data: 'tanggal_top', name: 'tanggal_top'},
 
                   {
                       data: 'action', 

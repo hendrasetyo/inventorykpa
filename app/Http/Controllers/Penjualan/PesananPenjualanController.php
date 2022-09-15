@@ -614,6 +614,7 @@ class PesananPenjualanController extends Controller
         $datas['total'] = $total;
         $datas['user_id'] = Auth::user()->id;
         $datas['ongkir'] = $ongkir;        
+        
 
 
         // ambil data dulu ke pesananan penjualan buat edit total dan grand totalnya 
@@ -717,6 +718,7 @@ class PesananPenjualanController extends Controller
         $PJ = PesananPenjualanDetail::find($request->id);
         $PJ->hargajual = $harga;
         $PJ->qty = $request->qty;
+        $PJ->qty_sisa = $request->qty;
         $PJ->diskon_persen = $request->diskon_persen;
         $PJ->diskon_rp = $request->diskon_rp;
         $PJ->ongkir = $ongkir;

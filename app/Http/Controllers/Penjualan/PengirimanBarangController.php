@@ -130,6 +130,7 @@ class PengirimanBarangController extends Controller
         $tempsj = TempSj::with(['products'])
             ->where('user_id', '=', Auth::user()->id)
             ->get();
+
         return view('penjualan.pengirimanbarang._temptabelsj', compact('tempsj'));
     }
 
@@ -154,6 +155,7 @@ class PengirimanBarangController extends Controller
         //validasi
         //1. cek item sudah dimasukkan apa belum
         $jmlItem = TempSj::where('product_id', '=', $product_id)->count();
+        
         if ($qty_kirim > 0) {
             if ($qty_kirim <= $stok) {
                 if ($jmlItem == 0) {

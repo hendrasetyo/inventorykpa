@@ -128,9 +128,9 @@ class LaporanStokController extends Controller
                 ->addColumn('action', function ($row) {
                     $status = 1;
                     if ($row->jenis == 'PB') {
-                        $selectUrl = route('penerimaanbarang.detail', ['penerimaanbarang' => $row->jenis_id]);    
+                        $selectUrl = route('penerimaanbarang.showData', ['penerimaanbarang' => $row->jenis_id]);    
                     }elseif ($row->jenis == 'SJ') {
-                        $selectUrl = route('pengirimanbarang.detail', ['pengirimanbarang' => $row->jenis_id]);    
+                        $selectUrl = route('pengirimanbarang.showData', ['pengirimanbarang' => $row->jenis_id]);    
                     }else{
                         $selectUrl = '';    
                         $status = 0;

@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\PembayaranHutang;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Models\FakturPembelian;
+use App\Models\LogToleransi;
 use Illuminate\Support\Facades\Auth;
 
 class PembayaranHutangController extends Controller
@@ -89,6 +91,9 @@ class PembayaranHutangController extends Controller
                     $sisa = $pb->total - $pb->dibayar;
                     return $sisa ? with(number_format($sisa, 0, ',', '.')) : '0';
                 })
+                ->editColumn('tanggal_top', function (Hutang $pb) {
+                    return $pb->tanggal_top ? with(new Carbon($pb->tanggal_top))->format('d-m-Y') : '';
+                })
                 ->addColumn('action', function ($row) {
                     $pilihUrl = route('pembayaranhutang.create', ['hutang' => $row->id]);
                     $id = $row->id;
@@ -127,12 +132,15 @@ class PembayaranHutangController extends Controller
         $sisa           = $total_hutang - $dibayar;
 
         $nominal = str_replace('.', '', $request->nominal) * 1;
-        $dibayar_baru = $dibayar + $nominal;
+        $dibayar_baru = $dibayar + $nominal;  
+        
+        $toleransi = $total_hutang - $dibayar_baru;
+        
 
-        if ($sisa > $nominal) {
-            $status = '1';
-        } else {
+        if ($toleransi >= 500 || $toleransi<=500) {
             $status = '2';
+        } else {
+            $status = '1';
         }
 
         //insert pembayaran
@@ -149,7 +157,20 @@ class PembayaranHutangController extends Controller
         $datahutang = Hutang::find($hutang->id);
         $datahutang->status = $status;
         $datahutang->dibayar = $dibayar_baru;
+        $datahutang->nominal_toleransi = $toleransi;
         $datahutang->save();
+
+        $faktur = FakturPembelian::where('id',$hutang->faktur_pembelian_id)->first();
+
+        if ($status == '2') {
+            LogToleransi::create([
+                'tanggal' => $tanggal,
+                'rupiah' => $toleransi,
+                'jenis' => 'Hutang',
+                'jenis_id' => $faktur->kode,
+            ]);
+        }
+
 
         return redirect()->route('pembayaranhutang.index')->with('status', 'Pembayaran Hutang Berhasil Dibuat !');
     }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Contracts\Role;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Laporan\LaporanHutangPiutangController;
 use App\Http\Controllers\Laporan\LaporanPenjualanController;
 use App\Http\Controllers\NavigationController;
 use App\Http\Controllers\Master\MerkController;
@@ -300,7 +301,7 @@ Route::middleware('has.role')->prefix('pembelian')->group(function () {
         Route::get('{penerimaanbarang}/edit', [PenerimaanBarangController::class, 'edit'])->name('penerimaanbarang.edit');
         Route::put('{penerimaanbarang}/edit', [PenerimaanBarangController::class, 'update'])->name('penerimaanbarang.update');
         Route::get('{penerimaanbarang}/show', [PenerimaanBarangController::class, 'show'])->name('penerimaanbarang.show');
-        Route::get('{penerimaanbarang}/showdata', [PenerimaanBarangController::class, 'showData'])->name('penerimaanbarang.detail');
+        Route::get('{penerimaanbarang}/showdata', [PenerimaanBarangController::class, 'showData'])->name('penerimaanbarang.showData');
 
 
         Route::post('delete', [PenerimaanBarangController::class, 'delete'])->name('penerimaanbarang.delete');
@@ -558,7 +559,9 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         Route::get('pembayaranhutangdetail', [LaporanPembayaranController::class, 'filterHutangDetail'])->name('laporanpembayaran.filterpembayaranhutangdetail');        
         Route::get('pembayaranpiutang', [LaporanPembayaranController::class, 'filterPiutang'])->name('laporanpembayaran.filterpembayaranpiutang');
         Route::get('pembayaranpiutangdetail', [LaporanPembayaranController::class, 'filterPiutangDetail'])->name('laporanpembayaran.filterpembayaranpiutangdetail');
+        Route::get('logtoleransi', [LaporanPembayaranController::class, 'logToleransi'])->name('laporanpembayaran.filterlogtoleransi');
 
+        Route::post('logtoleransi', [LaporanPembayaranController::class, 'filterLogToleransi'])->name('laporanpembayaran.filterlogtoleransi');
         Route::post('pembayaranhutang', [LaporanPembayaranController::class, 'filterDataHutang'])->name('laporanpembayaran.filterdatapembayaranhutang');
         Route::post('pembayaranhutang/export', [LaporanPembayaranController::class, 'exportPembayaranHutang'])->name('laporanpembayaran.exportpembayaranhutang');
         Route::post('pembayaranhutangdetail', [LaporanPembayaranController::class, 'filterDataHutangDetail'])->name('laporanpembayaran.filterdatapembayaranhutangdetail');
@@ -584,6 +587,19 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         Route::post('pembeliandetail', [LaporanPembelianController::class, 'filterDataPembelianDetail'])->name('laporanpembelian.filterdatapembeliandetail');
         Route::post('pembeliandetail/export', [LaporanPembelianController::class, 'exportPembelianDetail'])->name('laporanpembelian.exportpembeliandetail');
 
+    });
+
+    Route::prefix('laporanhutangpiutang')->group(function () {
+             // GET
+        Route::get('', [LaporanHutangPiutangController::class, 'index'])->name('laporanhutangpiutang.index');
+        Route::get('hutang', [LaporanHutangPiutangController::class, 'hutang'])->name('laporanhutangpiutang.hutang');
+        Route::get('piutang', [LaporanHutangPiutangController::class, 'piutang'])->name('laporanhutangpiutang.piutang');
+
+
+        Route::post('hutang', [LaporanHutangPiutangController::class, 'filterHutang'])->name('laporanhutangpiutang.filterhutang');
+        Route::post('hutang/export', [LaporanHutangPiutangController::class, 'exportHutang'])->name('laporanhutangpiutang.exporthutang');
+        Route::post('piutang', [LaporanHutangPiutangController::class, 'filterPiutang'])->name('laporanhutangpiutang.filterpiutang');
+        Route::post('piutang/export', [LaporanHutangPiutangController::class, 'exportPiutang'])->name('laporanhutangpiutang.exportpiutang');
     });
 
 

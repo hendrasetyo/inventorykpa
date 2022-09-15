@@ -112,6 +112,9 @@ class FakturPembelianController extends Controller
         $id_po = $penerimaanbarang->pesanan_pembelian_id;
         $PBdetails = PenerimaanBarangDetail::where('penerimaan_barang_id', '=', $id_pb)->get();
 
+           
+
+
         //start cek status exp date PB :
         $status_exp_pb = 1;
         foreach ($PBdetails as $s) {
@@ -205,8 +208,8 @@ class FakturPembelianController extends Controller
         $tanggal = $request->tanggal;
 
         $biaya = TempBiaya::where('jenis', '=', "FB")
-        ->where('user_id', '=', Auth::user()->id)
-        ->first();
+                ->where('user_id', '=', Auth::user()->id)
+                ->first();
 
 
         $biayalainlain = $biaya->rupiah;
@@ -218,6 +221,11 @@ class FakturPembelianController extends Controller
         $kode = $this->getKodeTransaksi("faktur_pembelians", "FB");
         $id_pb = $penerimaanbarang->id;
         $id_po = $penerimaanbarang->pesanan_pembelian_id;
+
+        $tanggalPenerimaan = $penerimaanbarang->tanggal;
+        $pembelian = PesananPembelian::where('id',$id_po)->first();
+
+        $tanggal_top = date("Y-m-d", strtotime("+".$pembelian->top." days" . $tanggalPenerimaan));    
 
         //start cek status exp date PB :
         $PBdetails = PenerimaanBarangDetail::where('penerimaan_barang_id', '=', $id_pb)->get();
@@ -308,8 +316,10 @@ class FakturPembelianController extends Controller
         $hutang->total = $grandtotal_header;
         $hutang->dibayar = "0";
         $hutang->status = "1"; //1 = belum lunas ; 2= lunas
+        $hutang->tanggal_top = $tanggal_top;
         $hutang->save();
         #################### end update Hutang ##################
+        
 
         return redirect()->route('fakturpembelian.index')->with('status', 'Faktur Pembelian berhasil dibuat !');
     }

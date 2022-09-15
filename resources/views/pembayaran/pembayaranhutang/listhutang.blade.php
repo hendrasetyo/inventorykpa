@@ -69,6 +69,7 @@
                                         <th>Supplier</th>
                                         <th>Total</th>
                                         <th>Terbayar</th>
+                                        <th>Tanggal TOP</th>
                                         <th>Sisa</th>
                                         <th style="width: 15%">Action</th>
                                     </tr>
@@ -116,6 +117,7 @@
                   {data: 'suppliers', name: 'suppliers.nama'},
                   {data: 'total', name: 'total'},
                   {data: 'dibayar', name: 'dibayar'},
+                  {data: 'tanggal_top', name: 'tanggal_top'},
                   {data: 'sisa', name: 'sisa'},
 
                   {
