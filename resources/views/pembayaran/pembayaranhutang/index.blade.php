@@ -74,6 +74,7 @@
                                         <th>Tanggal</th>
                                         <th>Supplier</th>
                                         <th>Faktur</th>
+                                        <th>No KPA</th>
                                         <th>Akun Bank</th>
                                         <th>Nominal</th>
                                         <th>Keterangan</th>
@@ -119,7 +120,7 @@
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                   {data: 'tanggal', name: 'tanggal'},
                   {data: 'suppliers', name: 'suppliers.nama'},
-                  {data: 'faktur_po', name: 'faktur_po.kode'},
+                  {data: 'faktur_po', name: 'faktur_po.kode'},                  
                   {data: 'banks', name: 'banks.nama'},
                   {data: 'nominal', name: 'nominal'},
                   {data: 'keterangan', name: 'keterangan'},

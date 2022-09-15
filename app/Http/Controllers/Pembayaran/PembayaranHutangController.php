@@ -38,7 +38,7 @@ class PembayaranHutangController extends Controller
                 })
                 ->addColumn('faktur_po', function (PembayaranHutang $ph) {
                     return $ph->FakturPO->kode;
-                })
+                })                
                 ->addColumn('banks', function (PembayaranHutang $ph) {
                     return $ph->banks->nama;
                 })

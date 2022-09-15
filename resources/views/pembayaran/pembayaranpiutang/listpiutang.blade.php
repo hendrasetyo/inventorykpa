@@ -65,6 +65,7 @@
                                 <thead class="datatable-head">
                                     <tr>
                                         <th>Faktur No.</th>
+                                        <th>No KPA</th>
                                         <th>Tanggal</th>
                                         <th>Customer</th>
                                         <th>Total</th>
@@ -113,6 +114,7 @@
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                   {data: 'faktur_so', name: 'faktur_po.kode'},
+                  {data: 'no_kpa', name: 'faktur_po.no_kpa'},
                   {data: 'tanggal', name: 'tanggal'},
                   {data: 'customers', name: 'customers.nama'},
                   {data: 'total', name: 'total'},

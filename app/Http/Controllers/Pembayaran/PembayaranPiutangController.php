@@ -39,6 +39,9 @@ class PembayaranPiutangController extends Controller
                 ->addColumn('faktur_so', function (PembayaranPiutang $ph) {
                     return $ph->FakturSO->kode;
                 })
+                ->addColumn('no_kpa', function (PembayaranPiutang $ph) {
+                    return $ph->FakturSO->no_kpa;
+                })
                 ->addColumn('banks', function (PembayaranPiutang $ph) {
                     return $ph->banks->nama;
                 })
@@ -70,6 +73,8 @@ class PembayaranPiutangController extends Controller
             ->where('status', '=', '1')
             ->get();
 
+        
+
         if (request()->ajax()) {
             return Datatables::of($piutangs)
                 ->addIndexColumn()
@@ -78,7 +83,10 @@ class PembayaranPiutangController extends Controller
                 })
                 ->addColumn('faktur_so', function (Piutang $pb) {
                     return $pb->FakturSO->kode;
-                })
+                })               
+                ->addColumn('no_kpa', function (Piutang $pb) {
+                    return $pb->FakturSO->no_kpa;
+                })         
                 ->editColumn('tanggal', function (Piutang $pb) {
                     return $pb->tanggal ? with(new Carbon($pb->tanggal))->format('d-m-Y') : '';
                 })

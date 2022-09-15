@@ -74,6 +74,7 @@
                                         <th>Tanggal</th>
                                         <th>Customer</th>
                                         <th>Faktur</th>
+                                        <th>No KPA</th>
                                         <th>Akun Bank</th>
                                         <th>Nominal</th>
                                         <th>Keterangan</th>
@@ -120,6 +121,7 @@
                   {data: 'tanggal', name: 'tanggal'},
                   {data: 'customers', name: 'customers.nama'},
                   {data: 'faktur_so', name: 'faktur_so.kode'},
+                  {data: 'no_kpa', name: 'faktur_so.no_kpa'},
                   {data: 'banks', name: 'banks.nama'},
                   {data: 'nominal', name: 'nominal'},
                   {data: 'keterangan', name: 'keterangan'},
