@@ -18,7 +18,8 @@
             <th>PPN Faktur</th>                                                                                          
             <th>Grand Total Faktur</th>                    
             <th>Nama Produk</th> 
-            <th>Kode Produk</th>   
+            <th>Kode Produk</th>  
+            <th>Merk</th> 
             <th>Qty</th>
             <th>Satuan</th>
             <th>Harga Jual Produk</th>
@@ -58,6 +59,7 @@
                 <td>{{$item->grandtotal}}</td>                  
                 <td>{{$item->nama_produk}}</td>
                 <td>{{$item->kode_produk}}</td>
+                <td>{{$item->nama_merk}}</td>
                 <td>{{$item->qty_det}}</td>
                 <td>{{$item->satuan_det}}</td>
                 <td>{{$item->hargajual_det}}</td>

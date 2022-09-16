@@ -89,6 +89,7 @@
                                         <th>Kode SO</th>
                                         <th>Kode SJ</th>
                                         <th>No Pajak</th>
+                                        <th>No KPA</th>
                                         <th>Customer</th>                                        
                                         <th>Diskon Rupiah</th>
                                         <th>Diskon Persen</th>
@@ -116,6 +117,7 @@
                                             <td>{{$item->kode_SP}}</td>
                                             <td>{{$item->kode_SJ}}</td>
                                             <td>{{$item->no_pajak}}</td>
+                                            <td>{{$item->no_kpa}}</td>
                                             <td>{{$item->nama_customer}}</td>
                                             <td>{{$item->diskon_rupiah}}</td>
                                             <td>{{$item->diskon_persen}}</td>

@@ -63,6 +63,8 @@
                                     <input type="hidden" name="tgl2" value="{{$form['tgl2']}}"> 
                                     <input type="hidden" name="customer" value="{{$form['customer']}}"> 
                                     <input type="hidden" name="sales" value="{{$form['sales']}}"> 
+                                    <input type="hidden" name="produk" value="{{$form['produk']}}"> 
+                                    <input type="hidden" name="merk" value="{{$form['merk']}}"> 
 
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <span class="svg-icon svg-icon-default svg-icon-1x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo2\dist/../src/media/svg/icons\Files\Import.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -89,6 +91,7 @@
                                         <th>Kode SO</th>
                                         <th>Kode SJ</th>
                                         <th>No Pajak</th>
+                                        <th>No KPA</th>
                                         <th>Customer</th>                                        
                                         <th>Diskon Rupiah</th>
                                         <th>Diskon Persen</th>
@@ -97,10 +100,11 @@
                                         <th>Total Diskon Header</th>
                                         <th>Total</th>
                                         <th>PPN</th>
-                                        <th>Ongkir</th>                                                                                
+                                        <th>Ongkir</th>                                         
                                         <th>Grand Total</th>                                        
                                         <th>Nama Produk</th>    
                                         <th>Kode Produk</th>
+                                        <th>Merk</th>
                                         <th>Qty</th>
                                         <th>Satuan</th>
                                         <th>Harga Jual Produk</th>
@@ -128,6 +132,7 @@
                                             <td>{{$item->kode_SP}}</td>
                                             <td>{{$item->kode_SJ}}</td>
                                             <td>{{$item->no_pajak}}</td>
+                                            <td>{{$item->no_kpa}}</td>
                                             <td>{{$item->nama_customer}}</td>
                                             <td>{{$item->diskon_rupiah}}</td>
                                             <td>{{$item->diskon_persen}}</td>
@@ -140,6 +145,7 @@
                                             <td>{{$item->grandtotal}}</td>                                              
                                             <td>{{$item->nama_produk}}</td>
                                             <td>{{$item->kode_produk}}</td>
+                                            <td>{{$item->nama_merk}}</td>
                                             <td>{{$item->qty_det}}</td>
                                             <td>{{$item->satuan_det}}</td>
                                             <td>{{$item->hargajual_det}}</td>

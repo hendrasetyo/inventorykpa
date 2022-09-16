@@ -7,6 +7,7 @@
             <th>Kode SO</th>
             <th>Kode SJ</th>
             <th>No Pajak</th>
+            <th>No KPA</th>
             <th>Customer</th>                                        
             <th>Diskon Rupiah Faktur</th>
             <th>Diskon Persen Faktur</th>
@@ -19,6 +20,7 @@
             <th>Grand Total Faktur</th>                    
             <th>Nama Produk</th> 
             <th>Kode Produk</th>   
+            <th>Merk</th> 
             <th>Qty</th>
             <th>Satuan</th>
             <th>Harga Jual Produk</th>
@@ -50,6 +52,7 @@
                 <td>{{$item->kode_SP}}</td>
                 <td>{{$item->kode_SJ}}</td>
                 <td>{{$item->no_pajak}}</td>
+                <td>{{$item->no_kpa}}</td>
                 <td>{{$item->nama_customer}}</td>
                 <td>{{$item->diskon_rupiah}}</td>
                 <td>{{$item->diskon_persen}}</td>
@@ -62,6 +65,7 @@
                 <td>{{$item->grandtotal}}</td>                  
                 <td>{{$item->nama_produk}}</td>
                 <td>{{$item->kode_produk}}</td>
+                <td>{{$item->nama_merk}}</td>
                 <td>{{$item->qty_det}}</td>
                 <td>{{$item->satuan_det}}</td>
                 <td>{{$item->hargajual_det}}</td>

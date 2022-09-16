@@ -110,7 +110,7 @@
                                                 <option value="{{$item->id}}">{{$item->nama}}</option>
                                             @endforeach
                                         </select>
-                                    </div>
+                                    </div>                                 
 
                                 </div>
 

@@ -169,6 +169,7 @@ class LaporanHutangPiutangController extends Controller
         }else{
             $tanggalFilter = $pembayaran;
         }
+        
 
         if ($data['customer'] == 'all') {  
 
