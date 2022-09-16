@@ -120,7 +120,7 @@
                                         <label for="">Status</label>
                                         <select name="status" id="kt_select2_3" class="form-control">
                                             <option value="1" selected>Belum Lunas</option>
-                                            <option value="1">Lunas</option>
+                                            <option value="2">Lunas</option>
                                         </select>
                                     </div>
 

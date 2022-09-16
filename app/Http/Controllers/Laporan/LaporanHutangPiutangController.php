@@ -111,7 +111,7 @@ class LaporanHutangPiutangController extends Controller
 
         }
 
-        $statusFilter = $filter->where('status','=',$data['status']);
+        $statusFilter = $filter->where('h.status','=',$data['status']);
 
         $datafilter = $statusFilter->select('s.nama as nama_supplier','pp.kode as kode_pp','pb.kode as kode_pb','fb.kode as kode_fp'
                                 ,'h.*')->get();
@@ -148,9 +148,7 @@ class LaporanHutangPiutangController extends Controller
 
         $pembayaran = DB::table('piutangs as p')
                     ->join('pesanan_penjualans as pp','p.pesanan_penjualan_id','=','pp.id')                    
-                    ->join('pengiriman_barangs as pb','p.pengiriman_barang_id','=','pb.id')                   
-                    ->where('p.tanggal','>=',$tgl1)
-                    ->where('p.tanggal','<=',$tgl2);
+                    ->join('pengiriman_barangs as pb','p.pengiriman_barang_id','=','pb.id');                                    
                     
 
         if ($data['tgl1']) {            
@@ -230,7 +228,7 @@ class LaporanHutangPiutangController extends Controller
         }
 
 
-        $statusFilter = $salesfilter->where('status','=',$data['status']);
+        $statusFilter = $salesfilter->where('p.status','=',$data['status']);
 
         $datafilter = $statusFilter->select('c.nama as nama_customer','pp.kode as kode_pp','pb.kode as kode_pb','fp.kode as kode_fp','p.*','s.nama as nama_sales')->get();
 
