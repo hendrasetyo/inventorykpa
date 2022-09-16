@@ -7,7 +7,9 @@
             <th>Kode PO</th>
             <th>Kode PB</th>
             <th>Supplier</th>   
-            <th>Nama Produk</th>                                     
+            <th>Nama Produk</th>  
+            <th>Kode Produk</th>    
+            <th>Merk</th>                                                                  
             <th>Qty Produk</th>     
             <th>Satuan</th>                                                                          
             <th>Diskon Rupiah</th>
@@ -44,6 +46,8 @@
                 <td>{{$item->kode_SJ}}</td>                                            
                 <td>{{$item->nama_supplier}}</td>
                 <td>{{$item->nama_produk}}</td>
+                <td>{{$item->kode_produk}}</td>
+                <td>{{$item->nama_merk}}</td>
                 <td>{{$item->qty_produk}}</td>
                 <td>{{$item->satuan_produk}}</td>
                 <td>{{$item->diskon_rupiah}}</td>

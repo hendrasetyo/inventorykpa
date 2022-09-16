@@ -51,7 +51,7 @@
                                                 </g>
                                             </svg>
                                             <!--end::Svg Icon--></span> </span>
-                                    <h3 class="card-label">Laporan Penjualan</h3>
+                                    <h3 class="card-label">Laporan Pembelian Detail</h3>
                                 
 
                             </div>                           
@@ -62,7 +62,8 @@
                                     <input type="hidden" name="tgl1" value="{{$form['tgl1']}}"> 
                                     <input type="hidden" name="tgl2" value="{{$form['tgl2']}}"> 
                                     <input type="hidden" name="supplier" value="{{$form['supplier']}}"> 
-                                    
+                                    <input type="hidden" name="produk" value="{{$form['produk']}}"> 
+                                    <input type="hidden" name="merk" value="{{$form['merk']}}">                                     
 
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <span class="svg-icon svg-icon-default svg-icon-1x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo2\dist/../src/media/svg/icons\Files\Import.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -89,7 +90,9 @@
                                         <th>Kode PO</th>
                                         <th>Kode PB</th>
                                         <th>Supplier</th>   
-                                        <th>Nama Produk</th>                                     
+                                        <th>Nama Produk</th>   
+                                        <th>Kode Produk</th>
+                                        <th>Merk</th>
                                         <th>Qty Produk</th>     
                                         <th>Satuan</th>                                                                          
                                         <th>Diskon Rupiah</th>
@@ -126,6 +129,8 @@
                                             <td>{{$item->kode_SJ}}</td>                                            
                                             <td>{{$item->nama_supplier}}</td>
                                             <td>{{$item->nama_produk}}</td>
+                                            <td>{{$item->kode_produk}}</td>
+                                            <td>{{$item->nama_merk}}</td>
                                             <td>{{$item->qty_produk}}</td>
                                             <td>{{$item->satuan_produk}}</td>
                                             <td>{{$item->diskon_rupiah}}</td>

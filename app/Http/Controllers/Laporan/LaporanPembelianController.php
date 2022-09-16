@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Laporan;
 use App\Exports\LaporanPembelianDetailExport;
 use App\Exports\LaporanPembelianExport;
 use App\Http\Controllers\Controller;
+use App\Models\Merk;
+use App\Models\Product;
 use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,7 +33,7 @@ class LaporanPembelianController extends Controller
     public function filterPembelian()
     {                    
         $title = "Laporan Pembelian";
-        $supplier = Supplier::with('namakota')->select('id','nama','kota')->get();        
+        $supplier = Supplier::with('namakota')->select('id','nama','kota')->get();                
 
         return view('laporan.pembelian.laporanpembelian.filterPembelian', [
             'supplier' => $supplier,        
@@ -43,11 +45,16 @@ class LaporanPembelianController extends Controller
     public function filterPembelianDetail()
     {
         $title = "Laporan Pembelian Detail";
-        $supplier = Supplier::with('namakota')->select('id','nama','kota')->get();      
+        $supplier = Supplier::with('namakota')->select('id','nama','kota')->get();  
+        $produk = Product::select('id','nama')->get();
+        $merk = Merk::select('id','nama')->get();
+
         
         return view('laporan.pembelian.laporanpembeliandetail.filterPembelian', [
             'supplier' => $supplier,        
-            'title' => $title
+            'title' => $title,
+            'produk' => $produk,
+            'merk' => $merk
         ]);
         
     }
@@ -61,24 +68,56 @@ class LaporanPembelianController extends Controller
         $penjualan = DB::table('faktur_pembelians as fp')        
                     ->join('penerimaan_barangs as pb','fp.penerimaan_barang_id','=','pb.id')
                     ->join('pesanan_pembelians as pp','fp.pesanan_pembelian_id','=','pp.id')
-                    ->join('users as u','fp.created_by','=','u.id')
-                    ->where('fp.tanggal','>=',$tgl1)
-                    ->where('fp.tanggal','<=',$tgl2);  
-        
-        
+                    ->join('users as u','fp.created_by','=','u.id');
+                           
+        if ($data['tgl1']) {            
+            if (!$data['tgl2']) {
+                $tanggalFilter=$penjualan->where('fp.tanggal','>=',$tgl1);
+                                
+            }else{
+                $tanggalFilter=$penjualan->where('fp.tanggal','>=',$tgl1)
+                                ->where('fp.tanggal','<=',$tgl2);
+            }
+        }elseif($data['tgl2']){
+            if (!$data['tgl1']) {
+                $tanggalFilter=$penjualan->where('fp.tanggal','<=',$tgl2);
+            }else{
+                $tanggalFilter=$penjualan->where('fp.tanggal','>=',$tgl1)
+                                ->where('fp.tanggal_top','<=',$tgl2);
+            }
+        }else{
+            $tanggalFilter = $penjualan;
+        }
     
         // dd($penjualan->get());
 
         if ($data['supplier'] == 'all') {            
 
-            $customerfilter = $penjualan->join('suppliers as s','fp.supplier_id','=','s.id');                           
+            $customerfilter = $tanggalFilter->join('suppliers as s','fp.supplier_id','=','s.id');                           
         }else{
-            $customerfilter = $penjualan->join('supplier as s','fp.supplier_id','=','s.id')
+            $customerfilter = $tanggalFilter->join('supplier as s','fp.supplier_id','=','s.id')
                               ->where('fp.supplier_id','=',$data['supplier']);                 
 
         }
 
-        $filter = $customerfilter->select('fp.*','pb.kode as kode_SJ','pp.kode as kode_SP','s.nama as nama_supplier','u.name as nama_pembuat')->get();                                        
+        if ($data['produk'] == 'all') {
+            $produkfilter = $customerfilter ->join('products as p','p.id','=','fpb.product_id');            
+        } else {
+            $produkfilter = $customerfilter ->join('products as p','p.id','=','fpb.product_id')
+                                         ->where('p.id','=',$data['produk']);
+        }
+        
+
+        if ($data['merk'] == 'all') {
+            $merkfilter  = $produkfilter->join('merks as m','p.merk_id','=','m.id');
+        } else {
+            $merkfilter  = $produkfilter->join('merks as m','p.merk_id','=','m.id')
+                            ->where('m.id','=',$data['merk']);
+        }
+
+
+
+        $filter = $merkfilter->select('fp.*','pb.kode as kode_SJ','pp.kode as kode_SP','s.nama as nama_supplier','u.name as nama_pembuat')->get();                                        
                 
         if (count($filter) <= 0) {
             return redirect()->back()->with('status_danger', 'Data tidak ditemukan');
@@ -109,25 +148,57 @@ class LaporanPembelianController extends Controller
                     ->join('penerimaan_barangs as pb','fp.penerimaan_barang_id','=','pb.id')
                     ->join('pesanan_pembelians as pp','fp.pesanan_pembelian_id','=','pp.id')
                     ->join('faktur_pembelian_details as fpb','fpb.faktur_pembelian_id','=','fp.id')
-                    ->join('products as p','fpb.product_id','=','p.id')
-                    ->join('users as u','fp.created_by','=','u.id')
-                    ->where('fp.tanggal','>=',$tgl1)
-                    ->where('fp.tanggal','<=',$tgl2);  
-        
-        
-    
-        // dd($penjualan->get());
+                    ->join('users as u','fp.created_by','=','u.id');
 
-        if ($data['supplier'] == 'all') {            
 
-            $customerfilter = $penjualan->join('suppliers as s','fp.supplier_id','=','s.id');                           
-        }else{
-            $customerfilter = $penjualan->join('supplier as s','fp.supplier_id','=','s.id')
-                              ->where('fp.supplier_id','=',$data['supplier']);                 
 
-        }
+                    if ($data['tgl1']) {            
+                        if (!$data['tgl2']) {
+                            $tanggalFilter=$penjualan->where('fp.tanggal','>=',$tgl1);
+                                            
+                        }else{
+                            $tanggalFilter=$penjualan->where('fp.tanggal','>=',$tgl1)
+                                            ->where('fp.tanggal','<=',$tgl2);
+                        }
+                    }elseif($data['tgl2']){                        
+                        if (!$data['tgl1']) {
+                            $tanggalFilter=$penjualan->where('fp.tanggal','<=',$tgl2);
+                        }else{
+                            $tanggalFilter=$penjualan->where('fp.tanggal','>=',$tgl1)
+                                            ->where('fp.tanggal_top','<=',$tgl2);
+                        }
 
-        $filter = $customerfilter->select('fp.*','pb.kode as kode_SJ'
+                    }else{
+                        $tanggalFilter = $penjualan;
+                    }
+                
+                    
+            
+                    if ($data['supplier'] == 'all') {            
+            
+                        $customerfilter = $tanggalFilter->join('suppliers as s','fp.supplier_id','=','s.id');                           
+                    }else{
+                        $customerfilter = $tanggalFilter->join('supplier as s','fp.supplier_id','=','s.id')
+                                          ->where('fp.supplier_id','=',$data['supplier']);                 
+            
+                    }
+            
+                    if ($data['produk'] == 'all') {
+                        $produkfilter = $customerfilter ->join('products as p','p.id','=','fpb.product_id');            
+                    } else {
+                        $produkfilter = $customerfilter ->join('products as p','p.id','=','fpb.product_id')
+                                                     ->where('p.id','=',$data['produk']);
+                    }
+                    
+            
+                    if ($data['merk'] == 'all') {
+                        $merkfilter  = $produkfilter->join('merks as m','p.merk_id','=','m.id');
+                    } else {
+                        $merkfilter  = $produkfilter->join('merks as m','p.merk_id','=','m.id')
+                                        ->where('m.id','=',$data['merk']);
+                    }
+
+        $filter = $merkfilter->select('fp.*','pb.kode as kode_SJ'
                                         ,'pp.kode as kode_SP'
                                         ,'s.nama as nama_supplier'
                                         ,'u.name as nama_pembuat',
@@ -136,7 +207,8 @@ class LaporanPembelianController extends Controller
                                         'fpb.diskon_rp as diskon_rp_produk','fpb.subtotal as subtotal_produk',
                                         'fpb.total_diskon as total_diskon_produk',
                                         'fpb.total as total_produk','fpb.ongkir as ongkir_produk',
-                                        'fpb.keterangan as keterangan_produk','p.nama as nama_produk'
+                                        'fpb.keterangan as keterangan_produk','p.nama as nama_produk', 'p.kode as kode_produk',
+                                        'm.nama as nama_merk'
                                         )->get();                                      
                 
         if (count($filter) <= 0) {

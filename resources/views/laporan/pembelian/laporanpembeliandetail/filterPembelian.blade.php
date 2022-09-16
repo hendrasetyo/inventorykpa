@@ -100,7 +100,30 @@
                                                 <option value="{{$item->id}}">{{$item->nama}} - {{$item->namakota->name}}</option>
                                             @endforeach
                                         </select>
-                                    </div>                                  
+                                    </div>  
+                                    
+                                    
+                                    <div class="form-group">
+                                        <label for="">Merk</label>
+                                        <select name="merk" id="kt_select2_2" class="form-control">
+                                            <option value="all">Semua</option>
+                                            
+                                            @foreach ($merk as $item)
+                                                <option value="{{$item->id}}">{{$item->nama}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>  
+
+                                    <div class="form-group">
+                                        <label for="">Produk</label>
+                                        <select name="produk" id="kt_select2_3" class="form-control">
+                                            <option value="all">Semua</option>
+                                            
+                                            @foreach ($produk as $item)
+                                                <option value="{{$item->id}}">{{$item->nama}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>  
 
                                 </div>
 
