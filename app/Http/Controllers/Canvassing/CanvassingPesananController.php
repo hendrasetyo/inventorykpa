@@ -48,7 +48,7 @@ class CanvassingPesananController extends Controller
                 ->make(true);
         }
     
-        return view('Canvassing.canvassing.index',compact('title'));
+        return view('canvassing.canvassing.index',compact('title'));
     }
 
     public function create()
