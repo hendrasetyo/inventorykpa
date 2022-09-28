@@ -99,6 +99,7 @@ class PengirimanBarangController extends Controller
 
         //dd($pesananpenjualan);
         return view('penjualan.pengirimanbarang.listso', compact('title', 'pesananpenjualans'));
+        
     }
 
     public function create(PesananPenjualan $pesananpenjualan)

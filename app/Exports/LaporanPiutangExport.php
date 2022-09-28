@@ -19,6 +19,8 @@ class LaporanPiutangExport implements FromView
 
     public function view(): View
     { 
+        $totalpiutang = 0;
+          
         $title = 'Laporan Pembayaran Hutang';        
                         
         $tgl1 = Carbon::parse($this->data['tgl1'])->format('Y-m-d');
@@ -26,9 +28,7 @@ class LaporanPiutangExport implements FromView
 
         $pembayaran = DB::table('piutangs as p')
                     ->join('pesanan_penjualans as pp','p.pesanan_penjualan_id','=','pp.id')                    
-                    ->join('pengiriman_barangs as pb','p.pengiriman_barang_id','=','pb.id')                   
-                    ->where('p.tanggal','>=',$tgl1)
-                    ->where('p.tanggal','<=',$tgl2);
+                    ->join('pengiriman_barangs as pb','p.pengiriman_barang_id','=','pb.id');                    
                     
 
         if ($this->data['tgl1']) {            
@@ -112,13 +112,13 @@ class LaporanPiutangExport implements FromView
 
         $datafilter = $statusFilter->select('c.nama as nama_customer','pp.kode as kode_pp','pb.kode as kode_pb','fp.kode as kode_fp','p.*','s.nama as nama_sales')->get();
 
-        if (count($datafilter) <= 0) {
-                return redirect()->back()->with('status_danger', 'Data tidak ditemukan atau belum melakukan pembayaran');
-        }
-        
+        foreach ($datafilter as $key ) {
+            $totalpiutang = $totalpiutang + $key->total - $key->dibayar;
+        }                 
 
         return view('laporan.hutangpiutang.export.piutang',[            
-            'hutang' => $datafilter,            
+            'hutang' => $datafilter,  
+            'totalpiutang' => $totalpiutang
         ]);
         
     }

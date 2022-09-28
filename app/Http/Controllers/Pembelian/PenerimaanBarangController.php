@@ -113,6 +113,7 @@ class PenerimaanBarangController extends Controller
                     ->where('pesanan_pembelian_id', '=', $id_po)
                     ->orderBy('tanggal', 'desc')
                     ->get();
+                
     
         return view('pembelian.penerimaanbarang.create', compact('title', 'pesananpembelian', 'POdetails'));
 
@@ -131,6 +132,7 @@ class PenerimaanBarangController extends Controller
         $temppb = TempPb::with(['products'])
             ->where('user_id', '=', Auth::user()->id)
             ->get();
+            
         return view('pembelian.penerimaanbarang._temptabelpb', compact('temppb'));
     }
 
@@ -403,7 +405,7 @@ class PenerimaanBarangController extends Controller
         $penerimaanbarang_id = $penerimaanbarangdetail->penerimaan_barang_id;
         $qty_diterima = $penerimaanbarangdetail->qty;
 
-
+        
         //get jumlah qty di exp data
         $totalQtyExp = StokExpDetail::where('id_pb_detail', '=', $penerimaanbarangdetail_id)->sum('qty');
         $qtyExpNow = $totalQtyExp + $qty;
@@ -515,6 +517,7 @@ class PenerimaanBarangController extends Controller
         $data = PenerimaanBarang::where('id', '=', $request->id)->get()->first();
         $id = $request->id;
         $status_pb_id = $data->status_pb_id;
+        
         if ($status_pb_id == 2) {
             $can_delete = "NO";
         } else {
@@ -604,7 +607,9 @@ class PenerimaanBarangController extends Controller
         $title = "Penerimaan Barang Detail";
         $penerimaanbarangdetails = PenerimaanBarangDetail::with('products')
             ->where('penerimaan_barang_id', '=', $penerimaanbarang->id)->get();
+        
         $listExp = StokExpDetail::where('id_pb', '=', $penerimaanbarang->id)->get();
+        
         return view('pembelian.penerimaanbarang.show', compact('title', 'listExp', 'penerimaanbarang', 'penerimaanbarangdetails'));
     }
 
@@ -621,4 +626,6 @@ class PenerimaanBarangController extends Controller
         $listExp = StokExpDetail::where('id_pb', '=', $penerimaanbarang->id)->get();
         return view('pembelian.penerimaanbarang.show', compact('title', 'listExp', 'penerimaanbarang', 'penerimaanbarangdetails'));
     }
+
+    
 }

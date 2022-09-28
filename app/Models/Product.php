@@ -38,7 +38,8 @@ class Product extends Model
         'stok',
         'keterangan',
         'status',
-        'status_exp'
+        'status_exp',
+        'stok_canvassing'
     ];
     protected $dates = ['exp_ijinedar'];
 

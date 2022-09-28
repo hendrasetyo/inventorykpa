@@ -188,6 +188,7 @@ class PesananPembelianController extends Controller
                 })
                 ->make(true);
         }
+        
         return view('pembelian.pesananpembelian._caribarang', compact('produk'));
     }
     public function setbarang(Request $request)

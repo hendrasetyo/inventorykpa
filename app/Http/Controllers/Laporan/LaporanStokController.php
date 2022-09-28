@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Laporan;
 
+use App\Exports\LaporanKartuStok;
 use App\Exports\LaporanStockExport;
 use Carbon\Carbon;
 use App\Models\Product;
@@ -131,7 +132,14 @@ class LaporanStokController extends Controller
                         $selectUrl = route('penerimaanbarang.showData', ['penerimaanbarang' => $row->jenis_id]);    
                     }elseif ($row->jenis == 'SJ') {
                         $selectUrl = route('pengirimanbarang.showData', ['pengirimanbarang' => $row->jenis_id]);    
-                    }else{
+                    }elseif ($row->jenis == 'KV') {
+                        $selectUrl = route('konversisatuan.show', ['konversisatuan' => $row->jenis_id]); 
+                    }elseif ($row->jenis == 'CV') {
+                        $selectUrl = route('canvassing.show', ['canvassing' => $row->jenis_id]); 
+                    }elseif ($row->jenis == 'CVB') {
+                        $selectUrl = route('canvassingpengembalian.show', ['canvassingpengembalian' => $row->jenis_id]); 
+                    }
+                    else{
                         $selectUrl = '';    
                         $status = 0;
                     }
@@ -172,8 +180,7 @@ class LaporanStokController extends Controller
         $stok = StokExp::with('products')
             ->whereBetween('tanggal', [$tgl1, $tgl2])
             ->orderBy('tanggal', 'ASC')->get();
-
-        //dd($stok);
+      
         return view('laporan.stok.expstokresult', compact('stok', 'title'));
     }
 
@@ -183,5 +190,15 @@ class LaporanStokController extends Controller
 
         return Excel::download(new LaporanStockExport, 'laporanstock-'.$now.'.xlsx');
 
+    }
+
+
+    public function exportkartustok(Request $request)
+    {
+
+        $id = $request->product_id;
+        $now = Carbon::parse(now())->format('Y-m-d');
+
+        return Excel::download(new LaporanKartuStok($id), 'laporankartustock-'.$now.'.xlsx');
     }
 }

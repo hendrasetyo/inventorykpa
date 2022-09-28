@@ -44,4 +44,11 @@
             </tr>
         @endforeach
     </tbody>
+
+    <tr>
+        <th>Total Hutang : </th>
+        <td>
+            {{$totalhutang}}
+        </td>
+    </tr>
 </table>

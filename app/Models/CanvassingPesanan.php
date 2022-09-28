@@ -15,10 +15,8 @@ class CanvassingPesanan extends Model
     protected $fillable=[
         'kode',
         'tanggal',
-        'customer_id',
-        'created_by',
-        'updated_by',
-        'deleted_by'
+        'customer_id',   
+        'qty',
     ];
 
     
@@ -26,5 +24,17 @@ class CanvassingPesanan extends Model
     {
         return $this->belongsTo(Customer::class, 'customer_id', 'id');
     }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updater()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+
+    
     
 }

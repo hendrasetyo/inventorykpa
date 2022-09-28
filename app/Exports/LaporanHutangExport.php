@@ -19,10 +19,8 @@ class LaporanHutangExport implements FromView
 
     public function view(): View
     { 
-        $title = 'Laporan Pembayaran Hutang';        
-        
-            
-
+        $totalhutang = 0;
+        $title = 'Laporan Pembayaran Hutang';                            
         
         $tgl1 = Carbon::parse($this->data['tgl1'])->format('Y-m-d');
         $tgl2 = Carbon::parse($this->data['tgl2'])->format('Y-m-d');                
@@ -82,12 +80,15 @@ class LaporanHutangExport implements FromView
         $datafilter = $statusFilter->select('s.nama as nama_supplier','pp.kode as kode_pp','pb.kode as kode_pb','fb.kode as kode_fp'
                                 ,'h.*')->get();
 
-        
+        foreach ($datafilter as $key ) {
+            $totalhutang = $totalhutang + $key->total - $key->dibayar;
+        }        
                 
 
         return view('laporan.hutangpiutang.export.hutang',[
             'title' => $title,
-            'hutang' => $datafilter            
+            'hutang' => $datafilter ,
+            'totalhutang' => $totalhutang
         ]);
         
     }

@@ -85,7 +85,7 @@
                                     <tr>
                                         <th>Kode</th>
                                         <th>Tanggal</th>
-                                        <th>Supplier</th>
+                                        <th>Customer</th>
                                         <th>Status</th>
                                         <th style="width: 15%">Action</th>
                                     </tr>

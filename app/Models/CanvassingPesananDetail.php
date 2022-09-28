@@ -2,10 +2,47 @@
 
 namespace App\Models;
 
+use App\Blameable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CanvassingPesananDetail extends Model
 {
-    use HasFactory;
+    use HasFactory,Blameable,SoftDeletes;
+
+    protected $table ='canvassing_pesanan_details';
+
+    protected $fillable = [
+        'canvassing_pesanan_id',
+        'product_id',
+        'tanggal',
+        'qty',
+        'qty_sisa',
+        'keterangan'
+    ];
+
+    
+    public function canvassing()
+    {
+        return $this->belongsTo(CanvassingPesanan::class, 'canvassing_pesanan_id', 'id');
+    }
+
+    
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updater()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+    
+    
 }

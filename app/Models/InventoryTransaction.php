@@ -19,4 +19,10 @@ class InventoryTransaction extends Model
         'jenis_id',
     ];
     protected $dates = ['tanggal'];
+
+   
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
 }

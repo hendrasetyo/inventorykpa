@@ -26,6 +26,8 @@ class StokExpDetail extends Model
         'id_so_detail',
         'id_sj',
         'id_sj_detail',
+        'konversi_id',
+        'konversi_detail_id'
     ];
 
     protected $dates = ['tanggal'];

@@ -16,13 +16,26 @@ class CreateCanvassingPesanansTable extends Migration
         Schema::create('canvassing_pesanans', function (Blueprint $table) {
             $table->id();
             $table->string('kode');
-            $table->string('tanggal');
-            $table->foreignId('customer_id')->constrained('customers');                        
-            $table->foreignId('sales_id')->constrained('sales')->nullable();
-            $table->text('keterangan')->nullable();
+            $table->date('tanggal');
+            $table->integer('qty');
+            $table->foreignId('customer_id')->constrained('customers');
+            $table->text('keterangan')->nullable();                        
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();
+
+            $table->foreign('created_by')
+            ->references('id')->on('users')
+            ->onDelete('cascade');
+
+            $table->foreign('updated_by')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('deleted_by')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+
             $table->softDeletes();
             $table->timestamps();
         });

@@ -1,8 +1,15 @@
 <?php
 
+use App\Http\Controllers\AdjustmentStok\AdjustmentStokController;
+use App\Http\Controllers\BiayaOperational\BiayaOperationalController;
+use App\Http\Controllers\Canvassing\CanvassingPengembalianController;
+use App\Http\Controllers\Canvassing\CanvassingPesananController;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Contracts\Role;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Konversi\KonversiController;
+use App\Http\Controllers\Laporan\LaporanAdjustmentStokController;
+use App\Http\Controllers\Laporan\LaporanBiayaOperationalController;
 use App\Http\Controllers\Laporan\LaporanHutangPiutangController;
 use App\Http\Controllers\Laporan\LaporanPenjualanController;
 use App\Http\Controllers\NavigationController;
@@ -27,6 +34,8 @@ use App\Http\Controllers\Master\ProductCategoryController;
 use App\Http\Controllers\Permissions\PermissionController;
 use App\Http\Controllers\Profile\UpdatePasswordController;
 use App\Http\Controllers\Master\CustomerCategoryController;
+use App\Http\Controllers\Master\JenisBiayaController;
+use App\Http\Controllers\Master\NoFakturPajakController;
 use App\Http\Controllers\Master\SupplierCategoryController;
 use App\Http\Controllers\Master\ProductSubCategoryController;
 use App\Http\Controllers\Pembelian\FakturPembelianController;
@@ -38,6 +47,7 @@ use App\Http\Controllers\Penjualan\PesananPenjualanController;
 use App\Http\Controllers\Pembayaran\PembayaranHutangController;
 use App\Http\Controllers\Pembayaran\PembayaranPiutangController;
 use App\Http\Controllers\Permissions\AssignPermissionController;
+use App\Models\CanvassingPesanan;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,6 +109,8 @@ Route::middleware('has.role')->prefix('master')->group(function () {
             Route::post('delete', [UserController::class, 'delete'])->name('user.delete');
             Route::delete('delete', [UserController::class, 'destroy'])->name('user.destroy');
         });
+
+       
     });
 
     Route::prefix('navigations')->group(function () {
@@ -178,6 +190,8 @@ Route::middleware('has.role')->prefix('master')->group(function () {
         Route::delete('delete', [ProductController::class, 'destroy'])->name('product.destroy');
         Route::post('detail', [ProductController::class, 'show'])->name('product.detail');
         Route::post('getproductsubcategory', [ProductController::class, 'getproductsubcategory'])->name('product.getproductsubcategory');
+
+        Route::post('import', [ProductController::class, 'import'])->name('product.import');
     });
 
     Route::prefix('produkgroup')->group(function () {
@@ -253,6 +267,29 @@ Route::middleware('has.role')->prefix('master')->group(function () {
     Route::prefix('company')->group(function () {
         Route::get('', [CompanyController::class, 'index'])->name('company.index');
         Route::put('update', [CompanyController::class, 'update'])->name('company.update');
+    });
+
+    Route::prefix('jenisbiaya')->group(function () {
+        Route::get('', [JenisBiayaController::class, 'index'])->name('jenisbiaya.index');        
+        Route::get('/create', [JenisBiayaController::class, 'create'])->name('jenisbiaya.create');        
+        Route::post('/create', [JenisBiayaController::class, 'store'])->name('jenisbiaya.store');        
+        Route::get('/{jenisbiaya}/edit', [JenisBiayaController::class, 'edit'])->name('jenisbiaya.edit');       
+        Route::put('/{jenisbiaya}/edit', [JenisBiayaController::class, 'update'])->name('jenisbiaya.update');       
+        Route::post('/delete', [JenisBiayaController::class, 'delete'])->name('jenisbiaya.delete');       
+        Route::delete('/delete', [JenisBiayaController::class, 'destroy'])->name('jenisbiaya.destroy');       
+        
+    });
+
+    Route::prefix('fakturpajak')->group(function () {
+        Route::get('', [NoFakturPajakController::class, 'index'])->name('fakturpajak.index');        
+        Route::get('/create', [NoFakturPajakController::class, 'create'])->name('fakturpajak.create');        
+        Route::post('/create', [NoFakturPajakController::class, 'store'])->name('fakturpajak.store');        
+        Route::post('/import', [NoFakturPajakController::class, 'import'])->name('fakturpajak.import');        
+        Route::get('/{fakturpajak}/edit', [NoFakturPajakController::class, 'edit'])->name('fakturpajak.edit');       
+        Route::put('/{fakturpajak}/edit', [NoFakturPajakController::class, 'update'])->name('fakturpajak.update');       
+        Route::get('/{fakturpajak}/status', [NoFakturPajakController::class, 'status'])->name('fakturpajak.status');       
+        Route::post('/delete', [NoFakturPajakController::class, 'delete'])->name('fakturpajak.delete');       
+        Route::delete('/delete', [NoFakturPajakController::class, 'destroy'])->name('fakturpajak.destroy');               
     });
 });
 
@@ -533,6 +570,11 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         Route::get('expstok', [LaporanStokController::class, 'expstok'])->name('laporanstok.expstok');
         Route::get('stokproduk/export', [LaporanStokController::class, 'exportStok'])->name('laporanstok.export');
         Route::post('expstokresult', [LaporanStokController::class, 'expstokresult'])->name('laporanstok.expstokresult');
+        Route::post('kartustokexport', [LaporanStokController::class, 'exportkartustok'])->name('laporanstok.exportkartustok');        
+        
+        Route::get('adjustmentstok', [LaporanAdjustmentStokController::class, 'filter'])->name('laporanstok.adjustmentstok');
+        Route::post('adjustmentstok/result', [LaporanAdjustmentStokController::class, 'result'])->name('laporanstok.adjustmentstokresult');
+        Route::post('adjustmentstok/export', [LaporanAdjustmentStokController::class, 'export'])->name('laporanstok.adjustmentstokexport');
     });
 
 
@@ -603,15 +645,129 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
     });
 
 
+    Route::prefix('laporanbiayaoperational')->group(function () {
+                // GET
+        Route::get('', [LaporanBiayaOperationalController::class, 'index'])->name('laporanbiayaoperational.index');        
+        Route::post('/result', [LaporanBiayaOperationalController::class, 'filter'])->name('laporanbiayaoperational.filter');
+        Route::post('/export', [LaporanBiayaOperationalController::class, 'export'])->name('laporanbiayaoperational.export');        
+    });
+
+
+});
+
+Route::middleware('has.role')->prefix('konversi')->group(function () {
+    Route::prefix('konversisatuan')->group(function () {
+        Route::get('', [KonversiController::class, 'index'])->name('konversisatuan.index');
+        Route::get('create', [KonversiController::class, 'create'])->name('konversisatuan.create');
+        Route::POST('store', [KonversiController::class, 'store'])->name('konversisatuan.store');
+
+
+        Route::get('{id}/expdate', [KonversiController::class, 'pilihExp'])->name('konversisatuan.pilihexp');
+        Route::post('setqty', [KonversiController::class, 'setQty'])->name('konversisatuan.setqty');
+        Route::post('inputqty', [KonversiController::class, 'inputQty'])->name('konversisatuan.inputqty');
+
+        Route::get('caribarang', [KonversiController::class, 'caribarang'])->name('konversisatuan.caribarang');
+        Route::post('setbarang', [KonversiController::class, 'setbarang'])->name('konversisatuan.setbarang');        
+
+        Route::post('submititem', [KonversiController::class, 'submitItem'])->name('konversisatuan.inputtempkonversi');
+        Route::post('loadtempkonversi', [KonversiController::class, 'loadKonversi'])->name('konversisatuan.loadkonversi');
+
+        Route::post('editbarang', [KonversiController::class, 'editbarang'])->name('konversisatuan.editbarang');
+        Route::post('updatebarang', [KonversiController::class, 'updatebarang'])->name('konversisatuan.updatebarang');
+
+        Route::delete('delete_detail', [KonversiController::class, 'destroy_detail'])->name('konversisatuan.destroy_detail');
+
+        Route::post('delete', [KonversiController::class, 'delete'])->name('konversisatuan.delete');
+        Route::delete('delete', [KonversiController::class, 'destroy'])->name('konversisatuan.destroy');
+
+        Route::get('{konversisatuan}/show', [KonversiController::class, 'show'])->name('konversisatuan.show');
+                
+        
+    });
+
 });
 
 Route::middleware('has.role')->prefix('canvassing')->group(function () {
-    Route::prefix('canvassingpesanan')->group(function () {
-        Route::get('', [PembayaranHutangController::class, 'index'])->name('canvassingpesanan.index');
+    Route::prefix('canvassing')->group(function () {
+        Route::get('', [CanvassingPesananController::class, 'index'])->name('canvassing.index');
+        Route::get('create', [CanvassingPesananController::class, 'create'])->name('canvassing.create');
+        Route::post('create', [CanvassingPesananController::class, 'store'])->name('canvassing.create');
+        
+
+        Route::get('caribarang', [CanvassingPesananController::class, 'caribarang'])->name('canvassing.caribarang');
+        Route::post('setbarang', [CanvassingPesananController::class, 'setbarang'])->name('canvassing.setbarang');        
+
+        Route::post('inputtempcanvas', [CanvassingPesananController::class, 'inputTempCanvas'])->name('canvassing.inputtempcanvas');        
+        Route::post('loadtempcanvas', [CanvassingPesananController::class, 'loadTempCanvas'])->name('canvassing.loadtempcanvas');        
+
+        Route::post('editbarang', [CanvassingPesananController::class, 'editbarang'])->name('canvassing.editbarang');
+        Route::post('updatebarang', [CanvassingPesananController::class, 'updatebarang'])->name('canvassing.updatebarang');
+
+        Route::delete('delete_detail', [CanvassingPesananController::class, 'destroy_detail'])->name('canvassing.destroy_detail');
+
+        Route::get('{canvassing}/show', [CanvassingPesananController::class, 'show'])->name('canvassing.show');
+
+        Route::post('delete', [CanvassingPesananController::class, 'delete'])->name('canvassing.delete');
+        Route::delete('delete', [CanvassingPesananController::class, 'destroy'])->name('canvassing.destroy');
+        
+
     });
 
     Route::prefix('canvassingpengembalian')->group(function () {
+        Route::get('', [CanvassingPengembalianController::class, 'index'])->name('canvassingpengembalian.index');
+        Route::get('listcanvas', [CanvassingPengembalianController::class, 'listcanvas'])->name('canvassingpengembalian.listcanvas');
+        Route::get('{canvassingpengembalian}/create', [CanvassingPengembalianController::class, 'create'])->name('canvassingpengembalian.create');
+        Route::POST('store', [CanvassingPengembalianController::class, 'store'])->name('canvassingpengembalian.store');
 
+        Route::get('caribarang', [CanvassingPengembalianController::class, 'caribarang'])->name('canvassingpengembalian.caribarang');
+        Route::post('setbarang', [CanvassingPengembalianController::class, 'setbarang'])->name('canvassingpengembalian.setbarang');        
+
+        Route::post('inputtempcanvas', [CanvassingPengembalianController::class, 'inputTempCanvas'])->name('canvassingpengembalian.inputtempcanvas');        
+        Route::post('loadtempcanvas', [CanvassingPengembalianController::class, 'loadTempCanvas'])->name('canvassingpengembalian.loadtempcanvas');        
+
+        Route::post('editbarang', [CanvassingPengembalianController::class, 'editbarang'])->name('canvassingpengembalian.editbarang');
+        Route::post('updatebarang', [CanvassingPengembalianController::class, 'updatebarang'])->name('canvassingpengembalian.updatebarang');
+
+        Route::delete('delete_detail', [CanvassingPengembalianController::class, 'destroy_detail'])->name('canvassingpengembalian.destroy_detail');
+
+        Route::post('delete', [CanvassingPengembalianController::class, 'delete'])->name('canvassingpengembalian.delete');
+        Route::delete('delete', [CanvassingPengembalianController::class, 'destroy'])->name('canvassingpengembalian.destroy');
+
+        Route::get('{canvassingpengembalian}/show', [CanvassingPengembalianController::class, 'show'])->name('canvassingpengembalian.show');
+
+        
     });
+});
+
+Route::middleware('has.role')->prefix('adjustment')->group(function () {
+    Route::prefix('adjustmentstok')->group(function () {
+        Route::get('', [AdjustmentStokController::class, 'index'])->name('adjustmentstok.index');        
+
+        Route::prefix('expired')->group(function () {
+            Route::get('', [AdjustmentStokController::class, 'expired'])->name('stokexpired.expired'); 
+            Route::post('/import', [AdjustmentStokController::class, 'importExpired'])->name('stokexpired.import');               
+        });
+    
+        Route::prefix('nonexpired')->group(function () {
+            Route::get('', [AdjustmentStokController::class, 'nonexpired'])->name('stoknonexpired.nonexpired');        
+            Route::post('/import', [AdjustmentStokController::class, 'importNonExpired'])->name('stoknonexpired.import');        
+        });
+    });
+
+    
+
+});
+
+Route::middleware('has.role')->prefix('biaya')->group(function () {
+        Route::prefix('biayaoperational')->group(function () {
+            Route::get('', [BiayaOperationalController::class, 'index'])->name('biayaoperational.index');        
+            Route::get('/create', [BiayaOperationalController::class, 'create'])->name('biayaoperational.create');        
+            Route::post('/create', [BiayaOperationalController::class, 'store'])->name('biayaoperational.store');        
+            Route::get('/{biayaoperational}/edit', [BiayaOperationalController::class, 'edit'])->name('biayaoperational.edit');       
+            Route::put('/{biayaoperational}/edit', [BiayaOperationalController::class, 'update'])->name('biayaoperational.update');                   
+            Route::post('/delete', [BiayaOperationalController::class, 'delete'])->name('biayaoperational.delete');       
+            Route::delete('/delete', [BiayaOperationalController::class, 'destroy'])->name('biayaoperational.destroy');       
+            
+        });
 });
 

@@ -72,22 +72,26 @@
                                         <th style="width:15%;">Expired Date</th>
                                         <th>Nama Produk</th>
                                         <th style="width:10%;">Kode Produk</th>
+                                        <th style="width:10%;">Lot</th>
                                         <th style="width:10%;">Sorted Date</th>
                                         <th style="width:5%;">Stok</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
-
-                                    @foreach ($stok as $index => $a)
+                                                                        
+                                    @php
+                                        $index=0;
+                                    @endphp
+                                                                     
+                                    @foreach ($stok as $a)
                                     
                                     <tr>
-                                        <td>{{ $index+1 }}</td>
-                                        <td>{{ $a->tanggal->format("d-m-Y")  }}</td>
-
-                                        <td>{{ $a->products->nama }}</td>
+                                        <td>{{ $index++ }}</td>
+                                        <td>{{ Carbon\Carbon::parse($a->tanggal)->format('d F Y') }}</td>
+                                        <td>{{ $a->products->nama }}</td> 
                                         <td>{{ $a->products->kode }}</td>
-                                        <td>{{ $a->tanggal->format("Ymd")  }}</td>
+                                        <td>{{ $a->lot }}</td>
+                                        <td>{{ Carbon\Carbon::parse($a->tanggal)->format('Ymd') }}</td>
                                         <td>{{ $a->qty }}</td>
                                     </tr>
                                     @endforeach

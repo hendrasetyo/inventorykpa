@@ -208,7 +208,7 @@
                                             <td>{{ $fakturpenjualan->total_cn ? number_format($fakturpenjualan->total_cn, 0, ',', '.') : '0'}}</td>                                           
                                         </tr>                                        
                                         <td>
-                                            <td>{{ number_format($fakturpenjualan->grandtotal - $fakturpenjualan->total_cn, 0, ',', '.') : '0'}}</td>                                           
+                                            <td>{{ number_format($fakturpenjualan->grandtotal - $fakturpenjualan->total_cn, 0, ',', '.') }}</td>                                           
                                         </td>
                                     </tbody>
                                 </table>

@@ -49,14 +49,14 @@ class PesananPenjualanController extends Controller
                 })
                 ->editColumn('tanggal', function (PesananPenjualan $so) {
                     return $so->tanggal ? with(new Carbon($so->tanggal))->format('d-m-Y') : '';
-                })
+                })       
                 ->addColumn('action', function ($row) {
                     $editUrl = route('pesananpenjualan.edit', ['pesananpenjualan' => $row->id]);
                     $showUrl = route('pesananpenjualan.show', ['pesananpenjualan' => $row->id]);
                     $id = $row->id;
                     $status = $row->status_so_id;
                     return view('penjualan.pesananpenjualan._formAction', compact('editUrl', 'showUrl', 'id', 'status'));
-                })
+                })        
                 ->make(true);
         }
         return view('penjualan.pesananpenjualan.index', compact('title','data'));
@@ -196,6 +196,7 @@ class PesananPenjualanController extends Controller
                 })
                 ->make(true);
         }
+        
         return view('penjualan.pesananpenjualan._caribarang', compact('produk'));
     }
 

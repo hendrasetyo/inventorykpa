@@ -14,8 +14,12 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Laravolt\Indonesia\Models\City;
 use App\Http\Controllers\Controller;
+use App\Imports\NewProductImport;
 use App\Models\Productsubcategory;
+use App\Models\TempProduct;
+use Exception;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -195,5 +199,62 @@ class ProductController extends Controller
         $product = Product::where('id', '=', $request->id)->get()->first();
 
         return view('master.product._showDetail', compact('product'));
+    }
+
+    public function import(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            TempProduct::where('user_id',auth()->user()->id)->delete();
+        
+        Excel::import(new NewProductImport, $request->file('file')); 
+
+        // dapatkan temp yang baru
+        $temp  = TempProduct::where('user_id',auth()->user()->id)->get();
+
+        $kode = $this->getKodeData("products", "P");
+        foreach ($temp as $item) {
+            $product = Product::create([
+                'nama' => $item->nama,
+                'kode' =>$kode,
+                'productgroup_id' => $item->productgroup_id,
+                'jenis' => $item->jenis,
+                'merk_id' => $item->merk_id,
+                'tipe' => $item->tipe,
+                'ukuran' => $item->ukuran,
+                'kemasan' => $item->kemasan,
+                'satuan' => $item->satuan,
+                'katalog' => $item->katalog,
+                'asal_negara' => $item->asal_negara,
+                'pabrikan' => $item->pabrikan,
+                'no_ijinedar' => $item->no_ijinedar,
+                'exp_ijinedar' => $item->exp_ijinedar,
+                'productcategory_id' => $item->productcategory_id,
+                'productsubcategory_id' => $item->productsubcategory_id,
+                'hargajual' => $item->hargajual,
+                'hargabeli' => $item->hargabeli,
+                'hpp' => $item->hpp,
+                'diskon_persen' => $item->diskon_persen,
+                'diskon_rp' => $item->diskon_rp,
+                'stok' => $item->stok,
+                'keterangan' => $item->keterangan,
+                'status' => $item->status,
+                'status_exp' => $item->status_exp,
+                'stok_canvassing' => $item->stok_canvassing
+            ]);
+        }
+
+            // hapus temp lagi 
+            TempProduct::where('user_id',auth()->user()->id)->delete();            
+            return back()->with('sukses','Product Berhasil diimport');
+
+        } catch (Exception $th) {
+            return back()->with('error',$th->getMessage());
+        }
+        // hapus temp yang lama dulu
+        
+
+
+        return back();
     }
 }

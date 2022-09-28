@@ -23,7 +23,7 @@
             </div>
 
             @endif
-            <div class="row">
+            <div class="row">  
 
                 <div class="col-lg-12">
                     <!--begin::Card-->
@@ -54,7 +54,7 @@
                             </div>
                             <div class="card-toolbar">
                                 <!--begin::Button-->
-
+                                
 
                                 <!--end::Button-->
                             </div>
