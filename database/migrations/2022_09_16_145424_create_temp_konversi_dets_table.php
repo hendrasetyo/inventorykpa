@@ -22,7 +22,7 @@ class CreateTempKonversiDetsTable extends Migration
             $table->string('satuan');
             $table->string('lot')->nullable();
             $table->text('keterangan')->nullable();
-            $table->date('exp_date');
+            $table->date('exp_date')->nullable();
             $table->foreignId('user_id')->constrained('users');  
             $table->timestamps();
         });

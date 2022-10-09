@@ -15,9 +15,13 @@ use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\FakturPenjualanDetail;
+use App\Models\LogNoFakturPajak;
+use App\Models\NoFakturPajak;
 use App\Models\PengirimanBarangDetail;
 use App\Models\PesananPenjualanDetail;
 use App\Models\TempBiaya;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class FakturPenjualanController extends Controller
 {
@@ -55,11 +59,12 @@ class FakturPenjualanController extends Controller
                     return $sj->no_kpa;
                 })
                 ->addColumn('action', function ($row) {
-                    //$editUrl = route('fakturpembelian.edit', ['fakturpembelian' => $row->id]);
+                    $editUrl = route('fakturpenjualan.edit', ['fakturpenjualan' => $row->id]);
                     $showUrl = route('fakturpenjualan.show', ['fakturpenjualan' => $row->id]);
                     $id = $row->id;
                     $status = $row->status_sj_id;
-                    return view('penjualan.fakturpenjualan._formAction', compact('id', 'status', 'showUrl'));
+
+                    return view('penjualan.fakturpenjualan._formAction', compact('id', 'status', 'showUrl','editUrl'));
                 })
                 ->make(true);
         }
@@ -74,6 +79,7 @@ class FakturPenjualanController extends Controller
         $pengirimanbarangs = PengirimanBarang::with('customers', 'statusSJ')
             ->where('status_sj_id', '=', '1')
             ->get();
+            
         if (request()->ajax()) {
             return Datatables::of($pengirimanbarangs)
                 ->addIndexColumn()
@@ -105,8 +111,6 @@ class FakturPenjualanController extends Controller
         $fakturpenjualan = new FakturPenjualan;
         $tglNow = Carbon::now()->format('d-m-Y');
 
-        
-        
         //delete temp
         $deletedTempDetil = TempFaktursos::where('created_at', '<', Carbon::today())->delete();
         $deletedTempBiaya = TempBiaya::where('created_at', '<', Carbon::today())->delete();
@@ -196,10 +200,12 @@ class FakturPenjualanController extends Controller
         $ppn_header = round(($total_header * ($ppn_so / 100)), 2);
         $grandtotal_header = $total_header + $ppn_header + $ongkir_header;
 
+        $nopajak = NoFakturPajak::where('status','Aktif')->get();
+
         return view('penjualan.fakturpenjualan.create', 
                     compact('title', 'FJdetails', 'tglNow', 'fakturpenjualan', 
                     'pengirimanbarang', 'SJdetails', 'subtotal_header', 'ongkir_header', 
-                    'total_diskon_header', 'total_header', 'ppn_header', 'grandtotal_header','idtempbiaya'));
+                    'total_diskon_header', 'total_header', 'ppn_header', 'grandtotal_header','idtempbiaya','nopajak'));
     }
 
     public function store(Request $request, PengirimanBarang $pengirimanbarang)
@@ -230,6 +236,9 @@ class FakturPenjualanController extends Controller
         $tanggal_top = date("Y-m-d", strtotime("+".$pesanan->top." days" . $tanggalPengiriman));        
 
         $SJdetails = PengirimanBarangDetail::where('pengiriman_barang_id', '=', $id_sj)->get();        
+
+        // pajak
+        $pajak = NoFakturPajak::where('id',$request->pajak_id)->first();
 
 
         //start cek status exp date SJ :
@@ -287,7 +296,23 @@ class FakturPenjualanController extends Controller
         $datas['no_kpa'] = $request->no_kpa;
         $datas['no_pajak'] = $request->no_pajak;
         $datas['biaya_lain'] = $biayalainlain;
+        $datas['pajak_id'] = $request->pajak_id;
+        $datas['no_seri_pajak'] = $request->no_seri_pajak;
+        $datas['no_pajak'] = $pajak->no_pajak;
         $idFaktur = FakturPenjualan::create($datas)->id;
+
+        // save di log faktur pajak dan ubah faktur pajak menjadi tidak aktif
+        $logpajak = LogNoFakturPajak::create([
+            'nofaktur_id' => $request->pajak_id,
+            'jenis' => 'FJ',
+            'jenis_id' => $kode
+        ]);
+
+        // ubah status menjadi tidak aktif
+        $pajak = NoFakturPajak::where('id',$request->pajak_id)->update([
+            'status' => 'Tidak Aktif'
+        ]);
+
         
 
         //$ongkir_header = $ongkir_det;
@@ -345,15 +370,30 @@ class FakturPenjualanController extends Controller
     {
         $id = $request->id;
         $fakturpenjualan = FakturPenjualan::find($id);
-        $fakturpenjualan->deleted_by = Auth::user()->id;
+        $fakturpenjualan->deleted_by = Auth::user()->id;        
         $fakturpenjualan->save();
+        
         $id_sj = $fakturpenjualan->pengiriman_barang_id;
 
-        FakturPenjualan::destroy($request->id);
+        FakturPenjualan::destroy($request->id);        
         $detail = FakturPenjualanDetail::where('faktur_penjualan_id', '=', $id)->get();
+
         foreach ($detail as $d) {
             FakturPenjualanDetail::destroy($d->id);
         }
+        
+
+         // save di log faktur pajak dan ubah faktur pajak menjadi tidak aktif
+         $logpajak = LogNoFakturPajak::create([
+            'nofaktur_id' => $fakturpenjualan->pajak_id,
+            'jenis' => 'FJ (DEL)',
+            'jenis_id' => $fakturpenjualan->kode
+        ]);
+
+        // ubah status menjadi tidak aktif        
+        $pajak = NoFakturPajak::where('id',$fakturpenjualan->pajak_id)->update([
+            'status' => $request->status_pajak
+        ]);
 
         //hapus Piutang 
         $hapuspiutang = Piutang::where('faktur_penjualan_id', $id)->delete();
@@ -366,9 +406,90 @@ class FakturPenjualanController extends Controller
         return redirect()->route('fakturpenjualan.index')->with('status', 'Data Faktur Penjualan Berhasil Dihapus !');
     }
 
+    public function edit(FakturPenjualan $fakturpenjualan)
+    {
+        $title = "Faktur Penjualan ";
+        $fakturpenjualan = FakturPenjualan::where('id',$fakturpenjualan->id)->with([
+            'nopajak',
+            'SJ',
+            'SO'
+        ])->first();
+
+        $nopajak = NoFakturPajak::where('status','Aktif')->get();        
+
+        $FJdetails = FakturPenjualanDetail::with('products')
+            ->where('faktur_penjualan_id', '=', $fakturpenjualan->id)->get();
+
+        return view('penjualan.fakturpenjualan.edit', compact('title',  'fakturpenjualan', 'FJdetails','nopajak'));
+    }
+
+    public function update(Request $request,$id)
+    {                
+
+        DB::beginTransaction();
+        try {
+             // ambil data dari temp     
+             $fj = FakturPenjualan::where('id',$id)->first();
+
+            // ubah status menjadi aktif
+            $pajak = NoFakturPajak::where('id',$fj->pajak_id)->update([
+                'status' => 'Aktif'
+            ]);
+
+            // pajak
+            $pajak = NoFakturPajak::where('id',$request->pajak_id)->first();
+                           
+            $biaya = TempBiaya::where('jenis', '=', "FJ")
+                ->where('user_id', '=', Auth::user()->id)
+                ->first();
+
+
+            if ($biaya) {                
+                $grandtotal = $fj->grandtotal + $biaya->rupiah - $fj->biaya_lain;
+                $rupiah = $biaya->rupiah;
+
+                $biaya->delete();
+            }else{
+                $grandtotal = $fj->grandtotal;
+                $rupiah = $fj->biaya_lain;
+            }
+                     
+            $fj->update([
+                'grandtotal' => $grandtotal,
+                'no_kpa' => $request->no_kpa,
+                'pajak_id' => $request->pajak_id,
+                'biaya_lain'  => $rupiah,
+                'no_seri_pajak' => $request->no_seri_pajak,
+                'no_pajak' => $pajak->no_pajak
+            ]);
+
+             // ubah status menjadi aktif
+             $pajak = NoFakturPajak::where('id',$request->pajak_id)->update([
+                'status' => 'Tidak Aktif'
+            ]);
+
+           
+
+            
+
+            // ubah data yang ada di faktur penjualan    
+
+            
+            DB::commit();
+
+            return redirect()->route('fakturpenjualan.index')->with('status', 'Faktur Penjualan berhasil diubah!');
+        } catch (Exception $th) {
+            
+            return redirect()->route('fakturpenjualan.index')->with('error', $th->getMessage());
+        }
+       
+    }
+
     public function show(FakturPenjualan $fakturpenjualan)
     {
         $title = "Faktur penjualan Detail";
+        $fakturpenjualan = FakturPenjualan::where('id',$fakturpenjualan->id)->with('nopajak')->first();
+        // dd($fakturpenjualan);
         $fakturpenjualandetails = FakturPenjualanDetail::with('products')
             ->where('faktur_penjualan_id', '=', $fakturpenjualan->id)->get();
         return view('penjualan.fakturpenjualan.show', compact('title',  'fakturpenjualan', 'fakturpenjualandetails'));
@@ -398,6 +519,7 @@ class FakturPenjualanController extends Controller
     public function editCN(FakturPenjualan $fakturpenjualan)
     {
         $title = "Faktur penjualan Detail";
+        $fakturpenjualan = FakturPenjualan::where('id',$fakturpenjualan->id)->with('nopajak')->first();
         $fakturpenjualandetails = FakturPenjualanDetail::with('products')
             ->where('faktur_penjualan_id', '=', $fakturpenjualan->id)->get();
 
@@ -496,6 +618,19 @@ class FakturPenjualanController extends Controller
         } else {
             return number_format($totalgrandtotal, 2, ',', '.');
         }
+    }
+
+    public function showdata($id)
+    {
+        $fakturpenjualan = FakturPenjualan::where('pajak_id',$id)->with('nopajak')->first();
+        $title = "Faktur penjualan Detail";
+        // $fakturpenjualan = FakturPenjualan::where('id',$fakturpenjualan->id)->with('nopajak')->first();
+        // dd($fakturpenjualan);
+        $fakturpenjualandetails = FakturPenjualanDetail::with('products')
+            ->where('faktur_penjualan_id', '=', $fakturpenjualan->id)->get();
+
+
+        return view('penjualan.fakturpenjualan.show', compact('title',  'fakturpenjualan', 'fakturpenjualandetails'));
     }
 
  

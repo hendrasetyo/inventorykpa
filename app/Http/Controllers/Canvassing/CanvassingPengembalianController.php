@@ -189,8 +189,12 @@ class CanvassingPengembalianController extends Controller
 
      public function store(Request $request)
      {
+
+        
         $canvassing = CanvassingPesanan::where('id',$request->canvassing_id)->first();
-        $customer = Customer::where('customer_id',$canvassing->customer_id)->first();
+        // dd($canvassing);
+        $customer = Customer::where('id',$canvassing->customer_id)->first();
+        
 
         DB::beginTransaction();
 
@@ -333,8 +337,10 @@ class CanvassingPengembalianController extends Controller
      public function show($id)
      {
         $title =  "Canvassing Pengembalian";
-        $canvas = CanvassingPengembalian::with(['creator','updater','customer'])->where('id',$id)->first();
+        $canvas = CanvassingPengembalian::with(['creator','updater','customer','canvassing'])->where('id',$id)->first();
         $canvasdet = CanvassingPengembalianDetail::with(['product','creator','updater'])->where('canvassing_kembali_id',$id)->get();                
+
+        
 
         return view('canvassing.canvassingpengembalian.show',compact('canvas','canvasdet','title'));
      }

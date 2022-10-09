@@ -38,6 +38,17 @@
                                     <span class="font-weight-bolder mb-2">Kode</span>
                                     <span class="opacity-70">{{ $canvas->kode }}</span>
                                 </div>
+
+                                <div class="d-flex flex-column flex-root">
+                                    <span class="font-weight-bolder mb-2">Kode Canvassing</span>
+                                    <span class="opacity-70">{{ $canvas->canvassing->kode }}</span>
+                                </div>                              
+
+                                <div class="d-flex flex-column flex-root">
+                                    <span class="font-weight-bolder mb-2">Kode Pesanan</span>
+                                    <span class="opacity-70">{{ $canvas->canvassing->kode_pesanan }}</span>
+                                </div>                              
+
                                 <div class="d-flex flex-column flex-root">
                                     <span class="font-weight-bolder mb-2">Customer</span>
                                     <span class="opacity-70">{{ $canvas->customer->nama }}</span>

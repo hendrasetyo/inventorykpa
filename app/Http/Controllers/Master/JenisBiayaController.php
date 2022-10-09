@@ -31,6 +31,7 @@ class JenisBiayaController extends Controller
     
         JenisBiaya::create([
             'nama' => $request->nama,
+            'no_akun' => $request->no_akun,
             'keterangan' => $request->keterangan
         ]);
 
@@ -59,6 +60,7 @@ class JenisBiayaController extends Controller
 
         $jenisbiaya->update([
             'nama' => $request->nama,
+            'no_akun' => $request->no_akun,
             'keterangan' => $request->keterangan
         ]);
 

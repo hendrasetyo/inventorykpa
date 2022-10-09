@@ -90,14 +90,31 @@ class LaporanPembayaranController extends Controller
 
         $pembayaran = DB::table('hutangs as h')
                     ->join('pesanan_pembelians as pp','h.pesanan_pembelian_id','=','pp.id')                    
-                    ->join('penerimaan_barangs as pb','h.penerimaan_barang_id','=','pb.id')                   
-                    ->where('h.tanggal','>=',$tgl1)
-                    ->where('h.tanggal','<=',$tgl2);
+                    ->join('penerimaan_barangs as pb','h.penerimaan_barang_id','=','pb.id');
+
+        if ($data['tgl1']) {            
+            if (!$data['tgl2']) {
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1);
+                                
+            }else{
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1)
+                                ->where('p.tanggal','<=',$tgl2);
+            }
+        }elseif($data['tgl2']){
+            if (!$data['tgl1']) {
+                $tanggalFilter=$pembayaran->where('p.tanggal','<=',$tgl2);
+            }else{
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1)
+                                ->where('p.tanggal','<=',$tgl2);
+            }
+        }else{
+            $tanggalFilter = $pembayaran;
+        }                    
                     
         
         if ($request->supplier == 'all') {  
 
-            $customerfilter = $pembayaran->join('suppliers as s','h.supplier_id','=','s.id');
+            $customerfilter = $tanggalFilter->join('suppliers as s','h.supplier_id','=','s.id');
 
             if ($request->no_faktur <> null) {                
                 $filter =  $customerfilter->join('faktur_pembelians as fb','h.faktur_pembelian_id','=','fb.id')
@@ -153,14 +170,31 @@ class LaporanPembayaranController extends Controller
                     ->join('pembayaran_hutangs as ph','h.id','=','ph.hutang_id')  
                     ->join('pesanan_pembelians as pp','h.pesanan_pembelian_id','=','pp.id') 
                     ->join('banks as b','ph.bank_id','=','b.id')                   
-                    ->join('penerimaan_barangs as pb','h.penerimaan_barang_id','=','pb.id')                   
-                    ->where('h.tanggal','>=',$tgl1)
-                    ->where('h.tanggal','<=',$tgl2);
+                    ->join('penerimaan_barangs as pb','h.penerimaan_barang_id','=','pb.id');
+
+        if ($data['tgl1']) {            
+            if (!$data['tgl2']) {
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1);
+                                
+            }else{
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1)
+                                ->where('p.tanggal','<=',$tgl2);
+            }
+        }elseif($data['tgl2']){
+            if (!$data['tgl1']) {
+                $tanggalFilter=$pembayaran->where('p.tanggal','<=',$tgl2);
+            }else{
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1)
+                                ->where('p.tanggal','<=',$tgl2);
+            }
+        }else{
+            $tanggalFilter = $pembayaran;
+        }                    
                     
         
         if ($request->supplier == 'all') {  
 
-            $customerfilter = $pembayaran->join('suppliers as s','h.supplier_id','=','s.id');
+            $customerfilter = $tanggalFilter->join('suppliers as s','h.supplier_id','=','s.id');
 
             if ($request->no_faktur <> null) {
                 
@@ -215,14 +249,31 @@ class LaporanPembayaranController extends Controller
 
         $pembayaran = DB::table('piutangs as p')
                     ->join('pesanan_penjualans as pp','p.pesanan_penjualan_id','=','pp.id')                    
-                    ->join('pengiriman_barangs as pb','p.pengiriman_barang_id','=','pb.id')                   
-                    ->where('p.tanggal','>=',$tgl1)
-                    ->where('p.tanggal','<=',$tgl2);
+                    ->join('pengiriman_barangs as pb','p.pengiriman_barang_id','=','pb.id');
+
+        if ($data['tgl1']) {            
+            if (!$data['tgl2']) {
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1);
+                                
+            }else{
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1)
+                                ->where('p.tanggal','<=',$tgl2);
+            }
+        }elseif($data['tgl2']){
+            if (!$data['tgl1']) {
+                $tanggalFilter=$pembayaran->where('p.tanggal','<=',$tgl2);
+            }else{
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1)
+                                ->where('p.tanggal','<=',$tgl2);
+            }
+        }else{
+            $tanggalFilter = $pembayaran;
+        }
                     
         
         if ($data['customer'] == 'all') {  
 
-            $customerfilter = $pembayaran->join('customers as c','p.customer_id','=','c.id');
+            $customerfilter = $tanggalFilter->join('customers as c','p.customer_id','=','c.id');
 
             if ($data['no_faktur'] <> null) {                
                 $filter =  $customerfilter->join('faktur_penjualans as fp','p.faktur_penjualan_id','=','fp.id')
@@ -310,14 +361,31 @@ class LaporanPembayaranController extends Controller
                     ->join('pesanan_penjualans as pp','p.pesanan_penjualan_id','=','pp.id')                    
                     ->join('pengiriman_barangs as pb','p.pengiriman_barang_id','=','pb.id')                   
                     ->join('pembayaran_piutangs as pps','pps.piutang_id','=','p.id')                   
-                    ->join('banks as b','pps.bank_id','=','b.id')                   
-                    ->where('p.tanggal','>=',$tgl1)
-                    ->where('p.tanggal','<=',$tgl2);
+                    ->join('banks as b','pps.bank_id','=','b.id');
+
+        if ($data['tgl1']) {            
+            if (!$data['tgl2']) {
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1);
+                                
+            }else{
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1)
+                                ->where('p.tanggal','<=',$tgl2);
+            }
+        }elseif($data['tgl2']){
+            if (!$data['tgl1']) {
+                $tanggalFilter=$pembayaran->where('p.tanggal','<=',$tgl2);
+            }else{
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1)
+                                ->where('p.tanggal','<=',$tgl2);
+            }
+        }else{
+            $tanggalFilter = $pembayaran;
+                    }
                     
         
         if ($data['customer'] == 'all') {  
 
-            $customerfilter = $pembayaran->join('customers as c','p.customer_id','=','c.id');
+            $customerfilter = $tanggalFilter->join('customers as c','p.customer_id','=','c.id');
 
             if ($data['no_faktur'] <> null) {                
                 $filter =  $customerfilter->join('faktur_penjualans as fp','p.faktur_penjualan_id','=','fp.id')
@@ -438,25 +506,7 @@ class LaporanPembayaranController extends Controller
         }        
 
         $dataLog = $jenis->get();
-        
-        // if (request()->ajax()) {
-        //     return Datatables::of($dataLog)
-        //         ->addIndexColumn()
-        //         ->addColumn('tanggal', function ($p) {
-        //             return $p->tanggal;
-        //         })
-        //         ->addColumn('rupiah', function ($p) {
-        //             return $p->rupiah;
-        //         })
-        //         ->addColumn('jenis', function ($z) {
-        //             return $z->jenis;
-        //         })           
-        //         ->addColumn('jenis_id', function ($z) {
-        //             return $z->jenis_id;
-        //         })                 
-        //         ->make(true);
-        // }
-
+               
         return view('laporan.pembayaran.logToleransi.filterlogtoleransiresult', [
             'datalog' => $dataLog,
             'title' => $title

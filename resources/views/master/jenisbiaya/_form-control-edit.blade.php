@@ -9,6 +9,15 @@
     </div>
 
     <div class="form-group">
+        <label>No Akun :</label>
+        <input type="text" name="no_akun" value="{{ $jenisbiaya ? $jenisbiaya->no_akun : '' }}"
+            class="form-control @error('no_akun') is-invalid @enderror" placeholder="Masukkan Nama Kategori Customer" />
+        @error('no_akun')
+        <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="form-group">
         <label>Keterangan :</label>
         <input type="text" name="keterangan" value="{{ $jenisbiaya ? $jenisbiaya->keterangan  : ''}}"
             class="form-control" placeholder="Keterangan" />

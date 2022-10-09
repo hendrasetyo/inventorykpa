@@ -102,7 +102,7 @@
                                             </svg><!--end::Svg Icon--></span> </span>
                                             
                                         <span class="nav-text font-size-lg py-2 font-weight-bolder text-center">
-                                            Laporan Pembayaran Piutang Detail
+                                            Laporan Pembayaran Piutang
                                         </span>
                                     </a>
                                 </li>

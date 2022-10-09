@@ -78,12 +78,14 @@ class LaporanPenjualanCNExport  implements FromView
                                         ->where('m.id','=',$this->data['merk']);
                     }
     
-        $filter = $salesfilter->select('fp.*','fpb.qty as qty_det','fpb.satuan as satuan_det','fpb.hargajual as hargajual_det'
+        $filter = $salesfilter->orderBy('fp.tanggal','desc')->select('fp.*','fpb.qty as qty_det','fpb.satuan as satuan_det','fpb.hargajual as hargajual_det'
                                         ,'fpb.diskon_persen as dikson_persen_det','fpb.diskon_rp as diskon_rp_det','fpb.subtotal as subtotal_det'
                                         ,'fpb.total as total_det','fpb.total_diskon as total_diskon_det','fpb.ongkir as ongkir_det','fpb.cn_persen','fpb.cn_rupiah','fpb.cn_total','fpb.keterangan as keterangan_det' 
                                         ,'pb.kode as kode_SJ','pp.kode as kode_SP'
                                         ,'s.nama as nama_sales','u.name as nama_pembuat'
-                                        ,'cs.nama as nama_customer','p.nama as nama_produk','p.kode as kode_produk','m.nama as nama_merk')->get();                                                                    
+                                        ,'cs.nama as nama_customer','p.nama as nama_produk','p.kode as kode_produk','m.nama as nama_merk',
+                                        'pp.ppn as no_ppn'
+                                        )->get();                                                                    
 
                 
         // dd($filter);

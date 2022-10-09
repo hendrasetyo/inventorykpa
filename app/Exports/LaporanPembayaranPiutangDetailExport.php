@@ -31,14 +31,32 @@ class LaporanPembayaranPiutangDetailExport implements FromView
                             ->join('pesanan_penjualans as pp','p.pesanan_penjualan_id','=','pp.id')                    
                             ->join('pengiriman_barangs as pb','p.pengiriman_barang_id','=','pb.id')                   
                             ->join('pembayaran_piutangs as pps','pps.piutang_id','=','p.id')                   
-                            ->join('banks as b','pps.bank_id','=','b.id')                   
-                            ->where('p.tanggal','>=',$tgl1)
-                            ->where('p.tanggal','<=',$tgl2);
+                            ->join('banks as b','pps.bank_id','=','b.id');
+
+        if ($this->data['tgl1']) {            
+            if (!$this->data['tgl2']) {
+                $tanggalFilter=$pembayaran->where('fp.tanggal','>=',$tgl1);
+                                
+            }else{
+                $tanggalFilter=$pembayaran->where('fp.tanggal','>=',$tgl1)
+                                ->where('fp.tanggal','<=',$tgl2);
+            }
+        }elseif($this->data['tgl2']){                        
+            if (!$this->data['tgl1']) {
+                $tanggalFilter=$pembayaran->where('fp.tanggal','<=',$tgl2);
+            }else{
+                $tanggalFilter=$pembayaran->where('fp.tanggal','>=',$tgl1)
+                                ->where('fp.tanggal_top','<=',$tgl2);
+            }
+
+        }else{
+            $tanggalFilter = $pembayaran;
+        }
                     
         
         if ($this->data['customer'] == 'all') {  
 
-            $customerfilter = $pembayaran->join('customers as c','p.customer_id','=','c.id');
+            $customerfilter = $tanggalFilter->join('customers as c','p.customer_id','=','c.id');
 
             if ($this->data['no_faktur'] <> null) {                
                 $filter =  $customerfilter->join('faktur_penjualans as fp','p.faktur_penjualan_id','=','fp.id')

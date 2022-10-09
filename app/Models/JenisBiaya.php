@@ -12,6 +12,7 @@ class JenisBiaya extends Model
     protected $table = 'jenis_biayas';
     protected $fillable = [
         'nama',
+        'no_akun',
         'keterangan'
     ];
     

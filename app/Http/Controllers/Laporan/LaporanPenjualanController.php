@@ -95,7 +95,8 @@ class LaporanPenjualanController extends Controller
         $tgl2 = Carbon::parse($data['tgl2'])->format('Y-m-d');                
         $penjualan = DB::table('faktur_penjualans as fp')
                     ->join('pengiriman_barangs as pb','fp.pengiriman_barang_id','=','pb.id')
-                    ->join('users as u','fp.created_by','=','u.id');
+                    ->join('users as u','fp.created_by','=','u.id');                    
+
                     
 
         if ($data['tgl1']) {            
@@ -116,9 +117,7 @@ class LaporanPenjualanController extends Controller
         }else{
             $tanggalFilter = $penjualan;
         }
-        
-        
-        
+                        
 
         if ($data['customer'] == 'all') {            
 
@@ -140,13 +139,13 @@ class LaporanPenjualanController extends Controller
         }      
 
 
-        $filter = $salesfilter->select('fp.*','pb.kode as kode_SJ','pp.kode as kode_SP','s.nama as nama_sales','u.name as nama_pembuat','cs.nama as nama_customer')->get();                                        
+        $filter = $salesfilter->orderBy('fp.tanggal','desc')->select('fp.*','pb.kode as kode_SJ','pp.kode as kode_SP','s.nama as nama_sales'
+                                ,'u.name as nama_pembuat','cs.nama as nama_customer'                                
+                                )->get();     
                 
         if (count($filter) <= 0) {
             return redirect()->back()->with('status_danger', 'Data tidak ditemukan');
-        }
-
-        
+        }        
 
         return view('laporan.penjualan.filterPenjualanResult',[
             'penjualan' => $filter,
@@ -172,7 +171,7 @@ class LaporanPenjualanController extends Controller
         $penjualan = DB::table('faktur_penjualans as fp')
                     ->join('pengiriman_barangs as pb','fp.pengiriman_barang_id','=','pb.id')
                     ->join('faktur_penjualan_details as fpb','fpb.faktur_penjualan_id','=','fp.id')
-                    ->join('users as u','fp.created_by','=','u.id');
+                    ->join('users as u','fp.created_by','=','u.id');                    
                    
                     
         if ($data['tgl1']) {            
@@ -228,12 +227,13 @@ class LaporanPenjualanController extends Controller
         }
 
     
-        $filter = $merkfilter->select('fp.*','fpb.qty as qty_det','fpb.satuan as satuan_det','fpb.hargajual as hargajual_det'
+        $filter = $merkfilter->orderBy('fp.tanggal','desc')->select('fp.*','fpb.qty as qty_det','fpb.satuan as satuan_det','fpb.hargajual as hargajual_det'
                                         ,'fpb.diskon_persen as dikson_persen_det','fpb.diskon_rp as diskon_rp_det','fpb.subtotal as subtotal_det'
                                         ,'fpb.total as total_det','fpb.total_diskon as total_diskon_det','fpb.ongkir as ongkir_det','fpb.keterangan as keterangan_det' 
                                         ,'pb.kode as kode_SJ','pp.kode as kode_SP'
                                         ,'s.nama as nama_sales','u.name as nama_pembuat'
-                                        ,'cs.nama as nama_customer','p.nama as nama_produk','m.nama as nama_merk','p.kode as kode_produk')->get();                                        
+                                        ,'cs.nama as nama_customer','p.nama as nama_produk','m.nama as nama_merk','p.kode as kode_produk'                                        
+                                        )->get();                                        
 
         
                                 
@@ -267,7 +267,8 @@ class LaporanPenjualanController extends Controller
         $penjualan = DB::table('faktur_penjualans as fp')
                     ->join('pengiriman_barangs as pb','fp.pengiriman_barang_id','=','pb.id')
                     ->join('faktur_penjualan_details as fpb','fpb.faktur_penjualan_id','=','fp.id')
-                    ->join('users as u','fp.created_by','=','u.id');
+                    ->join('users as u','fp.created_by','=','u.id')
+                    ->join('no_faktur_pajaks as nfp' ,'fp.pajak_id','=','nfp.id');                    
         
                                  
         if ($data['tgl1']) {            
@@ -331,7 +332,9 @@ class LaporanPenjualanController extends Controller
                                         ,'fpb.total as total_det','fpb.total_diskon as total_diskon_det','fpb.ongkir as ongkir_det','fpb.cn_persen','fpb.cn_rupiah','fpb.cn_total','fpb.keterangan as keterangan_det' 
                                         ,'pb.kode as kode_SJ','pp.kode as kode_SP'
                                         ,'s.nama as nama_sales','u.name as nama_pembuat'
-                                        ,'cs.nama as nama_customer','p.nama as nama_produk','p.kode as kode_produk','m.nama as nama_merk')->get();                                        
+                                        ,'cs.nama as nama_customer','p.nama as nama_produk','p.kode as kode_produk','m.nama as nama_merk',
+                                        'pp.ppn as no_ppn'
+                                        )->get(); 
                 
         if (count($filter) <= 0) {
             return redirect()->back()->with('status_danger', 'Data tidak ditemukan');

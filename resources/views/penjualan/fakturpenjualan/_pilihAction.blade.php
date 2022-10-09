@@ -7,6 +7,8 @@
 
         @endcan
 
+        
+
 
     </div>
 </div>

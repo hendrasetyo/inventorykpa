@@ -74,7 +74,7 @@ class LaporanPembelianDetailExport implements FromView
                                         ->where('m.id','=',$this->data['merk']);
                     }
 
-        $filter = $merkfilter->select('fp.*','pb.kode as kode_SJ'
+        $filter = $merkfilter->orderBy('fp.tanggal','desc')->select('fp.*','pb.kode as kode_SJ'
                                         ,'pp.kode as kode_SP'
                                         ,'s.nama as nama_supplier'
                                         ,'u.name as nama_pembuat',

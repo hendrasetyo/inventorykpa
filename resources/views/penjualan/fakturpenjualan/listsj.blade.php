@@ -115,7 +115,7 @@
    
           var table = $('.yajra-datatable').DataTable({
               responsive: true,
-              processing: true,
+              processing: true, 
               serverSide: true,
               autoWidth: false,
               ajax: "{{ route('fakturpenjualan.listsj') }}",

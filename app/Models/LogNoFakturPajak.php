@@ -11,9 +11,10 @@ class LogNoFakturPajak extends Model
 {
     use HasFactory,Blameable,SoftDeletes;
     protected $table = 'log_no_faktur_pajaks';
-    protected $fillable = [
+    protected $fillable = [        
         'jenis',
-        'jenis_id'
+        'jenis_id',
+        'nofaktur_id'
     ];
 
     public function creator()
@@ -25,4 +26,10 @@ class LogNoFakturPajak extends Model
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
+
+    public function nofaktur()
+    {
+        return $this->belongsTo(NoFakturPajak::class, 'nofaktur_id', 'id');
+    }
+    
 }

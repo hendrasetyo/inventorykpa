@@ -31,9 +31,11 @@ class FakturPenjualan extends Model
         'ppn',
         'grandtotal',
         'no_kpa',
-        'no_pajak',
+        'pajak_id',
         'total_cn',
-        'biaya_lain'
+        'biaya_lain',
+        'no_seri_pajak',
+        'no_pajak'
     ];
 
     protected $dates = ['tanggal'];
@@ -71,6 +73,18 @@ class FakturPenjualan extends Model
     public function fakturpenjualandetail()
     {
         return $this->hasMany(FakturPenjualanDetail::class, 'faktur_penjualan_id');
+    }
+
+  
+    public function nopajak()
+    {
+        return $this->belongsTo(NoFakturPajak::class, 'pajak_id', 'id');
+    }
+
+    
+    public function piutang()
+    {
+        return $this->belongsTo(FakturPenjualan::class, 'faktur_penjualan_id');
     }
     
 }

@@ -18,9 +18,10 @@ class CreateTempKonversisTable extends Migration
             $table->foreignId('product_id')->constrained('products');
             $table->date('tanggal');            
             $table->bigInteger('qty');
-            $table->date('exp_date');
-            $table->foreignId('expdate_id')->constrained('stok_exps');
+            $table->date('exp_date')->nullable();
+            $table->foreignId('expdate_id')->nullable()->constrained('stok_exps');
             $table->foreignId('user_id')->constrained('users'); 
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

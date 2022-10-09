@@ -50,15 +50,34 @@
             @error('no_kpa')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
-        </div>
-        <label class="col-lg-2 col-form-label text-right">No. Pajak:</label>
+        </div>     
+        
+        <label class="col-lg-2 col-form-label text-right">No. Seri Pajak:</label>
         <div class="col-lg-4">
-            <input type="text" class="form-control form-control-solid" name="no_pajak" value="" id="no_pajak" />
-            @error('no_pajak')
+            <input type="text" class="form-control form-control-solid" name="no_seri_pajak" value="" id="no_pajak" />
+            @error('no_seri_pajak')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+    </div>
 
+    <div class="form-group row">
+        <label class="col-lg-1 col-form-label text-right"></label>
+        <div class="col-lg-4">           
+        </div>   
+
+        <label class="col-lg-2 col-form-label text-right">No. Pajak:</label>
+        <div class="col-lg-4">            
+            <select name="pajak_id" id="kt_select2_2" class="form-control">
+                @foreach ($nopajak as $item)
+                    <option value="{{$item->id}}">{{$item->no_pajak}}</option>
+                @endforeach
+            </select>
+
+            @error('no_pajak')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>      
     </div>
 
     <div class="form-group row">

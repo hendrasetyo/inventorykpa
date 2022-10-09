@@ -66,12 +66,21 @@
                                 </div>
                                 <div class="d-flex flex-column flex-root">
                                     <span class="font-weight-bolder mb-2">No. Faktur Pajak</span>
-                                    <span class="opacity-70">{{ $fakturpenjualan->no_pajak }}</span>
+                                    <span class="opacity-70">{{ $fakturpenjualan->nopajak && $fakturpenjualan->no_seri_pajak ? $fakturpenjualan->no_seri_pajak.'-'. $fakturpenjualan->nopajak->no_pajak : '-'}}</span>
                                 </div>
                                 <div class="d-flex flex-column flex-root">
                                     <span class="font-weight-bolder mb-2">SO Customer</span>
                                     <span class="opacity-70">{{ $fakturpenjualan->SO->no_so }}</span>
                                 </div>
+                                <div class="d-flex flex-column flex-root">
+                                    <span class="font-weight-bolder mb-2"></span>
+                                    <span class="opacity-70"></span>
+                                </div>
+                                <div class="d-flex flex-column flex-root">
+                                    <span class="font-weight-bolder mb-2"></span>
+                                    <span class="opacity-70"></span>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>

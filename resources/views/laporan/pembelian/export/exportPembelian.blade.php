@@ -27,7 +27,7 @@
         @foreach ($pembelian as $item)
             <tr>
                 <td>{{$no++}}</td>
-                <td>{{ date('d F Y', strtotime($item->tanggal)) }}</td>
+                <td>{{ date('d/m/Y', strtotime($item->tanggal)) }}</td>
                 <td>{{$item->kode}}</td>
                 <td>{{$item->kode_SP}}</td>
                 <td>{{$item->kode_SJ}}</td>                                            

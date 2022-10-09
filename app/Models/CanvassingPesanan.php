@@ -14,6 +14,7 @@ class CanvassingPesanan extends Model
 
     protected $fillable=[
         'kode',
+        'kode_pesanan',
         'tanggal',
         'customer_id',   
         'qty',

@@ -25,11 +25,14 @@ class CanvassingPesananController extends Controller
     public function index()
     {
         $title = "Canvassing";
-        $konversi = CanvassingPesanan::with(['customer'])->orderByDesc('id');
+        $canvassing = CanvassingPesanan::with('customer')->orderByDesc('id');
 
         if (request()->ajax()) {
-            return Datatables::of($konversi)
+            return Datatables::of($canvassing)
                 ->addIndexColumn()
+                ->addColumn('ID', function (CanvassingPesanan $pb) {
+                    return $pb->id;
+                })
                 ->addColumn('tanggal', function (CanvassingPesanan $pb) {
                     return $pb->tanggal;
                 })
@@ -161,6 +164,7 @@ class CanvassingPesananController extends Controller
             // save dicanvassing 
             $canvassing = CanvassingPesanan::create([
                 'kode' => $kode,
+                'kode_pesanan' => $request->kode_pesanan,
                 'tanggal' => Carbon::parse($request->tanggal)->format('Y-m-d'),
                 'customer_id' => $request->customer_id,
                 'qty' => $totalqty

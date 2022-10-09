@@ -61,5 +61,6 @@ class LaporanBiayaOperasional implements FromView
         return view('laporan.biayaoperational.export.export',[
             'data' => $datafilter
         ]);
+        
     }
 }

@@ -12,22 +12,46 @@
                 <form action="{{ route('konversisatuan.inputqty') }}" method="POST">
                     @csrf
                     <div class="card-body">
-                        <div class="form-group row">
-                            <label class="col-lg-2 col-form-label">Nama Barang</label>
-                            <div class="col-lg-10">
-                                <input type="text" readonly="readonly" disabled="disabled"
-                                    class="form-control form-control-solid" name="nama" id="nama"
-                                    value="{{ $exp->products->nama }}" />
-                                <input type="hidden" id="exp_id" name="exp_id" value="{{ $exp->id }}">
+                        @if ($status == 'exp')
+                            <div class="form-group row">
+                                <label class="col-lg-2 col-form-label">Nama Barang</label>
+                                <div class="col-lg-10">
+                                    <input type="text" readonly="readonly" disabled="disabled"
+                                        class="form-control form-control-solid" name="nama" id="nama"
+                                        value="{{ $exp->products->nama }}" />
+                                    <input type="hidden" id="exp_id" name="exp_id" value="{{ $exp->id }}">
+                                    <input type="hidden" id="status" name="status" value="{{ $status }}">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-2 col-form-label">Stok</label>
-                            <div class="col-lg-2">
-                                <input type="text" readonly="readonly" class="form-control" id="qty_stok"
-                                    name="qty_stok" value="{{ $exp->qty }}" />
+                            <div class="form-group row">
+                                <label class="col-lg-2 col-form-label">Stok</label>
+                                <div class="col-lg-2">
+                                    <input type="text" readonly="readonly" class="form-control" id="qty_stok"
+                                        name="qty_stok" value="{{ $exp->qty }}" />
+                                </div>
                             </div>
-                        </div>
+                            
+                        @else
+                            <div class="form-group row">
+                                <label class="col-lg-2 col-form-label">Nama Barang</label>
+                                <div class="col-lg-10">
+                                    <input type="text" readonly="readonly" disabled="disabled"
+                                        class="form-control form-control-solid" name="nama" id="nama"
+                                        value="{{ $exp->nama }}" />
+                                    <input type="hidden" id="exp_id" name="exp_id" value="{{ $exp->id }}">
+                                    <input type="hidden" id="status" name="status" value="{{ $status }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 col-form-label">Stok</label>
+                                <div class="col-lg-2">
+                                    <input type="text" readonly="readonly" class="form-control" id="qty_stok"
+                                        name="qty_stok" value="{{ $exp->stok }}" />
+                                </div>
+                            </div>
+                            
+                        @endif
+                      
                         <div class="form-group row">
                             <label class="col-lg-2 col-form-label">Jumlah Konversi <i class="text-danger">*</i> <i style="font-size: 70%">jumlah konversi harus dibawah stok</i></label>
                             <div class="col-lg-2">

@@ -14,9 +14,10 @@ class CreateLogNoFakturPajaksTable extends Migration
     public function up()
     {
         Schema::create('log_no_faktur_pajaks', function (Blueprint $table) {
-            $table->id();
+            $table->id();            
+            $table->foreignId('nofaktur_id')->nullable()->constrained('no_faktur_pajaks');
             $table->string('jenis');
-            $table->foreignId('jenis_id')->constrained('faktur_penjualans');
+            $table->string('jenis_id');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();

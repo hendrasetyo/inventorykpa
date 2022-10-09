@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
+use function GuzzleHttp\Promise\all;
+
 class KonversiController extends Controller
 {
     use CodeTrait;
@@ -58,6 +60,7 @@ class KonversiController extends Controller
     public function create()
     {
         $title = "List Produk";
+
         // hapus temp by buat sekarang dan yang kemarin
         TempKonversiDet::where('created_at', '<', Carbon::today())->delete();
         TempKonversiDet::where('user_id', '=', Auth::user()->id)->delete();
@@ -71,16 +74,7 @@ class KonversiController extends Controller
         
         if (request()->ajax()) {
             return DataTables::of($products)
-                ->addIndexColumn()                
-                ->addColumn('kode', function (Product $row) {
-                    return $row->kode;
-                })
-                ->addColumn('nama', function (Product $row) {
-                    return $row->nama;
-                })
-                ->addColumn('katalog', function (Product $row) {
-                    return $row->katalog;
-                })
+                ->addIndexColumn()                                
                 ->addColumn('action', function (Product $row) {
                     $id = $row->id;
                     return view('konversi.modal._pilihbarang', compact('id'));
@@ -105,48 +99,72 @@ class KonversiController extends Controller
             'title' => $title,
             'products' => $products
         ]);
-        
-        
+
     }
 
     public function setQty(Request $request)
     {
-        $data = $request->all();
-        $stokexp = StokExp::with('products')->where('id',$request->id)->where('qty', '<>', 0)->first();
-        
+            $data = $request->all();             
 
+            if ($request->status == 'exp') {
+                $stokexp = StokExp::with('products')->where('id',$request->id)->where('qty', '<>', 0)->first();                                
+            }else{
+                $stokexp = Product::where('id',$request->id)->first();                
+            }
+            
         return view('konversi.modal._form-set_qty',[
-            'exp' => $stokexp
+            'exp' => $stokexp,
+            'status' => $request->status
         ]);
+
     }
 
     public function inputQty(Request $request)
     {
+
         TempKonversiDet::where('created_at', '<', Carbon::today())->delete();
         TempKonversiDet::where('user_id', '=', Auth::user()->id)->delete();
         TempKonversi::where('created_at', '<', Carbon::today())->delete();
         TempKonversi::where('user_id', '=', Auth::user()->id)->delete();
-       
-
-
+        
+               
         // get data dari exp date
-        $exp  = StokExp::where('id',$request->exp_id)->first();
+        if ($request->status =='exp')  {
+            $exp  = StokExp::where('id',$request->exp_id)->first();    
+            $stok = $exp->qty;            
+            $productId = $exp->product_id;
+            $expdate = $exp->id;
+            $tanggal = $exp->tanggal;
+        }else{
+            $exp  = Product::where('id',$request->exp_id)->first();                
+            $stok = $exp->stok;
+            $productId = $exp->id;
+            $expdate = null;
+            $tanggal = null;
+        }        
+
+        if ($stok < $request->qty_konversi) {
+            return back()->with('error','jumlah konversi tidak boleh melebihi stok barang');
+        }
+
         $title = "Data Produk Konversi";
         
         // input ke temp_konversi
         $tempKonversi = TempKonversi::create([
             'tanggal' => date('Y-m-d'),
             'user_id' => auth()->user()->id,
-            'product_id' => $exp->product_id,
+            'product_id' => $productId,
             'qty' => $request->qty_konversi,
-            'expdate_id' => $exp->id,
-            'exp_date' => $exp->tanggal
+            'expdate_id' => $expdate,
+            'exp_date' => $tanggal,
+            'status' => $request->status
         ]);
 
 
         return view('konversi.input-product',[
             'temp' => $tempKonversi,
-            'title' => $title
+            'title' => $title,
+            'status' => $request->status
         ]);
     }
 
@@ -180,18 +198,31 @@ class KonversiController extends Controller
         $temp = TempKonversi::where('id',$request->konversi_id)->first();
         $exp = StokExp::where('id',$temp->expdate_id)->first();
 
-        if ($exp->lot <> null) {
-            TempKonversiDet::create([
-                'temp_konversi_id' => $request->konversi_id,
-                'product_id' => $request->product_id,
-                'tanggal'=> date('Y-m-d'),
-                'qty' => $request->qty,
-                'satuan' => $request->satuan,
-                'exp_date' => $temp->exp_date,
-                'user_id' => auth()->user()->id,
-                'lot' => $exp->lot,
-                'keterangan'=> $request->keterangan
-            ]);
+        if ($temp->status == 'exp') {
+            if ($exp->lot <> null) {
+                TempKonversiDet::create([
+                    'temp_konversi_id' => $request->konversi_id,
+                    'product_id' => $request->product_id,
+                    'tanggal'=> date('Y-m-d'),
+                    'qty' => $request->qty,
+                    'satuan' => $request->satuan,
+                    'exp_date' => $temp->exp_date,
+                    'user_id' => auth()->user()->id,
+                    'lot' => $exp->lot,
+                    'keterangan'=> $request->keterangan
+                ]);
+            }else{
+                TempKonversiDet::create([
+                    'temp_konversi_id' => $request->konversi_id,
+                    'product_id' => $request->product_id,
+                    'tanggal'=> date('Y-m-d'),
+                    'qty' => $request->qty,
+                    'satuan' => $request->satuan,
+                    'exp_date' => $temp->exp_date,
+                    'user_id' => auth()->user()->id,
+                    'keterangan'=> $request->keterangan
+                ]);
+            }
         }else{
             TempKonversiDet::create([
                 'temp_konversi_id' => $request->konversi_id,
@@ -199,13 +230,11 @@ class KonversiController extends Controller
                 'tanggal'=> date('Y-m-d'),
                 'qty' => $request->qty,
                 'satuan' => $request->satuan,
-                'exp_date' => $temp->exp_date,
+                'exp_date' => null,
                 'user_id' => auth()->user()->id,
                 'keterangan'=> $request->keterangan
             ]);
-        }
-
-        
+        }                
 
     }
 
@@ -257,48 +286,64 @@ class KonversiController extends Controller
      }
 
      public function store(Request $request)
-     {        
-
+     {                
+        
         // kurangi stok di master sesuai dengan product id di header        
         $tempkonversi = TempKonversi::where('id',$request->konversi_id)->first();
+
+        // dd($tempkonversi);
+
         DB::beginTransaction();
 
         try {
+            
             $produk = Product::where('id',$tempkonversi->product_id)->first();
             $stok = $produk->stok - $tempkonversi->qty;
             $produk->stok = $stok;
             $produk->update();
+
+             //  input ke konversi
+             $kode =  $this->getKodeTransaksi("konversis", "KV");
+             $konversi = Konversi::create([
+                 'tanggal' => date('Y-m-d'),
+                 'kode' => $kode,
+                 'user_id' => auth()->user()->id,
+                 'product_id' => $tempkonversi->product_id,
+                 'qty' => $tempkonversi->qty,
+                 'expdate_id' => $tempkonversi->expdate_id,
+                 'exp_date' => $tempkonversi->exp_date,
+                 'keterangan' => $request->keterangan
+             ]);   
+
+             
+
     
-            // kurangi stok dari exp list sesuai dengan product id dan date
-            $exp = StokExp::where('id',$tempkonversi->expdate_id)->first();
-            $stokexp = $exp->qty - $tempkonversi->qty;
-            $exp->qty = $stokexp;
-            $exp->update();            
-    
-            //  input ke konversi
-            $kode =  $this->getKodeTransaksi("konversis", "KV");
-            $konversi = Konversi::create([
-                'tanggal' => date('Y-m-d'),
-                'kode' => $kode,
-                'user_id' => auth()->user()->id,
-                'product_id' => $tempkonversi->product_id,
-                'qty' => $tempkonversi->qty,
-                'expdate_id' => $tempkonversi->expdate_id,
-                'exp_date' => $tempkonversi->exp_date,
-                'keterangan' => $request->keterangan
-            ]);        
-    
-    
-            // input stok minus yang ada di stock_exp_detail                    
-            $expdet = StokExpDetail::create([
-                'tanggal' => $exp->tanggal,
-                'stok_exp_id' => $exp->id,
-                'product_id' => $produk->id,
-                'qty' => $tempkonversi->qty * -1,
-                'konversi_id' => $konversi->id
-            ]);                    
+             if ($tempkonversi->status =="exp") {
+                
+                // kurangi stok dari exp list sesuai dengan product id dan date
+                    $exp = StokExp::where('id',$tempkonversi->expdate_id)->first();
+                    $stokexp = $exp->qty - $tempkonversi->qty;
+                    $exp->qty = $stokexp;
+                    $exp->update();            
+
+                    // input stok minus yang ada di stock_exp_detail                    
+                    $expdet = StokExpDetail::create([
+                        'tanggal' => $exp->tanggal,
+                        'stok_exp_id' => $exp->id,
+                        'product_id' => $produk->id,
+                        'qty' => $tempkonversi->qty * -1,
+                        'konversi_id' => $konversi->id
+                    ]);       
+                    
+                    
+             }
+
+
+            
+            
            
             $tempdetail = TempKonversiDet::where('temp_konversi_id',$request->konversi_id)->get();
+            
     
             foreach ($tempdetail as $item) {
                 
@@ -331,53 +376,56 @@ class KonversiController extends Controller
                     'jenis' => 'KV',
                     'jenis_id' => $kode,
                 ]);
+
+                if ($tempkonversi->status == 'exp') {
+                         // insert masing-masing exp stok dan exp date sesuai dengan product id dan tanggal 
+                            // cek jika ada tanggal yang sama maka ditambah
+                            $mainStokExp = StokExp::where('tanggal', '=', $item->tanggal)
+                            ->where('product_id', '=', $item->product_id)                    
+                            ->where('lot',$item->lot)
+                            ->count();                        
+                                        
+                        if ($mainStokExp > 0) {
+                            //ada data, tinggal update stok
+                            $stokExp =  StokExp::where('tanggal', '=', $item->tanggal)
+                                ->where('product_id', '=', $item->product_id)->first();
+                            $id_stokExp = $stokExp->id;
+                            $stokExp->qty += $item->qty;
+                            $stokExp->save();
+
+                            //insert detail
+                            $stokExpDetail = new StokExpDetail;
+                            $stokExpDetail->tanggal = $item->exp_date;
+                            $stokExpDetail->stok_exp_id = $id_stokExp;
+                            $stokExpDetail->product_id = $item->product_id;
+                            $stokExpDetail->qty = $item->qty;
+                            $stokExpDetail->konversi_id = $konversi->id;
+                            $stokExpDetail->konversi_detail_id = $konversidet->id;                  
+                            $stokExpDetail->save();
+
+                        } else {
+                            //tidak ada data, harus insert stok
+                            $datas['tanggal'] = $item->exp_date;
+                            $datas['product_id'] = $item->product_id;
+                            $datas['qty'] = $item->qty;                    
+                            $datas['lot'] = $item->lot;         
+                            $id_stokExp = StokExp::create($datas)->id;
+
+                            //insert detail;
+                            $stokExpDetail = new StokExpDetail;
+                            $stokExpDetail->tanggal = $item->exp_date;
+                            $stokExpDetail->stok_exp_id = $id_stokExp;
+                            $stokExpDetail->product_id = $item->product_id;
+                            $stokExpDetail->qty = $item->qty;                    
+                            $stokExpDetail->konversi_id = $konversi->id;
+                            $stokExpDetail->konversi_detail_id = $konversidet->id;
+                            $stokExpDetail->save();
+
+                        }            
+                }
     
     
-                // insert masing-masing exp stok dan exp date sesuai dengan product id dan tanggal 
-                        // cek jika ada tanggal yang sama maka ditambah
-                    $mainStokExp = StokExp::where('tanggal', '=', $item->tanggal)
-                                    ->where('product_id', '=', $item->product_id)                    
-                                    ->where('lot',$item->lot)
-                                    ->count();                        
-                    
-                    
-                    if ($mainStokExp > 0) {
-                        //ada data, tinggal update stok
-                        $stokExp =  StokExp::where('tanggal', '=', $item->tanggal)
-                            ->where('product_id', '=', $item->product_id)->first();
-                        $id_stokExp = $stokExp->id;
-                        $stokExp->qty += $item->qty;
-                        $stokExp->save();
-    
-                        //insert detail
-                        $stokExpDetail = new StokExpDetail;
-                        $stokExpDetail->tanggal = $item->exp_date;
-                        $stokExpDetail->stok_exp_id = $id_stokExp;
-                        $stokExpDetail->product_id = $item->product_id;
-                        $stokExpDetail->qty = $item->qty;
-                        $stokExpDetail->konversi_id = $konversi->id;
-                        $stokExpDetail->konversi_detail_id = $konversidet->id;                  
-                        $stokExpDetail->save();
-    
-                    } else {
-                        //tidak ada data, harus insert stok
-                        $datas['tanggal'] = $item->exp_date;
-                        $datas['product_id'] = $item->product_id;
-                        $datas['qty'] = $item->qty;                    
-                        $datas['lot'] = $item->lot;         
-                        $id_stokExp = StokExp::create($datas)->id;
-    
-                        //insert detail;
-                        $stokExpDetail = new StokExpDetail;
-                        $stokExpDetail->tanggal = $item->exp_date;
-                        $stokExpDetail->stok_exp_id = $id_stokExp;
-                        $stokExpDetail->product_id = $item->product_id;
-                        $stokExpDetail->qty = $item->qty;                    
-                        $stokExpDetail->konversi_id = $konversi->id;
-                        $stokExpDetail->konversi_detail_id = $konversidet->id;
-                        $stokExpDetail->save();
-    
-                    }            
+               
                 
             }
                    
@@ -405,8 +453,9 @@ class KonversiController extends Controller
             return redirect()->route('konversisatuan.index')->with('sukses', 'Konversi Produk Berhasil ditambahkan !');
 
         } catch (Exception $th) {
+
             DB::rollback();
-            return redirect()->route('konversisatuan.index')->with('error', $th->getMessage());
+            return redirect()->back()->with('error', $th->getMessage());
 
         }
 
@@ -530,7 +579,7 @@ class KonversiController extends Controller
         $konversidet = KonversiDetail::with(['user','product','creator','updater'])->where('konversi_id',$id)->get();                
 
         $listexp = StokExpDetail::with('products')->where('konversi_id',$id)
-                                                 ->where('konversi_detail_id','<>',null)->get();
+                                                  ->where('konversi_detail_id','<>',null)->get();
         
         
         return view('konversi.show',compact('konversi','konversidet','title','listexp'));

@@ -19,7 +19,7 @@
         @foreach ($data as $item)
             <tr>
                 <td>{{$no++}}</td>
-                <td>{{ date('d F Y', strtotime($item->tanggal)) }}</td>
+                <td>{{ date('d/m/Y', strtotime($item->tanggal)) }}</td>
                 <td>{{$item->nama}}</td>
                 <td>{{$item->nominal}}</td>
                 <td>{{$item->nama_bank}}</td>                                            

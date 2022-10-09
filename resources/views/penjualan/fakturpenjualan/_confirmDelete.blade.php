@@ -37,7 +37,26 @@
                                 Piutang !
                             </div>
                         </div>
+                       
+                    </div>
 
+                    <div class="row mt-2">
+                        <div class="col-md-10 " style="display: inline;">
+                            <div class="align-middle">
+                                Apakah No Pajak masih dipakai ?
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <input type="radio"  name="status_pajak" value="Tidak Aktif" required>
+                                    <label for="html">Tidak</label><br>        
+                                </div>
+                                <div>
+                                      <input type="radio"  name="status_pajak" value="Aktif" required>
+                                      <label for="css">Iya</label><br>
+                                </div>
+                            </div>
+                            
+                        </div>
                     </div>
 
                 </div>

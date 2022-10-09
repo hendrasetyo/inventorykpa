@@ -21,7 +21,7 @@ class CreateKonversiDetailsTable extends Migration
             $table->bigInteger('qty');
             $table->string('satuan');
             $table->string('lot')->nullable();
-            $table->date('exp_date');
+            $table->date('exp_date')->nullable();
             $table->foreignId('user_id')->constrained('users');       
             $table->text('keterangan')->nullable();
 

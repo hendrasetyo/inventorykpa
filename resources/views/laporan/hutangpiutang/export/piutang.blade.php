@@ -24,7 +24,7 @@
         @foreach ($hutang as $item)
             <tr>
                 <td>{{$no++}}</td>
-                <td>{{$item->tanggal_top ? date('d F Y', strtotime($item->tanggal_top))  : 'tidak ada' }}</td>
+                <td>{{$item->tanggal_top ? date('d/m/Y, strtotime($item->tanggal_top))  : 'tidak ada' }}</td>
                 <td>{{$item->nama_customer}}</td>
                 <td>{{$item->kode_pp}}</td>
                 <td>{{$item->kode_pb}}</td>
@@ -47,8 +47,12 @@
         @endforeach
     </tbody>
 
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
+
     <tr>
-        <th>Total Piutang</th>
-        <td>{{$totalpiutang}}</td>
+        <th><b>Total Piutang</b></th>
+        <td><b>{{$totalpiutang}}</b></td>
     </tr>
 </table>

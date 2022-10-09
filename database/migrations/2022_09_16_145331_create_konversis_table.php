@@ -21,7 +21,7 @@ class CreateKonversisTable extends Migration
             $table->bigInteger('qty');
             $table->date('exp_date');
             $table->text('keterangan')->nullable();
-            $table->foreignId('expdate_id')->constrained('stok_exps');
+            $table->foreignId('expdate_id')->nullable()->constrained('stok_exps');
             $table->foreignId('user_id')->constrained('users');   
 
             $table->unsignedBigInteger('created_by')->nullable();
@@ -36,7 +36,6 @@ class CreateKonversisTable extends Migration
             $table->foreign('deleted_by')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
-                
 
             $table->timestamps();
             $table->softDeletes();

@@ -16,6 +16,7 @@ class CreateJenisBiayasTable extends Migration
         Schema::create('jenis_biayas', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
+            $table->string('no_akun')->nullable();
             $table->string('keterangan')->nullable();            
             $table->timestamps();
         });

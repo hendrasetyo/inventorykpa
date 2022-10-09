@@ -38,6 +38,13 @@
                                     <span class="font-weight-bolder mb-2">Kode</span>
                                     <span class="opacity-70">{{ $canvas->kode }}</span>
                                 </div>
+                                
+
+                                <div class="d-flex flex-column flex-root">
+                                    <span class="font-weight-bolder mb-2">Kode Pesanan</span>
+                                    <span class="opacity-70">{{ $canvas->kode_pesanan }}</span>
+                                </div>                              
+
                                 <div class="d-flex flex-column flex-root">
                                     <span class="font-weight-bolder mb-2">Customer</span>
                                     <span class="opacity-70">{{ $canvas->customer->nama }}</span>
@@ -47,6 +54,8 @@
 
                         </div>
                     </div>
+                    
+                    
                     <!-- end: Invoice header-->
 
                     <!-- begin: Invoice body-->

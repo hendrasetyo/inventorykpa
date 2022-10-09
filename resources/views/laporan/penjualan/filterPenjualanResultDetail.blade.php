@@ -131,7 +131,7 @@
                                             <td>{{$item->kode}}</td>
                                             <td>{{$item->kode_SP}}</td>
                                             <td>{{$item->kode_SJ}}</td>
-                                            <td>{{$item->no_pajak}}</td>
+                                            <td>{{$item->no_seri_pajak ? $item->no_seri_pajak : '' .'-'. $item->no_pajak}}</td>
                                             <td>{{$item->no_kpa}}</td>
                                             <td>{{$item->nama_customer}}</td>
                                             <td>{{$item->diskon_rupiah}}</td>

@@ -85,6 +85,7 @@
                                 <thead class="datatable-head">
                                     <tr>
                                         <th>Nama</th>
+                                        <th>No Akun</th>
                                         <th>Keterangan</th>
                                         <th>Action</th>
                                     </tr>
@@ -93,6 +94,7 @@
                                     @foreach ($jenisbiaya as $item)
                                         <tr>
                                             <td>{{$item->nama}}</td>
+                                            <td>{{$item->no_akun}}</td>
                                             <td>{{$item->keterangan}}</td>
                                             <td>
                                                 <div style="text-align:center;">

@@ -29,11 +29,11 @@
         @foreach ($penjualan as $item)
             <tr>
                 <td>{{$no++}}</td>
-                <td>{{ date('d F Y', strtotime($item->tanggal)) }}</td>
+                <td>{{ date('d/m/Y', strtotime($item->tanggal)) }}</td>
                 <td>{{$item->kode}}</td>
                 <td>{{$item->kode_SP}}</td>
                 <td>{{$item->kode_SJ}}</td>
-                <td>{{$item->no_pajak}}</td>
+                <td>{{$item->no_seri_pajak .'-'. $item->no_pajak}}</td>
                 <td>{{$item->nama_customer}}</td>
                 <td>{{$item->diskon_rupiah}}</td>
                 <td>{{$item->diskon_persen}}</td>

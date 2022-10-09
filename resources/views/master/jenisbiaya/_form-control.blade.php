@@ -2,7 +2,16 @@
     <div class="form-group">
         <label>Nama :</label>
         <input type="text" name="nama" 
-            class="form-control @error('nama') is-invalid @enderror" placeholder="Masukkan Nama Kategori Customer" />
+            class="form-control @error('nama') is-invalid @enderror" placeholder="Masukkan Jenis Biaya" />
+        @error('nama')
+        <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label>No Akun :</label>
+        <input type="text" name="no_akun" 
+            class="form-control @error('nama') is-invalid @enderror" placeholder="Masukkan No Akun Biaya" />
         @error('nama')
         <div class="invalid-feedback">{{ $message }}</div>
         @enderror

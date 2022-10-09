@@ -128,7 +128,7 @@
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                   {data: 'kode', name: 'kode'},
                   {data: 'tanggal', name: 'tanggal'},
-                  {data: 'customer', name: 'customers.nama'},                                                 
+                  {data: 'customer', name: 'customer.nama'},                                                 
                   {
                       data: 'action', 
                       render: function(data){

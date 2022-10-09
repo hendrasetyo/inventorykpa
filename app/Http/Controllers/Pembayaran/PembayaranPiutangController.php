@@ -12,7 +12,9 @@ use App\Models\PembayaranPiutang;
 use App\Http\Controllers\Controller;
 use App\Models\FakturPenjualan;
 use App\Models\LogToleransi;
+use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PembayaranPiutangController extends Controller
 {
@@ -28,7 +30,8 @@ class PembayaranPiutangController extends Controller
     public function index()
     {
         $title = "Pembayaran Piutang";
-        $pembayaranpiutang = PembayaranPiutang::with(['customers',  'piutangs', 'banks', 'FakturSO']);
+        $pembayaranpiutang = PembayaranPiutang::with(['customers',  'piutangs', 'banks', 'FakturSO'])
+        ->orderBy('id','desc');
 
         if (request()->ajax()) {
             return Datatables::of($pembayaranpiutang)
@@ -69,38 +72,46 @@ class PembayaranPiutangController extends Controller
     public function listpiutang()
     {
         $title = "Daftar Piutang";
-        $piutangs = Piutang::with('customers', 'fakturSO')
-            ->where('status', '=', '1')
-            ->get();
+        // $piutangs = Piutang::with('customers', 'FakturSO')
+        //     ->where('status', '=', '1')  
+        //     ->orderBy('id','desc')          
+        //     ->get();
+
+        $piutangs = DB::table('piutangs as p')
+                ->join('faktur_penjualans as fp','p.faktur_penjualan_id','=','fp.id')              
+                ->join('customers as c','p.customer_id','=','c.id')
+                ->where('p.status', '=', '1')  
+                ->select('c.nama as nama_customer','fp.kode as kode_fj','fp.no_kpa as kode_kpa','p.*')                
+                ->latest()
+                ->get(); 
 
         
-
         if (request()->ajax()) {
             return Datatables::of($piutangs)
                 ->addIndexColumn()
-                ->addColumn('customers', function (Piutang $pb) {
-                    return $pb->customers->nama;
+                ->addColumn('customers', function ($pb) {
+                    return $pb->nama_customer;
                 })
-                ->addColumn('faktur_so', function (Piutang $pb) {
-                    return $pb->FakturSO->kode;
+                ->addColumn('faktur_fj', function ($pb) {
+                    return $pb->kode_fj;
                 })               
-                ->addColumn('no_kpa', function (Piutang $pb) {
-                    return $pb->FakturSO->no_kpa;
+                ->addColumn('no_kpa', function ($pb) {
+                    return $pb->kode_kpa;
                 })         
-                ->editColumn('tanggal', function (Piutang $pb) {
+                ->editColumn('tanggal', function ($pb) {
                     return $pb->tanggal ? with(new Carbon($pb->tanggal))->format('d-m-Y') : '';
                 })
-                ->editColumn('total', function (Piutang $pb) {
+                ->editColumn('total', function ($pb) {
                     return $pb->total ? with(number_format($pb->total, 0, ',', '.')) : '';
                 })
-                ->editColumn('dibayar', function (Piutang $pb) {
+                ->editColumn('dibayar', function ($pb) {
                     return $pb->dibayar ? with(number_format($pb->dibayar, 0, ',', '.')) : '0';
                 })
-                ->editColumn('sisa', function (Piutang $pb) {
+                ->editColumn('sisa', function ($pb) {
                     $sisa = $pb->total - $pb->dibayar;
                     return $sisa ? with(number_format($sisa, 0, ',', '.')) : '0';
                 })
-                ->editColumn('tanggal_top', function (Piutang $pb) {                    
+                ->editColumn('tanggal_top', function ($pb) {                    
                     return $pb->tanggal_top ? with(new Carbon($pb->tanggal_top))->format('d-m-Y') : '';
                 })
                 ->addColumn('action', function ($row) {
@@ -130,55 +141,74 @@ class PembayaranPiutangController extends Controller
             'bank_id' => ['required'],
         ]);
 
-        $datas = $request->all();
-        $tanggal = $request->tanggal;
-        if ($tanggal <> null) {
-            $tanggal = Carbon::createFromFormat('d-m-Y', $tanggal)->format('Y-m-d');
+        DB::beginTransaction();
+        try {
+
+               $datas = $request->all();
+                $tanggal = $request->tanggal;
+                if ($tanggal <> null) {
+                    $tanggal = Carbon::createFromFormat('d-m-Y', $tanggal)->format('Y-m-d');
+                }
+
+                $total_piutang   = $piutang->total;
+                $dibayar        = $piutang->dibayar;
+                $sisa           = $total_piutang - $dibayar;
+
+                $nominal = str_replace('.', '', $request->nominal) * 1;
+                $dibayar_baru = $dibayar + $nominal;        
+
+                $toleransi = $dibayar_baru - $total_piutang ;               
+                            
+                if ($toleransi >= -500 && $toleransi <= 500) {
+                    $status = '2';
+                } else {
+                    $status = '1';
+                }   
+
+
+                if ($toleransi < -500) {
+                    return back()->with('error','Nominal tidak boleh melebihi sisa piutang');
+                }
+
+                
+                        
+                //insert pembayaran
+                $datas['tanggal'] = $tanggal;
+                $datas['customer_id'] = $piutang->customer_id;
+                $datas['faktur_penjualan_id'] = $piutang->faktur_penjualan_id;
+                $datas['piutang_id'] = $piutang->id;
+                $datas['bank_id'] = $request->bank_id;
+                $datas['nominal'] = $nominal;
+                $datas['keterangan'] = $request->keterangan;
+                PembayaranPiutang::create($datas);
+
+                //update Piutang
+                $datapiutang = Piutang::find($piutang->id);
+                $datapiutang->status = $status;
+                $datapiutang->dibayar = $dibayar_baru;
+                $datapiutang->save();
+
+                $faktur = FakturPenjualan::where('id',$piutang->faktur_penjualan_id)->first();
+
+                if ($status == '2') {
+                    LogToleransi::create([
+                        'tanggal' => $tanggal,                
+                        'rupiah' => $toleransi,
+                        'jenis' => 'Piutang',
+                        'jenis_id' => $faktur->kode, 
+                    ]);
+                }
+                DB::commit();
+                
+                return redirect()->route('pembayaranpiutang.index')->with('status', 'Pembayaran Piutang Berhasil Dibuat !');
+            
+        } catch (Exception $th) {
+
+            DB::rollBack();
+            return back()->with('error',$th->getMessage());
         }
 
-        $total_piutang   = $piutang->total;
-        $dibayar        = $piutang->dibayar;
-        $sisa           = $total_piutang - $dibayar;
-
-        $nominal = str_replace('.', '', $request->nominal) * 1;
-        $dibayar_baru = $dibayar + $nominal;
-
-        $toleransi = $dibayar_baru - $total_piutang ;
-              
-        if ($toleransi >= 500 || $toleransi<=500) {
-            $status = '2';
-        } else {
-            $status = '1';
-        }       
-
-        //insert pembayaran
-        $datas['tanggal'] = $tanggal;
-        $datas['customer_id'] = $piutang->customer_id;
-        $datas['faktur_penjualan_id'] = $piutang->faktur_penjualan_id;
-        $datas['piutang_id'] = $piutang->id;
-        $datas['bank_id'] = $request->bank_id;
-        $datas['nominal'] = $nominal;
-        $datas['keterangan'] = $request->keterangan;
-        PembayaranPiutang::create($datas);
-
-        //update Piutang
-        $datapiutang = Piutang::find($piutang->id);
-        $datapiutang->status = $status;
-        $datapiutang->dibayar = $dibayar_baru;
-        $datapiutang->save();
-
-        $faktur = FakturPenjualan::where('id',$piutang->faktur_penjualan_id)->first();
-
-        if ($status == '2') {
-            LogToleransi::create([
-                'tanggal' => $tanggal,                
-                'rupiah' => $toleransi,
-                'jenis' => 'Piutang',
-                'jenis_id' => $faktur->kode, 
-            ]);
-        }
-
-        return redirect()->route('pembayaranpiutang.index')->with('status', 'Pembayaran Piutang Berhasil Dibuat !');
+        
     }
 
     public function show(Request $request)

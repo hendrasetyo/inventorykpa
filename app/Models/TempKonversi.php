@@ -16,7 +16,8 @@ class TempKonversi extends Model
         'product_id',
         'qty',
         'expdate_id',
-        'exp_date'
+        'exp_date',
+        'status'
     ];
     
 

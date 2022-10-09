@@ -120,14 +120,13 @@
           var table = $('.yajra-datatable').DataTable({
               responsive: true,
               processing: true,
-              serverSide: true,
-              autoWidth: false,
+              serverSide: true,              
               ajax: "{{ route('konversisatuan.index') }}",
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                   {data: 'tanggal', name: 'tanggal'},
                   {data: 'kode', name: 'kode'},                  
-                  {data: 'produk', name: 'produk.nama'},
+                  {data: 'produk', name: 'product.nama'},
                   {data: 'qty', name: 'qty'},                  
                   {
                       data: 'action', 

@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FakturPembelian;
 use App\Models\LogToleransi;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PembayaranHutangController extends Controller
 {
@@ -28,7 +29,7 @@ class PembayaranHutangController extends Controller
     public function index()
     {
         $title = "Pembayaran Hutang";
-        $pembayaranhutang = PembayaranHutang::with(['suppliers',  'hutangs', 'banks', 'FakturPO']);
+        $pembayaranhutang = PembayaranHutang::with(['suppliers',  'hutangs', 'banks', 'FakturPO'])->orderBy('id','desc');
 
         if (request()->ajax()) {
             return Datatables::of($pembayaranhutang)
@@ -66,32 +67,43 @@ class PembayaranHutangController extends Controller
     public function listhutang()
     {
         $title = "Daftar Hutang";
-        $hutangs = Hutang::with('suppliers', 'fakturPO')
-            ->where('status', '=', '1')
-            ->get();
+        // $hutangs =  Hutang::with('suppliers')
+        //             ->with('FakturPO')
+        //             ->where('status', '=', '1')
+        //             ->orderByDesc('id')
+        //             ->get();
+
+        $hutangs = DB::table('hutangs as h')
+                    ->join('faktur_pembelians as fb','h.faktur_pembelian_id','=','fb.id')
+                    ->join('suppliers as s','h.supplier_id','=','s.id')
+                    ->where('status', '=', '1')
+                    ->select('s.nama as nama_supplier','fb.kode as kode_fb','h.*')
+                    ->orderByDesc('id')                    
+                    ->get();
+
         if (request()->ajax()) {
             return Datatables::of($hutangs)
                 ->addIndexColumn()
-                ->addColumn('suppliers', function (Hutang $pb) {
-                    return $pb->suppliers->nama;
+                ->addColumn('suppliers', function ($pb) {
+                    return $pb->nama_supplier;
                 })
-                ->addColumn('faktur_po', function (Hutang $pb) {
-                    return $pb->FakturPO->kode;
+                ->addColumn('faktur_po', function ($pb) {
+                    return $pb->kode_fb;
                 })
-                ->editColumn('tanggal', function (Hutang $pb) {
+                ->editColumn('tanggal', function ($pb) {
                     return $pb->tanggal ? with(new Carbon($pb->tanggal))->format('d-m-Y') : '';
                 })
-                ->editColumn('total', function (Hutang $pb) {
+                ->editColumn('total', function ($pb) {
                     return $pb->total ? with(number_format($pb->total, 0, ',', '.')) : '';
                 })
-                ->editColumn('dibayar', function (Hutang $pb) {
+                ->editColumn('dibayar', function ($pb) {
                     return $pb->dibayar ? with(number_format($pb->dibayar, 0, ',', '.')) : '0';
                 })
-                ->editColumn('sisa', function (Hutang $pb) {
+                ->editColumn('sisa', function ($pb) {
                     $sisa = $pb->total - $pb->dibayar;
                     return $sisa ? with(number_format($sisa, 0, ',', '.')) : '0';
                 })
-                ->editColumn('tanggal_top', function (Hutang $pb) {
+                ->editColumn('tanggal_top', function ($pb) {
                     return $pb->tanggal_top ? with(new Carbon($pb->tanggal_top))->format('d-m-Y') : '';
                 })
                 ->addColumn('action', function ($row) {
@@ -135,13 +147,19 @@ class PembayaranHutangController extends Controller
         $dibayar_baru = $dibayar + $nominal;  
         
         $toleransi = $total_hutang - $dibayar_baru;
-        
 
-        if ($toleransi >= 500 || $toleransi<=500) {
+      
+
+        if ($toleransi >= -500 && $toleransi <= 500) {
             $status = '2';
         } else {
             $status = '1';
         }
+
+        if ($toleransi < -500) {
+            return back()->with('error','Nominal tidak boleh melebihi sisa hutang');
+        }
+        
 
         //insert pembayaran
         $datas['tanggal'] = $tanggal;

@@ -6,15 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateCanvassingPesanansTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+  
     public function up()
     {
         Schema::create('canvassing_pesanans', function (Blueprint $table) {
             $table->id();
+            $table->string('kode_pesanan');
             $table->string('kode');
             $table->date('tanggal');
             $table->integer('qty');
@@ -40,12 +37,7 @@ class CreateCanvassingPesanansTable extends Migration
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+    
     public function down()
     {
         Schema::dropIfExists('canvassing_pesanans');

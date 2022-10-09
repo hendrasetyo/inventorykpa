@@ -38,7 +38,7 @@
             @endif
 
             @if (session('error'))
-            <div class="alert alert-custom alert-error fade show pb-2 pt-2" role="alert">
+            <div class="alert alert-custom alert-danger fade show pb-2 pt-2" role="alert">
                 <div class="alert-icon"><i class="flaticon-warning"></i></div>
                 <div class="alert-text">{{ session('error') }}</div>
                 <div class="alert-close">
@@ -133,24 +133,44 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($exp as $item)
-                                    <tr>
-                                        <td>{{ $item->tanggal->format("d F Y")  }}</td>
-                                        <td>{{ $item->lot ? $item->lot : '-' }}</td>
-                                        <td>{{ $item->qty }}</td>
-                                        <td>
-                                            
+                                    
+                                
+                                    @if ($products->status_exp == 1) 
+                                        @foreach ($exp as $item)
+                                            <tr>
+                                                <td>{{ $item->tanggal->format("d F Y")  }}</td>
+                                                <td>{{ $item->lot ? $item->lot : '-' }}</td>
+                                                <td>{{ $item->qty }}</td>
+                                                <td>                                                
                                                     <div style="text-align:center;">
                                                         <div class="d-flex flex-nowrap">                                                            
-                                                            <a href="javascript:set_qty({{ $item->id }})"
+                                                            <a href="javascript:set_qty({{ $item->id }},'exp')"
                                                                 class="btn btn-success btn-sm">
                                                                 <i class="flaticon2-check-mark"></i> Pilih
                                                             </a>                                                            
                                                         </div>
                                                     </div>                                                                                                    
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                    <tr>
+                                        <td>Barang Non Expired</td>
+                                        <td>Barang Non Expired</td>
+                                        <td>Barang Non Expired</td>                                        
+                                        <td>
+                                            <div style="text-align:center;">
+                                                <div class="d-flex flex-nowrap">                                                            
+                                                    <a href="javascript:set_qty({{ $products->id }},'noexp')"
+                                                        class="btn btn-success btn-sm">
+                                                        <i class="flaticon2-check-mark"></i> Pilih
+                                                    </a>                                                            
+                                                </div>
+                                            </div> 
                                         </td>
                                     </tr>
-                                    @endforeach
+                                    @endif
+                                   
                                 </tbody>
                             </table>
                             <!--end: Datatable-->
@@ -178,7 +198,7 @@
 
 <script type="text/javascript">
 
-    function set_qty(data_id){
+    function set_qty(data_id,status){
         $.ajax({
             type: 'POST',
             url: '{{ route('konversisatuan.setqty') }}',
@@ -186,6 +206,7 @@
             headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
             data: {
                 id:data_id, 
+                status : status,
                 "_token": "{{ csrf_token() }}"
             },
             

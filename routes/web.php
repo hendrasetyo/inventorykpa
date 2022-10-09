@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Konversi\KonversiController;
 use App\Http\Controllers\Laporan\LaporanAdjustmentStokController;
 use App\Http\Controllers\Laporan\LaporanBiayaOperationalController;
+use App\Http\Controllers\Laporan\LaporanFakturPajakController;
 use App\Http\Controllers\Laporan\LaporanHutangPiutangController;
 use App\Http\Controllers\Laporan\LaporanPenjualanController;
 use App\Http\Controllers\NavigationController;
@@ -501,7 +502,12 @@ Route::middleware('has.role')->prefix('penjualan')->group(function () {
         Route::get('', [FakturPenjualanController::class, 'index'])->name('fakturpenjualan.index');
         Route::get('{pengirimanbarang}/create', [FakturPenjualanController::class, 'create'])->name('fakturpenjualan.create');
         Route::post('{pengirimanbarang}/create', [FakturPenjualanController::class, 'store']);
+
+        Route::get('{fakturpenjualan}/edit', [FakturPenjualanController::class, 'edit'])->name('fakturpenjualan.edit');
+        Route::post('{fakturpenjualan}/update', [FakturPenjualanController::class, 'update'])->name('fakturpenjualan.update');
+
         Route::get('{fakturpenjualan}/show', [FakturPenjualanController::class, 'show'])->name('fakturpenjualan.show');
+        Route::get('{fakturpenjualan}/showdata', [FakturPenjualanController::class, 'showdata'])->name('fakturpenjualan.showdata');
 
         Route::post('delete', [FakturPenjualanController::class, 'delete'])->name('fakturpenjualan.delete');
         Route::delete('delete', [FakturPenjualanController::class, 'destroy'])->name('fakturpenjualan.destroy');
@@ -652,6 +658,17 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         Route::post('/export', [LaporanBiayaOperationalController::class, 'export'])->name('laporanbiayaoperational.export');        
     });
 
+    Route::prefix('laporanfakturpajak')->group(function () {
+        
+        // GET
+        Route::get('', [LaporanFakturPajakController::class, 'index'])->name('laporanfakturpajak.index');        
+        Route::post('/result', [LaporanFakturPajakController::class, 'result'])->name('laporanfakturpajak.filter');
+        Route::get('/{id}/detail', [LaporanFakturPajakController::class, 'detail'])->name('laporanfakturpajak.detail');
+
+        Route::post('/exportfaktur', [LaporanFakturPajakController::class, 'exportFaktur'])->name('laporanfakturpajak.exportfaktur');        
+        Route::post('/exportlogfaktur', [LaporanFakturPajakController::class, 'exportLogFaktur'])->name('laporanfakturpajak.exportlogfaktur');        
+    });
+
 
 });
 
@@ -659,7 +676,7 @@ Route::middleware('has.role')->prefix('konversi')->group(function () {
     Route::prefix('konversisatuan')->group(function () {
         Route::get('', [KonversiController::class, 'index'])->name('konversisatuan.index');
         Route::get('create', [KonversiController::class, 'create'])->name('konversisatuan.create');
-        Route::POST('store', [KonversiController::class, 'store'])->name('konversisatuan.store');
+        Route::post('store', [KonversiController::class, 'store'])->name('konversisatuan.store');
 
 
         Route::get('{id}/expdate', [KonversiController::class, 'pilihExp'])->name('konversisatuan.pilihexp');

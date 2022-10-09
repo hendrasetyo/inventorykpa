@@ -100,8 +100,6 @@
 <script src="{{ asset('/assets/js/pages/crud/datatables/extensions/responsive.js?v=7.0.6') }}"></script>
 
 
-
-
 <script type="text/javascript">
     $(function () {
    
@@ -113,15 +111,14 @@
               ajax: "{{ route('pembayaranpiutang.listpiutang') }}",
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                  {data: 'faktur_so', name: 'faktur_po.kode'},
-                  {data: 'no_kpa', name: 'faktur_po.no_kpa'},
+                  {data: 'faktur_fj', name: 'kode_fj'},
+                  {data: 'no_kpa', name: 'kode_kpa'},
                   {data: 'tanggal', name: 'tanggal'},
-                  {data: 'customers', name: 'customers.nama'},
+                  {data: 'customers', name: 'nama_customer'},
                   {data: 'total', name: 'total'},
                   {data: 'dibayar', name: 'dibayar'},
                   {data: 'sisa', name: 'sisa'},
                   {data: 'tanggal_top', name: 'tanggal_top'},
-
                   {
                       data: 'action', 
                       render: function(data){

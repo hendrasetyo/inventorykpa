@@ -54,17 +54,15 @@
                                 <div class="d-flex flex-column flex-root">
                                     <span class="font-weight-bolder mb-2">No. Invoice KPA</span>
                                     <span class="opacity-70">{{ $fakturpenjualan->no_kpa }}</span>
-                                </div>
+                                </div>                                                           
                                 <div class="d-flex flex-column flex-root">
                                     <span class="font-weight-bolder mb-2">No. Faktur Pajak</span>
-                                    <span class="opacity-70">{{ $fakturpenjualan->no_pajak }}</span>
+                                    <span class="opacity-70">{{ $fakturpenjualan->nopajak && $fakturpenjualan->no_seri_pajak ? $fakturpenjualan->no_seri_pajak.'-'. $fakturpenjualan->nopajak->no_pajak : '-'}}</span>
                                 </div>
                                 <div class="d-flex flex-column flex-root">
-                                    <div class="d-flex flex-column flex-root">
-                                        <span class="font-weight-bolder mb-2">SO Customer</span>
-                                        <span class="opacity-70">{{ $fakturpenjualan->SO->no_so }}</span>
-                                    </div>
-                                </div>
+                                    <span class="font-weight-bolder mb-2">SO Customer</span>
+                                    <span class="opacity-70">{{ $fakturpenjualan->SO->no_so }}</span>
+                                </div>                               
                             </div>
                         </div>
                     </div>
@@ -198,19 +196,23 @@
                                     <thead>
                                         <tr>
                                             <th class="font-weight-bold text-muted  text-uppercase">JUMLAH CN</th>                                          
+                                            <th class="font-weight-bold text-muted  text-uppercase">Saldo Harga Bersih</th>                                              
                                         </tr>                                        
                                         <tr>
-                                            <th class="font-weight-bold text-muted  text-uppercase">Saldo Harga Bersih</th>                                          
+                                            <td>{{ $fakturpenjualan->total_cn ? number_format($fakturpenjualan->total_cn, 0, ',', '.') : '0'}}</td>
+                                           
+                                            <td>
+                                                {{ number_format($fakturpenjualan->grandtotal - $fakturpenjualan->total_cn, 0, ',', '.') }}                                           
+                                            </td>                                        
                                         </tr>                                        
                                     </thead>
-                                    <tbody>
+                                    {{-- <tbody>
                                         <tr class="font-weight-bolder">
-                                            <td>{{ $fakturpenjualan->total_cn ? number_format($fakturpenjualan->total_cn, 0, ',', '.') : '0'}}</td>                                           
+                                            
+                                            {{ number_format($fakturpenjualan->grandtotal - $fakturpenjualan->total_cn, 0, ',', '.') }}</td>                                      
                                         </tr>                                        
-                                        <td>
-                                            <td>{{ number_format($fakturpenjualan->grandtotal - $fakturpenjualan->total_cn, 0, ',', '.') }}</td>                                           
-                                        </td>
-                                    </tbody>
+                                       
+                                    </tbody> --}}
                                 </table>
                                 <br />
                                 <h4>Keterangan :</h4>

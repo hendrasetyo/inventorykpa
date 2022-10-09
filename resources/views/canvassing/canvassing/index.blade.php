@@ -83,6 +83,7 @@
                             <table class="table yajra-datatable collapsed ">
                                 <thead class="datatable-head">
                                     <tr>
+                                        <th>#</th>
                                         <th>Kode</th>
                                         <th>Tanggal</th>
                                         <th>Customer</th>                                                                                
@@ -126,9 +127,10 @@
               ajax: "{{ route('canvassing.index') }}",
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                  {data: 'id', name: 'id'},
                   {data: 'kode', name: 'kode'},
                   {data: 'tanggal', name: 'tanggal'},
-                  {data: 'customer', name: 'customers.nama'},                                                 
+                  {data: 'customer', name: 'customer.nama'},                                                 
                   {
                       data: 'action', 
                       render: function(data){
@@ -144,7 +146,7 @@
                     targets: 2,
                     
                 },
-                {responsivePriority: 10001, targets: 3},
+                {responsivePriority: 10001, targets: 4},
                 {
                     responsivePriority: 2,
                     targets: -1

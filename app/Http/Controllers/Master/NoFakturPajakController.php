@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use App\Imports\NoFakturPajakImport;
+use App\Models\FakturPenjualan;
+use App\Models\LogNoFakturPajak;
 use App\Models\NoFakturPajak;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -86,9 +88,22 @@ class NoFakturPajakController extends Controller
     public function destroy(Request $request)
     {
         // no faktur pajak tidak bisa dihapus jika sudah dipakai faktur penjualan
-        $id = $request->id;
+        $fakturpenjualan = FakturPenjualan::where('pajak_id',$request->id)->get();
+
+        if (count($fakturpenjualan) > 0) {
+            return back()->with('error','no pajak tidak bisa dihapus karena telah digunakan di faktur penjualan');
+        }
         
+        // SAVE KE LOG
+        LogNoFakturPajak::create([
+            'jenis' => 'NF',
+            'jenis_id'=> 'Tidak Ada',
+            'nofaktur_id'   => $request->id
+        ]);
         
+        NoFakturPajak::where('id',$request->id)->delete();
+
+        return back()->with('sukses','No Pajak berhasil dihapus');                        
     }
 
     public function import(Request $request)
@@ -99,7 +114,16 @@ class NoFakturPajakController extends Controller
 
     public function status($id)
     {
+         // no faktur pajak tidak bisa dihapus jika sudah dipakai faktur penjualan
+         $fakturpenjualan = FakturPenjualan::where('pajak_id',$id)->get();
+
+         if (count($fakturpenjualan) > 0) {
+             return back()->with('error','no pajak diubah karena telah digunakan di faktur penjualan');
+         }
+        
+         
         $nopajak = NoFakturPajak::findOrFail($id);
+
         $nopajak->update([
             'status' => 'Aktif'
         ]);

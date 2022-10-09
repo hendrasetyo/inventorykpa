@@ -29,6 +29,16 @@
         </div>
     </div>
 
+    <div class="form-group row">
+        <label class="col-lg-1 col-form-label text-right">No Pesanan:</label>
+        <div class="col-lg-4">
+           <input type="text" name="kode_pesanan" class="form-control" placeholder="Masukan Kode Pesanan disini">
+            @error('customer_id')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+
     {{-- <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">No. SO:</label>
         <div class="col-lg-4">

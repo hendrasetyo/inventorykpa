@@ -1,3 +1,5 @@
+
+
 <div class="card-body">
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">Stok Konversi:</label>
@@ -6,22 +8,31 @@
                 value="{{ $temp->qty }}" />
 
             <input type="hidden" name="konversi_id" value="{{$temp->id}}">
+            <input type="hidden" name="status" value="{{$status}}">
         </div>
-        <label class="col-lg-2 col-form-label text-right">Expired Date:</label>
-        <div class="col-lg-4">
-            <div class="input-group date">
-                    @if($temp->tanggal <> null)
-                        <input type="text" class="form-control" name="tanggal" readonly
-                            value="{{ Carbon\Carbon::parse($temp->exp_date)->format('d-m-Y') }}" id="tgl1" />                    
-                    @endif
 
-                    <div class="input-group-append">
-                        <span class="input-group-text">
-                            <i class="la la-calendar"></i>
-                        </span>
+        @if ($status == 'exp')
+            @if($temp->tanggal <> null)
+
+                <label class="col-lg-2 col-form-label text-right">Expired Date:</label>
+                    <div class="col-lg-4">
+                        <div class="input-group date">                               
+                            <input type="text" class="form-control" name="tanggal" readonly
+                            value="{{ Carbon\Carbon::parse($temp->exp_date)->format('d-m-Y') }}" id="tgl1" />                    
+
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="la la-calendar"></i>
+                                </span>
+                            </div>
+                            
                     </div>
-            </div>
-        </div>
+                </div>
+            
+            @endif
+        @endif      
+
+      
     </div>
     <div class="text-right mb-3">
         <a href="javascript:caribarang()" class="btn btn-sm btn-primary"><i class="flaticon2-add"></i>Tambah Barang</a>

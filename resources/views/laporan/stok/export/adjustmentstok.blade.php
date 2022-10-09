@@ -17,7 +17,7 @@
         @foreach ($data as $item)
             <tr>
                 <td>{{$no++}}</td>
-                <td>{{ date('d F Y', strtotime($item->tanggal_adjustment)) }}</td>
+                <td>{{ date('d/m/Y, strtotime($item->tanggal_adjustment)) }}</td>
                 <td>{{$item->kode_adjustment}}</td>
                 <td>{{$item->kode}}</td>
                 <td>{{$item->nama}}</td>                                            

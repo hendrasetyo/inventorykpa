@@ -28,7 +28,7 @@
             @foreach ($kartustok as $item)
                 <tr>
                     <td>{{$no++}}</td>
-                    <td>{{ Carbon\Carbon::parse($item->tanggal)->format('d F Y') }}</td>
+                    <td>{{ Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
                     <td>{{$item->qty}}</td>
                     <td>{{$item->stok}}</td>
                     <td>{{$item->jenis}}</td>

@@ -117,6 +117,7 @@
                                         <th>CN Persen</th>
                                         <th>CN Rupiah</th>
                                         <th>CN Total</th>
+                                        <th>Saldo Harga Bersih</th>
                                         <th>Sales</th>
                                         <th>Pembuat</th>                                        
                                         <th>Keterangan</th>                                          
@@ -133,8 +134,8 @@
                                             <td>{{ date('d F Y', strtotime($item->tanggal)) }}</td>
                                             <td>{{$item->kode}}</td>
                                             <td>{{$item->kode_SP}}</td>
-                                            <td>{{$item->kode_SJ}}</td>
-                                            <td>{{$item->no_pajak}}</td>
+                                            <td>{{$item->kode_SJ}}</td>                                            
+                                            <td>{{$item->no_pajak }}</td>
                                             <td>{{$item->no_kpa}}</td>
                                             <td>{{$item->nama_customer}}</td>
                                             <td>{{$item->diskon_rupiah}}</td>
@@ -161,6 +162,7 @@
                                             <td>{{$item->cn_persen ? $item->cn_persen : 0}}%</td>
                                             <td>{{$item->cn_rupiah ? $item->cn_rupiah : 0}}</td>
                                             <td>{{$item->cn_total ? $item->cn_total : 0}}</td>
+                                            <td>{{((int)$item->total_det) + ((int)$item->total_det * (int)$item->no_ppn / 100) - ((int)$item->cn_total)}}</td>
                                             <td>{{$item->nama_sales}}</td>
                                             <td>{{$item->nama_pembuat}}</td>
                                             <td>{{$item->keterangan}}</td>                                            
