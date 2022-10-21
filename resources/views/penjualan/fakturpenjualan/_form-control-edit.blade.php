@@ -1,6 +1,6 @@
 <div class="card-body">
 
-
+    {{-- @dd($fakturpenjualan) --}}
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">Customers:</label>
         <div class="col-lg-4">
@@ -38,6 +38,7 @@
         <div class="col-lg-4">
             <input type="text" class="form-control form-control-solid" name="pengiriman_barang" readonly
                 value="{{ $fakturpenjualan->sj->kode }}" id="pengiriman_barang" />
+
             @error('penerimaan_barang')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -46,17 +47,28 @@
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">No. KPA:</label>
         <div class="col-lg-4">
-            <input type="text" class="form-control form-control-solid" name="no_kpa" id="no_kpa" value="{{$fakturpenjualan->no_kpa}}"/>
+            <select name="pajak_id" id="kt_select2_2" class="form-control nokpa" required>
+                @foreach ($nopajak as $item)
+                    @if ($fakturpenjualan->pajak_id == $item->id)
+                        <option value="{{$item->id}}" selected>{{$item->no_kpa}}</option>
+                    @else
+                        <option value="{{$item->id}}">{{$item->no_kpa}}</option>
+                    @endif
+                @endforeach
+            </select>
+
             @error('no_kpa')
-            <div class="invalid-feedback">{{ $message }}</div>
+               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
+
         </div>     
         
         <label class="col-lg-2 col-form-label text-right">No. Seri Pajak:</label>
         <div class="col-lg-4">
-            <input type="text" class="form-control form-control-solid" name="no_seri_pajak"  id="no_pajak" value="{{$fakturpenjualan->no_seri_pajak}}" />
+            <input type="text" class="form-control form-control-solid" value="{{$fakturpenjualan->no_seri_pajak}}" name="no_pajak"  id="no__seri_pajak" />
+
             @error('no_seri_pajak')
-            <div class="invalid-feedback">{{ $message }}</div>
+               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
     </div>
@@ -67,18 +79,14 @@
         </div>   
 
         <label class="col-lg-2 col-form-label text-right">No. Pajak:</label>
+                
         <div class="col-lg-4">            
-            <select name="pajak_id" id="kt_select2_2" class="form-control">
-                <option value="{{$fakturpenjualan->pajak_id ? $fakturpenjualan->pajak_id : null }}" selected>{{$fakturpenjualan->nopajak ? $fakturpenjualan->nopajak->no_pajak : ''}}</option>                        
-                @foreach ($nopajak as $item)                
-                    <option value="{{$item->id}}">{{$item->no_pajak}}</option>                        
-                @endforeach
-            </select>
-
+            <input type="text" class="form-control form-control-solid" name="no_pajak" value="{{$fakturpenjualan->no_pajak}}" id="no_pajak" readonly/>
             @error('no_pajak')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
-        </div>      
+        </div>   
+          
     </div>
 
     <div class="form-group row">

@@ -90,7 +90,8 @@
                             <table class="table  yajra-datatable collapsed ">
                                 <thead class="datatable-head">
                                     <tr>
-                                        <th>Nama</th>
+                                        <th>No Pajak</th>
+                                        <th>No KPA</th>
                                         <th>Status</th>
                                         <th>Keterangan</th>
                                         <th style="width: 10%; ">Action</th>
@@ -171,7 +172,8 @@
               ajax: "{{ route('fakturpajak.index') }}",
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                  {data: 'no_pajak', name: 'no_pakal'},
+                  {data: 'no_pajak', name: 'no_pajak'},
+                  {data: 'no_kpa', name: 'no_kpa'},
                   {data: 'status', name: 'status'},                  
                   {data: 'keterangan', name: 'keterangan'},
                   {

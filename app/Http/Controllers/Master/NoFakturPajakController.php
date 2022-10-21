@@ -118,7 +118,7 @@ class NoFakturPajakController extends Controller
          $fakturpenjualan = FakturPenjualan::where('pajak_id',$id)->get();
 
          if (count($fakturpenjualan) > 0) {
-             return back()->with('error','no pajak diubah karena telah digunakan di faktur penjualan');
+             return back()->with('error','no pajak tidak dapat diubah karena telah digunakan di faktur penjualan');
          }
         
          

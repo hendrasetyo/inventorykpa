@@ -10,6 +10,15 @@
     </div>
 
     <div class="form-group">
+        <label>No Pajak :</label>
+        <input type="text" name="no_kpa" value="{{ old('no_kpa') ?? $fakturpajak->no_kpa }}"
+            class="form-control @error('no_kpa') is-invalid @enderror" placeholder="Masukkan No KPA" />
+        @error('no_kpa')
+        <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="form-group">
         <label>Status :</label>
         <select name="status" id="kt_select2_1" class="form-control">
                 <option value="Aktif" selected>Aktif</option>

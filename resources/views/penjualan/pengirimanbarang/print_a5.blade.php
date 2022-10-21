@@ -91,7 +91,8 @@
 <body style="font-family: sans-serif; margin-top:-15px;">
     <div id="printReady">
 
-        @for($i = 1; $i <= $totalPage; $i++) <table border="0" width="100%">
+        @for($i = 1; $i <= $totalPage; $i++) 
+        <table border="0" width="100%">
             <tr>
                 <td width="20%" style="font-size: 70%; vertical-align: top;">
                     <h3>PT KARYA PUTRA ANDALAN</h3>
@@ -155,7 +156,7 @@
                     SO Cust. : {{ $pengirimanbarang->SO->no_so }}
                 </td>               
             </tr>
-            </table>          
+        </table>          
            
             <div style="height:  238px;">
                 <table width="100%">

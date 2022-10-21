@@ -110,6 +110,7 @@
         });
     </script>
     <script type="text/javascript">
+    
         // var hargajual = document.getElementById('hargajual');
         // hargajual.addEventListener('keyup', function(e){
         //     // tambahkan 'Rp.' pada saat form di ketik

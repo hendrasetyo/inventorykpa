@@ -7,8 +7,7 @@
             <th>Kode SO</th>
             <th>Kode SJ</th>
             <th>Kode Faktur</th>
-            <th>DPP</th>                                        
-            <th>PPN</th>
+            <th>No Faktur</th>
             <th>Total</th>                                        
             <th>Telah Dibayar</th>
             <th>Sisa</th>                                        
@@ -24,13 +23,12 @@
         @foreach ($hutang as $item)
             <tr>
                 <td>{{$no++}}</td>
-                <td>{{$item->tanggal_top ? date('d/m/Y, strtotime($item->tanggal_top))  : 'tidak ada' }}</td>
+                <td>{{$item->tanggal_top ? date('d/m/Y', strtotime($item->tanggal_top))  : 'tidak ada' }}</td>
                 <td>{{$item->nama_customer}}</td>
                 <td>{{$item->kode_pp}}</td>
                 <td>{{$item->kode_pb}}</td>
-                <td>{{$item->kode_fp}}</td>                                            
-                <td>{{$item->dpp}}</td>
-                <td>{{$item->ppn}}</td>
+                <td>{{$item->kode_fp}}</td>
+                <td>{{$item->no_kpa}}</td>                                            
                 <td>{{$item->total}}</td>
                 <td>{{$item->dibayar}}</td>
                 <td>{{$item->total - $item->dibayar}}</td>                                                                                  

@@ -374,17 +374,28 @@ class FakturPembelianController extends Controller
     public function print_a4(FakturPembelian $fakturpembelian)
     {
         $title = "Print Faktur Pembelian";
-        $fakturpembeliandetails = FakturPembelianDetail::with('products')
+        $fakturpembeliandetail = FakturPembelianDetail::with('products')            
             ->where('faktur_pembelian_id', '=', $fakturpembelian->id)->get();
-
+        $jmlBaris  = $fakturpembeliandetail->count();
+        $perBaris = 20;
+        $totalPage = ceil($jmlBaris / $perBaris);
         $data = [
-            'totalPage' => 2,
-            'date' => date('m/d/Y')
-
+            'totalPage' => $totalPage,
+            'perBaris' => $perBaris,
+            'date' => date('d/m/Y'),
+            'fakturpembelian' => $fakturpembelian,
+            'fakturpembeliandetail' => $fakturpembeliandetail
         ];
         $pdf = PDF::loadView('pembelian.fakturpembelian.print_a4', $data)->setPaper('a4', 'potrait');;
+        return $pdf->download($fakturpembelian->kode.'.pdf');
 
-        return $pdf->download('fakturpembelian.pdf');
+        // return view('pembelian.fakturpembelian.print_a4', compact(
+        //     'title',  
+        //     'totalPage',
+        //     'perBaris',
+        //     'fakturpembelian',
+        //     'fakturpembeliandetail'
+        // ));
     }
 
     public function editbiaya(Request $request)

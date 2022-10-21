@@ -17,6 +17,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\PesananPembelianDetail;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Auth;
 
 class PesananPembelianController extends Controller
@@ -488,4 +489,33 @@ class PesananPembelianController extends Controller
 
         return view('pembelian.pesananpembelian.show', compact('title', 'pesananpembelian', 'pesananpembeliandetails'));
     }
+
+    public function print_a4(PesananPembelian $pesananpembelian)
+    {
+
+        $title = "Print Pesanan Pembelian";
+        $pesananpembeliandetail = PesananPembelianDetail::with('products.merks')            
+            ->where('pesanan_pembelian_id', '=', $pesananpembelian->id)->get();
+        $jmlBaris  = $pesananpembeliandetail->count();
+        $perBaris = 20;
+        $totalPage = ceil($jmlBaris / $perBaris);
+        $pesananpembeliandetail =  $pesananpembeliandetail;
+        $date = date('d/m/Y');
+        $data = [
+            'totalPage' => $totalPage,
+            'perBaris' => $perBaris,
+            'date' => date('d/m/Y'),
+            'pesananpembelian' => $pesananpembelian,
+            'pesananpembeliandetail' => $pesananpembeliandetail
+        ];
+
+        $pdf = PDF::loadView('pembelian.pesananpembelian.print_a4', $data)->setPaper('a4', 'potrait');;
+        return $pdf->download($pesananpembelian->no_so.'-'.$pesananpembelian->kode.'.pdf');
+
+        // return view('pembelian.pesananpembelian.print_a4', compact('title',  'totalPage','pesananpembelian','pesananpembeliandetail','date'
+        //                                                             ,'perBaris'
+        //                                                            ));
+    }
+
+    
 }

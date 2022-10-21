@@ -16,6 +16,7 @@ class CreateNoFakturPajaksTable extends Migration
         Schema::create('no_faktur_pajaks', function (Blueprint $table) {
             $table->id();
             $table->string('no_pajak');
+            $table->string('no_kpa')->nullable();
             $table->string('status');
             $table->text('keterangan')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();

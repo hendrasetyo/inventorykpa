@@ -1,7 +1,11 @@
+
 <!DOCTYPE html>
 <html>
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
     <style type="text/css">
         .tabel {
             border-collapse: collapse;
@@ -94,15 +98,15 @@
                         @endphp
                         @foreach($fakturpenjualandetails as $a)
                         @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="">
-                            <td style="font-size: 60%; ">{{ $a->qty }} {{ $a->satuan }}</td>
-                            <td style="font-size: 60%; ">{{ $a->products->nama }}</td>
-                            <td style="font-size: 60%; text-align:right">{{ number_format(floor($a->hargajual), 0, ',', '.')
+                            <td style="font-size: 65%; ">{{ $a->qty }} {{ $a->satuan }}</td>
+                            <td style="font-size: 65%;font-family: DejaVu Sans; sans-serif; ">{{ $a->products->nama }}</td>
+                            <td style="font-size: 65%; text-align:right">{{ number_format(floor($a->hargajual), 0, ',', '.')
                                 }}</td>
-                            <td style="font-size: 60%; text-align:right">{{ number_format(floor($a->subtotal), 0, ',', '.')
+                            <td style="font-size: 65%; text-align:right">{{ number_format(floor($a->subtotal), 0, ',', '.')
                                 }}</td>
-                            <td style="font-size: 60%; text-align:right">{{ number_format(floor($a->total_diskon), 0, ',',
+                            <td style="font-size: 65%; text-align:right">{{ number_format(floor($a->total_diskon), 0, ',',
                                 '.') }}</td>
-                            <td style="font-size: 60%; text-align:right">{{ number_format(floor($a->total), 0, ',',
+                            <td style="font-size: 65%; text-align:right">{{ number_format(floor($a->total), 0, ',',
                                 '.') }}</td>
 
 

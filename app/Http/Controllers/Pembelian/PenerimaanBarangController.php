@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\PenerimaanBarangDetail;
 use App\Models\PesananPembelianDetail;
 use App\Models\Supplier;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class PenerimaanBarangController extends Controller
 {
@@ -625,6 +626,39 @@ class PenerimaanBarangController extends Controller
             ->where('penerimaan_barang_id', '=', $penerimaanbarang->id)->get();
         $listExp = StokExpDetail::where('id_pb', '=', $penerimaanbarang->id)->get();
         return view('pembelian.penerimaanbarang.show', compact('title', 'listExp', 'penerimaanbarang', 'penerimaanbarangdetails'));
+    }
+
+    public function print_a5(PenerimaanBarang $penerimaanbarang)
+    {
+        // dd($penerimaanbarang);
+        $title = "Print Surat Jalan";
+        $penerimaanbarangdetail = PenerimaanBarangDetail::with('products')
+            ->where('penerimaan_barang_id', '=', $penerimaanbarang->id)->get();
+        $jmlBaris  = $penerimaanbarangdetail->count();
+        $perBaris = 7;
+        $totalPage = ceil($jmlBaris / $perBaris);
+        $listExp = StokExpDetail::with('stockExp')->where('id_sj', '=', $penerimaanbarang->id)->get();
+        //dd($listExp);
+        $data = [
+            'totalPage' => $totalPage,
+            'perBaris' => $perBaris,
+            'date' => date('m/d/Y'),
+            'listExp' => $listExp,
+            'penerimaanbarang' => $penerimaanbarang,
+            'penerimaanbarangdetail' => $penerimaanbarangdetail
+        ];
+
+        $pdf = PDF::loadView('pembelian.penerimaanbarang.print_a5', $data)->setPaper('a5', 'landscape');;
+        return $pdf->download($penerimaanbarang->kode.'.pdf');
+
+        // return view('pembelian.penerimaanbarang.print_a5', compact(
+        //     'title',  
+        //     'totalPage',
+        //     'perBaris',
+        //     'listExp' ,
+        //     'penerimaanbarang' ,
+        //     'penerimaanbarangdetail' 
+        // ));
     }
 
     

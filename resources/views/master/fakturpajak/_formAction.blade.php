@@ -10,9 +10,6 @@
             class="flaticon2-check-mark "></i></a>    
         @endif
 
-        
-
-        &nbsp;
         @can('fakturpajak-delete')
         <a href="javascript:show_confirm({{ $id }})" class="btn btn-icon btn-danger btn-sm" title="DELETE"><i
                 class="flaticon-delete"></i></a>

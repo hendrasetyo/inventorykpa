@@ -232,6 +232,7 @@ class LaporanHutangPiutangController extends Controller
         $statusFilter = $salesfilter->where('p.status','=',$data['status']);
 
         $datafilter = $statusFilter->select('c.nama as nama_customer','pp.kode as kode_pp','pb.kode as kode_pb','fp.kode as kode_fp','p.*','s.nama as nama_sales')->get();
+        
 
         if (count($datafilter) <= 0) {
                 return redirect()->back()->with('status_danger', 'Data tidak ditemukan atau belum melakukan pembayaran');

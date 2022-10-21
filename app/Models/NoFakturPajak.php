@@ -13,6 +13,7 @@ class NoFakturPajak extends Model
     protected $table = 'no_faktur_pajaks';
     protected $fillable = [
         'no_pajak',
+        'no_kpa',
         'status',
         'keterangan'
     ];

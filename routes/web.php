@@ -290,7 +290,7 @@ Route::middleware('has.role')->prefix('master')->group(function () {
         Route::put('/{fakturpajak}/edit', [NoFakturPajakController::class, 'update'])->name('fakturpajak.update');       
         Route::get('/{fakturpajak}/status', [NoFakturPajakController::class, 'status'])->name('fakturpajak.status');       
         Route::post('/delete', [NoFakturPajakController::class, 'delete'])->name('fakturpajak.delete');       
-        Route::delete('/delete', [NoFakturPajakController::class, 'destroy'])->name('fakturpajak.destroy');               
+        Route::delete('/destroy', [NoFakturPajakController::class, 'destroy'])->name('fakturpajak.destroy');               
     });
 });
 
@@ -308,6 +308,8 @@ Route::middleware('has.role')->prefix('pembelian')->group(function () {
         Route::post('setbarang', [PesananPembelianController::class, 'setbarang'])->name('pesananpembelian.setbarang');
         Route::post('editbarang', [PesananPembelianController::class, 'editbarang'])->name('pesananpembelian.editbarang');
         Route::post('updatebarang', [PesananPembelianController::class, 'updatebarang'])->name('pesananpembelian.updatebarang');
+
+        Route::get('{pesananpembelian}/print_a4', [PesananPembelianController::class, 'print_a4'])->name('pesananpembelian.print_a4');
 
         Route::post('editdiskon', [PesananPembelianController::class, 'editdiskon'])->name('pesananpembelian.editdiskon');
         Route::post('updatediskon', [PesananPembelianController::class, 'updatediskon'])->name('pesananpembelian.updatediskon');
@@ -341,6 +343,8 @@ Route::middleware('has.role')->prefix('pembelian')->group(function () {
         Route::get('{penerimaanbarang}/show', [PenerimaanBarangController::class, 'show'])->name('penerimaanbarang.show');
         Route::get('{penerimaanbarang}/showdata', [PenerimaanBarangController::class, 'showData'])->name('penerimaanbarang.showData');
 
+        
+
 
         Route::post('delete', [PenerimaanBarangController::class, 'delete'])->name('penerimaanbarang.delete');
         Route::delete('delete', [PenerimaanBarangController::class, 'destroy'])->name('penerimaanbarang.destroy');
@@ -364,6 +368,8 @@ Route::middleware('has.role')->prefix('pembelian')->group(function () {
 
         Route::post('hapusexp', [PenerimaanBarangController::class, 'hapusexp'])->name('penerimaanbarang.hapusexp');
         Route::delete('destroy_exp', [PenerimaanBarangController::class, 'destroy_exp'])->name('penerimaanbarang.destroy_exp');
+
+        Route::get('{penerimaanbarang}/print_a5', [PenerimaanBarangController::class, 'print_a5'])->name('penerimaanbarang.print_a5');
     });
 
     Route::prefix('fakturpembelian')->group(function () {
@@ -527,6 +533,8 @@ Route::middleware('has.role')->prefix('penjualan')->group(function () {
         Route::delete('delete_detail', [FakturPenjualanController::class, 'destroy_detail'])->name('fakturpenjualan.destroy_detail');
 
         Route::get('listsj', [FakturPenjualanController::class, 'listsj'])->name('fakturpenjualan.listsj');
+
+        Route::post('getnokpa', [FakturPenjualanController::class, 'getNoKpa'])->name('fakturpenjualan.getnokpa');
 
         // cn
 

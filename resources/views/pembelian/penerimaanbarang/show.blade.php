@@ -184,10 +184,10 @@
 
                         <div class="col-md-9">
                             <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-light-primary font-weight-bold"
-                                    onclick="window.print();">Download </button>
-                                {{-- <button type="button" class="btn btn-primary font-weight-bold"
-                                    onclick="window.print();">Print </button> --}}
+                                <a href="{{ route('penerimaanbarang.print_a5', $penerimaanbarang) }}"
+                                        class="btn btn-primary " target="_blank">
+                                    <i class="flaticon2-print font-weight-bold"></i> Download & Print
+                                </a>
                                 <a class="btn btn-danger font-weight-bold"
                                     href="{{ url('pembelian/penerimaanbarang') }}">Back </a>
                             </div>

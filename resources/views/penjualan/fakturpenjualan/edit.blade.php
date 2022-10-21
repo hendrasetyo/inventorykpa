@@ -313,6 +313,20 @@
         });
     }
 
+    $(function () {
+            $('.nokpa').on('change', function () {
+                    $.ajax({
+                        url: '{{ route('fakturpenjualan.getnokpa') }}',
+                        method: 'POST',
+                        headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                        data: {id: $(this).val(), "_token": "{{ csrf_token() }}"},
+                        success: function (response) {
+                            $('#no_pajak').val(response.no_pajak);      
+                        }
+                    })
+            });
+        });
+
     function hitungAll(){     
 
         hitungBiaya(); 

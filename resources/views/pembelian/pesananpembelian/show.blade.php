@@ -205,10 +205,10 @@
 
                         <div class="col-md-9">
                             <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-light-primary font-weight-bold"
-                                    onclick="window.print();">Download </button>
-                                {{-- <button type="button" class="btn btn-primary font-weight-bold"
-                                    onclick="window.print();">Print </button> --}}
+                                <a href="{{ route('pesananpembelian.print_a4', $pesananpembelian) }}"
+                                       class="btn btn-primary " target="_blank">
+                                    <i class="flaticon2-print font-weight-bold"></i> Download & Print
+                               </a>
                                 <a class="btn btn-danger font-weight-bold"
                                     href="{{ url('pembelian/pesananpembelian') }}">Back </a>
                             </div>
