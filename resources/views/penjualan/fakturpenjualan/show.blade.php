@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="d-flex flex-column flex-root">
                                     <span class="font-weight-bolder mb-2">No. Faktur Pajak</span>
-                                    <span class="opacity-70">{{ $fakturpenjualan->nopajak && $fakturpenjualan->no_seri_pajak ? $fakturpenjualan->no_seri_pajak.'-'. $fakturpenjualan->nopajak->no_pajak : '-'}}</span>
+                                    <span class="opacity-70">{{ $fakturpenjualan->nopajak && $fakturpenjualan->no_seri_pajak ? $fakturpenjualan->no_seri_pajak.'-'. $fakturpenjualan->no_pajak : '-'}}</span>
                                 </div>
                                 <div class="d-flex flex-column flex-root">
                                     <span class="font-weight-bolder mb-2">SO Customer</span>
@@ -229,10 +229,15 @@
 
                         <div class="col-md-9">
                             <div class="d-flex justify-content-between">
-                                <div class="d-flex justify-content-between">
+                                <div class="d-flex justify-content-between ">
                                     <a href="{{ route('fakturpenjualan.print_a4', $fakturpenjualan) }}"
-                                        class="btn btn-primary " target="_blank">
+                                        class="btn btn-primary mr-2" target="_blank">
                                         <i class="flaticon2-print font-weight-bold"></i> Download & Print
+                                    </a>
+
+                                    <a href="{{ route('fakturpenjualan.kwitansi', $fakturpenjualan) }}"
+                                        class="btn btn-primary " target="_blank">
+                                        <i class="flaticon2-print font-weight-bold"></i> Kwitansi
                                     </a>
 
                                     <a href="{{ route('fakturpenjualan.editCN', $fakturpenjualan) }}"

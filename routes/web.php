@@ -542,6 +542,10 @@ Route::middleware('has.role')->prefix('penjualan')->group(function () {
         Route::get('{fakturpenjualan}/EditCN', [FakturPenjualanController::class, 'editCN'])->name('fakturpenjualan.editCN');
         Route::POST('{fakturpenjualandetail}/EditCN', [FakturPenjualanController::class, 'createCN'])->name('fakturpenjualan.editCN');
         Route::PUT('{fakturpenjualandetail}/updateCN', [FakturPenjualanController::class, 'updateCN'])->name('fakturpenjualan.updateCN');
+
+        // kwitansi
+        Route::get('{fakturpenjualan}/kwitansi', [FakturPenjualanController::class, 'kwitansi'])->name('fakturpenjualan.kwitansi');
+      
     });
 
     Route::prefix('pembayaranhutang')->group(function () {

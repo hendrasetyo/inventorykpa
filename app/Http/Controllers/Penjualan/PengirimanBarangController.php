@@ -153,9 +153,10 @@ class PengirimanBarangController extends Controller
         //dd($product);
         $stok = $product->stok;
         //dd($stok);
+        
         //validasi
         //1. cek item sudah dimasukkan apa belum
-        $jmlItem = TempSj::where('product_id', '=', $product_id)->count();
+        $jmlItem = TempSj::where('product_id', '=', $product_id)->where('user_id',auth()->user()->id)->count();
         
         if ($qty_kirim > 0) {
             if ($qty_kirim <= $stok) {

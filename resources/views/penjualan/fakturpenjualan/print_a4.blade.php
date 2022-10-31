@@ -72,7 +72,7 @@
         </tr>
         <tr>
             <td colspan="6" style="vertical-align: top; ">
-                <div class="isi" style="height: 400px;">
+                <div class="isi" style="height: 500px;">
                     <table border="0" class="xyz" style="width:100%; ">
                         <tr>
                             <td colspan="6">
@@ -186,51 +186,8 @@
 
                 </td>
                 @else
-                <td style="text-align: right">
+                <td style="text-align: right;page-break-after:always;">
                     <table width="100%">
-                        {{-- <tr>
-                            <td style='font-size: 70%; width: 75%; line-height:90%'><b>Total Jumlah</b></td>
-                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
-                            <td style='font-size: 70%; line-height:90%; text-align:right'><b>
-                                    -
-                                </b></td>
-                        </tr>
-                        <tr>
-                            <td style='font-size: 70%; width: 75%; line-height:90%'><b>Potongan Harga</b></td>
-                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
-                            <td style='font-size: 70%; line-height:90%; text-align:right'><b>
-                                    -
-                                </b></td>
-                        </tr>
-                        <tr>
-                            <td style='font-size: 70%; width: 75%; line-height:90%'><b>Dasar Pengenaan Pajak</b></td>
-                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
-                            <td style='font-size: 70%; line-height:90%; text-align:right'><b>
-                                   -
-                                </b></td>
-                        </tr>
-                        <tr>
-                            <td style='font-size: 70%; width: 75%;'><b>PPN</b></td>
-                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
-                            <td style='font-size: 70%; text-align:right'><b>
-                                   -
-                                </b></td>
-                        </tr>
-                        <tr>
-                            <td style='font-size: 70%; width: 75%;'><b>Biaya Pengiriman</b></td>
-                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
-                            <td style='font-size: 70%; text-align:right'><b>
-                                 -
-                                </b></td>
-                        </tr>
-                        <tr>
-                            <td style='font-size: 70%; width: 25%;'><b>Jumlah Yang Harus Dibayar</b></td>
-                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
-                            <td style='font-size: 70%; text-align:right'><b>
-                                -
-                                </b></td>
-                        </tr> --}}
-
                         <tr>
                             <td style='font-size: 70%; width: 25%;text-align:center'><i>( HALAMAN SELANJUTNYA )</i></td>
                         </tr>

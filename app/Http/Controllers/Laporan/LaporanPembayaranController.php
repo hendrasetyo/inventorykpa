@@ -155,7 +155,7 @@ class LaporanPembayaranController extends Controller
     {
         $data = $request->all();        
         $now = Carbon::parse(now())->format('Y-m-d');
-        return Excel::download(new LaporanPembayaranHutangExport($data), 'laporanpembayaranhutang-'.$now.'.xlsx');
+        return Excel::download(new LaporanPembayaranHutangExportDetail($data), 'laporanpembayaranhutang-'.$now.'.xlsx');
     }
     
     public function filterDataHutangDetail(Request $request)
@@ -346,7 +346,7 @@ class LaporanPembayaranController extends Controller
     {
         $data = $request->all();        
         $now = Carbon::parse(now())->format('Y-m-d');
-        return Excel::download(new LaporanPembayaranPiutangExport($data), 'laporanpembayaranpiutang-'.$now.'.xlsx');
+        return Excel::download(new LaporanPembayaranPiutangDetailExport($data), 'laporanpembayaranpiutang-'.$now.'.xlsx');
     }
 
     public function filterPembayaranPiutangDetail(Request $request)

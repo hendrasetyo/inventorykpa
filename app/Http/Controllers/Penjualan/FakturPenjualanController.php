@@ -122,6 +122,8 @@ class FakturPenjualanController extends Controller
         $id_sj = $pengirimanbarang->id;
         $id_so = $pengirimanbarang->pesanan_penjualan_id;
 
+        
+
         $SJdetails = PengirimanBarangDetail::where('pengiriman_barang_id', '=', $id_sj)->get();
 
         // input temp biaya
@@ -414,6 +416,8 @@ class FakturPenjualanController extends Controller
             'SO'
         ])->first();
 
+     
+
         $nopajak = NoFakturPajak::where('status','Aktif')->orWhere('id',$fakturpenjualan->pajak_id)->get();        
 
         $FJdetails = FakturPenjualanDetail::with('products')
@@ -639,6 +643,11 @@ class FakturPenjualanController extends Controller
             return response()->json($th->getMessage());
         }
        
+    }
+
+    public function kwitansi(FakturPenjualan $fakturpenjualan)
+    {
+        return view('penjualan.fakturpenjualan.kwitansi');
     }
 
  

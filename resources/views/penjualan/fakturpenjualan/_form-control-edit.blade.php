@@ -65,7 +65,7 @@
         
         <label class="col-lg-2 col-form-label text-right">No. Seri Pajak:</label>
         <div class="col-lg-4">
-            <input type="text" class="form-control form-control-solid" value="{{$fakturpenjualan->no_seri_pajak}}" name="no_pajak"  id="no__seri_pajak" />
+            <input type="text" name="no_seri_pajak" class="form-control form-control-solid" value="{{$fakturpenjualan->no_seri_pajak}}"   id="no__seri_pajak" />
 
             @error('no_seri_pajak')
                <div class="invalid-feedback">{{ $message }}</div>
