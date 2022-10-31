@@ -55,10 +55,7 @@
                             </div>
 
                             <div class="card-toolbar">
-                                {{-- <a href="{{ route('assignpermission.index') }}"
-                                class="btn btn-light-danger font-weight-bold mr-2">
-                                <i class="flaticon2-left-arrow-1"></i> Back
-                                </a> --}}
+                             
                             </div>
                         </div>
                         <!--begin::Form-->

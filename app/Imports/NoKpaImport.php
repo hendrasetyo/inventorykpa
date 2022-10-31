@@ -2,20 +2,18 @@
 
 namespace App\Imports;
 
-use App\Models\NoFakturPajak;
+use App\Models\NoKPA;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 
-class NoFakturPajakImport implements ToModel
+class NoKpaImport implements ToModel
 {
     protected $no=0;
     public function model(array $row)
     {
         if ($this->no !== 0) {
-            $nopajak = NoFakturPajak::create([
-                'no_pajak' => $row[0],
-                'no_kpa' => $row[1].'-22/KPA',
+            $nopajak = NoKPA::create([
+                'no_kpa' => $row[0].'-22/KPA',
                 'status' => 'Aktif',                
             ]);
         }
@@ -23,6 +21,3 @@ class NoFakturPajakImport implements ToModel
         return ;
     }
 }
-
-
-

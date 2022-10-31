@@ -47,17 +47,15 @@
         <label class="col-lg-1 col-form-label text-right">No. KPA:</label>
         <div class="col-lg-4">
 
-            <select name="no_kpa" id="kt_select2_2" class="form-control nokpa" required>
-                @foreach ($nopajak as $item)
+            <select name="kpa_id" id="kt_select2_2" class="form-control" required>
+                @foreach ($nokpa as $item)
                     <option value="{{$item->id}}">{{$item->no_kpa}}</option>
                 @endforeach
             </select>
 
-            @error('no_kpa')
+            @error('kpa_id')
                <div class="invalid-feedback">{{ $message }}</div>
             @enderror
-
-
 
         </div>     
         
@@ -76,10 +74,16 @@
         </div>   
 
         <label class="col-lg-2 col-form-label text-right">No. Pajak:</label>
-        <div class="col-lg-4">            
-            <input type="text" class="form-control form-control-solid" name="no_pajak" value="" id="no_pajak" readonly/>
+        <div class="col-lg-4">  
+            
+            <select name="pajak_id" class="form-control" id="kt_select2_1">
+                @foreach ($nopajak as $item)
+                      <option value="{{$item->id}}">{{$item->no_pajak}}</option>
+                @endforeach
+            </select>
+           
 
-            @error('no_pajak')
+            @error('pajak_id')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>      

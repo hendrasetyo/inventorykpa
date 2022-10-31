@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\FakturPenjualanDetail;
 use App\Models\LogNoFakturPajak;
 use App\Models\NoFakturPajak;
+use App\Models\NoKPA;
 use App\Models\PengirimanBarangDetail;
 use App\Models\PesananPenjualanDetail;
 use App\Models\TempBiaya;
@@ -203,11 +204,13 @@ class FakturPenjualanController extends Controller
         $grandtotal_header = $total_header + $ppn_header + $ongkir_header;
 
         $nopajak = NoFakturPajak::where('status','Aktif')->get();
+        $nokpa = NoKPA::where('status','Aktif')->get();
 
         return view('penjualan.fakturpenjualan.create', 
                     compact('title', 'FJdetails', 'tglNow', 'fakturpenjualan', 
                     'pengirimanbarang', 'SJdetails', 'subtotal_header', 'ongkir_header', 
-                    'total_diskon_header', 'total_header', 'ppn_header', 'grandtotal_header','idtempbiaya','nopajak'));
+                    'total_diskon_header', 'total_header', 'ppn_header', 'grandtotal_header','idtempbiaya',
+                    'nopajak','nokpa'));
     }
 
     public function store(Request $request, PengirimanBarang $pengirimanbarang)
@@ -240,7 +243,10 @@ class FakturPenjualanController extends Controller
         $SJdetails = PengirimanBarangDetail::where('pengiriman_barang_id', '=', $id_sj)->get();        
 
         // pajak
-        $pajak = NoFakturPajak::where('id',$request->no_kpa)->first();
+        $pajak = NoFakturPajak::where('id',$request->pajak_id)->first();
+
+        // nokpa
+        $kpa = NoKPA::where('id',$request->kpa_id)->first();
 
 
         //start cek status exp date SJ :
@@ -295,7 +301,7 @@ class FakturPenjualanController extends Controller
         $datas['ppn'] = $ppn_header;
         $datas['ongkir'] = $ongkir_header;
         $datas['sales_id'] = $sales_id;
-        $datas['no_kpa'] = $pajak->no_kpa;
+        $datas['no_kpa'] = $kpa->no_kpa;
         $datas['no_pajak'] = $request->no_kpa;
         $datas['biaya_lain'] = $biayalainlain;
         $datas['pajak_id'] = $pajak->id;
@@ -310,10 +316,18 @@ class FakturPenjualanController extends Controller
             'jenis_id' => $kode
         ]);
 
+        // log no kpa
+
+
         // ubah status menjadi tidak aktif
-        $pajak = NoFakturPajak::where('id',$request->no_kpa)->update([
+        $pajak->update([
             'status' => 'Tidak Aktif'
         ]);
+
+        // // ubah status no kpa menjadi tidak aktif
+        // $kpa->update([
+        //     'status' => 'Tidak Aktif'
+        // ]);
 
     
         //$ongkir_header = $ongkir_det;
@@ -416,14 +430,13 @@ class FakturPenjualanController extends Controller
             'SO'
         ])->first();
 
-     
-
-        $nopajak = NoFakturPajak::where('status','Aktif')->orWhere('id',$fakturpenjualan->pajak_id)->get();        
+        $nopajak = NoFakturPajak::where('status','Aktif')->orWhere('id',$fakturpenjualan->pajak_id)->get(); 
+        $nokpa = NoKPA::where('status','Aktif')->get();       
 
         $FJdetails = FakturPenjualanDetail::with('products')
             ->where('faktur_penjualan_id', '=', $fakturpenjualan->id)->get();
 
-        return view('penjualan.fakturpenjualan.edit', compact('title',  'fakturpenjualan', 'FJdetails','nopajak'));
+        return view('penjualan.fakturpenjualan.edit', compact('title',  'fakturpenjualan', 'FJdetails','nopajak','nokpa'));
     }
 
     public function update(Request $request,$id)
@@ -442,6 +455,9 @@ class FakturPenjualanController extends Controller
 
             // pajak
             $pajak = NoFakturPajak::where('id',$request->pajak_id)->first();
+
+            // nokpa
+            $kpa = NoKPA::where('id',$request->kpa_id)->first();
                            
             $biaya = TempBiaya::where('jenis', '=', "FJ")
                 ->where('user_id', '=', Auth::user()->id)
@@ -460,7 +476,7 @@ class FakturPenjualanController extends Controller
                      
             $fj->update([
                 'grandtotal' => $grandtotal,
-                'no_kpa' => $pajak->no_kpa,
+                'no_kpa' => $kpa->no_kpa,
                 'pajak_id' => $request->pajak_id,
                 'biaya_lain'  => $rupiah,
                 'no_seri_pajak' => $request->no_seri_pajak,

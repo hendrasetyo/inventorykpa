@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use App\Imports\NoFakturPajakImport;
+use App\Imports\NoKpaImport;
 use App\Models\FakturPenjualan;
 use App\Models\LogNoFakturPajak;
 use App\Models\NoFakturPajak;
@@ -129,6 +130,13 @@ class NoFakturPajakController extends Controller
         ]);
 
         return back()->with('sukses','Data Berhasil dirubah');
+    }
+
+
+    public function importnokpa(Request $request)
+    {
+        Excel::import(new NoKpaImport, $request->file('file')); 
+        return back(); 
     }
 
 

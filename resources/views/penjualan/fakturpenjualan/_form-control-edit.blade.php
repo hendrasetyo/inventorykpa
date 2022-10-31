@@ -47,9 +47,9 @@
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">No. KPA:</label>
         <div class="col-lg-4">
-            <select name="pajak_id" id="kt_select2_2" class="form-control nokpa" required>
-                @foreach ($nopajak as $item)
-                    @if ($fakturpenjualan->pajak_id == $item->id)
+            <select name="kpa_id" id="kt_select2_2" class="form-control nokpa" required>
+                @foreach ($nokpa as $item)
+                    @if ($fakturpenjualan->no_kpa== $item->no_kpa)
                         <option value="{{$item->id}}" selected>{{$item->no_kpa}}</option>
                     @else
                         <option value="{{$item->id}}">{{$item->no_kpa}}</option>
@@ -81,7 +81,19 @@
         <label class="col-lg-2 col-form-label text-right">No. Pajak:</label>
                 
         <div class="col-lg-4">            
-            <input type="text" class="form-control form-control-solid" name="no_pajak" value="{{$fakturpenjualan->no_pajak}}" id="no_pajak" readonly/>
+            <select name="pajak_id" id="kt_select2_1" class="form-control nokpa" required>
+                @foreach ($nopajak as $item)
+                    @if ($fakturpenjualan->pajak_id == $item->id)
+                        <option value="{{$item->id}}" selected>{{$item->no_pajak}}</option>
+                    @else
+                        <option value="{{$item->id}}">{{$item->no_pajak}}</option>
+                    @endif
+                @endforeach
+            </select>
+
+            @error('no_kpa')
+               <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
             @error('no_pajak')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror

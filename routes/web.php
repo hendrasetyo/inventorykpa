@@ -290,7 +290,10 @@ Route::middleware('has.role')->prefix('master')->group(function () {
         Route::put('/{fakturpajak}/edit', [NoFakturPajakController::class, 'update'])->name('fakturpajak.update');       
         Route::get('/{fakturpajak}/status', [NoFakturPajakController::class, 'status'])->name('fakturpajak.status');       
         Route::post('/delete', [NoFakturPajakController::class, 'delete'])->name('fakturpajak.delete');       
-        Route::delete('/destroy', [NoFakturPajakController::class, 'destroy'])->name('fakturpajak.destroy');               
+        Route::delete('/destroy', [NoFakturPajakController::class, 'destroy'])->name('fakturpajak.destroy');  
+        
+        
+        Route::post('/importnokpa', [NoFakturPajakController::class, 'importnokpa'])->name('fakturpajak.importnokpa');  
     });
 });
 
