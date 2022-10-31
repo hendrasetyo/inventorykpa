@@ -72,7 +72,7 @@
         </tr>
         <tr>
             <td colspan="6" style="vertical-align: top; ">
-                <div class="isi" style="height: 500px;">
+                <div class="isi" style="height: 400px;">
                     <table border="0" class="xyz" style="width:100%; ">
                         <tr>
                             <td colspan="6">
@@ -80,12 +80,12 @@
                             </td>
                         </tr>
                         <tr style="">
-                            <td style="font-size: 75%; border:none; width:10%;">KWANTUM</td>
-                            <td style="font-size: 75%; border:none;">NAMA BARANG</td>
-                            <td style="font-size: 75%; border:none; width:10%;text-align:right">HARGA</td>
-                            <td style="font-size: 75%; border:none; width:15%;text-align:right">SUBTOTAL</td>
-                            <td style="font-size: 75%; border:none; width:10%;text-align:right">DISKON</td>
-                            <td style=" font-size: 75%; border:none; width:15%;text-align:right">JUMLAH</td>
+                            <td style="font-size: 65%; border:none; width:10%;">KWANTUM</td>
+                            <td style="font-size: 65%; border:none;">NAMA BARANG</td>
+                            <td style="font-size: 65%; border:none; width:10%;text-align:right">HARGA</td>
+                            <td style="font-size: 65%; border:none; width:15%;text-align:right">SUBTOTAL</td>
+                            <td style="font-size: 65%; border:none; width:10%;text-align:right">DISKON</td>
+                            <td style=" font-size: 65%; border:none; width:15%;text-align:right">JUMLAH</td>
                         </tr>
                         <tr>
                             <td colspan="6">
@@ -98,15 +98,15 @@
                         @endphp
                         @foreach($fakturpenjualandetails as $a)
                         @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="">
-                            <td style="font-size: 65%; ">{{ $a->qty }} {{ $a->satuan }}</td>
-                            <td style="font-size: 65%;font-family: DejaVu Sans; sans-serif; ">{{ $a->products->nama }}</td>
-                            <td style="font-size: 65%; text-align:right">{{ number_format(floor($a->hargajual), 0, ',', '.')
+                            <td style="font-size: 62%; ">{{ $a->qty }} {{ $a->satuan }}</td>
+                            <td style="font-size: 62%;font-family: DejaVu Sans; sans-serif; ">{{ $a->products->nama }}</td>
+                            <td style="font-size: 62%; text-align:right">{{ number_format(floor($a->hargajual), 0, ',', '.')
                                 }}</td>
-                            <td style="font-size: 65%; text-align:right">{{ number_format(floor($a->subtotal), 0, ',', '.')
+                            <td style="font-size: 62%; text-align:right">{{ number_format(floor($a->subtotal), 0, ',', '.')
                                 }}</td>
-                            <td style="font-size: 65%; text-align:right">{{ number_format(floor($a->total_diskon), 0, ',',
+                            <td style="font-size: 62%; text-align:right">{{ number_format(floor($a->total_diskon), 0, ',',
                                 '.') }}</td>
-                            <td style="font-size: 65%; text-align:right">{{ number_format(floor($a->total), 0, ',',
+                            <td style="font-size: 62%; text-align:right">{{ number_format(floor($a->total), 0, ',',
                                 '.') }}</td>
 
 
@@ -192,7 +192,6 @@
                             <td style='font-size: 70%; width: 25%;text-align:center'><i>( HALAMAN SELANJUTNYA )</i></td>
                         </tr>
                     </table>
-
 
                 </td>
                 @endif
