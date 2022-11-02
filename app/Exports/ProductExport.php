@@ -3,24 +3,21 @@
 namespace App\Exports;
 
 use App\Models\Product;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
 
-class LaporanStockExport implements FromView
+class ProductExport implements FromView
 {
-    protected $data;
+     protected $data;
 
     public function __construct($data)
     {
         $this->data = $data;
     }
 
-
     public function view(): View
-    {   
-
+    { 
         $product = Product::with('categories')
                             ->with('merks')
                             ->with('categories')
@@ -32,11 +29,10 @@ class LaporanStockExport implements FromView
             $getdata = $product->where('productcategory_id',$this->data['kategori_id'])->get();
         }
 
-
           return view('laporan.stok.export.exportProduct',[
             'product' => $getdata
         ]);
-
-
+        
     }
+
 }

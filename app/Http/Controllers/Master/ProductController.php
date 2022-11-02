@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\Exports\ProductExport;
 use Carbon\Carbon;
 use App\Models\Merk;
 use App\Models\Satuan;
@@ -39,9 +40,11 @@ class ProductController extends Controller
         $title = "PRODUCT";
         $products = Product::with(['categories', 'subcategories','podetails','penerimaanBarang'
                     ,'pengirimanBarang','pesananPenjualan']);    
+        $kategory = Productcategory::get();
         
                     // $data= $products->get();
                     // dd($data[0]);
+
         if (request()->ajax()) {
             return Datatables::of($products)
                 ->addIndexColumn()
@@ -72,7 +75,7 @@ class ProductController extends Controller
         }
 
 
-        return view('master.product.index', compact('title'));
+        return view('master.product.index', compact('title','kategory'));
     }
 
     public function create()
@@ -257,4 +260,15 @@ class ProductController extends Controller
 
         return back();
     }
+
+
+    public function export(Request $request)
+    {
+        $now = Carbon::parse(now())->format('Y-m-d');
+        return Excel::download(new ProductExport($request->all()), 'laporanproduct-'.$now.'.xlsx');
+        
+
+    }
+
+
 }

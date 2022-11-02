@@ -14,6 +14,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\InventoryTransaction;
+use App\Models\Productcategory;
 use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanStokController extends Controller
@@ -38,6 +39,7 @@ class LaporanStokController extends Controller
     {
         $title = "Laporan Stok Produk";
         $products = Product::with(['categories', 'subcategories']);
+        $kategory = Productcategory::get();
 
         if (request()->ajax()) {
             return Datatables::of($products)
@@ -59,7 +61,7 @@ class LaporanStokController extends Controller
         }
 
 
-        return view('laporan.stok.stokproduk', compact('title'));
+        return view('laporan.stok.stokproduk', compact('title','kategory'));
     }
 
     public function detailstok(Product $product)
@@ -184,11 +186,11 @@ class LaporanStokController extends Controller
         return view('laporan.stok.expstokresult', compact('stok', 'title'));
     }
 
-    public function exportStok()
+    public function exportStok(Request $request)
     {        
         $now = Carbon::parse(now())->format('Y-m-d');
 
-        return Excel::download(new LaporanStockExport, 'laporanstock-'.$now.'.xlsx');
+        return Excel::download(new LaporanStockExport($request->all()), 'laporanstock-'.$now.'.xlsx');
 
     }
 

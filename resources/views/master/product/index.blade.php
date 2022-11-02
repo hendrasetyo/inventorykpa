@@ -53,7 +53,7 @@
                                 <h3 class="card-label">Daftar Produk</h3>
                             </div>    
                             <div class="d-flex align-items-center">
-                                <a href="{{ route('laporanstok.export') }}" class="btn btn-primary mr-2">
+                                <a href="#" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modalexport">
                                 <i class="flaticon-technology"></i>                                  
                                 Export to Excel</a>
                                 
@@ -178,6 +178,43 @@
       </div>
     </div>
   </div>
+
+
+  {{-- modal export --}}
+ <!-- Modal -->
+ <div class="modal fade" id="modalexport" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Export Product</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{ route('product.export') }}" method="post">
+            @csrf
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="">Kategori : </label> <br>
+                    <select name="kategori_id" class="form-control" id="kt_select2_1" >
+                        <option value="all" selected>Semua</option>
+                        @foreach ($kategory as $item)
+                            <option value="{{$item->id}}">{{$item->nama}}</option>
+                        @endforeach
+                    </select>
+                </div>                
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+       </form>
+      </div>
+    </div>
+</div>
+
+
+  {{-- end modal export --}}
 
 @endsection
 @push('script')

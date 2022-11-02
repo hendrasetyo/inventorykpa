@@ -519,5 +519,17 @@ class PesananPembelianController extends Controller
         //                                                            ));
     }
 
+
+    public function editstatus(Request $request)
+    {
+        $pembelian = PesananPembelian::findOrFail($request->id);
+
+        $pembelian->update([
+            'status_po_id' => 1
+        ]);
+
+        return back()->with('sukses','status Pembelian berhasil dirubah');
+    }
+
     
 }

@@ -302,7 +302,6 @@ class FakturPenjualanController extends Controller
         $datas['ongkir'] = $ongkir_header;
         $datas['sales_id'] = $sales_id;
         $datas['no_kpa'] = $kpa->no_kpa;
-        $datas['no_pajak'] = $request->no_kpa;
         $datas['biaya_lain'] = $biayalainlain;
         $datas['pajak_id'] = $pajak->id;
         $datas['no_seri_pajak'] = $request->no_seri_pajak;
@@ -323,7 +322,7 @@ class FakturPenjualanController extends Controller
         $pajak->update([
             'status' => 'Tidak Aktif'
         ]);
-
+ 
         // // ubah status no kpa menjadi tidak aktif
         // $kpa->update([
         //     'status' => 'Tidak Aktif'

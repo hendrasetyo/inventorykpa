@@ -193,6 +193,11 @@ Route::middleware('has.role')->prefix('master')->group(function () {
         Route::post('getproductsubcategory', [ProductController::class, 'getproductsubcategory'])->name('product.getproductsubcategory');
 
         Route::post('import', [ProductController::class, 'import'])->name('product.import');
+
+        Route::post('export', [ProductController::class, 'export'])->name('product.export');
+
+
+
     });
 
     Route::prefix('produkgroup')->group(function () {
@@ -333,6 +338,10 @@ Route::middleware('has.role')->prefix('pembelian')->group(function () {
         Route::post('hitunggrandtotal', [PesananPembelianController::class, 'hitunggrandtotal'])->name('pesananpembelian.hitunggrandtotal');
         Route::post('posting', [PesananPembelianController::class, 'posting'])->name('pesananpembelian.posting');
         Route::post('posted', [PesananPembelianController::class, 'posted'])->name('pesananpembelian.posted');
+
+        Route::post('editstatus', [PesananPembelianController::class, 'editstatus'])->name('pesananpembelian.editstatus');
+
+
     });
 
 
@@ -589,13 +598,16 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         Route::get('kartustok', [LaporanStokController::class, 'kartustok'])->name('laporanstok.kartustok');
         Route::get('{product}/kartustok', [LaporanStokController::class, 'kartustokdetail'])->name('laporanstok.kartustokdetail');
         Route::get('expstok', [LaporanStokController::class, 'expstok'])->name('laporanstok.expstok');
-        Route::get('stokproduk/export', [LaporanStokController::class, 'exportStok'])->name('laporanstok.export');
+        Route::post('stokproduk/export', [LaporanStokController::class, 'exportStok'])->name('laporanstok.export');
         Route::post('expstokresult', [LaporanStokController::class, 'expstokresult'])->name('laporanstok.expstokresult');
         Route::post('kartustokexport', [LaporanStokController::class, 'exportkartustok'])->name('laporanstok.exportkartustok');        
         
         Route::get('adjustmentstok', [LaporanAdjustmentStokController::class, 'filter'])->name('laporanstok.adjustmentstok');
         Route::post('adjustmentstok/result', [LaporanAdjustmentStokController::class, 'result'])->name('laporanstok.adjustmentstokresult');
         Route::post('adjustmentstok/export', [LaporanAdjustmentStokController::class, 'export'])->name('laporanstok.adjustmentstokexport');
+
+
+        
     });
 
 
