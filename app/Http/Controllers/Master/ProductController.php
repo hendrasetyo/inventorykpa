@@ -41,6 +41,7 @@ class ProductController extends Controller
         $products = Product::with(['categories', 'subcategories','podetails','penerimaanBarang'
                     ,'pengirimanBarang','pesananPenjualan']);    
         $kategory = Productcategory::get();
+        $merk = Merk::get();
         
                     // $data= $products->get();
                     // dd($data[0]);
@@ -75,7 +76,7 @@ class ProductController extends Controller
         }
 
 
-        return view('master.product.index', compact('title','kategory'));
+        return view('master.product.index', compact('title','kategory','merk'));
     }
 
     public function create()

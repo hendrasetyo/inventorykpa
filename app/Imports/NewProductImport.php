@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Imports;
-
-use App\Models\Product;
 use App\Models\TempProduct;
 use Carbon\Carbon;
 use Exception;
@@ -21,7 +19,7 @@ class NewProductImport implements ToModel
         
         if ($this->no !== 0) {            
             try {
-                $tempproducts = Product::create([
+                $tempproducts = TempProduct::create([
                     'nama' => $row[0],
                     'kode' => rand(100,999),
                     'productgroup_id' => $row[2],

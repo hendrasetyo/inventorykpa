@@ -65,6 +65,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Tanggal</th>
+                                    <th>Lot</th>
                                     <th>Jumlah</th>
                                     <th>Action</th>
                                 </tr>
@@ -72,6 +73,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $item->tanggal->format("d F Y") }}</td>
+                                    <td>{{ $item->lot }}</td>
                                     <td>{{ $item->qty }}</td>
                                     <td><a
                                             href="{{ route('laporanstok.detailexp', [$item->id, $item->product_id]) }}">[Detail]</a>

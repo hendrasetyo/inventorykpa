@@ -196,17 +196,34 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="">Kategori : </label> <br>
-                    <select name="kategori_id" class="form-control" id="kt_select2_1" >
+                    <select name="kategori_id" class="form-control" id="kt_select2_1" required>
                         <option value="all" selected>Semua</option>
                         @foreach ($kategory as $item)
                             <option value="{{$item->id}}">{{$item->nama}}</option>
                         @endforeach
                     </select>
-                </div>                
+                </div>        
+                <div class="form-group">
+                    <label for="">Merk : </label> <br>
+                    <select name="merk_id" class="form-control" id="kt_select2_2" required>
+                        <option value="all" selected>Semua</option>
+                        @foreach ($merk as $item)
+                            <option value="{{$item->id}}">{{$item->nama}}</option>
+                        @endforeach
+                    </select>
+                </div>  
+                <div class="form-group">
+                    <label for="">Stok : </label> <br>
+                    <select name="stok_id" class="form-control" id="kt_select2_3" required>
+                        <option value="all" selected>Semua</option>
+                        <option value="0">0</option>
+                        <option value="1">Stok diatas 0</option>
+                    </select>
+                </div>          
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary">Export to Excel</button>
             </div>
        </form>
       </div>
