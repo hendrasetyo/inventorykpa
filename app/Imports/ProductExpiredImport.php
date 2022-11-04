@@ -16,11 +16,8 @@ class ProductExpiredImport implements ToModel
 {
     use CodeTrait;
     protected $no=0;
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+   
+
     public function model(array $row)
     {
 
@@ -42,7 +39,7 @@ class ProductExpiredImport implements ToModel
                             ->where('product_id',$product->id)                    
                             ->where('lot',$row[3])
                             ->count();   
-                            
+                
                 if ($mainStokExp > 0) {
                     //ada data, tinggal update stok
                     $stokExp =  StokExp::where('tanggal', '=', $tanggal)
