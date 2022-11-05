@@ -32,12 +32,12 @@ class ProductExport implements FromView
         if ($this->data['merk_id'] == 'all') {
             $merk = $getdata;
         }else{
-            $merk = $getdata->where('merk_id',$this->data['kategori_id']);
+            $merk = $getdata->where('merk_id',$this->data['merk_id']);
         }
 
         if ($this->data['stok_id'] == 'all') {
             $stok = $merk->get();
-        }else if ($this->data['stok_id'] == '0') {
+        }else if ($this->data['stok_id'] == 0) {
             $stok = $merk->where('stok','=',$this->data['stok_id'])->get();
         }
         else{
