@@ -219,7 +219,16 @@
                         <option value="0">0</option>
                         <option value="1">Stok diatas 0</option>
                     </select>
-                </div>          
+                </div>    
+                
+                <div class="form-group">
+                    <label for="">Ada Ijin Edar : </label> <br>
+                    <select name="ijinedar_id" class="form-control" id="kt_select2_4" required>
+                        <option value="all" selected>Semua</option>
+                        <option value="iya">Iya</option>
+                        <option value="tidak">Tidak</option>
+                    </select>
+                </div>    
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

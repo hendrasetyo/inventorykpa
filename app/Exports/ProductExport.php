@@ -35,13 +35,21 @@ class ProductExport implements FromView
             $merk = $getdata->where('merk_id',$this->data['merk_id']);
         }
 
+        if ($this->data['ijinedar_id'] == 'all') {
+            $ijinedar = $merk;
+        }else if ($this->data['ijinedar_id'] == 'iya') {
+            $ijinedar = $merk->where('no_ijinedar','<>',null);
+        }else{
+            $ijinedar = $merk->where('no_ijinedar',null);
+        }
+
         if ($this->data['stok_id'] == 'all') {
-            $stok = $merk->get();
+            $stok = $ijinedar->get();
         }else if ($this->data['stok_id'] == 0) {
-            $stok = $merk->where('stok','=',$this->data['stok_id'])->get();
+            $stok = $ijinedar->where('stok','=',$this->data['stok_id'])->get();
         }
         else{
-            $stok = $merk->where('stok','>=',$this->data['stok_id'])->get();
+            $stok = $ijinedar->where('stok','>=',$this->data['stok_id'])->get();
         }
 
         return view('laporan.stok.export.exportProduct',[
