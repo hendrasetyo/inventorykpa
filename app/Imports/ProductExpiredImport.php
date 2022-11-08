@@ -46,7 +46,7 @@ class ProductExpiredImport implements ToModel
                         ->where('product_id', '=', $product->id)->first();
 
                     $id_stokExp = $stokExp->id;
-                    $stokExp->qty += $row[2];
+                    $stokExp->qty = $row[2];
                     $stokExp->save();
 
                     //insert detail
@@ -78,7 +78,7 @@ class ProductExpiredImport implements ToModel
                     
                     // cek stok berdasarkan qty
                     // kurangi dari qty inputan - stok 
-                    $stok = $row[2] + $product->stok;  
+                    $stok = $row[2];  
                     $tahun = Carbon::now()->format('y');
                     $bulan = Carbon::now()->format('m');
         
