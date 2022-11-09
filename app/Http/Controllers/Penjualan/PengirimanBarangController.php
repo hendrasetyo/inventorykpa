@@ -387,7 +387,8 @@ class PengirimanBarangController extends Controller
         $pengirimanbarang = PengirimanBarang::find($pengirimanbarang_id);
         $product_id = $pengirimanbarangdetail->product_id;
         $stokExp = StokExp::where('product_id', '=', $product_id)
-            ->where('qty', '<>', '0')->get();
+            ->where('qty', '<>', '0')
+            ->get();
         //dd($stokExp);
         return view('penjualan.pengirimanbarang.listexp', compact('pengirimanbarangdetail', 'title', 'stokExp', 'pengirimanbarang'));
     }

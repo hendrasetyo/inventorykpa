@@ -150,8 +150,9 @@ class PenerimaanBarangController extends Controller
         $qty_sisa = $detailPO->qty_sisa;
         $qty_sisa_terima = $qty_sisa - $qty_terima;
         //validasi
+
         //1. cek item sudah dimasukkan apa belum
-        $jmlItem = TempPb::where('product_id', '=', $product_id)->count();
+        $jmlItem = TempPb::where('product_id', '=', $product_id)->where('user_id',auth()->user()->id)->count();
         if ($qty_terima > 0) {
             if ($jmlItem == 0) {
                 //2. cek qty yg diinput berlebihan/tidak
