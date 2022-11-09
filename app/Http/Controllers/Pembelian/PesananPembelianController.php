@@ -177,7 +177,7 @@ class PesananPembelianController extends Controller
 
     public function caribarang()
     {
-        $products = Product::with(['categories', 'subcategories']);
+        $products = Product::where('status','Aktif')->with(['categories', 'subcategories']);
         $produk = "";
         
         if (request()->ajax()) {
