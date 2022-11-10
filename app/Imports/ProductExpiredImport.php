@@ -78,7 +78,7 @@ class ProductExpiredImport implements ToModel
                     
                     // cek stok berdasarkan qty
                     // kurangi dari qty inputan - stok 
-                    $stok = $row[5];  
+                    $stok = $row[2];  
                     $tahun = Carbon::now()->format('y');
                     $bulan = Carbon::now()->format('m');
         
@@ -98,7 +98,7 @@ class ProductExpiredImport implements ToModel
                 $inv = InventoryTransaction::create([
                     'tanggal' => Carbon::now()->format('Y-m-d'),
                     'product_id' => $product->id,
-                    'qty' => $row[5],
+                    'qty' => $row[2],
                     'stok' => $stok,
                     'hpp' => $product->hpp,
                     'jenis' => 'AJS',
@@ -106,7 +106,7 @@ class ProductExpiredImport implements ToModel
                 ]);
 
                 $product->update([
-                    'stok' => $row[5]
+                    'stok' => $row[2]
                 ]);
               }
              

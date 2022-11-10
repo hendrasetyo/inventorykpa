@@ -166,6 +166,7 @@ class ProductController extends Controller
         ]);
 
         $tglIjinEdar = $request->exp_ijinedar;
+        
         if ($tglIjinEdar <> null) {
             $tglIjinEdar = Carbon::createFromFormat('d-m-Y', $tglIjinEdar)->format('Y-m-d');
         }
