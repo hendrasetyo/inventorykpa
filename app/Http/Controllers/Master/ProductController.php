@@ -249,11 +249,14 @@ class ProductController extends Controller
             ]);
         }
 
+        DB::commit();
+
             // hapus temp lagi 
             TempProduct::where('user_id',auth()->user()->id)->delete();            
             return back()->with('sukses','Product Berhasil diimport');
 
         } catch (Exception $th) {
+            DB::rollBack();
             return back()->with('error',$th->getMessage());
         }
         // hapus temp yang lama dulu
