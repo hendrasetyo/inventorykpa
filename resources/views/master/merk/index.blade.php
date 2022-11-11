@@ -68,6 +68,11 @@
                                 </a>
                                 @endcan
 
+                                <button type="button" class="ml-2 btn btn-primary" data-toggle="modal" data-target="#modalimport">                                    
+                                    <i class="flaticon-folder-3"></i>                                  
+                                    Import Merk
+                                  </button>
+
 
                                 <!--end::Button-->
                             </div>
@@ -97,6 +102,37 @@
     <!--end::Entry-->
 </div>
 <!--end::Content-->
+
+<!-- Modal -->
+<div class="modal fade" id="modalimport" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Export Product</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{ route('merk.import') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-body">     
+                <div class="form-group">
+                    <label for="">Import File : </label> <br>
+                   <input type="file" class="form-control" name="file">
+                </div>     
+                
+                
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Export to Excel</button>
+            </div>
+       </form>
+      </div>
+    </div>
+</div>
+
+
 <div id="modal-confirm-delete"></div>
 @endsection
 @push('script')

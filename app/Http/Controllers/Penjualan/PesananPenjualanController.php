@@ -570,7 +570,7 @@ class PesananPenjualanController extends Controller
     {
         
         $idpesanan = $id;
-        $products = Product::with(['categories', 'subcategories']);
+        $products = Product::where('status','Aktif')->with(['categories', 'subcategories']);
         
         $produk = "";        
         if (request()->ajax()) {
@@ -625,6 +625,7 @@ class PesananPenjualanController extends Controller
         $pesanan = PesananPenjualan::where('id',$id)->first(); 
         
         $datas['tanggal'] = $pesanan->tanggal;
+        
         // save ke pesananpenjualandetail
         PesananPenjualanDetail::create($datas);
         

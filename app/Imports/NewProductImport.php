@@ -18,7 +18,8 @@ class NewProductImport implements ToModel
     {
         
         if ($this->no !== 0) {            
-            try {
+
+               
                 $tempproducts = TempProduct::create([
                     'nama' => $row[0],
                     'kode' => rand(100,999),
@@ -33,7 +34,7 @@ class NewProductImport implements ToModel
                     'asal_negara' => $row[10],
                     'pabrikan' => $row[11],
                     'no_ijinedar' => $row[13],
-                    'exp_ijinedar' =>Carbon::parse($row[12])->format('Y-m-d'),
+                    'exp_ijinedar' => Carbon::parse($row[12])->format('Y-m-d'),
                     'productcategory_id' => $row[14],
                     'productsubcategory_id' => $row[15],
                     'hargajual' => $row[16],
@@ -48,10 +49,6 @@ class NewProductImport implements ToModel
                     'stok_canvassing' => 0,
                     'user_id' => auth()->user()->id
                 ]);
-            } catch (Exception $th) {
-                throw $th->getMessage();
-            }
-           
         }
 
         $this->no++;

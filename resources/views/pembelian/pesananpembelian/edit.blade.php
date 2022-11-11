@@ -1,7 +1,6 @@
 @extends('layouts.app', ['title' => $title])
 
 @section('content')
-
 <!--begin::Content-->
 <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Subheader-->
@@ -52,7 +51,7 @@
                                         </svg>
                                         <!--end::Svg Icon--></span>
                                 </span>
-                                <h3 class="card-label">Pesanan Penjualan</h3>
+                                <h3 class="card-label">Pesanan Pembelian</h3>
                             </div>
 
                             <div class="card-toolbar">
@@ -65,10 +64,9 @@
                         <!--begin::Form-->
                         <div class="card-body">
 
-                            <form class="form" action="{{ route('pesananpenjualan.update', ['pesananpenjualan'=>$pesananpenjualan->id]) }}" method="POST">
+                            <form class="form" method="post" action="{{ route('pesananpembelian.create') }}">
                                 @csrf
-                                @method('PUT')
-                                @include('penjualan.pesananpenjualan._form-control-edit', ['submit' => 'Edit'])
+                                @include('pembelian.pesananpembelian._form-control-edit', ['submit' => 'Save'])
                             </form>
                         </div>
                         <!--end::Card-->
@@ -140,7 +138,6 @@
     </div>
     <div id="modal-caribarang"></div>
     <div id="modal-setbarang"></div>
-
     <div id="modal-setdiskon"></div>
     <div id="modal-setppn"></div>
 
@@ -194,17 +191,14 @@
 
 
     <script type="text/javascript">
-        let idpesanan = {{ $pesananpenjualan->id }};
-
         $(function () {
             hitungAll()
-            // console.log({{$pesananpenjualan->id}})
-
+      
             var table = $('.yajra-datatable').DataTable({
             responsive: true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('pesananpenjualan.caribarangdetail',['id' => $pesananpenjualan->id]) }}",
+            ajax: "{{ route('pesananpembelian.caribarang') }}",
             columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                 {data: 'kode', name: 'kode'},
@@ -234,18 +228,16 @@
         txt.innerHTML=data;
         return txt.value;
     }
-
-    function caribarang(id){                       
-        $('#caribarang').modal('show');                
-    }
-
-    function pilihBarang(data_id){        
-        $('#caribarang').modal('hide');
+    function caribarang(){
+        $('#caribarang').modal('show');
         
+    }
+    function pilihBarang(data_id){
+        $('#caribarang').modal('hide');
         //alert(data_id);
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.setbarang') }}',
+                url: '{{ route('pesananpembelian.setbarang') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {id:data_id, "_token": "{{ csrf_token() }}"},
@@ -264,7 +256,7 @@
     function editBarang(data_id){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.editbarangdetail') }}',
+                url: '{{ route('pesananpembelian.editbarang') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {id:data_id, "_token": "{{ csrf_token() }}"},
@@ -280,11 +272,10 @@
         });
     }
     function submitItem(){
-        
         var product_id = document.getElementById('product_id').value;
         var qty = document.getElementById('qty').value;
         var satuan = document.getElementById('satuan').value;
-        var hargajual = document.getElementById('hargajual').value;
+        var hargabeli = document.getElementById('hargabeli').value;
         var diskon_persen = document.getElementById('diskon_persen').value;
         var diskon_rp = document.getElementById('diskon_rp').value;
         var ongkir = document.getElementById('ongkir').value;
@@ -294,22 +285,21 @@
         //alert(product_id);
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.inputpesanandetail') }}',
+                url: '{{ route('pesananpembelian.inputtemppo') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
-                    "pesanan_penjualan_id" : idpesanan,
                     "product_id": product_id,
                     "qty": qty,
                     "satuan": satuan,
-                    "hargajual": hargajual,
+                    "hargabeli": hargabeli,
                     "diskon_persen": diskon_persen,
                     "diskon_rp": diskon_rp,
                     "ongkir": ongkir,
                     "keterangan": keterangan,
                      "_token": "{{ csrf_token() }}"
                     },
-                                    
+                
                 success: function (data){
                     console.log(data);
 
@@ -327,7 +317,7 @@
         var product_id = document.getElementById('product_id').value;
         var qty = document.getElementById('qty').value;
         var satuan = document.getElementById('satuan').value;
-        var hargajual = document.getElementById('hargajual').value;
+        var hargabeli = document.getElementById('hargabeli').value;
         var diskon_persen = document.getElementById('diskon_persen').value;
         var diskon_rp = document.getElementById('diskon_rp').value;
         var ongkir = document.getElementById('ongkir').value;
@@ -335,16 +325,15 @@
 
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.updatebarangdetail') }}',
+                url: '{{ route('pesananpembelian.updatebarang') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
                     "id": id,
-                    "pesanan_id" : idpesanan,
                     "product_id": product_id,
                     "qty": qty,
                     "satuan": satuan,
-                    "hargajual": hargajual,
+                    "hargabeli": hargabeli,
                     "diskon_persen": diskon_persen,
                     "diskon_rp": diskon_rp,
                     "ongkir": ongkir,
@@ -364,15 +353,14 @@
         });
     }
     
-    function loadTempSO(data_id){        
+    function loadTempPO(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.loadpesanandetail') }}',
+                url: '{{ route('pesananpembelian.loadtemppo') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
-                    "id" : data_id,
-                    "pesanan_id" : idpesanan,
+                    "id" : "",
                      "_token": "{{ csrf_token() }}"
                     },
                 
@@ -386,13 +374,14 @@
                 }
         });
     }
-    function editdiskon(){        
+    function editdiskon(){
+        var data_id = '';
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.editdiskondetail') }}',
+                url: '{{ route('pesananpembelian.editdiskon') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {id:idpesanan, "_token": "{{ csrf_token() }}"},
+                data: {id:data_id, "_token": "{{ csrf_token() }}"},
                 
                 success: function (data){
                     console.log(data);
@@ -405,18 +394,16 @@
         });
     }
     function updateDiskon(){
-        var diskon_persen = document.getElementById('diskon_persen_h').value;                        
+        var diskon_persen = document.getElementById('diskon_persen_h').value;
         var diskon_rupiah = document.getElementById('diskon_rp_h').value;
-
-        var id_diskon = document.getElementById('id_diskon').value;        
-
+        var id_diskon = document.getElementById('id_diskon').value;
+        //alert(diskon_persen);
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.updatediskondetail') }}',
+                url: '{{ route('pesananpembelian.updatediskon') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
-                    "id" : idpesanan,
                     "id_diskon": id_diskon,
                     "diskon_persen": diskon_persen,
                     "diskon_rupiah": diskon_rupiah,
@@ -436,14 +423,13 @@
         });
     }
     function editppn(){
-        
+        var data_id = '';
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.editppndetail') }}',
+                url: '{{ route('pesananpembelian.editppn') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {
-                    id:idpesanan, "_token": "{{ csrf_token() }}"},
+                data: {id:data_id, "_token": "{{ csrf_token() }}"},
                 
                 success: function (data){
                     console.log(data);
@@ -462,11 +448,11 @@
 
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.updateppndetail') }}',
+                url: '{{ route('pesananpembelian.updateppn') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {                    
-                    "id": id_ppn,
+                data: {
+                    "id_ppn": id_ppn,
                     "persen": persen,
                      "_token": "{{ csrf_token() }}"
                     },
@@ -495,13 +481,10 @@
         //alert(data_id);
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.destroy_pesanan_detail') }}',
+                url: '{{ route('pesananpembelian.destroy_detail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {
-                    id:data_id,
-                    pesanan_id : idpesanan, 
-                    "_method":"delete", "_token": "{{ csrf_token() }}"},
+                data: {id:data_id,"_method":"delete", "_token": "{{ csrf_token() }}"},
                 
                 success: function (data){
                     console.log(data);
@@ -539,11 +522,10 @@
     function hitungSubtotal(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.hitungsubtotaldetail') }}',
+                url: '{{ route('pesananpembelian.hitungsubtotal') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
-                      id:idpesanan,
                      "_token": "{{ csrf_token() }}"
                     },
                 
@@ -560,11 +542,10 @@
     function hitungDiskon(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.hitungdiskondetail') }}',
+                url: '{{ route('pesananpembelian.hitungdiskon') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
-                    id : idpesanan,
                      "_token": "{{ csrf_token() }}"
                     },
                 
@@ -582,11 +563,10 @@
     function hitungTotal(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.hitungtotaldetail') }}',
+                url: '{{ route('pesananpembelian.hitungtotal') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
-                    id : idpesanan,
                      "_token": "{{ csrf_token() }}"
                     },
                 
@@ -603,11 +583,10 @@
     function hitungPPN(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.hitungppndetail') }}',
+                url: '{{ route('pesananpembelian.hitungppn') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
-                    id : idpesanan,
                      "_token": "{{ csrf_token() }}"
                     },
                 
@@ -624,11 +603,10 @@
     function hitungOngkir(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.hitungongkirdetail') }}',
+                url: '{{ route('pesananpembelian.hitungongkir') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
-                    id : idpesanan,
                      "_token": "{{ csrf_token() }}"
                     },
                 
@@ -645,11 +623,10 @@
     function hitungGrandTotal(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.hitunggrandtotaldetail') }}',
+                url: '{{ route('pesananpembelian.hitunggrandtotal') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
-                    id : idpesanan,
                      "_token": "{{ csrf_token() }}"
                     },
                 
@@ -665,7 +642,7 @@
     }
 
     function hitungAll(){
-        loadTempSO();
+        loadTempPO();
         hitungSubtotal();
         hitungDiskon();
         hitungTotal();

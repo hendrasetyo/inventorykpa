@@ -228,6 +228,10 @@ Route::middleware('has.role')->prefix('master')->group(function () {
         Route::put('{merk}/edit', [MerkController::class, 'update'])->name('merk.update');
         Route::post('delete', [MerkController::class, 'delete'])->name('merk.delete');
         Route::delete('delete', [MerkController::class, 'destroy'])->name('merk.destroy');
+
+        Route::post('import', [MerkController::class, 'import'])->name('merk.import');
+
+
     });
 
     Route::prefix('productcategory')->group(function () {
@@ -340,6 +344,34 @@ Route::middleware('has.role')->prefix('pembelian')->group(function () {
         Route::post('posted', [PesananPembelianController::class, 'posted'])->name('pesananpembelian.posted');
 
         Route::post('editstatus', [PesananPembelianController::class, 'editstatus'])->name('pesananpembelian.editstatus');
+
+
+        // EDIT PESANAN PEMBELIAN
+        Route::PUT('{pesananpembelian}/edit', [PesananPembelianController::class, 'update'])->name('pesananpembelian.update');
+        Route::get('caribarangdetail/{id}', [PesananPembelianController::class, 'caribarangdetail'])->name('pesananpembelian.caribarangdetail');
+        Route::post('setbarang', [PesananPembelianController::class, 'setbarang'])->name('pesananpembelian.setbarang');
+
+        Route::get('{pesananpembelian}/edit', [PesananPembelianController::class, 'edit'])->name('pesananpembelian.edit');        
+        Route::post('editbarangdetail', [PesananPembelianController::class, 'editBarangDetail'])->name('pesananpembelian.editbarangdetail');
+        Route::post('updatebarangdetail', [PesananPembelianController::class, 'updateBarangDetail'])->name('pesananpembelian.updatebarangdetail');
+
+        Route::post('editdiskondetail', [PesananPembelianController::class, 'editDiskonDetail'])->name('pesananpembelian.editdiskondetail');
+        Route::post('updatediskondetail', [PesananPembelianController::class, 'updateDiskonDetail'])->name('pesananpembelian.updatediskondetail');
+
+        Route::post('editppndetail', [PesananPembelianController::class, 'editPPNDetail'])->name('pesananpembelian.editppndetail');
+        Route::post('updateppndetail', [PesananPembelianController::class, 'updatePPNDetail'])->name('pesananpembelian.updateppndetail');
+
+        Route::post('inputpesanandetail', [PesananPembelianController::class, 'inputPesananDetail'])->name('pesananpembelian.inputpesanandetail');
+        Route::post('loadpesanandetail', [PesananPembelianController::class, 'loadPesananDetail'])->name('pesananpembelian.loadpesanandetail');
+
+        Route::delete('delete_pesanan_detail', [PesananPembelianController::class, 'destroyPesananDetail'])->name('pesananpembelian.destroy_pesanan_detail');
+
+        Route::post('hitungsubtotaldetail', [PesananPembelianController::class, 'hitungSubTotalDetail'])->name('pesananpembelian.hitungsubtotaldetail');
+        Route::post('hitungdiskondetail', [PesananPembelianController::class, 'hitungDiskonDetail'])->name('pesananpembelian.hitungdiskondetail');
+        Route::post('hitungtotaldetail', [PesananPembelianController::class, 'hitungTotalDetail'])->name('pesananpembelian.hitungtotaldetail');
+        Route::post('hitungppndetail', [PesananPembelianController::class, 'hitungPPNDetail'])->name('pesananpembelian.hitungppndetail');
+        Route::post('hitungongkirdetail', [PesananPembelianController::class, 'hitungOngkirDetail'])->name('pesananpembelian.hitungongkirdetail');
+        Route::post('hitunggrandtotaldetail', [PesananPembelianController::class, 'hitungGrandTotalDetail'])->name('pesananpembelian.hitunggrandtotaldetail');
 
 
     });

@@ -6,7 +6,9 @@ use App\Models\Merk;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Imports\MerkImport;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MerkController extends Controller
 {
@@ -96,5 +98,12 @@ class MerkController extends Controller
         Merk::destroy($request->id);
 
         return redirect()->route('merk.index')->with('status', 'Data Merk Berhasil Dihapus !');
+    }
+
+    public function import(Request $request)
+    {
+        Excel::import(new MerkImport, $request->file('file')); 
+        return back();
+        
     }
 }
