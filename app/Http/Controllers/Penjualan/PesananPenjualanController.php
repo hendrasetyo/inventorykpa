@@ -617,7 +617,8 @@ class PesananPenjualanController extends Controller
         $datas['total_diskon'] = $total_diskon;
         $datas['total'] = $total;
         $datas['user_id'] = Auth::user()->id;
-        $datas['ongkir'] = $ongkir;        
+        $datas['ongkir'] = $ongkir; 
+        // $datas['pesanan_penjualan_id'] = $;        
         
 
 

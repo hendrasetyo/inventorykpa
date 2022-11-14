@@ -7,12 +7,11 @@
             <select class="form-control select2" id="supplier_id" name="supplier_id">
                 <option value="">Pilih Supplier</option>
                 @foreach ($suppliers as $cg)
-                @if ($pesananpembelian->supplier_id == $cg->id)
-                <option selected="selected" value="{{ $cg->id }}">{{ $cg->nama }}</option>
-                @else
-                <option value="{{ $cg->id }}">{{ $cg->nama }}</option>
-                @endif
-
+                    @if ($pesananpembelian->supplier_id == $cg->id)
+                        <option selected="selected" value="{{ $cg->id }}">{{ $cg->nama }}</option>
+                    @else
+                    <option value="{{ $cg->id }}">{{ $cg->nama }}</option>
+                    @endif
                 @endforeach
             </select>
             @error('supplier_id')
@@ -45,9 +44,9 @@
                 <option value="">Pilih Komoditas</option>
                 @foreach ($komoditass as $cg)
                 @if ($pesananpembelian->komoditas_id == $cg->id)
-                <option selected="selected" value="{{ $cg->id }}">{{ $cg->nama }}</option>
+                     <option selected="selected" value="{{ $cg->id }}">{{ $cg->nama }}</option>
                 @else
-                <option value="{{ $cg->id }}">{{ $cg->nama }}</option>
+                     <option value="{{ $cg->id }}">{{ $cg->nama }}</option>
                 @endif
 
                 @endforeach
@@ -63,28 +62,28 @@
             <span class="form-text text-muted">Isi Dalam Satuan Hari, Contoh : 30</span>
         </div>
     </div>
+   
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">Kategori:</label>
         <div class="col-lg-4">
             <select class="form-control select2" id="kategori" name="kategoripesanan_id">
                 <option value="">Pilih Kategori</option>
                 @foreach ($kategoris as $cg)
-                @if ($pesananpembelian->komoditas_id == $cg->id)
-                <option selected="selected" value="{{ $cg->id }}">{{ $cg->nama }}</option>
-                @else
-                <option value="{{ $cg->id }}">{{ $cg->nama }}</option>
-                @endif
-
+                    @if ($pesananpembelian->kategoripesanan_id == $cg->id)
+                        <option selected="selected" value="{{ $cg->id }}">{{ $cg->nama }}</option>
+                    @else
+                        <option value="{{ $cg->id }}">{{ $cg->nama }}</option>
+                    @endif
                 @endforeach
             </select>
-            @error('komoditas_id')
+            @error('kategoripesanan_id')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
         <label class="col-lg-2 col-form-label text-right">No. Surat Pesanan Penjualan:</label>
         <div class="col-lg-4">
             <input type="text" id="no_so" name="no_so" class="form-control"
-                placeholder="No. Surat Pesanan Penjualan (Jika Ada)" />
+                placeholder="No. Surat Pesanan Penjualan (Jika Ada)" value="{{$pesananpembelian->no_so}}"/>
         </div>
     </div>
     <div class="text-right mb-3">
@@ -121,7 +120,7 @@
         <div class="col-lg-6">
             <label class="">Keterangan:</label>
             <div class="kt-input-icon kt-input-icon--right">
-                <textarea class="form-control" name="keterangan" id="keterangan"></textarea>
+                <textarea class="form-control" name="keterangan" id="keterangan">{{$pesananpembelian->keterangan}}</textarea>
             </div>
 
         </div>

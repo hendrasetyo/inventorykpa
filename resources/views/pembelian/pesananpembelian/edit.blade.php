@@ -64,8 +64,9 @@
                         <!--begin::Form-->
                         <div class="card-body">
 
-                            <form class="form" method="post" action="{{ route('pesananpembelian.create') }}">
+                            <form class="form" method="post" action="{{ route('pesananpembelian.update', ['pesananpembelian'=>$pesananpembelian->id]) }}">
                                 @csrf
+                                @method('PUT')
                                 @include('pembelian.pesananpembelian._form-control-edit', ['submit' => 'Save'])
                             </form>
                         </div>
@@ -189,8 +190,10 @@
     <script src="{{ asset('/assets/js/pages/crud/datatables/extensions/responsive.js?v=7.0.6') }}"></script>
     <script src="{{ asset('/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js?v=7.0.6') }}"></script>
 
-
     <script type="text/javascript">
+
+        let idpesanan = {{ $pesananpembelian->id }};
+
         $(function () {
             hitungAll()
       
@@ -256,13 +259,13 @@
     function editBarang(data_id){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpembelian.editbarang') }}',
+                url: '{{ route('pesananpembelian.editbarangdetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {id:data_id, "_token": "{{ csrf_token() }}"},
                 
                 success: function (data){
-                    console.log(data);
+                   
                     $('#modal-setbarang').html(data);
                     $('#setBarangModal').modal('show');
                 },
@@ -285,18 +288,20 @@
         //alert(product_id);
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpembelian.inputtemppo') }}',
+                url: '{{ route('pesananpembelian.inputpesanandetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
                     "product_id": product_id,
                     "qty": qty,
+                    "qty_sisa" : qty,
                     "satuan": satuan,
                     "hargabeli": hargabeli,
                     "diskon_persen": diskon_persen,
                     "diskon_rp": diskon_rp,
                     "ongkir": ongkir,
                     "keterangan": keterangan,
+                    "pesanan_pembelian_id" : idpesanan,
                      "_token": "{{ csrf_token() }}"
                     },
                 
@@ -325,7 +330,7 @@
 
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpembelian.updatebarang') }}',
+                url: '{{ route('pesananpembelian.updatebarangdetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
@@ -356,11 +361,12 @@
     function loadTempPO(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpembelian.loadtemppo') }}',
+                url: '{{ route('pesananpembelian.loadpesanandetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
-                    "id" : "",
+                    "pembelian_id" : idpesanan,
+                    
                      "_token": "{{ csrf_token() }}"
                     },
                 
@@ -375,13 +381,16 @@
         });
     }
     function editdiskon(){
-        var data_id = '';
+        var data_id = idpesanan;
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpembelian.editdiskon') }}',
+                url: '{{ route('pesananpembelian.editdiskondetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {id:data_id, "_token": "{{ csrf_token() }}"},
+                data: {
+                    id:data_id, 
+                    "_token": 
+                    "{{ csrf_token() }}"},
                 
                 success: function (data){
                     console.log(data);
@@ -400,10 +409,11 @@
         //alert(diskon_persen);
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpembelian.updatediskon') }}',
+                url: '{{ route('pesananpembelian.updatediskondetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
+                    "id" : idpesanan,
                     "id_diskon": id_diskon,
                     "diskon_persen": diskon_persen,
                     "diskon_rupiah": diskon_rupiah,
@@ -423,10 +433,10 @@
         });
     }
     function editppn(){
-        var data_id = '';
+        var data_id = idpesanan;
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpembelian.editppn') }}',
+                url: '{{ route('pesananpembelian.editppndetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {id:data_id, "_token": "{{ csrf_token() }}"},
@@ -448,10 +458,11 @@
 
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpembelian.updateppn') }}',
+                url: '{{ route('pesananpembelian.updateppndetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
+                    "id" : idpesanan,
                     "id_ppn": id_ppn,
                     "persen": persen,
                      "_token": "{{ csrf_token() }}"
@@ -481,10 +492,14 @@
         //alert(data_id);
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpembelian.destroy_detail') }}',
+                url: '{{ route('pesananpembelian.destroy_pesanan_detail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {id:data_id,"_method":"delete", "_token": "{{ csrf_token() }}"},
+                data: {
+                    id : data_id,
+                    "pembelian_id" : idpesanan,
+                    "_method":"delete", 
+                    "_token": "{{ csrf_token() }}"},
                 
                 success: function (data){
                     console.log(data);
@@ -522,10 +537,11 @@
     function hitungSubtotal(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpembelian.hitungsubtotal') }}',
+                url: '{{ route('pesananpembelian.hitungsubtotaldetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
+                    "id" : idpesanan,
                      "_token": "{{ csrf_token() }}"
                     },
                 
@@ -542,10 +558,11 @@
     function hitungDiskon(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpembelian.hitungdiskon') }}',
+                url: '{{ route('pesananpembelian.hitungdiskondetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
+                     "id" : idpesanan,
                      "_token": "{{ csrf_token() }}"
                     },
                 
@@ -563,10 +580,11 @@
     function hitungTotal(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpembelian.hitungtotal') }}',
+                url: '{{ route('pesananpembelian.hitungtotaldetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
+                    "id" : idpesanan,
                      "_token": "{{ csrf_token() }}"
                     },
                 
@@ -583,10 +601,11 @@
     function hitungPPN(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpembelian.hitungppn') }}',
+                url: '{{ route('pesananpembelian.hitungppndetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
+                    "id" : idpesanan,
                      "_token": "{{ csrf_token() }}"
                     },
                 
@@ -603,10 +622,11 @@
     function hitungOngkir(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpembelian.hitungongkir') }}',
+                url: '{{ route('pesananpembelian.hitungongkirdetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
+                    "id" : idpesanan,
                      "_token": "{{ csrf_token() }}"
                     },
                 
@@ -623,10 +643,11 @@
     function hitungGrandTotal(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpembelian.hitunggrandtotal') }}',
+                url: '{{ route('pesananpembelian.hitunggrandtotaldetail') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
+                    "id" : idpesanan,
                      "_token": "{{ csrf_token() }}"
                     },
                 

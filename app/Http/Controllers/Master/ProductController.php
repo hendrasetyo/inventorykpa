@@ -210,7 +210,8 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
         try {
-            TempProduct::where('user_id',auth()->user()->id)->delete();
+        
+        TempProduct::where('user_id',auth()->user()->id)->delete();
         
         Excel::import(new NewProductImport, $request->file('file')); 
 

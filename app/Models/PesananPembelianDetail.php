@@ -18,6 +18,7 @@ class PesananPembelianDetail extends Model
         'tanggal',
         'product_id',
         'qty',
+        'qty_sisa',
         'satuan',
         'hargabeli',
         'diskon_persen',
