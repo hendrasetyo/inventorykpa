@@ -13,6 +13,7 @@ use App\Models\PengirimanBarang;
 use App\Models\PesananPenjualan;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use App\Models\FakturPenjualanDetail;
 use App\Models\LogNoFakturPajak;
@@ -23,6 +24,8 @@ use App\Models\PesananPenjualanDetail;
 use App\Models\TempBiaya;
 use Exception;
 use Illuminate\Support\Facades\DB;
+
+use function App\Traits\wordOfNumber;
 
 class FakturPenjualanController extends Controller
 {
@@ -662,7 +665,30 @@ class FakturPenjualanController extends Controller
 
     public function kwitansi(FakturPenjualan $fakturpenjualan)
     {
-        return view('penjualan.fakturpenjualan.kwitansi');
+        $text = wordOfNumber($fakturpenjualan->grandtotal);
+
+        $customer = Customer::where('id',$fakturpenjualan->customer_id)->first();
+        
+        // $pattern = "^([0-9]+)$";
+    
+        // $pdf = PDF::loadView('penjualan.fakturpenjualan.kwitansi',[
+        //     'faktur' => $fakturpenjualan->no_kpa,
+        //     'text' => $text,
+        //     'grandtotal' => $fakturpenjualan->grandtotal,
+        //     'customer' => $customer->nama
+        // ])->setPaper('a4','landscape');
+
+
+        // return $pdf->download($fakturpenjualan->no_kpa.'-'.$fakturpenjualan->kode.'.pdf');
+
+        return view('penjualan.fakturpenjualan.kwitansi',[
+            'faktur' => $fakturpenjualan->no_kpa,
+            'text' => $text,
+            'grandtotal' => $fakturpenjualan->grandtotal,
+            'customer' => $customer->nama
+        ]);
+
+       
     }
 
  

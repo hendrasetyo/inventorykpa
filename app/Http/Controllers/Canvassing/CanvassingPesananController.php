@@ -65,7 +65,7 @@ class CanvassingPesananController extends Controller
         $deletedTempCanvas = TempCanvas::where('created_at', '<', Carbon::today())->delete();
         $deletedTempCanvas = TempCanvas::where('user_id', '=', Auth::user()->id)->delete();               
     
-        return view('Canvassing.canvassing.create', compact('title', 'tglNow','canvassing','customers'));
+        return view('canvassing.canvassing.create', compact('title', 'tglNow','canvassing','customers'));
     }
 
     public function caribarang()
