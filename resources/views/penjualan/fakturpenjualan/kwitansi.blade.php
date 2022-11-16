@@ -28,105 +28,105 @@
 </head>
 
 <body style="font-family: sans-serif; ">
-  <table class="tabel" width="100%" style="font-size:90%;margin-top:100px;">
+  <table class="tabel" width="100%" style="font-size:90%;margin-top:2px;">
         <tr>
             <td width="30%" style="text-align: center;">
                 <div style="transform: rotate(270deg);">
-                   <h2 style="margin-top: 5px; margin-bottom: 10px;">PT KARYA PUTRA ANDALAN</h2>
-                   <h5 style="margin-top: 0px; margin-bottom: 5px;">Ruko Purimas - Rungkut Madya Jl. Raya I gusti Ngurah
-                    Rai Kav. A1. No. 11-12
-                    Surabaya</h5>
-                   <h5 style="margin-top: 0px;margin-bottom: 5px;">NPWP : 03.113.119.6-615.000</h5>
+                   <h2 style="margin-top: 5px; margin-bottom: 10px;color:rgb(77, 37, 211)">PT KARYA PUTRA ANDALAN</h2>
+                   <h3 style="margin-top: 0px; margin-bottom: 3px;">Ruko Purimas - Rungkut Madya Jl. Raya I gusti Ngurah
+                    Rai Kav. A1. No. 11-120
+                    Surabaya</h3>
+                   {{-- <h3 style="margin-top: 0px;margin-bottom: 5px;">NPWP : 03.113.119.6-615.000</h3> --}}
                 </div>
             </td>
             <td width="70%" style="padding-left:10px">
 
-                <div style="margin-bottom: 20px " >
+                <div>
                    <table style="margin-top:5px;">
                         <tr >
                             <td width="70%" style="padding-left : 10px">
-                                <h5>Kwitansi No. {{$faktur}}</h5> <br>
+                                <h3>Kwitansi No. {{$faktur}}</h3> <br>
                             </td>
                         </tr>
                    </table>
                 </div>  
-                <div style="margin-bottom: -20px ">
-                    <table width="100%" style="margin-top:5px;">
+                <div >
+                    <table width="100%" style="margin-top:10px;">
                         <tr>
-                            <td width="20%"  style="border: 1px double white">
-                                <h5>Sudah Terima Dari </h5>
+                            <td width="30%"  style="border: 1px double white">
+                                <h3>Sudah Terima Dari </h3>
                             </td>
                             <td  width="1%" style="border: 1px double white">
-                                <h5>:</h5>
+                                <h3>:</h3>
                             </td>
                             <td width="78%" style="border: 1px double white">
-                                <h5>{{$customer}}.</h5>
+                                <h3>{{$customer}}.</h3>
                             </td>
                            
                         </tr>
 
                     </table>
                 </div > 
-                <div style="margin-bottom: -20px " >
-                    <table width="100%" style="margin-top:5px;">
+                <div  >
+                    <table width="100%" style="margin-top:10px;">
                         <tr>
-                            <td width="20%"  style="border: 1px double white">
-                                <h5>Yang Sejumlah</h5>
+                            <td width="30%"  style="border: 1px double white">
+                                <h3>Yang Sejumlah</h3>
                             </td>
                             <td  width="1%" style="border: 1px double white">
-                                <h5>:</h5>
+                                <h3>:</h3>
                             </td>
                             <td width="78%" style="border: 1px double white">
-                                <h5> <i>{{$text}}</i></h5>
+                                <h3> <i>{{$text}}</i></h3>
                             </td>
                         </tr>
 
                     </table>
                 </div> 
-                <div  style="margin-bottom: 50px">
-                    <table width="100%" style="margin-top:5px;">
+                <div style="margin-bottom: 60px">
+                    <table width="100%" style="margin-top:10px;margin-bottom:50px">
                         <tr>
-                            <td width="20%"  style="border: 1px double white">
-                                <h5>Untuk Pembayaran</h5>
+                            <td width="30%"  style="border: 1px double white">
+                                <h3>Untuk Pembayaran</h3>
                             </td>
                             <td  width="1%" style="border: 1px double white">
-                                <h5>:</h5>
+                                <h3>:</h3>
                             </td>
                             <td width="78%" style="border: 1px double white">
-                                <h5>Atas Faktur No. {{$faktur}} , Sebagaimana Terlampir  : </h5>
+                                <h3>Atas Faktur No. {{$faktur}} , Sebagaimana Terlampir  : </h3>
                             </td>
-                           
                         </tr>
-
                     </table>
                 </div> 
-                <div  style="margin-bottom: 10px">
-                    <table width="100%" style="margin-top:5px;">
+                <div style="margin-top: 20px">
+                    <table width="100%" style="margin-top:10px;">
                         <tr>
-                            <td width="40%"  style="border-left: 1px double white;border-right : 1px double white">
+                            <td width="50%"  style="border-left: 1px double white;border-right : 1px double white">
                                 <table width="100%" style="margin-top:5px;">
                                     <tr>
-                                        <td width="40%" style="border:1px white">
-                                            <h5> Terbilang Rp.</h5> 
+                                        <td width="45%" style="font-size:90%;border:1px white">
+                                            <h2> Terbilang Rp.</h2> 
                                         </td>
-                                        <td style="text-align: right;padding-right:12px">
-                                            <h3>{{  number_format($grandtotal, 2, ',', '.')}}</h3>
+                                        <td width="55%" style="text-align: center;padding-right:12px">
+                                            <h1>{{  number_format($grandtotal, 2, ',', '.')}}</h1>
                                         </td>
                                     </tr>
                                 </table>
                                 
                             </td>
-                            <td width="30%" style="border: 1px double white">
+                            <td width="10%" style="border: 1px double white">
 
                             </td>
-                            <td width="30%" style=' text-align:center; vertical-align:top;border: 1px double white'>Surabaya, 
-            
-                                <br /><br /> <br /><br /> <br /> <br />
-                                <u>AHMAD MUHTAROM</u> <br />
-                                Direktur
+                            <td width="40%" style=' text-align:center; vertical-align:top;border: 1px double white'>
+                                <h3>
+                                    Surabaya, {{ \Carbon\Carbon::now()->format("d F Y") }}
+                
+                                    <br /><br /> <br /><br /> <br /> <br />
+                                    <u>AHMAD MUHTAROM</u> <br />
+                                    Direktur
+                                </h3>
                             </td>
                         </tr>
-
                     </table>
 
                 </div> 

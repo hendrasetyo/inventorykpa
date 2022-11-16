@@ -420,10 +420,15 @@ class PenerimaanBarangController extends Controller
                 ->where('lot',$lot)
                 ->count();
 
+            // dd($mainStokExp);
+
             if ($mainStokExp > 0) {
                 //ada data, tinggal update stok
-                $stokExp =  StokExp::where('tanggal', '=', $tanggal)
-                    ->where('product_id', '=', $product_id)->first();
+                $stokExp = StokExp::where('tanggal', '=', $tanggal)
+                    ->where('product_id', '=', $product_id)
+                    ->where('lot',$lot)
+                    ->first();
+
                 $id_stokExp = $stokExp->id;
                 $stokExp->qty += $qty;
                 $stokExp->save();

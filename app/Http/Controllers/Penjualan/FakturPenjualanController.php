@@ -671,22 +671,22 @@ class FakturPenjualanController extends Controller
         
         // $pattern = "^([0-9]+)$";
     
-        // $pdf = PDF::loadView('penjualan.fakturpenjualan.kwitansi',[
-        //     'faktur' => $fakturpenjualan->no_kpa,
-        //     'text' => $text,
-        //     'grandtotal' => $fakturpenjualan->grandtotal,
-        //     'customer' => $customer->nama
-        // ])->setPaper('a4','landscape');
-
-
-        // return $pdf->download($fakturpenjualan->no_kpa.'-'.$fakturpenjualan->kode.'.pdf');
-
-        return view('penjualan.fakturpenjualan.kwitansi',[
+        $pdf = PDF::loadView('penjualan.fakturpenjualan.kwitansi',[
             'faktur' => $fakturpenjualan->no_kpa,
             'text' => $text,
             'grandtotal' => $fakturpenjualan->grandtotal,
             'customer' => $customer->nama
-        ]);
+        ])->setPaper('a4','landscape');
+
+
+        return $pdf->download($fakturpenjualan->no_kpa.'-'.$fakturpenjualan->kode.'.pdf');
+
+        // return view('penjualan.fakturpenjualan.kwitansi',[
+        //     'faktur' => $fakturpenjualan->no_kpa,
+        //     'text' => $text,
+        //     'grandtotal' => $fakturpenjualan->grandtotal,
+        //     'customer' => $customer->nama
+        // ]);
 
        
     }
