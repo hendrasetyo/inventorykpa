@@ -108,7 +108,7 @@
                                             <h2> Terbilang Rp.</h2> 
                                         </td>
                                         <td width="55%" style="text-align: center;padding-right:12px">
-                                            <h1>{{  number_format($grandtotal, 2, ',', '.')}}</h1>
+                                            <h1>{{  number_format($grandtotal, 0, ',', '.')}}</h1>
                                         </td>
                                     </tr>
                                 </table>
