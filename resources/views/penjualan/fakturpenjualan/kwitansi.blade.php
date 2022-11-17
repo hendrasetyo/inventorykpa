@@ -32,7 +32,7 @@
         <tr>
             <td width="15%" style="text-align: center;">
                 <div style="transform: rotate(270deg);position: fixed;margin-left:-200px;width: 600px;margin-top:240px;">
-                   <h1 style="margin-top: 5px; margin-bottom: 10px;color:rgb(77, 37, 211)">PT KARYA PUTRA ANDALAN</h1>
+                   <h1 style="margin-top: 5px; margin-bottom: 10px;color:rgb(5, 2, 186)">PT KARYA PUTRA ANDALAN</h1>
                    <h3 style="margin-top: 0px; margin-bottom: 3px;">Ruko Purimas - Rungkut Madya Jl. Raya I gusti Ngurah
                     Rai <br> Kav. A1. No. 11-120
                     Surabaya</h3>

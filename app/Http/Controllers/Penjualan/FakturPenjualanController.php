@@ -670,22 +670,22 @@ class FakturPenjualanController extends Controller
 
         $customer = Customer::where('id',$fakturpenjualan->customer_id)->first();
         
-        // $pattern = "^([0-9]+)$";
-        $textkoma = '';
+        // // $pattern = "^([0-9]+)$";
+        // $textkoma = '';
 
         $digit=(int)$fakturpenjualan->grandtotal;
-        $koma = $fakturpenjualan->grandtotal - (double)$digit;
+        // $koma = $fakturpenjualan->grandtotal - (double)$digit;
         $text = wordOfNumber($fakturpenjualan->grandtotal);
       
 
-        if ($koma>0) {
-            $harga2 = str_replace('.', '', round($koma,2));
-            $array = str_split($harga2);
-            $datakoma = textKoma($array);
-            $textkoma='Koma '.implode(' ',$datakoma);
+        // if ($koma>0) {
+        //     $harga2 = str_replace('.', '', round($koma,2));
+        //     $array = str_split($harga2);
+        //     $datakoma = textKoma($array);
+        //     $textkoma='Koma '.implode(' ',$datakoma);
              
-        }
-        $responseText = $text . ' '.$textkoma;
+        // }
+        $responseText = $text;
         
     
         $pdf = PDF::loadView('penjualan.fakturpenjualan.kwitansi',[
@@ -696,7 +696,7 @@ class FakturPenjualanController extends Controller
         ])->setPaper('a4','landscape');
 
 
-        return $pdf->download($fakturpenjualan->no_kpa.'-'.$fakturpenjualan->kode.'.pdf');
+        return $pdf->download('KWIT'.$fakturpenjualan->no_kpa.'-'.$fakturpenjualan->kode.'.pdf');
 
         // return view('penjualan.fakturpenjualan.kwitansi',[
         //     'faktur' => $fakturpenjualan->no_kpa,
