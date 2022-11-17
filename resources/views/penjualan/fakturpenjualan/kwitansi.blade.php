@@ -30,11 +30,11 @@
 <body style="font-family: sans-serif; ">
   <table class="tabel" width="100%" style="font-size:90%;margin-top:2px;">
         <tr>
-            <td width="30%" style="text-align: center;">
-                <div style="transform: rotate(270deg);">
-                   <h2 style="margin-top: 5px; margin-bottom: 10px;color:rgb(77, 37, 211)">PT KARYA PUTRA ANDALAN</h2>
+            <td width="15%" style="text-align: center;">
+                <div style="transform: rotate(270deg);position: fixed;margin-left:-200px;width: 600px;margin-top:240px;">
+                   <h1 style="margin-top: 5px; margin-bottom: 10px;color:rgb(77, 37, 211)">PT KARYA PUTRA ANDALAN</h1>
                    <h3 style="margin-top: 0px; margin-bottom: 3px;">Ruko Purimas - Rungkut Madya Jl. Raya I gusti Ngurah
-                    Rai Kav. A1. No. 11-120
+                    Rai <br> Kav. A1. No. 11-120
                     Surabaya</h3>
                    {{-- <h3 style="margin-top: 0px;margin-bottom: 5px;">NPWP : 03.113.119.6-615.000</h3> --}}
                 </div>

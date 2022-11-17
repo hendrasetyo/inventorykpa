@@ -25,6 +25,7 @@ use App\Models\TempBiaya;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
+use function App\Traits\textKoma;
 use function App\Traits\wordOfNumber;
 
 class FakturPenjualanController extends Controller
@@ -665,15 +666,31 @@ class FakturPenjualanController extends Controller
 
     public function kwitansi(FakturPenjualan $fakturpenjualan)
     {
-        $text = wordOfNumber($fakturpenjualan->grandtotal);
+       
 
         $customer = Customer::where('id',$fakturpenjualan->customer_id)->first();
         
         // $pattern = "^([0-9]+)$";
+        $textkoma = '';
+
+        $digit=(int)$fakturpenjualan->grandtotal;
+        $koma = $fakturpenjualan->grandtotal - (double)$digit;
+        $text = wordOfNumber($fakturpenjualan->grandtotal);
+      
+
+        if ($koma>0) {
+            $harga2 = str_replace('.', '', round($koma,2));
+            $array = str_split($harga2);
+            $datakoma = textKoma($array);
+            $textkoma='Koma '.implode(' ',$datakoma);
+             
+        }
+        $responseText = $text . ' '.$textkoma;
+        
     
         $pdf = PDF::loadView('penjualan.fakturpenjualan.kwitansi',[
             'faktur' => $fakturpenjualan->no_kpa,
-            'text' => $text,
+            'text' => $responseText,
             'grandtotal' => $fakturpenjualan->grandtotal,
             'customer' => $customer->nama
         ])->setPaper('a4','landscape');
@@ -683,7 +700,7 @@ class FakturPenjualanController extends Controller
 
         // return view('penjualan.fakturpenjualan.kwitansi',[
         //     'faktur' => $fakturpenjualan->no_kpa,
-        //     'text' => $text,
+        //     'text' => $responseText,
         //     'grandtotal' => $fakturpenjualan->grandtotal,
         //     'customer' => $customer->nama
         // ]);
