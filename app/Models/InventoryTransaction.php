@@ -17,6 +17,8 @@ class InventoryTransaction extends Model
         'hpp',
         'jenis',
         'jenis_id',
+        'customer',
+        'supplier'
     ];
     protected $dates = ['tanggal'];
 

@@ -44,6 +44,9 @@
             </div>
 
             @endif
+
+           
+
             <div class="row">
 
                 <div class="col-lg-12">
@@ -55,6 +58,7 @@
                             </h3>
                             <div class="card-toolbar">
                                 <div class="example-tools justify-content-center">
+                                    <a href="{{ route('laporanstok.refresh') }}" class="btn btn-success btn-sm mr-2">Refresh</a>
                                     <form action="{{ route('laporanstok.exportkartustok') }}" method="POST">
                                         @csrf                                        
 
@@ -71,6 +75,8 @@
                                         Export to Excel</button>
                                     
                                     </form>
+
+                                    
                                 </div>
                             </div>
                         </div>

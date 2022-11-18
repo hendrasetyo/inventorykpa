@@ -7,6 +7,7 @@ use App\Http\Controllers\Canvassing\CanvassingPesananController;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Contracts\Role;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\Konversi\KonversiController;
 use App\Http\Controllers\Laporan\LaporanAdjustmentStokController;
 use App\Http\Controllers\Laporan\LaporanBiayaOperationalController;
@@ -49,6 +50,7 @@ use App\Http\Controllers\Pembayaran\PembayaranHutangController;
 use App\Http\Controllers\Pembayaran\PembayaranPiutangController;
 use App\Http\Controllers\Permissions\AssignPermissionController;
 use App\Models\CanvassingPesanan;
+use App\Models\InventoryTransaction;
 
 /*
 |--------------------------------------------------------------------------
@@ -638,6 +640,8 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         Route::post('adjustmentstok/result', [LaporanAdjustmentStokController::class, 'result'])->name('laporanstok.adjustmentstokresult');
         Route::post('adjustmentstok/export', [LaporanAdjustmentStokController::class, 'export'])->name('laporanstok.adjustmentstokexport');
 
+        Route::get('refresh', [InventoryController::class, 'update'])->name('laporanstok.refresh');
+
 
         
     });
@@ -829,9 +833,6 @@ Route::middleware('has.role')->prefix('adjustment')->group(function () {
             Route::post('/import', [AdjustmentStokController::class, 'importNonExpired'])->name('stoknonexpired.import');        
         });
     });
-
-    
-
 });
 
 Route::middleware('has.role')->prefix('biaya')->group(function () {
