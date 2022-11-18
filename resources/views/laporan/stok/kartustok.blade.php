@@ -115,7 +115,6 @@
                 {data: 'kode', name: 'kode'},
                   {data: 'nama', name: 'nama'},
                   {data: 'stok', name: 'stok'},
-
                   {data: 'kategori', name: 'categories.nama'},
                   {data: 'subkategori', name: 'subcategories.nama'},
                   {

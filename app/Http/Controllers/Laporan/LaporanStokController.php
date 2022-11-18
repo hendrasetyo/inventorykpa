@@ -14,6 +14,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\InventoryTransaction;
+use App\Models\PengirimanBarang;
 use App\Models\Productcategory;
 use Maatwebsite\Excel\Facades\Excel;
 

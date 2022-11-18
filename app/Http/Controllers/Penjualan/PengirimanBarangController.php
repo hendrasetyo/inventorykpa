@@ -249,15 +249,16 @@ class PengirimanBarangController extends Controller
         }
         $pesanan_penjualan_id = $pesananpenjualan->id;
         $customer_id = $pesananpenjualan->customer_id;
-
-        $customer_name = Customer::findOrFail($customer_id)->first();
+    
+        
+        $customer_name = Customer::findOrFail($customer_id);
 
         $dataTemp = TempSj::where('user_id', '=', Auth::user()->id)->get();
         $jmlTemp = $dataTemp->count();
+
         if ($jmlTemp < 1) {
             return redirect()->route('pengirimanbarang.index')->with('gagal', 'Tidak ada barang yang diinputkan, Pengiriman Barang Gagal Disimpan!');
         }
-
 
         $kode = $this->getKodeTransaksi("pengiriman_barangs", "SJ");
         $datas['kode'] = $kode;
@@ -327,7 +328,6 @@ class PengirimanBarangController extends Controller
             $inventoryTrans->stok = $stok_baru;
             $inventoryTrans->hpp = $hpp;
             $inventoryTrans->jenis = "SJ";
-            $inventoryTrans->jenis_id = $kode;
             $inventoryTrans->jenis_id = $kode;
             $inventoryTrans->customer=$customer_name->nama;
             
