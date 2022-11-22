@@ -316,7 +316,7 @@ class PengirimanBarangController extends Controller
             // $product = new Product;
             // $product = Product::find($product_id)->first();
             // $product->stok = $stok_baru;
-            // $product->hpp = $hpp;
+            // $product->hpp = $h pp;
             // $product->save();
             //######### end update stok ################
 
@@ -331,8 +331,8 @@ class PengirimanBarangController extends Controller
             $inventoryTrans->jenis_id = $kode;
             $inventoryTrans->customer=$customer_name->nama;
             
-
             $inventoryTrans->save();
+            
             //######### end add INV TRANS ############
 
             //############# start update Qty Sisa SO #############
@@ -389,7 +389,8 @@ class PengirimanBarangController extends Controller
         $stokExp = StokExp::where('product_id', '=', $product_id)
             ->where('qty', '<>', '0')
             ->get();
-        //dd($stokExp);
+        
+
         return view('penjualan.pengirimanbarang.listexp', compact('pengirimanbarangdetail', 'title', 'stokExp', 'pengirimanbarang'));
     }
     public function formsetexp(StokExp $stokExp, PengirimanBarangDetail $pengirimanbarangdetail)

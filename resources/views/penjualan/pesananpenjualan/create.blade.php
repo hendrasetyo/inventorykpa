@@ -280,6 +280,7 @@
         var diskon_rp = document.getElementById('diskon_rp').value;
         var ongkir = document.getElementById('ongkir').value;
         var keterangan = document.getElementById('keterangan').value;
+        var ppn =  document.getElementById('ppnprice').value;
 
 
         //alert(product_id);
@@ -297,6 +298,7 @@
                     "diskon_rp": diskon_rp,
                     "ongkir": ongkir,
                     "keterangan": keterangan,
+                    "ppn" : ppn,
                      "_token": "{{ csrf_token() }}"
                     },
                 

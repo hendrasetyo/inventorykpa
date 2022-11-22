@@ -176,6 +176,7 @@ class PesananPenjualanController extends Controller
             $detail->total = $a->total;
             $detail->ongkir = $a->ongkir;
             $detail->keterangan = $a->keterangan;
+            $detail->ppn = $a->ppn;
 
             $detail->save();
         }
@@ -214,7 +215,16 @@ class PesananPenjualanController extends Controller
         $harga1 = $request->hargajual;        
         $harga2 = str_replace('.', '', $harga1);
         $harga = str_replace(',', '.', $harga2) * 1;
+
+       
+        
+        if ($request->ppn > 0) {
+            $harga = $harga / (1 + $request->ppn/100);
+            
+        }
+
         $subtotal = $request->qty * $harga;
+
 
         $ongkir1 = $request->ongkir;
         $ongkir2 = str_replace('.', '', $ongkir1);
@@ -225,6 +235,7 @@ class PesananPenjualanController extends Controller
         $total = $subtotal - $total_diskon;
 
         $datas['hargajual'] = $harga;
+        $datas['ppn'] = $request->ppn;
         $datas['subtotal'] = $subtotal;
         $datas['total_diskon'] = $total_diskon;
         $datas['total'] = $total;
@@ -602,6 +613,11 @@ class PesananPenjualanController extends Controller
         
         $harga = str_replace(',', '.', $harga1) * 1;
 
+        if ($request->ppn > 0) {
+            $harga = $harga / (1 + $request->ppn/100);
+            
+        }
+
         $ongkir1 = $request->ongkir;
     
         $ongkir = str_replace('.', ',', $ongkir1) * 1;
@@ -618,6 +634,7 @@ class PesananPenjualanController extends Controller
         $datas['total'] = $total;
         $datas['user_id'] = Auth::user()->id;
         $datas['ongkir'] = $ongkir; 
+        $datas['ppn'] = $request->ppn;
         // $datas['pesanan_penjualan_id'] = $;        
         
 
@@ -716,6 +733,11 @@ class PesananPenjualanController extends Controller
         $ongkir2 = str_replace('.', '', $ongkir1);
         $ongkir = str_replace(',', '.', $ongkir2) * 1;
 
+        if ($request->ppn > 0) {
+            $harga = $harga / (1 + $request->ppn/100);
+            
+        }
+
         $subtotal = $request->qty * $harga;
         $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
 
@@ -732,6 +754,7 @@ class PesananPenjualanController extends Controller
         $PJ->subtotal = $subtotal;
         $PJ->total_diskon = $total_diskon;
         $PJ->total = $total;
+        $PJ->ppn = $request->ppn;
 
         $PJ->update();
 

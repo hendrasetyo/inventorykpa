@@ -41,14 +41,22 @@
                             <div class="col-lg-10">
                                 <input type="text" class="form-control"
                                      id="hargajual"
-                                    name="hargajual" />
+                                    name="hargajual"  value="0"/>
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">PPN (%) * (KHUSUS E-KATALOG)</label>
+                            <div class="col-lg-10">
+                                <input type="number" class="form-control" id="ppnprice" name="ppnprice" value="0" />
+                            </div>  
+                        </div>
+                        
                         <div class="form-group row">
                             <label class="col-lg-2 col-form-label">Diskon(%)</label>
                             <div class="col-lg-2">
                                 <input type="text" class="form-control" id="diskon_persen" name="diskon_persen"
-                                    value="2" />
+                                    value="0" />
                             </div>
                         </div>
                         <div class="form-group row">
@@ -129,9 +137,17 @@
                             <div class="col-lg-10">
                                 <input type="text" class="form-control"
                                     id="hargajual"
-                                    name="hargajual" value="{{ number_format($item->hargajual, 2, ',', '.') }}" />
+                                    name="hargajual" value="{{ number_format($item->hargajual, 12, ',', '.') }}" />
                             </div>
                         </div>
+                        
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">PPN (%) * (KHUSUS E-KATALOG)</label>
+                            <div class="col-lg-10">
+                                <input type="number" class="form-control" id="ppnprice" name="ppnprice" value="{{$item->ppn}}" />
+                            </div>  
+                        </div>
+
                         <div class="form-group row">
                             <label class="col-lg-2 col-form-label">Diskon(%)</label>
                             <div class="col-lg-2">
@@ -150,7 +166,7 @@
                             <label class="col-lg-2 col-form-label">Ongkir(Rp.)</label>
                             <div class="col-lg-10">
                                 <input type="text" class="form-control" id="ongkir" name="ongkir"
-                                    value="{{ number_format($item->ongkir, 2, ',', '.') }}"
+                                    value="{{ number_format($item->ongkir, 12, ',', '.') }}"
                                     />
                             </div>
                         </div>
