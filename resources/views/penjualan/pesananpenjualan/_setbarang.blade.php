@@ -144,7 +144,7 @@
                         <div class="form-group row">
                             <label class="col-lg-2 col-form-label">PPN (%) * (KHUSUS E-KATALOG)</label>
                             <div class="col-lg-10">
-                                <input type="number" class="form-control" id="ppnprice" name="ppnprice" value="{{$item->ppn}}" />
+                                <input type="number" class="form-control" id="ppnprice" name="ppnprice" value="{{$item->ppn}} ? {{$item->ppn}} : 0" />
                             </div>  
                         </div>
 
