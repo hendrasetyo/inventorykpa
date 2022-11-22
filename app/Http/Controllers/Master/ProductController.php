@@ -51,7 +51,7 @@ class ProductController extends Controller
                 ->addIndexColumn()
 
                 ->editColumn('hargajual', function (Product $x) {
-                    return "Rp. " . number_format($x->hargajual, 0, ',', '.');
+                    return "Rp. " . number_format($x->hargabeli, 0, ',', '.');
                 })
 
                 ->addColumn('kategori', function (Product $p) {

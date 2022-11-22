@@ -41,7 +41,7 @@
                             <div class="col-lg-10">
                                 <input type="text" class="form-control"
                                     id="hargabeli"
-                                    name="hargabeli" />
+                                    name="hargabeli" value="{{$product->hargabeli}}" />
                             </div>
                         </div>
                         <div class="form-group row">

@@ -273,6 +273,7 @@ class PenerimaanBarangController extends Controller
             $hpp_lama = $product->hpp;
             $nilai_lama = $stok_lama * $hpp_lama;
             $status_exp = $product->status_exp;
+
             if ($status_exp == 1) {
                 $status_exp_detil = 0;
             } else {
@@ -285,6 +286,7 @@ class PenerimaanBarangController extends Controller
             $hpp_baru = ROUND(($nilai_baru / $stok_baru), 2);
             $product->stok = $stok_baru;
             $product->hpp = $hpp_baru;
+            $product->hargabeli = $hargabeli;
             $product->save();
             ////////// end hpp //////////
 
