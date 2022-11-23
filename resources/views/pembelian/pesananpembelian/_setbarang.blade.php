@@ -135,7 +135,7 @@
                             <div class="col-lg-10">
                                 <input type="text" class="form-control"
                                      id="hargabeli"
-                                    name="hargabeli" value="{{ number_format($item->hargabeli, 2, ',','') }}" />
+                                    name="hargabeli" value="{{ number_format($item->hargabeli, 12, ',','') }}" />
                             </div>
                         </div>
                         <div class="form-group row">
