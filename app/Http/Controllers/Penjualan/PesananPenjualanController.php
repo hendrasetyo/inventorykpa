@@ -297,6 +297,11 @@ class PesananPenjualanController extends Controller
         $harga = str_replace(',', '.', $harga2) * 1;
         $subtotal = $request->qty * $harga;
 
+        if ($request->ppn > 0) {
+            $harga = $harga / (1 + $request->ppn/100);
+            
+        }
+
         $ongkir1 = $request->ongkir;
         $ongkir2 = str_replace('.', '', $ongkir1);
         $ongkir = str_replace(',', '.', $ongkir2) * 1;

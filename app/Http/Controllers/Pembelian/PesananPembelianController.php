@@ -261,6 +261,11 @@ class PesananPembelianController extends Controller
         $harga1 = $request->hargabeli;
         $harga2 = str_replace('.', '', $harga1);
         $harga = str_replace(',', '.', $harga2) * 1;
+        
+        if ($request->ppn > 0) {
+            $harga = $harga / (1 + $request->ppn/100);
+            
+        }
 
         $subtotal = $request->qty * $harga;
         $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
