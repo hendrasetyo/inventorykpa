@@ -216,7 +216,7 @@
                     <br />    
                     <table width="100%">
                         <tr>
-                            <td style='font-size: 70%; width: 15%; line-height:90%; vertical-align:top'>PENERIMA,
+                            <td style='font-size: 70%; width: 15%; line-height:90%; vertical-align:top'>
 
                                 {{-- <br /><br /> <br /><br /> <br /> <br />
                                 <u>(...............................)</u> <br />
