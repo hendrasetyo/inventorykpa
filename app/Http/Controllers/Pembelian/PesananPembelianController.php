@@ -206,6 +206,11 @@ class PesananPembelianController extends Controller
         
         $harga = str_replace(',', '.', $harga1) * 1;
 
+        if ($request->ppn > 0) {
+            $harga = $harga / (1 + $request->ppn/100);
+            
+        }
+
         $ongkir1 = $request->ongkir;        
         $ongkir = str_replace(',', '.', $ongkir1) * 1;
 
@@ -614,6 +619,10 @@ class PesananPembelianController extends Controller
 
         
         $harga = str_replace(',', '.', $harga1) * 1;
+         if ($request->ppn > 0) {
+            $harga = $harga / (1 + $request->ppn/100);
+            
+        }
 
         $ongkir1 = $request->ongkir;        
         $ongkir = str_replace(',', '.', $ongkir1) * 1;

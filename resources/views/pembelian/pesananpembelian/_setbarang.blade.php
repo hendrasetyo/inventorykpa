@@ -45,6 +45,12 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">PPN (%) * (KHUSUS E-KATALOG)</label>
+                            <div class="col-lg-10">
+                                <input type="number" class="form-control" id="ppnprice" name="ppnprice" value="0" />
+                            </div>  
+                        </div>
+                        <div class="form-group row">
                             <label class="col-lg-2 col-form-label">Diskon(%)</label>
                             <div class="col-lg-2">
                                 <input type="text" class="form-control" id="diskon_persen" name="diskon_persen"
@@ -131,6 +137,12 @@
                                      id="hargabeli"
                                     name="hargabeli" value="{{ number_format($item->hargabeli, 2, ',','') }}" />
                             </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">PPN (%) * (KHUSUS E-KATALOG)</label>
+                            <div class="col-lg-10">
+                                <input type="number" class="form-control" id="ppnprice" name="ppnprice" value="{{$item->ppn ? $item->ppn : 0}}" />
+                            </div>  
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-2 col-form-label">Diskon(%)</label>
