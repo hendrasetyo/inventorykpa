@@ -538,7 +538,7 @@ class PesananPembelianController extends Controller
     }
 
 
-    // ===================================== EDIT PESANAN PENJUALAN ===============================================
+    // ===================================== EDIT PESANAN PEMBELIAN ===============================================
 
     public function edit($id)
     {
@@ -638,6 +638,7 @@ class PesananPembelianController extends Controller
         $datas['total'] = $total;
         $datas['user_id'] = Auth::user()->id;
         $datas['ongkir'] = $ongkir;
+        $datas['ppn'] = $request->ppn;
     
 
         // get data dari pesanan pembelian
@@ -730,6 +731,11 @@ class PesananPembelianController extends Controller
         $harga2 = str_replace('.', '', $harga1);
         $harga = str_replace(',', '.', $harga2) * 1;
 
+        if ($request->ppn > 0) {
+            $harga = $harga / (1 + $request->ppn/100);
+            
+        }
+
         $ongkir1 = $request->ongkir;
         $ongkir2 = str_replace('.', '', $ongkir1);
         $ongkir = str_replace(',', '.', $ongkir2) * 1;
@@ -750,6 +756,7 @@ class PesananPembelianController extends Controller
         $PP->subtotal = $subtotal;
         $PP->total_diskon = $total_diskon;
         $PP->total = $total;
+        $PP->ppn = $request->ppn;
 
         $PP->update();
 

@@ -22,6 +22,7 @@ class TempPo extends Model
         'ongkir',
         'keterangan',
         'user_id',
+        'ppn'
     ];
 
     public function products()
