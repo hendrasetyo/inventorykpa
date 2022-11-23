@@ -224,6 +224,7 @@ class PesananPembelianController extends Controller
         $datas['total'] = $total;
         $datas['user_id'] = Auth::user()->id;
         $datas['ongkir'] = $ongkir;
+        $datas['ppn'] = $request->ppn;
 
         TempPo::create($datas);
     }
@@ -261,7 +262,7 @@ class PesananPembelianController extends Controller
         $harga1 = $request->hargabeli;
         $harga2 = str_replace('.', '', $harga1);
         $harga = str_replace(',', '.', $harga2) * 1;
-        
+
         if ($request->ppn > 0) {
             $harga = $harga / (1 + $request->ppn/100);
             
@@ -284,6 +285,7 @@ class PesananPembelianController extends Controller
         $temp->subtotal = $subtotal;
         $temp->total_diskon = $total_diskon;
         $temp->total = $total;
+        $temp->ppn = $request->ppn;
 
         $temp->save();
     }
