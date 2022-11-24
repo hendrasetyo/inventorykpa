@@ -86,6 +86,19 @@
                 placeholder="No. Surat Pesanan Penjualan (Jika Ada)" value="{{$pesananpembelian->no_so}}"/>
         </div>
     </div>
+
+    <div class="form-group row">
+        <label class="col-lg-1 col-form-label text-right"></label>
+        <div class="col-lg-4">
+            
+        </div>
+        <label class="col-lg-2 col-form-label text-right">No. Surat Pesanan Customer :</label>
+        <div class="col-lg-4">
+            <input type="text" id="no_so_customer" name="no_so_customer" class="form-control"
+                placeholder="No. Surat Pesanan Customer " value="{{$pesananpembelian->no_so_customer}}" />
+        </div>
+    </div>
+
     <div class="text-right mb-3">
         <a href="javascript:caribarang()" class="btn btn-sm btn-primary"><i class="flaticon2-add"></i>Tambah Barang</a>
     </div>

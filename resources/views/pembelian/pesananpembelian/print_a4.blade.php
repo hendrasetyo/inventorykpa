@@ -89,10 +89,6 @@
                 </b></center>
             </td>
 
-            {{-- <td width="20%" style="font-size: 70%; vertical-align: top;">
-                SO Cust. : {{ $pesananpembelian->SO->no_so }}
-            </td>                --}}
-
         </tr>
 
         <tr>
@@ -107,11 +103,11 @@
                         <tr style="">
                             {{-- <td style="font-size: 75%; border:none; width:10%;">KODE</td> --}}
                             <td style="font-size: 60%; border:none; width:10%;text-align:left">KEBUTUHAN</td>
-                            <td style="font-size: 60%; border:none; width:25%;text-align:left">NAMA BARANG</td>
-                            <td style="font-size: 60%; border:none; width:10%;text-align:right">MERK</td>
-                            <td style="font-size: 60%; border:none; width:10%;text-align:right">HARGA</td>
-                            <td style="font-size: 60%; border:none; width:5%;text-align:right">DISK.(%)</td>
-                            <td style="font-size: 60%; border:none; width:10%;text-align:right">DISK.(RP)</td>
+                            <td style="font-size: 60%; border:none; width:24%;text-align:left">NAMA BARANG</td>
+                            <td style="font-size: 60%; border:none; width:8%;text-align:right">MERK</td>
+                            <td style="font-size: 60%; border:none; width:12%;text-align:right">HARGA</td>
+                            <td style="font-size: 60%; border:none; width:6%;text-align:center">DISK.(%)</td>
+                            <td style="font-size: 60%; border:none; width:10%;text-align:left">DISK.(RP)</td>
                             <td style="font-size: 60%; border:none; width:10%;text-align:right">SUBTOTAL</td>
                             <td style="font-size: 60%; border:none; width:10%;text-align:right">TOTAL DISC</td>
                             <td style=" font-size: 60%;border:none; width:10%;text-align:right">TOTAL</td>
@@ -126,15 +122,15 @@
                         $n=1;
                         @endphp
                         @foreach($pesananpembeliandetail as $a)
-                        @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris)<tr class=" ">
+                        @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris)<tr class="" > 
                                 <td style="font-size: 70%; ">{{ $a->qty }} {{ $a->satuan }}</td>
                                 <td style="font-size: 70%;font-family: DejaVu Sans; sans-serif; ">{{ $a->products->nama }}</td>
                                 <td style="font-size: 70%; text-align:right;">{{ $a->products->merks->nama }}</td>
                                 <td style="font-size: 70%; text-align:right">{{ number_format(floor($a->hargabeli), 0, ',', '.')
                                     }}</td>
-                                <td style="font-size: 70%; text-align:right">{{ number_format(floor($a->diskon_persen), 0, ',', '.')
+                                <td style="font-size: 70%; text-align:center">{{ number_format(floor($a->diskon_persen), 0, ',', '.')
                                     }}</td>
-                                <td style="font-size: 70%; text-align:right">{{ number_format(floor($a->diskon_rp), 0, ',', '.')
+                                <td style="font-size: 70%; text-align:left">{{ number_format(floor($a->diskon_rp), 0, ',', '.')
                                     }}</td>
                                 <td style="font-size: 70%; text-align:right">{{ number_format(floor($a->subtotal), 0, ',', '.')
                                     }}</td>
@@ -162,7 +158,7 @@
             <tr>
                 @if ($i == $totalPage)
                 <td style="text-align: right">
-                    <table width="100%">
+                    <table width="100%" >
                         <tr>
                             <td style='font-size: 70%; width: 75%; line-height:90%'><b>Total Jumlah</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
@@ -210,21 +206,21 @@
                     <hr style="margin-bottom: 0px; margin-top: 0px; border-width: 1px 0px 0px;position: relative;">
                     <table>
                         <tr>
-                            <td style="font-size: 70%;">SO Cust. : {{ $pesananpembelian->no_so ? $pesananpembelian->no_so : '-' }}</td>
+                            <td style="font-size: 70%;">SO Cust. : {{ $pesananpembelian->no_so_customer ? $pesananpembelian->no_so_customer : '-' }}</td>
                         </tr>
                     </table>
                     <br />    
                     <table width="100%">
                         <tr>
-                            <td style='font-size: 70%; width: 15%; line-height:90%; vertical-align:top'>
+                            <td style='font-size: 70%; width: 15%; line-height:90%; vertical-align:top'>PENERIMA,
 
-                                {{-- <br /><br /> <br /><br /> <br /> <br />
+                                <br /><br /> <br /><br /> <br /> <br />
                                 <u>(...............................)</u> <br />
                                 <br />
                                 <i>Hal. :
                                     {{ $i }}
                                     {{ $totalPage }}<br />
-                                    User : {{ Auth::user()->name }}</i> --}}
+                                    User : {{ Auth::user()->name }}</i>
                             </td>
                             <td style='font-size: 70%; width: 55%; line-height:90%; vertical-align:top'><b>KETERANGAN : <br />{{
                                     $pesananpembelian->keterangan }}</b>

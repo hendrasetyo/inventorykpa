@@ -31,7 +31,8 @@ class PesananPembelian extends Model
         'total',
         'ongkir',
         'ppn',
-        'grandtotal'
+        'grandtotal',
+        'no_so_customer'
     ];
     protected $dates = ['tanggal'];
 

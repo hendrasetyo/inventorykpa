@@ -147,6 +147,7 @@ class PesananPembelianController extends Controller
         $datas['ppn'] = $ppn_persen;
         $datas['ongkir'] = $ongkir;
         $datas['grandtotal'] = $grandtotal;
+        $datas['no_so_customer'] = $request->no_so_customer;
 
         $id_po = PesananPembelian::create($datas)->id;
 
@@ -591,7 +592,8 @@ class PesananPembelianController extends Controller
             'top' => $request->top,
             'kategoripesanan_id' => $request->kategoripesanan_id,
             'keterangan' => $request->keterangan,
-            'no_so' => $request->no_so
+            'no_so' => $request->no_so,
+            'no_so_customer' => $request->no_so_customer
         ]);
         // dd($hasil);
 

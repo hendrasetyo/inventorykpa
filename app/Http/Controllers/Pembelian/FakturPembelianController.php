@@ -278,6 +278,7 @@ class FakturPembelianController extends Controller
         $datas['ppn'] = $ppn_header;
         $datas['ongkir'] = $ongkir_header;
         $datas['biaya_lain'] = $biayalainlain;
+        $datas['no_faktur_supplier'] = $request->no_faktur_supplier;
         $idFaktur = FakturPembelian::create($datas)->id;
 
         //$ongkir_header = $ongkir_det;
@@ -380,23 +381,23 @@ class FakturPembelianController extends Controller
         $perBaris = 20;
         $totalPage = ceil($jmlBaris / $perBaris);
         
-        // $data = [
-        //     'totalPage' => $totalPage,
-        //     'perBaris' => $perBaris,
-        //     'date' => date('d/m/Y'),
-        //     'fakturpembelian' => $fakturpembelian,
-        //     'fakturpembeliandetail' => $fakturpembeliandetail
-        // ];
-        // $pdf = PDF::loadView('pembelian.fakturpembelian.print_a4', $data)->setPaper('a4', 'potrait');;
-        // return $pdf->download($fakturpembelian->kode.'.pdf');
+        $data = [
+            'totalPage' => $totalPage,
+            'perBaris' => $perBaris,
+            'date' => date('d/m/Y'),
+            'fakturpembelian' => $fakturpembelian,
+            'fakturpembeliandetail' => $fakturpembeliandetail
+        ];
+        $pdf = PDF::loadView('pembelian.fakturpembelian.print_a4', $data)->setPaper('a4', 'potrait');;
+        return $pdf->download($fakturpembelian->kode.'.pdf');
 
-        return view('pembelian.fakturpembelian.print_a4', compact(
-            'title',  
-            'totalPage',
-            'perBaris',
-            'fakturpembelian',
-            'fakturpembeliandetail'
-        ));
+        // return view('pembelian.fakturpembelian.print_a4', compact(
+        //     'title',  
+        //     'totalPage',
+        //     'perBaris',
+        //     'fakturpembelian',
+        //     'fakturpembeliandetail'
+        // ));
     }
 
     public function editbiaya(Request $request)

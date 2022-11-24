@@ -4,7 +4,7 @@
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">Supplier:</label>
         <div class="col-lg-4">
-            <select class="form-control select2" id="supplier_id" name="supplier_id">
+            <select class="form-control select2" id="supplier_id" name="supplier_id" required> 
                 <option value="">Pilih Supplier</option>
                 @foreach ($suppliers as $cg)
                 @if ($pesananpembelian->supplier_id == $cg->id)
@@ -24,7 +24,7 @@
             <div class="input-group date">
                 @if($pesananpembelian->tanggal <> null)
                     <input type="text" class="form-control" name="tanggal" readonly
-                        value="{{ $pesananpembelian->tanggal->format("d-m-Y") }}" id="tgl1" />
+                        value="{{ $pesananpembelian->tanggal->format("d-m-Y") }}" id="tgl1" required/>
                     @else
                     <input type="text" class="form-control" name="tanggal" readonly value="{{ $tglNow }}" id="tgl1" />
                     @endif
@@ -41,7 +41,7 @@
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">Komoditas:</label>
         <div class="col-lg-4">
-            <select class="form-control select2" id="komoditas" name="komoditas_id">
+            <select class="form-control select2" id="komoditas" name="komoditas_id" required>
                 <option value="">Pilih Komoditas</option>
                 @foreach ($komoditass as $cg)
                 @if ($pesananpembelian->komoditas_id == $cg->id)
@@ -59,14 +59,14 @@
         <label class="col-lg-2 col-form-label text-right">TOP:</label>
         <div class="col-lg-4">
             <input type="number" name="top" id="top" class="form-control" placeholder="Enter Term of Payment"
-                value="30" />
+                value="30" required />
             <span class="form-text text-muted">Isi Dalam Satuan Hari, Contoh : 30</span>
         </div>
     </div>
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">Kategori:</label>
         <div class="col-lg-4">
-            <select class="form-control select2" id="kategori" name="kategoripesanan_id">
+            <select class="form-control select2" id="kategori" name="kategoripesanan_id" required>
                 <option value="">Pilih Kategori</option>
                 @foreach ($kategoris as $cg)
                 @if ($pesananpembelian->komoditas_id == $cg->id)
@@ -81,12 +81,25 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-        <label class="col-lg-2 col-form-label text-right">No. Surat Pesanan Penjualan:</label>
+        <label class="col-lg-2 col-form-label text-right">No. Surat Pesanan:</label>
         <div class="col-lg-4">
             <input type="text" id="no_so" name="no_so" class="form-control"
                 placeholder="No. Surat Pesanan Penjualan (Jika Ada)" />
         </div>
     </div>
+
+    <div class="form-group row">
+        <label class="col-lg-1 col-form-label text-right"></label>
+        <div class="col-lg-4">
+            
+        </div>
+        <label class="col-lg-2 col-form-label text-right">No. Surat Pesanan Customer :</label>
+        <div class="col-lg-4">
+            <input type="text" id="no_so_customer" name="no_so_customer" class="form-control"
+                placeholder="No. Surat Pesanan Customer " />
+        </div>
+    </div>
+    
     <div class="text-right mb-3">
         <a href="javascript:caribarang()" class="btn btn-sm btn-primary"><i class="flaticon2-add"></i>Tambah Barang</a>
     </div>

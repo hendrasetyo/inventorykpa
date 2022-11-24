@@ -28,7 +28,8 @@ class PesananPembelianDetail extends Model
         'total',
         'ongkir',
         'keterangan',
-        'ppn'
+        'ppn',
+        'hargabeli_ppn',
     ];
 
     protected $dates = ['tanggal'];

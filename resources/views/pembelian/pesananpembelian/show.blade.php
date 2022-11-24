@@ -59,8 +59,13 @@
                                     <span class="opacity-70">{{ $pesananpembelian->top }} Hari</span>
                                 </div>
                                 <div class="d-flex flex-column flex-root">
-                                    <span class="font-weight-bolder mb-2">SP CUSTOMER</span>
+                                    <span class="font-weight-bolder mb-2">NO PESANAN</span>
                                     <span class="opacity-70">{{ $pesananpembelian->no_so }} </span>
+                                </div>
+
+                                <div class="d-flex flex-column flex-root">
+                                    <span class="font-weight-bolder mb-2">NO PESANAN CUSTOMER</span>
+                                    <span class="opacity-70">{{ $pesananpembelian->no_so_customer }} </span>
                                 </div>
                             </div>
                         </div>

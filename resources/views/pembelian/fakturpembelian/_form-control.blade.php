@@ -44,6 +44,21 @@
         </div>
     </div>
 
+    <div class="form-group row">
+        <label class="col-lg-1 col-form-label text-right"></label>
+        <div class="col-lg-4">
+            
+        </div>
+        <label class="col-lg-2 col-form-label text-right">No Faktur Supplier :</label>
+        <div class="col-lg-4">
+            <input type="text" class="form-control" name="no_faktur_supplier" 
+                 id="penerimaan_barang" placeholder="No Faktur Supplier"/>
+            @error('no_faktur_supplier')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+
 
     <div class="form-group row">
         <div class="col-lg-12">

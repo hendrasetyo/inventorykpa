@@ -30,7 +30,8 @@ class FakturPembelian extends Model
         'ongkir',
         'ppn',
         'grandtotal',
-        'biaya_lain'
+        'biaya_lain',
+        'no_faktur_supplier'
     ];
 
     protected $dates = ['tanggal'];

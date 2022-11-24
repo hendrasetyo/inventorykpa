@@ -66,7 +66,13 @@
                         <td style="font-size: 75%;width:10%">NPWP</td>
                         <td style="font-size: 75%; width:5%"> :</td>
                         <td style="font-size: 75%;">{{ $fakturpembelian->suppliers->npwp }}</td>
-                    </tr>                   
+                    </tr>  
+                    
+                    <tr>
+                        <td style="font-size: 75%;width:10%">No Faktur Supplier</td>
+                        <td style="font-size: 75%; width:5%"> :</td>
+                        <td style="font-size: 75%;">{{ $fakturpembelian->no_faktur_supplier }}</td>
+                    </tr>
                 </table>
             </td>
         </tr>
