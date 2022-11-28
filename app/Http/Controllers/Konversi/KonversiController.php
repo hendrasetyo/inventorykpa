@@ -67,7 +67,7 @@ class KonversiController extends Controller
         TempKonversi::where('created_at', '<', Carbon::today())->delete();
         TempKonversi::where('user_id', '=', Auth::user()->id)->delete();
            
-        $products = Product::with(['categories', 'subcategories']);
+        $products = Product::with(['categories', 'subcategories'])->where('status','Aktif');
 
         $data = $products->get();
         $produk = "";

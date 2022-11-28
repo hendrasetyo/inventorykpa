@@ -18,6 +18,7 @@
                 <!--end::Svg Icon--></span>
         </a>
         @can('konversi-edit')
+        
         {{-- <a href="{{ $editUrl }}" class="btn btn-icon btn-light btn-hover-primary btn-sm mr-3">
         <span class="svg-icon svg-icon-md svg-icon-primary">
             <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Write.svg--><svg
@@ -35,6 +36,7 @@
                 </g>
             </svg>
             <!--end::Svg Icon--></span> </a> --}}
+
         @endcan
         @can('konversi-delete')
         <a href="javascript:show_confirm({{ $id }})" class="btn btn-icon btn-light btn-hover-primary btn-sm mr-3">
