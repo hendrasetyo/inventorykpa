@@ -99,7 +99,7 @@
           var table = $('.yajra-datatable').DataTable({
               responsive: true,
               processing: true,
-              serverSide: true,              
+              serverSide: true,             
               ajax: "{{ route('konversisatuan.create') }}",
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},

@@ -23,7 +23,9 @@ class ProductExpiredImport implements ToModel
 
         
         if ($this->no !== 0) {
-        
+            
+
+            // ngecek apakah expired datenya ada 
             // cek produk    
             
               $product = Product::where('kode',$row[0])->first();   
@@ -34,31 +36,12 @@ class ProductExpiredImport implements ToModel
                 // cek jika ada tanggal yang sama maka ditambah
                 $tanggal = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[4]))->format('Y-m-d');                
                 
-                
-                $mainStokExp = StokExp::where('tanggal',$tanggal)
-                            ->where('product_id',$product->id)                    
-                            ->where('lot',$row[3])
-                            ->count();   
-                
-                if ($mainStokExp > 0) {
-                    //ada data, tinggal update stok
-                    $stokExp =  StokExp::where('tanggal', '=', $tanggal)
-                        ->where('product_id', '=', $product->id)->first();
-
-                    $id_stokExp = $stokExp->id;
-                    $stokExp->qty = $row[2];
-                    $stokExp->save();
-
-                    //insert detail
-                    $stokExpDetail = new StokExpDetail;
-                    $stokExpDetail->tanggal = $tanggal;
-                    $stokExpDetail->stok_exp_id = $id_stokExp;
-                    $stokExpDetail->product_id = $product->id;
-                    $stokExpDetail->qty = $row[2];                    
-                    $stokExpDetail->save();
-
-                } else {
-
+                // ubah stok yang lama menjadi 0
+                     StokExp::where('product_id',$product->id)                    
+                            ->update([
+                                'qty' => 0
+                            ]);   
+                         
                     //tidak ada data, harus insert stok
                     $datas['tanggal'] = $tanggal;
                     $datas['product_id'] = $product->id;
@@ -72,9 +55,7 @@ class ProductExpiredImport implements ToModel
                     $stokExpDetail->stok_exp_id = $id_stokExp;
                     $stokExpDetail->product_id = $product->id;
                     $stokExpDetail->qty = $row[2];                                        
-                    $stokExpDetail->save();
-
-                }            
+                    $stokExpDetail->save();          
                     
                     // cek stok berdasarkan qty
                     // kurangi dari qty inputan - stok 
@@ -94,20 +75,20 @@ class ProductExpiredImport implements ToModel
                         'kode' => $kode
                     ]);
             
-                // perubahan simpan di inventory transaction
-                $inv = InventoryTransaction::create([
-                    'tanggal' => Carbon::now()->format('Y-m-d'),
-                    'product_id' => $product->id,
-                    'qty' => $row[2],
-                    'stok' => $stok,
-                    'hpp' => $product->hpp,
-                    'jenis' => 'AJS',
-                    'jenis_id' => $kode,
-                ]);
+                    // perubahan simpan di inventory transaction
+                    $inv = InventoryTransaction::create([
+                        'tanggal' => Carbon::now()->format('Y-m-d'),
+                        'product_id' => $product->id,
+                        'qty' => $row[2],
+                        'stok' => $row[5],
+                        'hpp' => $product->hpp,
+                        'jenis' => 'AJS',
+                        'jenis_id' => $kode,
+                    ]);
 
-                $product->update([
-                    'stok' => $row[2]
-                ]);
+                    $product->update([
+                        'stok' => $row[5]
+                    ]);
               }
              
         }

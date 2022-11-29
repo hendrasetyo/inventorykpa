@@ -108,6 +108,7 @@ class PesananPembelianController extends Controller
         $diskon = TempDiskon::where('jenis', '=', "PO")
             ->where('user_id', '=', Auth::user()->id)
             ->get()->first();
+            
         $diskon_persen = $diskon->persen;
         $diskon_rupiah = $diskon->rupiah;
 

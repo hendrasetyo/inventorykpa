@@ -28,27 +28,30 @@
                         </li>                    
                         @foreach ($navigations as $navigation)
                        
-                        @can($navigation->permission_name)
-                        <li class="menu-item  menu-item-submenu menu-item-rel" data-menu-toggle="click"
-                            aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><span
-                                    class="menu-text">{{ $navigation->name }}</span><span class="menu-desc"></span><i
-                                    class="menu-arrow"></i></a>
-                            <div class="menu-submenu menu-submenu-classic menu-submenu-left">
-                                <ul class="menu-subnav">
-                                    @foreach ($navigation->children->sortBy('urut') as $child)
-                                    <li class="menu-item " aria-haspopup="true"><a href="{{ url($child->url) }}"
-                                            class=" menu-link ">
-                                            <span class=" svg-icon menu-icon">
-                                                <i class="{{ $child->icon }}"></i>
-                                            </span>
-                                            <span class="menu-text">{{ $child->name }}</span><span class="menu-label">
-                                            </span></a>
-                                    </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </li>
-                        @endcan
+                            @can($navigation->permission_name)
+                                <li class="menu-item  menu-item-submenu menu-item-rel" data-menu-toggle="click"
+                                    aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><span
+                                            class="menu-text">{{ $navigation->name }}</span><span class="menu-desc"></span><i
+                                            class="menu-arrow"></i></a>
+                                    <div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                                        <ul class="menu-subnav">
+                                            @foreach ($navigation->children->sortBy('urut') as $child)
+                                                @can($child->permission_name)
+                                                    <li class="menu-item " aria-haspopup="true"><a href="{{ url($child->url) }}"
+                                                        class=" menu-link ">
+                                                        <span class=" svg-icon menu-icon">
+                                                            <i class="{{ $child->icon }}"></i>
+                                                        </span>
+                                                        <span class="menu-text">{{ $child->name }}</span><span class="menu-label">
+                                                        </span></a>
+                                                   </li>
+                                                @endcan
+                                          
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </li>
+                            @endcan
                         @endforeach
 
 
