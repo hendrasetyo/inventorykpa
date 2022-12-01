@@ -916,9 +916,9 @@ class PesananPenjualanController extends Controller
         }
     }
 
-    public function print_a4(PesananPenjualan $pesananpenjualan)
+    public function print_a4($id)
     {
-
+        $pesananpenjualan = PesananPenjualan::with(['customers','creator'])->findOrFail($id);
         $title = "Print Pesanan Pembelian";
         $pesananpenjualandetail = PesananPenjualanDetail::with('products.merks')            
             ->where('pesanan_penjualan_id', '=', $pesananpenjualan->id)->get();
@@ -933,12 +933,14 @@ class PesananPenjualanController extends Controller
             'totalPage' => $totalPage,
             'perBaris' => $perBaris,
             'date' => date('d/m/Y'),
-            'pesanan$pesananpenjualan' => $pesananpenjualan,
+            'pesananpenjualan' => $pesananpenjualan,
             'pesananpenjualandetail' => $pesananpenjualandetail
         ];
 
-        $pdf = PDF::loadView('pembelian.pesanan$pesananpenjualan.print_a4', $data)->setPaper('a4', 'potrait');;
-        return $pdf->download($pesananpenjualan->no_so.'-'.$pesananpenjualan->kode.'.pdf');
+        // dd($data);
+
+        $pdf = PDF::loadView('penjualan.pesananpenjualan.print_a4', $data)->setPaper('a4', 'potrait');;
+        return $pdf->download($pesananpenjualan->kode.'.pdf');
 
         // return view('pembelian.pesananpembelian.print_a4', compact('title',  'totalPage','pesananpembelian','pesananpenjualandetail','date'
         //                                                             ,'perBaris'

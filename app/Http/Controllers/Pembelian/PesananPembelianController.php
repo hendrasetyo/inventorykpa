@@ -508,7 +508,7 @@ class PesananPembelianController extends Controller
     public function print_a4(PesananPembelian $pesananpembelian)
     {
 
-        $title = "Print Pesanan Pembelian";
+        $title = "Print Pesanan Penj";
         $pesananpembeliandetail = PesananPembelianDetail::with('products.merks')            
             ->where('pesanan_pembelian_id', '=', $pesananpembelian->id)->get();
         $jmlBaris  = $pesananpembeliandetail->count();

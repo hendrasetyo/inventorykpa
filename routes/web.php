@@ -511,6 +511,9 @@ Route::middleware('has.role')->prefix('penjualan')->group(function () {
         Route::post('hitungongkirdetail', [PesananPenjualanController::class, 'hitungOngkirDetail'])->name('pesananpenjualan.hitungongkirdetail');
         Route::post('hitunggrandtotaldetail', [PesananPenjualanController::class, 'hitungGrandTotalDetail'])->name('pesananpenjualan.hitunggrandtotaldetail');
 
+        // PRINT PENJUALAN
+        Route::get('{pesananpenjualan}/print_a4', [PesananPenjualanController::class, 'print_a4'])->name('pesananpenjualan.print_a4');
+
 
     });
 
