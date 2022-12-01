@@ -19,6 +19,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PesananPenjualanDetail;
 use App\Models\Sales;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class PesananPenjualanController extends Controller
 {
@@ -913,6 +914,35 @@ class PesananPenjualanController extends Controller
         } else {
             return number_format($grandtotal, 2, ',', '.');
         }
+    }
+
+    public function print_a4(PesananPenjualan $pesananpenjualan)
+    {
+
+        $title = "Print Pesanan Pembelian";
+        $pesananpenjualandetail = PesananPenjualanDetail::with('products.merks')            
+            ->where('pesanan_penjualan_id', '=', $pesananpenjualan->id)->get();
+        $jmlBaris  = $pesananpenjualandetail->count();
+        $perBaris = 13;
+        $totalPage = ceil($jmlBaris / $perBaris);
+        // dd($totalPage);
+       
+        $pesananpenjualandetail =  $pesananpenjualandetail;
+        $date = date('d/m/Y');
+        $data = [
+            'totalPage' => $totalPage,
+            'perBaris' => $perBaris,
+            'date' => date('d/m/Y'),
+            'pesanan$pesananpenjualan' => $pesananpenjualan,
+            'pesananpenjualandetail' => $pesananpenjualandetail
+        ];
+
+        $pdf = PDF::loadView('pembelian.pesanan$pesananpenjualan.print_a4', $data)->setPaper('a4', 'potrait');;
+        return $pdf->download($pesananpenjualan->no_so.'-'.$pesananpenjualan->kode.'.pdf');
+
+        // return view('pembelian.pesananpembelian.print_a4', compact('title',  'totalPage','pesananpembelian','pesananpenjualandetail','date'
+        //                                                             ,'perBaris'
+        //                                                            ));
     }
 
 }

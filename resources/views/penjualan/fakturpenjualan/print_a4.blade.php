@@ -100,13 +100,13 @@
                         @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="">
                             <td style="font-size: 62%; ">{{ $a->qty }} {{ $a->satuan }}</td>
                             <td style="font-size: 62%;font-family: DejaVu Sans; sans-serif; ">{{ $a->products->nama }}</td>
-                            <td style="font-size: 62%; text-align:right">{{ number_format(floor($a->hargajual), 0, ',', '.')
+                            <td style="font-size: 62%; text-align:right">{{ number_format($a->hargajual, 0, ',', '.')
                                 }}</td>
-                            <td style="font-size: 62%; text-align:right">{{ number_format(floor($a->subtotal), 0, ',', '.')
+                            <td style="font-size: 62%; text-align:right">{{ number_format($a->subtotal, 0, ',', '.')
                                 }}</td>
-                            <td style="font-size: 62%; text-align:right">{{ number_format(floor($a->total_diskon), 0, ',',
+                            <td style="font-size: 62%; text-align:right">{{ number_format($a->total_diskon, 0, ',',
                                 '.') }}</td>
-                            <td style="font-size: 62%; text-align:right">{{ number_format(floor($a->total), 0, ',',
+                            <td style="font-size: 62%; text-align:right">{{ number_format($a->total, 0, ',',
                                 '.') }}</td>
 
 
@@ -136,49 +136,49 @@
                             <td style='font-size: 70%; width: 75%; line-height:90%'><b>Total Jumlah</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; line-height:90%; text-align:right'><b>
-                                    {{ number_format(floor($fakturpenjualan->subtotal), 0, ',', '.') }}
+                                    {{ number_format($fakturpenjualan->subtotal, 0, ',', '.') }}
                                 </b></td>
                         </tr>
                         <tr>
                             <td style='font-size: 70%; width: 75%; line-height:90%'><b>Potongan Harga</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; line-height:90%; text-align:right'><b>
-                                    {{ number_format(floor($fakturpenjualan->total_diskon_header), 0, ',', '.') }}
+                                    {{ number_format($fakturpenjualan->total_diskon_header, 0, ',', '.') }}
                                 </b></td>
                         </tr>
                         <tr>
                             <td style='font-size: 70%; width: 75%; line-height:90%'><b>Dasar Pengenaan Pajak</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; line-height:90%; text-align:right'><b>
-                                    {{ number_format(floor($fakturpenjualan->total), 0, ',', '.') }}
+                                    {{ number_format($fakturpenjualan->total, 0, ',', '.') }}
                                 </b></td>
                         </tr>
                         <tr>
                             <td style='font-size: 70%; width: 75%;'><b>PPN</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; text-align:right'><b>
-                                    {{ number_format(floor($fakturpenjualan->ppn), 0, ',', '.') }}
+                                    {{ number_format($fakturpenjualan->ppn, 0, ',', '.') }}
                                 </b></td>
                         </tr>
                         <tr>
                             <td style='font-size: 70%; width: 75%;'><b>Biaya Pengiriman</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; text-align:right'><b>
-                                    {{ number_format(floor($fakturpenjualan->ongkir), 0, ',', '.') }}
+                                    {{ number_format($fakturpenjualan->ongkir, 0, ',', '.') }}
                                 </b></td>
                         </tr>
                         <tr>
                             <td style='font-size: 70%; width: 75%;'><b>Biaya Lain-Lain</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; text-align:right'><b>
-                                    {{ number_format(floor($fakturpenjualan->biaya_lain), 0, ',', '.') }}
+                                    {{ number_format($fakturpenjualan->biaya_lain, 0, ',', '.') }}
                                 </b></td>
                         </tr>
                         <tr>
                             <td style='font-size: 70%; width: 25%;'><b>Jumlah Yang Harus Dibayar</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; text-align:right'><b>
-                                    {{ number_format(floor($fakturpenjualan->grandtotal), 0, ',', '.') }}
+                                    {{ number_format($fakturpenjualan->grandtotal, 0, ',', '.') }}
                                 </b></td>
                         </tr>
                     </table>
