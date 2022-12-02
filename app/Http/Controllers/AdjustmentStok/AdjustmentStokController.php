@@ -5,8 +5,11 @@ namespace App\Http\Controllers\AdjustmentStok;
 use App\Http\Controllers\Controller;
 use App\Imports\ProductExpiredImport;
 use App\Imports\ProductImport;
+use App\Imports\ProductRevisiImport;
 use App\Models\AdjustmentStok;
+use App\Models\StokExp;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -98,6 +101,22 @@ class AdjustmentStokController extends Controller
 
         return back();
     }
+
+    public function importRevisiExpired(Request $request)
+    {        
+        Excel::import(new ProductRevisiImport, $request->file('file_import'));        
+        
+
+        // $date = new DateTime('2022-11-08');
+        // $tanggal = $date->format('Y-m-d H:i:s');
+        // $stok = StokExp::where('product_id',328)->where('created_at','<',$date)->get();
+        // dd($stok);
+        return back();
+
+    }
+
+
+    
 
 
 }

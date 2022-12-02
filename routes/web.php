@@ -828,7 +828,8 @@ Route::middleware('has.role')->prefix('adjustment')->group(function () {
 
         Route::prefix('expired')->group(function () {
             Route::get('', [AdjustmentStokController::class, 'expired'])->name('stokexpired.expired'); 
-            Route::post('/import', [AdjustmentStokController::class, 'importExpired'])->name('stokexpired.import');               
+            Route::post('/import', [AdjustmentStokController::class, 'importExpired'])->name('stokexpired.import');  
+            Route::post('/importrevisi', [AdjustmentStokController::class, 'importRevisiExpired'])->name('stokexpired.importrevisi');               
         });
     
         Route::prefix('nonexpired')->group(function () {
