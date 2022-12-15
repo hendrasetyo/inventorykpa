@@ -644,6 +644,7 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         Route::post('adjustmentstok/export', [LaporanAdjustmentStokController::class, 'export'])->name('laporanstok.adjustmentstokexport');
 
         Route::get('refresh', [InventoryController::class, 'update'])->name('laporanstok.refresh');
+        Route::get('singkronisasi', [LaporanAdjustmentStokController::class, 'sync'])->name('laporanstok.singkronisasi');
 
 
         

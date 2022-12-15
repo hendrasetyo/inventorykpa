@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Laporan;
 
 use App\Exports\LaporanAdjustmentStok;
+use App\Exports\SyncExport;
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -48,5 +50,10 @@ class LaporanAdjustmentStokController extends Controller
         $data = $request->all();        
         $now = Carbon::parse(now())->format('Y-m-d');
         return Excel::download(new LaporanAdjustmentStok($data), 'laporanadjustmentstok-'.$now.'.xlsx');
+    }
+
+    public function sync()
+    {    
+        return Excel::download(new SyncExport(), 'Syncronisasi.xlsx');       
     }
 }
