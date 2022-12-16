@@ -20,6 +20,7 @@ class SyncExport implements FromView
                 if ((int)$item->qty !== (int)$product->stok) {
                     $data[] =[
                         'product_id' => $item->product_id,
+                        'kode' => $product->kode,
                         'qty_exp' => $item->qty,
                         'stok' => $product->stok,
                         'nama_product' => $product->nama,

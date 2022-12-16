@@ -3,6 +3,8 @@
         <tr>
             <th>#</th>
             <th>Nama</th>
+            <th>ID Barang</th>
+            <th>Kode Barang</th>
             <th>Satuan</th>
             <th>Stok EXP</th>
             <th>Stok Master</th>
@@ -18,6 +20,8 @@
             <tr>
                 <td>{{$no++}}</td>
                 <td>{{$item['nama_product']}}</td>
+                <td>{{$item->product_id}}</td>
+                <td>{{$item->kode}}</td>
                 <td>{{$item['satuan']}}</td>
                 <td>{{$item['qty_exp']}}</td>
                 <td>{{$item['stok']}}</td>                                            
