@@ -27,18 +27,18 @@ class LaporanPenjualanExport implements FromView
         
         if ($this->data['tgl1']) {            
             if (!$this->data['tgl2']) {
-                $tanggalFilter=$penjualan->where('p.tanggal','>=',$tgl1);
+                $tanggalFilter=$penjualan->where('fp.tanggal','>=',$tgl1);
                                 
             }else{
-                $tanggalFilter=$penjualan->where('p.tanggal','>=',$tgl1)
-                                ->where('p.tanggal','<=',$tgl2);
+                $tanggalFilter=$penjualan->where('fp.tanggal','>=',$tgl1)
+                                ->where('fp.tanggal','<=',$tgl2);
             }
         }elseif($this->data['tgl2']){
             if (!$this->data['tgl1']) {
-                $tanggalFilter=$penjualan->where('p.tanggal','<=',$tgl2);
+                $tanggalFilter=$penjualan->where('fp.tanggal','<=',$tgl2);
             }else{
-                $tanggalFilter=$penjualan->where('p.tanggal','>=',$tgl1)
-                                ->where('p.tanggal','<=',$tgl2);
+                $tanggalFilter=$penjualan->where('fp.tanggal','>=',$tgl1)
+                                ->where('fp.tanggal','<=',$tgl2);
             }
         }else{
             $tanggalFilter = $penjualan;
