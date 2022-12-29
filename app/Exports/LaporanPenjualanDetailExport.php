@@ -85,7 +85,7 @@ class LaporanPenjualanDetailExport implements FromView
                                             ,'fpb.total as total_det','fpb.total_diskon as total_diskon_det','fpb.ongkir as ongkir_det','fpb.keterangan as keterangan_det' 
                                             ,'pb.kode as kode_SJ','pp.kode as kode_SP'
                                             ,'s.nama as nama_sales','u.name as nama_pembuat'
-                                            ,'cs.nama as nama_customer','p.nama as nama_produk','m.nama as nama_merk','p.kode as kode_produk')->get();                                        
+                                            ,'cs.nama as nama_customer','p.nama as nama_produk','m.nama as nama_merk','p.kode as kode_produk')->latest()->get();                                        
 
                                             
         // dd($filter);

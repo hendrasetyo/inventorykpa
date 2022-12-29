@@ -394,6 +394,7 @@ class PenerimaanBarangController extends Controller
         $datas = $request->all();        
 
         $tanggal = $request->tanggal;
+        
         $lot = $request->lot;
         if ($tanggal <> null) {
             $tanggal = Carbon::createFromFormat('d-m-Y', $tanggal)->format('Y-m-d');
@@ -421,6 +422,7 @@ class PenerimaanBarangController extends Controller
                 ->where('product_id', '=', $product_id)
                 ->where('lot',$lot)
                 ->count();
+            
 
             // dd($mainStokExp);
 

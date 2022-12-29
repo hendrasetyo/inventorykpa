@@ -13,6 +13,7 @@ use App\Http\Controllers\Laporan\LaporanAdjustmentStokController;
 use App\Http\Controllers\Laporan\LaporanBiayaOperationalController;
 use App\Http\Controllers\Laporan\LaporanFakturPajakController;
 use App\Http\Controllers\Laporan\LaporanHutangPiutangController;
+use App\Http\Controllers\Laporan\LaporanLabaRugiController;
 use App\Http\Controllers\Laporan\LaporanPenjualanController;
 use App\Http\Controllers\NavigationController;
 use App\Http\Controllers\Master\MerkController;
@@ -48,6 +49,8 @@ use App\Http\Controllers\Penjualan\PengirimanBarangController;
 use App\Http\Controllers\Penjualan\PesananPenjualanController;
 use App\Http\Controllers\Pembayaran\PembayaranHutangController;
 use App\Http\Controllers\Pembayaran\PembayaranPiutangController;
+use App\Http\Controllers\Penjualan\BiayaLainController;
+use App\Http\Controllers\Penjualan\LabaRugiController;
 use App\Http\Controllers\Permissions\AssignPermissionController;
 use App\Models\CanvassingPesanan;
 use App\Models\InventoryTransaction;
@@ -594,6 +597,17 @@ Route::middleware('has.role')->prefix('penjualan')->group(function () {
 
         // kwitansi
         Route::get('{fakturpenjualan}/kwitansi', [FakturPenjualanController::class, 'kwitansi'])->name('fakturpenjualan.kwitansi');
+
+        // ============================================== BIAYA LAIN - LAIN ===============================================================
+        Route::get('{fakturpenjualan}/biayalain', [BiayaLainController::class, 'index'])->name('fakturpenjualan.biayalain.index');
+        Route::post('/biayalain/datatable', [BiayaLainController::class, 'datatables'])->name('fakturpenjualan.biayalain.datatable');
+        Route::post('/biayalain/store', [BiayaLainController::class, 'store'])->name('fakturpenjualan.biayalain.store');
+        Route::post('/biayalain/edit', [BiayaLainController::class, 'edit'])->name('fakturpenjualan.biayalain.edit');
+        Route::post('/biayalain/update', [BiayaLainController::class, 'update'])->name('fakturpenjualan.biayalain.ubah');
+        Route::post('/biayalain/delete', [BiayaLainController::class, 'destroy'])->name('fakturpenjualan.biayalain.destroy');
+
+        //==============================================  LABA RUGI =======================================================================
+        Route::get('{fakturpenjualan}/labarugi', [LabaRugiController::class, 'show'])->name('fakturpenjualan.labarugi.show');
       
     });
 
@@ -734,6 +748,18 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
 
         Route::post('/exportfaktur', [LaporanFakturPajakController::class, 'exportFaktur'])->name('laporanfakturpajak.exportfaktur');        
         Route::post('/exportlogfaktur', [LaporanFakturPajakController::class, 'exportLogFaktur'])->name('laporanfakturpajak.exportlogfaktur');        
+    });
+
+
+    Route::prefix('laporanlabarugi')->group(function () {
+        
+        // GET
+        Route::get('', [LaporanLabaRugiController::class, 'index'])->name('laporanlabarugi.index');        
+        Route::post('/result', [LaporanLabaRugiController::class, 'datatable'])->name('laporanlabarugi.datatable');
+        Route::get('/{id}/show', [LaporanLabaRugiController::class, 'show'])->name('laporanlabarugi.show');
+
+        Route::post('/print', [LaporanLabaRugiController::class, 'print'])->name('laporanlabarugi.print');        
+        
     });
 
 

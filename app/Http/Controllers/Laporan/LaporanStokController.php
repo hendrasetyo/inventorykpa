@@ -175,14 +175,21 @@ class LaporanStokController extends Controller
         if ($tgl1 <> null) {
             $tgl1 = Carbon::createFromFormat('d-m-Y', $tgl1)->format('Y-m-d');
         }
-        $tgl2 = $request->tgl2;
+        $tgl2 = $request->tgl2;        
         if ($tgl2 <> null) {
             $tgl2 = Carbon::createFromFormat('d-m-Y', $tgl2)->format('Y-m-d');
         }
 
-        $stok = StokExp::with('products')
+        $stok = StokExp::with('products')->has('products')
             ->whereBetween('tanggal', [$tgl1, $tgl2])
             ->orderBy('tanggal', 'ASC')->get();
+
+        // foreach ($stok as $key => $value) {
+        //     if ($value->products == null) {
+        //         dd($value);
+        //     }
+        // }
+        // dd($stok[0]);
       
         return view('laporan.stok.expstokresult', compact('stok', 'title'));
     }

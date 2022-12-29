@@ -15,6 +15,12 @@ class JenisBiaya extends Model
         'no_akun',
         'keterangan'
     ];
+
+  
+    public function biayalain()
+    {
+        return $this->hasMany(BiayaLain::class, 'jenisbiaya_id');
+    }
     
 
 
