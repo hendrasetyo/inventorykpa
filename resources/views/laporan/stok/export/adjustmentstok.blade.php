@@ -1,7 +1,7 @@
 <table >
     <thead>
         <tr>
-            <th>#</th>
+            <th>No</th>
             <th>Tanggal</th>
             <th>Kode Adjustment</th>
             <th>Kode Barang</th>

@@ -1,7 +1,7 @@
 <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
     <thead>
         <tr>
-            <th>#</th>
+            <th>No</th>
             <th>Tanggal</th>
             <th>Customer</th>
             <th>Kode SO</th>

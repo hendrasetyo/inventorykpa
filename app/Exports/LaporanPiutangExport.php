@@ -33,18 +33,18 @@ class LaporanPiutangExport implements FromView
 
         if ($this->data['tgl1']) {            
             if (!$this->data['tgl2']) {
-                $tanggalFilter=$pembayaran->where('p.tanggal_top','>=',$tgl1);
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1);
                                 
             }else{
-                $tanggalFilter=$pembayaran->where('p.tanggal_top','>=',$tgl1)
-                                ->where('p.tanggal_top','<=',$tgl2);
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1)
+                                ->where('p.tanggal','<=',$tgl2);
             }
         }elseif($this->data['tgl2']){
             if (!$this->data['tgl1']) {
-                $tanggalFilter=$pembayaran->where('p.tanggal_top','<=',$tgl2);
+                $tanggalFilter=$pembayaran->where('p.tanggal','<=',$tgl2);
             }else{
-                $tanggalFilter=$pembayaran->where('p.tanggal_top','>=',$tgl1)
-                                ->where('p.tanggal_top','<=',$tgl2);
+                $tanggalFilter=$pembayaran->where('p.tanggal','>=',$tgl1)
+                                ->where('p.tanggal','<=',$tgl2);
             }
         }else{
             $tanggalFilter = $pembayaran;

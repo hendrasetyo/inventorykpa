@@ -85,6 +85,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>Tanggal</th>
                                         <th>Tanggal TOP</th>
                                         <th>Supplier</th>
                                         <th>Kode SO</th>

@@ -1,7 +1,7 @@
 <table >
     <thead>
         <tr>
-            <th>#</th>
+            <th>No</th>
             <th>Nama</th>
             <th>ID Barang</th>
             <th>Kode Barang</th>
