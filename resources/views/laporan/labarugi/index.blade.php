@@ -150,7 +150,7 @@
 
 <script type="text/javascript">
         let tanggalMulai = ''; 
-        let customer = 'a   ll';
+        let customer = 'all';
         let tanggalSelesai = '';
 
     $(function () {
