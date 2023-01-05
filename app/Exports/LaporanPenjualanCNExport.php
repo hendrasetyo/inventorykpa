@@ -23,7 +23,8 @@ class LaporanPenjualanCNExport  implements FromView
         $penjualan = DB::table('faktur_penjualans as fp')
                     ->join('pengiriman_barangs as pb','fp.pengiriman_barang_id','=','pb.id')
                     ->join('faktur_penjualan_details as fpb','fpb.faktur_penjualan_id','=','fp.id')
-                    ->join('users as u','fp.created_by','=','u.id');
+                    ->join('users as u','fp.created_by','=','u.id')
+                    ->where('fp.deleted_at',null);;
 
 
                     if ($this->data['tgl1']) {            

@@ -24,7 +24,8 @@ class LaporanPembelianExport implements FromView
         $penjualan = DB::table('faktur_pembelians as fp')        
                 ->join('penerimaan_barangs as pb','fp.penerimaan_barang_id','=','pb.id')
                 ->join('pesanan_pembelians as pp','fp.pesanan_pembelian_id','=','pp.id')
-                ->join('users as u','fp.created_by','=','u.id');  
+                ->join('users as u','fp.created_by','=','u.id')
+                ->where('fp.deleted_at',null);;  
 
         if ($this->data['tgl1']) {            
             if (!$this->data['tgl2']) {

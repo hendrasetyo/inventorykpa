@@ -25,7 +25,8 @@ class LaporanPembelianDetailExport implements FromView
                     ->join('penerimaan_barangs as pb','fp.penerimaan_barang_id','=','pb.id')
                     ->join('pesanan_pembelians as pp','fp.pesanan_pembelian_id','=','pp.id')
                     ->join('faktur_pembelian_details as fpb','fpb.faktur_pembelian_id','=','fp.id')
-                    ->join('users as u','fp.created_by','=','u.id');
+                    ->join('users as u','fp.created_by','=','u.id')
+                    ->where('fp.deleted_at',null);;
 
 
                     if ($this->data['tgl1']) {            

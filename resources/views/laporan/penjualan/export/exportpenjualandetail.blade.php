@@ -28,6 +28,7 @@
             <th>Diskon Rupiah Produk</th>
             <th>Subtotal Produk</th>
             <th>Total Diskon Produk</th>
+            <th>PPN(11%)</th>
             <th>Total Produk</th>
             <th>Ongkir Produk</th>
             <th>Sales</th>
@@ -69,7 +70,8 @@
                 <td>{{$item->diskon_rp_det}}</td>
                 <td>{{$item->subtotal_det}}</td>
                 <td>{{$item->total_diskon_det}}</td>
-                <td>{{$item->total_det}}</td>
+                <td>{{11/100 * $item->total_det}}</td>
+                <td>{{$item->total_det + (11/100 * $item->total_det)}}</td>
                 <td>{{$item->ongkir_det}}</td>
                 <td>{{$item->nama_sales}}</td>
                 <td>{{$item->nama_pembuat}}</td>
