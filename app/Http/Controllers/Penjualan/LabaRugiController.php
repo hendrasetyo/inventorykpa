@@ -48,7 +48,7 @@ class LabaRugiController extends Controller
                 'diskon_rp' => $value->diskon_rp,
                 'hargajual' => $value->hargajual,
                 'subtotal' => $value->subtotal,
-                'total' => $value->total,
+                'total' => $value->total + $ppnJual,
                 'cn_rupiah' => $value->cn_rupiah,
                 'ppnJual' => $ppnJual,
                 'harga_bersih' => $hargaBersih,
