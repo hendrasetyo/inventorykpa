@@ -130,7 +130,7 @@
                                     }}</td>
                                 <td style="font-size: 70%; text-align:center">{{ number_format($a->diskon_persen, 0, ',', '.')
                                     }}</td>
-                                <td style="font-size: 70%; text-align:left">{{ number_format($a->diskon_rp) 0, ',', '.')
+                                <td style="font-size: 70%; text-align:left">{{ number_format($a->diskon_rp, 0, ',', '.')
                                     }}</td>
                                 <td style="font-size: 70%; text-align:right">{{ number_format($a->subtotal, 0, ',', '.')
                                     }}</td>
