@@ -29,6 +29,7 @@ class LabaRugiController extends Controller
             $subtotalpembelian = $value->products->hargabeli * $value->qty;
             $ppnBeli =  11/100 *  $subtotalpembelian;
             $hpp =  $subtotalpembelian + $ppnBeli;
+            $total = (double)$value->total + (double)$ppnJual;
            
             $labaKotor = $hargaBersih - $hpp;
 
@@ -48,7 +49,7 @@ class LabaRugiController extends Controller
                 'diskon_rp' => $value->diskon_rp,
                 'hargajual' => $value->hargajual,
                 'subtotal' => $value->subtotal,
-                'total' => $value->total + $ppnJual,
+                'total' => $total,
                 'cn_rupiah' => $value->cn_rupiah,
                 'ppnJual' => $ppnJual,
                 'harga_bersih' => $hargaBersih,

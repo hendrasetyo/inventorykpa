@@ -34,8 +34,7 @@ class CustomerController extends Controller
     {
 
         $title = "CUSTOMER";
-        $customers = Customer::with(['kategori', 'salesman', 'namakota', 'prov']);
-
+        $customers = Customer::with(['kategori', 'salesman', 'namakota', 'prov'])->get();
         if (request()->ajax()) {
             return Datatables::of($customers)
                 ->addIndexColumn()

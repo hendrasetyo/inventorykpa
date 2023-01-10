@@ -126,17 +126,17 @@
                                 <td style="font-size: 70%; ">{{ $a->qty }} {{ $a->satuan }}</td>
                                 <td style="font-size: 70%;font-family: DejaVu Sans; sans-serif; ">{{ $a->products->nama }}</td>
                                 <td style="font-size: 70%; text-align:right;">{{ $a->products->merks->nama }}</td>
-                                <td style="font-size: 70%; text-align:right">{{ number_format(floor($a->hargabeli), 0, ',', '.')
+                                <td style="font-size: 70%; text-align:right">{{ number_format($a->hargabeli, 0, ',', '.')
                                     }}</td>
-                                <td style="font-size: 70%; text-align:center">{{ number_format(floor($a->diskon_persen), 0, ',', '.')
+                                <td style="font-size: 70%; text-align:center">{{ number_format($a->diskon_persen, 0, ',', '.')
                                     }}</td>
-                                <td style="font-size: 70%; text-align:left">{{ number_format(floor($a->diskon_rp), 0, ',', '.')
+                                <td style="font-size: 70%; text-align:left">{{ number_format($a->diskon_rp, 0, ',', '.')
                                     }}</td>
-                                <td style="font-size: 70%; text-align:right">{{ number_format(floor($a->subtotal), 0, ',', '.')
+                                <td style="font-size: 70%; text-align:right">{{ number_format($a->subtotal, 0, ',', '.')
                                     }}</td>
-                                <td style="font-size: 70%; text-align:right">{{ number_format(floor($a->total_diskon), 0, ',',
+                                <td style="font-size: 70%; text-align:right">{{ number_format($a->total_diskon, 0, ',',
                                     '.') }}</td>
-                                <td style="font-size: 70%; text-align:right">{{ number_format(floor($a->total), 0, ',',
+                                <td style="font-size: 70%; text-align:right">{{ number_format($a->total, 0, ',',
                                     '.') }}</td>            
 
                         @endif
