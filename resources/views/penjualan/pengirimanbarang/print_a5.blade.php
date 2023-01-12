@@ -179,10 +179,11 @@
                     </tr>
                     @php
                     $n=1;
+                    $j=1;
                     @endphp
                     @foreach($pengirimanbarangdetails as $a)
                     @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="">
-                        <td style="font-size: 70%;width:3%; class=" text-left">{{ $n++ }}</td>
+                        <td style="font-size: 70%;width:3%; class=" text-left">{{ $j++ }}</td>
                         <td style="font-size: 70%; class=" text-left">{{ $a->products->nama }}</td>
                         <td style="font-size: 70%; class=" text-left">{{ $a->satuan }}</td>
                         <td style="font-size: 70%; class=" text-left">{{ $a->qty }}</td>

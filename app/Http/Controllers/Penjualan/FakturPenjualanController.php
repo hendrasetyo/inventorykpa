@@ -506,7 +506,7 @@ class FakturPenjualanController extends Controller
     public function show(FakturPenjualan $fakturpenjualan)
     {
         $title = "Faktur penjualan Detail";
-        $fakturpenjualan = FakturPenjualan::where('id',$fakturpenjualan->id)->with(['no_pajak','creator'])->first();
+        $fakturpenjualan = FakturPenjualan::where('id',$fakturpenjualan->id)->with(['nopajak','creator'])->first();
         // dd($fakturpenjualan);
         $fakturpenjualandetails = FakturPenjualanDetail::with('products')
             ->where('faktur_penjualan_id', '=', $fakturpenjualan->id)->get();
