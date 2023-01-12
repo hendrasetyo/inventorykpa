@@ -109,6 +109,7 @@
                                             </th>
                                             <th class="text-left font-weight-bold text-muted text-uppercase">Total
                                                 Disc.</th>
+                                                <th class="text-left font-weight-bold text-muted text-uppercase">CN (%)</th>
                                             <th class="text-left font-weight-bold text-muted text-uppercase">Total</th>
                                         </tr>
                                     </thead>
@@ -127,7 +128,9 @@
                                             </td>
                                             <td class=" pt-7 text-left">
                                                 {{ number_format($a->total_diskon, 2, ',', '.') }}</td>
-                                            <td class="text-danger pr-0 pt-7 text-right">
+                                            <td class=" pr-0 pt-7 text-left">
+                                                {{$a->cn_persen ? $a->cn_persen : 0 }}%</td>
+                                            <td class="text-danger pr-0 pt-7 text-left">
                                                 {{ number_format($a->total, 2, ',', '.') }}</td>
 
                                         </tr>
@@ -152,6 +155,7 @@
                                             <th class="font-weight-bold text-muted  text-uppercase">PPN</th>
                                             <th class="font-weight-bold text-muted  text-uppercase">ONGKIR</th>
                                             <th class="font-weight-bold text-muted  text-uppercase">BIAYA LAIN-LAIN</th>
+                                           
                                             <th class="font-weight-bold text-muted  text-uppercase">GRANDTOTAL</th>
 
                                         </tr>
@@ -164,13 +168,29 @@
                                             <td>{{ number_format($fakturpenjualan->total, 2, ',', '.') }}</td>
                                             <td>{{ number_format($fakturpenjualan->ppn, 2, ',', '.') }}</td>
                                             <td>{{ number_format($fakturpenjualan->ongkir, 2, ',', '.') }}</td>
-                                            <td>{{ number_format($fakturpenjualan->biaya_lain, 2, ',', '.') }}</td>
+                                            <td>{{ number_format($fakturpenjualan->biaya_lain, 2, ',', '.') }}</td>                                          
                                             <td class="text-danger font-size-h5 font-weight-boldest">
                                                 {{ number_format($fakturpenjualan->grandtotal, 2, ',', '.') }}</td>
                                         </tr>
                                     </tbody>
 
                                 </table>
+
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="font-weight-bold text-muted  text-uppercase">JUMLAH CN</th>                                          
+                                            <th class="font-weight-bold text-muted  text-uppercase">Saldo Harga Bersih</th>                                              
+                                        </tr>                                        
+                                        <tr>
+                                            <td>{{ $fakturpenjualan->total_cn ? number_format($fakturpenjualan->total_cn, 0, ',', '.') : '0'}}</td>
+                                           
+                                            <td>
+                                                {{ number_format($fakturpenjualan->grandtotal - $fakturpenjualan->total_cn, 0, ',', '.') }}                                           
+                                            </td>                                        
+                                        </tr>                                        
+                                </table>
+
                                 <br />
                                 <h4>Keterangan :</h4>
                                 <p>{{ $fakturpenjualan->keterangan }} </p>

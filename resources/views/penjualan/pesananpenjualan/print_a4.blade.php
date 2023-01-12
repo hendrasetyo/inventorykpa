@@ -163,28 +163,28 @@
                             <td style='font-size: 70%; width: 75%; line-height:90%'><b>Total Jumlah</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; line-height:90%; text-align:right'><b>
-                                    {{ number_format($pesananpenjualan->subtotal, 0, ',', '.') }}
+                                    {{ number_format(floor($pesananpenjualan->subtotal), 0, ',', '.') }}
                                 </b></td>
                         </tr>
                         <tr>
                             <td style='font-size: 70%; width: 75%; line-height:90%'><b>Discount</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; line-height:90%; text-align:right'><b>
-                                    {{ number_format($pesananpenjualan->total_diskon_header, 0, ',', '.') }}
+                                    {{ number_format(floor($pesananpenjualan->total_diskon_header), 0, ',', '.') }}
                                 </b></td>
                         </tr>
                         <tr>
                             <td style='font-size: 70%; width: 75%; line-height:90%'><b>Total Harga</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; line-height:90%; text-align:right'><b>
-                                    {{ number_format($pesananpenjualan->total, 0, ',', '.') }}
+                                    {{ number_format(floor($pesananpenjualan->total), 0, ',', '.') }}
                                 </b></td>
                         </tr>
                         <tr>
                             <td style='font-size: 70%; width: 75%;'><b>PPN ({{$pesananpenjualan->ppn}}) %</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; text-align:right'><b>
-                                    {{ number_format($pesananpenjualan->total * $pesananpenjualan->ppn/100, 0, ',', '.') }}
+                                    {{ number_format(floor($pesananpenjualan->total * $pesananpenjualan->ppn/100), 0, ',', '.') }}
                                 </b></td>
                         </tr>
                         {{-- <tr>
@@ -198,7 +198,7 @@
                             <td style='font-size: 70%; width: 25%;'><b>Jumlah Yang Harus Dibayar</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; text-align:right'><b>
-                                    {{ number_format($pesananpenjualan->grandtotal, 0, ',', '.') }}
+                                    {{ number_format(floor($pesananpenjualan->grandtotal), 0, ',', '.') }}
                                 </b></td>
                         </tr>
                     </table>

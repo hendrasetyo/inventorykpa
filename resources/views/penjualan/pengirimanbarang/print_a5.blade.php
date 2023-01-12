@@ -161,18 +161,19 @@
             <div style="height:  238px;">
                 <table width="100%">
                     <tr>
-                        <td colspan="4">
+                        <td colspan="5">
                             <hr style="margin-bottom: 0px; margin-top: 0px; border-width: 0.3px 0px 0px;">
                         </td>
                     </tr>
                     <tr style="">
+                        <td style="font-size: 70%; width:3%">NO</td>
                         <td style="font-size: 70%; ">BARANG</td>
                         <td style="font-size: 70%; ">SATUAN</td>
                         <td style="font-size: 70%; ">QTY</td>
                         <td style="font-size: 70%; ">KET.</td>
                     </tr>
                     <tr>
-                        <td colspan="4">
+                        <td colspan="5">
                             <hr style="margin-bottom: 0px; margin-top: 0px; border-width: 0.3px 0px 0px;">
                         </td>
                     </tr>
@@ -181,6 +182,7 @@
                     @endphp
                     @foreach($pengirimanbarangdetails as $a)
                     @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="">
+                        <td style="font-size: 70%;width:3%; class=" text-left">{{ $n++ }}</td>
                         <td style="font-size: 70%; class=" text-left">{{ $a->products->nama }}</td>
                         <td style="font-size: 70%; class=" text-left">{{ $a->satuan }}</td>
                         <td style="font-size: 70%; class=" text-left">{{ $a->qty }}</td>
@@ -238,7 +240,7 @@
                         Hal :
                         {{ $i }} /
                         {{ $totalPage }}<br />
-                        User : {{ Auth::user()->name }}
+                        User : {{ $pengirimanbarang->creator->name }}
                     </td>
                 </tr>
             </table>

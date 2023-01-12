@@ -627,7 +627,7 @@ class PenerimaanBarangController extends Controller
     public function showData($id)
     {
         $title = "Penerimaan Barang Detail";
-        $penerimaanbarang = PenerimaanBarang::where('kode',$id)->first();
+        $penerimaanbarang = PenerimaanBarang::where('kode',$id)->with('creator')->first();
         if (!$penerimaanbarang) {
             return back()->with('status', 'Data Tidak Ditemukan !');
         }        

@@ -18,6 +18,12 @@ class LaporanPenjualanDetailExport implements FromView
 
     public function view(): View
     {
+        $totHargaJual = 0;
+        $totDiskon = 0;
+        $totCN = 0;
+        $totTotal=0;
+        $totHargaBersih = 0;
+        $totSubtotal = 0;
 
                    
         $tgl1 = Carbon::parse($this->data['tgl1'])->format('Y-m-d');
@@ -86,12 +92,27 @@ class LaporanPenjualanDetailExport implements FromView
                                             ,'fpb.total as total_det','fpb.total_diskon as total_diskon_det','fpb.ongkir as ongkir_det','fpb.keterangan as keterangan_det' 
                                             ,'pb.kode as kode_SJ','pp.kode as kode_SP'
                                             ,'s.nama as nama_sales','u.name as nama_pembuat'
-                                            ,'cs.nama as nama_customer','p.nama as nama_produk','m.nama as nama_merk','p.kode as kode_produk')->get();                                        
+                                            ,'cs.nama as nama_customer','p.nama as nama_produk','m.nama as nama_merk','p.kode as kode_produk')->get();  
+                // dd($filter[0]);
+                foreach ($filter as $key ) {
+                    $totHargaJual += $key->hargajual_det;
+                    $totCN += $key->total_cn;
+                    $totDiskon+=$key->total_diskon_det;
+                    $totTotal += $key->total_det;
+                    $totSubtotal += $key->subtotal_det;
+                }                           
 
+                $totHargaBersih = $totTotal  -  $totCN;
                                             
         // dd($filter);
             return view('laporan.penjualan.export.exportpenjualandetail',[
-                'penjualan' => $filter,            
+                'penjualan' => $filter,      
+                'totHargaJual' => $totHargaJual,
+                'totCN' => $totCN,
+                'totDiskon' => $totDiskon,
+                'totTotal' => $totTotal,
+                'totHargaBersih' => $totHargaBersih,
+                'totSubtotal' => $totSubtotal
             ]);            
         
     }

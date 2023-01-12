@@ -75,12 +75,13 @@
                 <div class="isi" style="height: 400px;">
                     <table border="0" class="xyz" style="width:100%; ">
                         <tr>
-                            <td colspan="6">
+                            <td colspan="7">
                                 <hr style="margin-bottom: 0px; margin-top: 0px; border-width: 1px 0px 0px;">
                             </td>
                         </tr>
                         <tr style="">
-                            <td style="font-size: 65%; border:none; width:10%;">KWANTUM</td>
+                            <td style="font-size: 65%; border:none; width:3%;">NO</td>
+                            <td style="font-size: 65%; border:none; width:7%;">KWANTUM</td>
                             <td style="font-size: 65%; border:none;">NAMA BARANG</td>
                             <td style="font-size: 65%; border:none; width:10%;text-align:right">HARGA</td>
                             <td style="font-size: 65%; border:none; width:15%;text-align:right">SUBTOTAL</td>
@@ -88,7 +89,7 @@
                             <td style=" font-size: 65%; border:none; width:15%;text-align:right">JUMLAH</td>
                         </tr>
                         <tr>
-                            <td colspan="6">
+                            <td colspan="7">
                                 <hr style="margin-bottom: 0px; margin-top: 0px; border-width: 0.3px 0px 0px;">
                             </td>
                         </tr>
@@ -98,6 +99,7 @@
                         @endphp
                         @foreach($fakturpenjualandetails as $a)
                         @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="">
+                            <td style="font-size: 62%; ">{{ $n++}}</td>
                             <td style="font-size: 62%; ">{{ $a->qty }} {{ $a->satuan }}</td>
                             <td style="font-size: 62%;font-family: DejaVu Sans; sans-serif; ">{{ $a->products->nama }}</td>
                             <td style="font-size: 62%; text-align:right">{{ number_format($a->hargajual, 0, ',', '.')
@@ -216,7 +218,7 @@
                     <i>Hal. :
                         {{ $i }}
                         {{ $totalPage }}<br />
-                        User : {{ Auth::user()->name }}</i>
+                        User : {{ $fakturpenjualan->creator->name }}</i>
                 </td>
                 <td style='font-size: 70%; width: 55%; line-height:90%; vertical-align:top'><b>KETERANGAN : <br />{{
                         $fakturpenjualan->keterangan }}</b>

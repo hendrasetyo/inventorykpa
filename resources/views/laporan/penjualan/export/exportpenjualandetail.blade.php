@@ -23,14 +23,16 @@
             <th>Merk</th> 
             <th>Qty</th>
             <th>Satuan</th>
-            <th>Harga Jual Produk</th>
             <th>Diskon Persen Produk</th>
             <th>Diskon Rupiah Produk</th>
+            <th>Harga Jual Produk</th>
             <th>Subtotal Produk</th>
             <th>Total Diskon Produk</th>
             <th>PPN(11%)</th>
+            <th>Disc CN</th>
             <th>Total Produk</th>
             <th>Ongkir Produk</th>
+            <th>Harga Bersih</th>
             <th>Sales</th>
             <th>Pembuat</th>                                        
             <th>Keterangan</th>                                          
@@ -65,19 +67,60 @@
                 <td>{{$item->nama_merk}}</td>
                 <td>{{$item->qty_det}}</td>
                 <td>{{$item->satuan_det}}</td>
-                <td>{{$item->hargajual_det}}</td>
                 <td>{{$item->dikson_persen_det}}</td>
                 <td>{{$item->diskon_rp_det}}</td>
+                <td>{{$item->hargajual_det}}</td>
                 <td>{{$item->subtotal_det}}</td>
                 <td>{{$item->total_diskon_det}}</td>
                 <td>{{11/100 * $item->total_det}}</td>
+                <td>{{ $item->total_cn ? $item->total_cn : 0 }}</td>
                 <td>{{$item->total_det + (11/100 * $item->total_det)}}</td>
                 <td>{{$item->ongkir_det}}</td>
+                <td>{{$item->total_det + (11/100 * $item->total_det) - ($item->total_cn ? $item->total_cn : 0)}}</td>
                 <td>{{$item->nama_sales}}</td>
                 <td>{{$item->nama_pembuat}}</td>
                 <td>{{$item->keterangan}}</td>                                            
                 <td>{{$item->keterangan_det}}</td>
             </tr>
         @endforeach
+
+        <tr>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td><u><b>GRANDTOTAL</b></u></td>
+            <td><b>{{$totHargaJual}}</b></td>
+            <td><b>{{$totSubtotal}}</b></td>
+            <td><b>{{$totDiskon}}</b></td>
+            <td><b>{{11/100 * $totTotal}}</b></td>
+            <td><b>{{ $totCN ? $totCN : 0 }}</b></td>
+            <td><b>{{$totTotal + (11/100 * $totTotal)}}</b></td>
+            <td></td>
+            <td><b>{{$totTotal + (11/100 * $totTotal) - ($totCN ? $totCN : 0)}}</b></td>
+            <td></td>
+        </tr>
+
+        
+       
     </tbody>
 </table>
