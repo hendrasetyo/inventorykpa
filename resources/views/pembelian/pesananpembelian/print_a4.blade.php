@@ -96,13 +96,14 @@
                 <div class="isi" style="height: 450px;">
                     <table style="width:100%" border="0" class="xyz" >
                         <tr>
-                            <td colspan="9">
+                            <td colspan="10">
                                 <hr style="margin-bottom: 0px; margin-top: 0px; border-width: 1px 0px 0px;">
                             </td>
                         </tr>
                         <tr style="">
                             {{-- <td style="font-size: 75%; border:none; width:10%;">KODE</td> --}}
-                            <td style="font-size: 60%; border:none; width:10%;text-align:left">KEBUTUHAN</td>
+                            <td style="font-size: 60%; border:none; width:3%;text-align:left">NO</td>
+                            <td style="font-size: 60%; border:none; width:7%;text-align:left">KEBUTUHAN</td>
                             <td style="font-size: 60%; border:none; width:24%;text-align:left">NAMA BARANG</td>
                             <td style="font-size: 60%; border:none; width:8%;text-align:right">MERK</td>
                             <td style="font-size: 60%; border:none; width:12%;text-align:right">HARGA</td>
@@ -113,16 +114,18 @@
                             <td style=" font-size: 60%;border:none; width:10%;text-align:right">TOTAL</td>
                         </tr>
                         <tr>
-                            <td colspan="9">
+                            <td colspan="10">
                                 <hr style="margin-bottom: 0px; margin-top: 0px; border-width: 1px 0px 0px;">
                             </td>
                         </tr>
 
                         @php
                         $n=1;
+                        $j=1;
                         @endphp
                         @foreach($pesananpembeliandetail as $a)
-                        @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris)<tr class="" > 
+                        @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris)<tr class="" style="vertical-align: top"> 
+                                <td style="font-size: 70%; ">{{ $j++ }}</td>
                                 <td style="font-size: 70%; ">{{ $a->qty }} {{ $a->satuan }}</td>
                                 <td style="font-size: 70%;font-family: DejaVu Sans; sans-serif; ">{{ $a->products->nama }}</td>
                                 <td style="font-size: 70%; text-align:right;">{{ $a->products->merks->nama }}</td>

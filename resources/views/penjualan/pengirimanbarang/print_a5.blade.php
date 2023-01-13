@@ -159,7 +159,7 @@
         </table>          
            
             <div style="height:  238px;">
-                <table width="100%">
+                <table width="100%" >
                     <tr>
                         <td colspan="5">
                             <hr style="margin-bottom: 0px; margin-top: 0px; border-width: 0.3px 0px 0px;">
@@ -182,7 +182,7 @@
                     $j=1;
                     @endphp
                     @foreach($pengirimanbarangdetails as $a)
-                    @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="">
+                    @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="" style="vertical-align: top">
                         <td style="font-size: 70%;width:3%; class=" text-left">{{ $j++ }}</td>
                         <td style="font-size: 70%; class=" text-left">{{ $a->products->nama }}</td>
                         <td style="font-size: 70%; class=" text-left">{{ $a->satuan }}</td>

@@ -99,7 +99,7 @@
                         $j=1;
                         @endphp
                         @foreach($fakturpenjualandetails as $a)
-                        @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="">
+                        @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="" style="vertical-align: top">
                             <td style="font-size: 62%; ">{{ $j++}}</td>
                             <td style="font-size: 62%; ">{{ $a->qty }} {{ $a->satuan }}</td>
                             <td style="font-size: 62%;font-family: DejaVu Sans; sans-serif; ">{{ $a->products->nama }}</td>

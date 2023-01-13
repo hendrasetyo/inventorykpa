@@ -286,7 +286,7 @@ class PenerimaanBarangController extends Controller
             $hpp_baru = ROUND(($nilai_baru / $stok_baru), 2);
             $product->stok = $stok_baru;
             $product->hpp = $hpp_baru;
-            $product->hargabeli = $hargabeli_fix;
+            $product->hargabeli = $hargabeli;
             $product->save();
             ////////// end hpp //////////
 
