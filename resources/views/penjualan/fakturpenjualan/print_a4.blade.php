@@ -80,7 +80,7 @@
                             </td>
                         </tr>
                         <tr style="">
-                            <td style="font-size: 65%; border:none; width:3%;">NO</td>
+                            <td style="font-size: 65%; border:none; width:3%">NO</td>
                             <td style="font-size: 65%; border:none; width:7%;">KWANTUM</td>
                             <td style="font-size: 65%; border:none;">NAMA BARANG</td>
                             <td style="font-size: 65%; border:none; width:10%;text-align:right">HARGA</td>
@@ -100,7 +100,7 @@
                         @endphp
                         @foreach($fakturpenjualandetails as $a)
                         @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="" style="vertical-align: top">
-                            <td style="font-size: 62%; ">{{ $j}}</td>
+                            <td style="font-size: 62%;">{{ $j}}.</td>
                             <td style="font-size: 62%; ">{{ $a->qty }} {{ $a->satuan }}</td>
                             <td style="font-size: 62%;font-family: DejaVu Sans; sans-serif; ">{{ $a->products->nama }}</td>
                             <td style="font-size: 62%; text-align:right">{{ number_format($a->hargajual, 0, ',', '.')
@@ -208,6 +208,9 @@
             <tr>
                 <td style="font-size: 70%;">SO Cust. : {{ $fakturpenjualan->SO->no_so ? $fakturpenjualan->SO->no_so : '-' }}</td>
             </tr>
+            <tr>
+                <td style="font-size: 70%;">Tanggal SO Cust. : {{ $fakturpenjualan->SO->tanggal_pesanan_customer ? \Carbon\Carbon::parse($fakturpenjualan->SO->tanggal_pesanan_customer)->format('d/m/Y') : '-' }}</td>
+            </tr>
         </table>
         <br />    
         <table width="100%">
@@ -218,8 +221,7 @@
                     <u>(...............................)</u> <br />
                     <br />
                     <i>Hal. :
-                        {{ $i }}
-                        {{ $totalPage }}<br />
+                        {{ $i }}/{{ $totalPage }}<br />
                         User : {{ $fakturpenjualan->creator->name }}</i>
                 </td>
                 <td style='font-size: 70%; width: 55%; line-height:90%; vertical-align:top'><b>KETERANGAN : <br />{{

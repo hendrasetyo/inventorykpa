@@ -73,8 +73,8 @@
                                     <span class="opacity-70">{{ $fakturpenjualan->SO->no_so }}</span>
                                 </div>
                                 <div class="d-flex flex-column flex-root">
-                                    <span class="font-weight-bolder mb-2"></span>
-                                    <span class="opacity-70"></span>
+                                    <span class="font-weight-bolder mb-2">Tanggal SO Customer</span>
+                                    <span class="opacity-70">{{$fakturpenjualan->SO->tanggal_pesanan_customer ? \Carbon\Carbon::parse($fakturpenjualan->SO->tanggal_pesanan_customer)->format('d F Y') : '-'}}</span>
                                 </div>
                                 <div class="d-flex flex-column flex-root">
                                     <span class="font-weight-bolder mb-2"></span>

@@ -78,8 +78,7 @@ class PembayaranHutangController extends Controller
                     ->join('suppliers as s','h.supplier_id','=','s.id')
                     ->where('status', '=', '1')
                     ->select('s.nama as nama_supplier','fb.kode as kode_fb','h.*')
-                    ->orderByDesc('id')                    
-                    ->get();
+                    ->orderBy('fb.tanggal','desc');
 
         if (request()->ajax()) {
             return Datatables::of($hutangs)

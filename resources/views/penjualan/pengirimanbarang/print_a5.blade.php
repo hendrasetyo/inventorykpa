@@ -181,7 +181,7 @@
                         </td>
                     </tr>
                     <tr style="">
-                        <td style="font-size: 70%; width:3%">NO</td>
+                        <td style="font-size: 70%; width:3%;">NO</td>
                         <td style="font-size: 70%; width:57%">BARANG</td>
                         <td style="font-size: 70%; width:10%">SATUAN</td>
                         <td style="font-size: 70%; width:10%">QTY</td>
@@ -198,7 +198,7 @@
                     @endphp
                     @foreach($pengirimanbarangdetails as $a)
                     @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="" style="vertical-align: top">
-                        <td style="font-size: 70%;" class="text-left">{{ $j }}</td>
+                        <td style="font-size: 70%;" class="text-left">{{ $j }}.</td>
                         <td style="font-size: 70%;" class="text-left">{{ $a->products->nama }}</td>
                         <td style="font-size: 70%;" class="text-left">{{ $a->satuan }}</td>
                         <td style="font-size: 70%;" class="text-left">{{ $a->qty }}</td>

@@ -75,7 +75,9 @@ class FakturPembelianController extends Controller
         $title = "Daftar Pesanan Pembelian";
         $penerimaanbarangs = PenerimaanBarang::with('suppliers', 'statusPB')
             ->where('status_pb_id', '=', '1')
-            ->get();
+            ->orderBy('tanggal','desc');
+
+            
         if (request()->ajax()) {
             return Datatables::of($penerimaanbarangs)
                 ->addIndexColumn()
