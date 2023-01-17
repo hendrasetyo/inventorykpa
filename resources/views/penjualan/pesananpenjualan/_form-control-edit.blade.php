@@ -67,15 +67,14 @@
             <select class="form-control select2" id="kategori" name="kategoripesanan_id" required>
                 <option value="">Pilih Kategori</option>
                 @foreach ($kategoris as $cg)
-                @if ($pesananpenjualan->komoditas_id == $cg->id)
-                <option selected="selected" value="{{ $cg->id }}">{{ $cg->nama }}</option>
-                @else
-                <option value="{{ $cg->id }}">{{ $cg->nama }}</option>
-                @endif
-
+                    @if ($pesananpenjualan->kategoripesanan_id == $cg->id)
+                    <option value="{{ $cg->id }}" selected>{{ $cg->nama }}</option>
+                    @else
+                    <option value="{{ $cg->id }}">{{ $cg->nama }}</option>
+                    @endif
                 @endforeach
             </select>
-            @error('komoditas_id')
+            @error('kategoripesanan_id')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
@@ -91,11 +90,25 @@
             <input type="text" id="id_paket" name="id_paket" class="form-control"
                 placeholder="Khusus e-Katalog (Jika Ada)" value="{{$pesananpenjualan->id_paket}}"/>
         </div>
-        <label class="col-lg-2 col-form-label text-right">Nama Paket :</label>
+
+        <label class="col-lg-2 col-form-label text-right">Tanggal. Surat Pesanan Cust.:</label>
         <div class="col-lg-4">
-            <input type="text" id="nama_paket" name="nama_paket" class="form-control"
-                placeholder="Khusus e-Katalog (Jika Ada)" value="{{$pesananpenjualan->nama_paket}}"/>
+            <div class="input-group date">
+                {{-- @dd(Carbon\Carbon::parse($pesananpenjualan->tanggal_pesanan_customer)->format("d-m-Y")) --}}
+                @if($pesananpenjualan->tanggal_pesanan_customer <> null)                            
+                     <input type="text" name="tanggal_pesanan_customer" class="form-control" value="{{Carbon\Carbon::parse($pesananpenjualan->tanggal_pesanan_customer)->format("d/m/Y")}}" id="kt_datepicker_3"> 
+                 @else                       
+                       <input type="text" name="tanggal_pesanan_customer" class="form-control" value="{{$tglNow}}"  id="kt_datepicker_3"/>
+                 @endif
+
+                 <div class="input-group-append">
+                     <span class="input-group-text">
+                         <i class="la la-calendar"></i>
+                     </span>
+                 </div>    
+             </div>
         </div>
+       
     </div>
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">Sumber Dana:</label>
@@ -103,11 +116,13 @@
             <input type="text" id="sumber_dana" name="sumber_dana" class="form-control"
                 placeholder="Khusus e-Katalog (Jika Ada)" value="{{$pesananpenjualan->nama_paket}}"/>
         </div>
-        <label class="col-lg-2 col-form-label text-right">Tahun Anggaran :</label>
+
+        <label class="col-lg-2 col-form-label text-right">Nama Paket :</label>
         <div class="col-lg-4">
-            <input type="text" id="tahun_anggaran" name="tahun_anggaran" class="form-control"
-                placeholder="Khusus e-Katalog (Jika Ada)" value="{{$pesananpenjualan->tahun_anggaran}}" />
+            <input type="text" id="nama_paket" name="nama_paket" class="form-control"
+                placeholder="Khusus e-Katalog (Jika Ada)" value="{{$pesananpenjualan->nama_paket}}"/>
         </div>
+       
     </div>
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">Pemesan:</label>
@@ -115,10 +130,13 @@
             <input type="text" id="pemesan" name="pemesan" class="form-control"
                 placeholder="Khusus e-Katalog (Jika Ada)" value="{{$pesananpenjualan->pemesan}}"/>
         </div>
-        <label class="col-lg-2 col-form-label text-right">PPK :</label>
+
+        <label class="col-lg-2 col-form-label text-right">Tahun Anggaran :</label>
         <div class="col-lg-4">
-            <input type="text" id="ppk" name="ppk" class="form-control" placeholder="Khusus e-Katalog (Jika Ada)" value="{{$pesananpenjualan->ppk}}"/>
+            <input type="text" id="tahun_anggaran" name="tahun_anggaran" class="form-control"
+                placeholder="Khusus e-Katalog (Jika Ada)" value="{{$pesananpenjualan->tahun_anggaran}}" />
         </div>
+       
     </div>
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">Sales:</label>
@@ -138,6 +156,12 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+
+        <label class="col-lg-2 col-form-label text-right">PPK :</label>
+        <div class="col-lg-4">
+            <input type="text" id="ppk" name="ppk" class="form-control" placeholder="Khusus e-Katalog (Jika Ada)" value="{{$pesananpenjualan->ppk}}"/>
+        </div>
+
 
     </div>
     <div class="text-right mb-3">

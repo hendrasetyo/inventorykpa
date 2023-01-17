@@ -81,14 +81,14 @@
         </tr>
         <tr>
             <td width="20%" style="font-size: 70%; vertical-align: top;">
-                Surat Pesanan : {{ $pesananpenjualan->no_so }}
+                Surat Pesanan : {{ $pesananpenjualan->no_so }} <br>
+                Tanggal Pesanan :  {{  $pesananpenjualan->tanggal_pesanan_customer ? \Carbon\Carbon::parse($pesananpenjualan->tanggal_pesanan_customer)->format('d/m/Y') :'-' }}
             </td>
             <td width="25%" style="font-size: 75%; vertical-align: top; text-align: center;">
                 <center><b></b></center>
                 <center><b>
                 </b></center>
             </td>
-
         </tr>
 
         <tr>

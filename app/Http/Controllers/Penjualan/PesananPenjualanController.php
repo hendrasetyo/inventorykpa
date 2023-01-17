@@ -92,7 +92,7 @@ class PesananPenjualanController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request);
+        // dd($request->tanggal_pesanan_customer);
         $request->validate([
             'customer_id' => ['required'],
             'tanggal' => ['required'],
@@ -132,8 +132,13 @@ class PesananPenjualanController extends Controller
         $grandtotal = $total + $ppn ;
 
         $tanggal = $request->tanggal;
+        $tanggalcustomer = null;
         if ($tanggal <> null) {
             $tanggal = Carbon::createFromFormat('d-m-Y', $tanggal)->format('Y-m-d');
+        }
+
+        if ($request->tanggal_pesanan_customer <> null) {
+            $tanggalcustomer = Carbon::parse($request->tanggal_pesanan_customer)->format('Y-m-d');
         }
 
         $dataTemp = TempSo::where('user_id', '=', Auth::user()->id)->get();
@@ -145,6 +150,7 @@ class PesananPenjualanController extends Controller
 
         $datas['kode'] = $this->getKodeTransaksi("pesanan_penjualans", "SO");
         $datas['tanggal'] = $tanggal;
+        $datas['tanggal_pesanan_customer'] = $tanggalcustomer;
         $datas['status_so_id'] = "1";
         $datas['diskon_persen'] = $diskon_persen;
         $datas['diskon_rupiah'] = $diskon_rupiah;
@@ -263,7 +269,19 @@ class PesananPenjualanController extends Controller
         if ($tanggal <> null) {
             $tanggal = Carbon::createFromFormat('d-m-Y', $tanggal)->format('Y-m-d');
         }
+
+        $tanggalcustomer = null;
+
+        if ($request->tanggal_pesanan_customer <> null) {
+            $tanggalcustomer = Carbon::parse($request->tanggal_pesanan_customer)->format('Y-m-d');
+        }
+
+        // dd($tanggalcustomer);
+        
+
+
         $data['tanggal'] = $tanggal;
+        $data['tanggal_pesanan_customer'] = $tanggalcustomer;
         $hasil=PesananPenjualan::where('id',$id)->update($data);
         // dd($hasil);
 

@@ -20,7 +20,7 @@
         <label class="col-lg-2 col-form-label text-right">Tanggal:</label>
         <div class="col-lg-4">
             <div class="input-group date">
-                @if($pesananpenjualan->tanggal <> null)
+                   @if($pesananpenjualan->tanggal <> null)
                     <input type="text" class="form-control" name="tanggal" readonly
                         value="{{ $pesananpenjualan->tanggal->format("d-m-Y") }}" id="tgl1" required/>
                     @else
@@ -91,11 +91,20 @@
             <input type="text" id="id_paket" name="id_paket" class="form-control"
                 placeholder="Khusus e-Katalog (Jika Ada)" />
         </div>
-        <label class="col-lg-2 col-form-label text-right">Nama Paket :</label>
-        <div class="col-lg-4">
-            <input type="text" id="nama_paket" name="nama_paket" class="form-control"
-                placeholder="Khusus e-Katalog (Jika Ada)" />
+
+        <label class="col-lg-2 col-form-label text-right">Tanggal. Surat Pesanan Cust.:</label>
+        <div class="col-lg-4">    
+            <div class="input-group date">
+                <input type="text" name="tanggal_pesanan_customer" class="form-control"  id="kt_datepicker_3" placeholder="Masukan Tanggal Customer (Jika Ada)"/>
+
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="la la-calendar"></i>
+                    </span>
+                </div>  
+            </div>                             
         </div>
+      
     </div>
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">Sumber Dana:</label>
@@ -103,9 +112,11 @@
             <input type="text" id="sumber_dana" name="sumber_dana" class="form-control"
                 placeholder="Khusus e-Katalog (Jika Ada)" />
         </div>
-        <label class="col-lg-2 col-form-label text-right">Tahun Anggaran :</label>
+       
+
+        <label class="col-lg-2 col-form-label text-right">Nama Paket :</label>
         <div class="col-lg-4">
-            <input type="text" id="tahun_anggaran" name="tahun_anggaran" class="form-control"
+            <input type="text" id="nama_paket" name="nama_paket" class="form-control"
                 placeholder="Khusus e-Katalog (Jika Ada)" />
         </div>
     </div>
@@ -115,10 +126,13 @@
             <input type="text" id="pemesan" name="pemesan" class="form-control"
                 placeholder="Khusus e-Katalog (Jika Ada)" />
         </div>
-        <label class="col-lg-2 col-form-label text-right">PPK :</label>
+
+        <label class="col-lg-2 col-form-label text-right">Tahun Anggaran :</label>
         <div class="col-lg-4">
-            <input type="text" id="ppk" name="ppk" class="form-control" placeholder="Khusus e-Katalog (Jika Ada)" />
+            <input type="text" id="tahun_anggaran" name="tahun_anggaran" class="form-control"
+                placeholder="Khusus e-Katalog (Jika Ada)" />
         </div>
+       
     </div>
     <div class="form-group row">
         <label class="col-lg-1 col-form-label text-right">Sales:</label>
@@ -137,6 +151,11 @@
             @error('sales_id')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
+        </div>
+
+        <label class="col-lg-2 col-form-label text-right">PPK :</label>
+        <div class="col-lg-4">
+            <input type="text" id="ppk" name="ppk" class="form-control" placeholder="Khusus e-Katalog (Jika Ada)" />
         </div>
 
     </div>

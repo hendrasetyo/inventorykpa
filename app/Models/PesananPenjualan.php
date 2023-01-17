@@ -39,7 +39,8 @@ class PesananPenjualan extends Model
         'ongkir',
         'ppn',
         'grandtotal',
-        'sales_id'
+        'sales_id',
+        'tanggal_pesanan_customer'
     ];
     protected $dates = ['tanggal'];
 

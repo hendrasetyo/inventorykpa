@@ -156,9 +156,24 @@
                     SO Cust. : {{ $pengirimanbarang->SO->no_so }}
                 </td>               
             </tr>
+            
+
+            <tr>
+                <td width="20%" style="font-size: 70%; vertical-align: top;">
+                </td>
+                <td width="25%" style="font-size: 75%; vertical-align: top; text-align: center;">
+                    <center><b></b></center>
+                    <center><b>
+                    </b></center>
+                </td>
+                <td width="20%" style="font-size: 70%; vertical-align: top;">
+                    Tanggal SO Cust. : {{  $pengirimanbarangdetails[0]->pesananpenjualan->tanggal_pesanan_customer ? \Carbon\Carbon::parse($pengirimanbarangdetails[0]->pesananpenjualan->tanggal_pesanan_customer)->format('d/m/Y') :'-' }}
+                </td>               
+            </tr>
+
         </table>          
            
-            <div style="height:  238px;">
+            <div style="height:200px;">
                 <table width="100%" >
                     <tr>
                         <td colspan="5">
@@ -167,10 +182,10 @@
                     </tr>
                     <tr style="">
                         <td style="font-size: 70%; width:3%">NO</td>
-                        <td style="font-size: 70%; ">BARANG</td>
-                        <td style="font-size: 70%; ">SATUAN</td>
-                        <td style="font-size: 70%; ">QTY</td>
-                        <td style="font-size: 70%; ">KET.</td>
+                        <td style="font-size: 70%; width:57%">BARANG</td>
+                        <td style="font-size: 70%; width:10%">SATUAN</td>
+                        <td style="font-size: 70%; width:10%">QTY</td>
+                        <td style="font-size: 70%; width:20%">KET.</td>
                     </tr>
                     <tr>
                         <td colspan="5">
@@ -183,11 +198,11 @@
                     @endphp
                     @foreach($pengirimanbarangdetails as $a)
                     @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="" style="vertical-align: top">
-                        <td style="font-size: 70%;width:3%; class=" text-left">{{ $j++ }}</td>
-                        <td style="font-size: 70%; class=" text-left">{{ $a->products->nama }}</td>
-                        <td style="font-size: 70%; class=" text-left">{{ $a->satuan }}</td>
-                        <td style="font-size: 70%; class=" text-left">{{ $a->qty }}</td>
-                        <td style="font-size: 60%; class=" text-left">{{ $a->keterangan }} ED: @foreach($listExp as $x)
+                        <td style="font-size: 70%;" class="text-left">{{ $j }}</td>
+                        <td style="font-size: 70%;" class="text-left">{{ $a->products->nama }}</td>
+                        <td style="font-size: 70%;" class="text-left">{{ $a->satuan }}</td>
+                        <td style="font-size: 70%;" class="text-left">{{ $a->qty }}</td>
+                        <td style="font-size: 60%;" class="text-left">{{ $a->keterangan }} ED: @foreach($listExp as $x)
                             @if($a->product_id == $x->product_id) {{ $x->tanggal->format("m/y") }}({{ $x->qty * -1 }})-{{$x->stockExp->lot}} 
                             @endif
                             @endforeach
@@ -198,6 +213,7 @@
                         @endif
                         @php
                         $n++;
+                        $j++;
                         @endphp
                         @endforeach
                 </table>

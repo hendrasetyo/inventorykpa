@@ -35,4 +35,10 @@ class PengirimanBarangDetail extends Model
     {
         return $this->belongsTo(PengirimanBarang::class, 'pengiriman_barang_id', 'id');
     }
+
+    
+    public function pesananpenjualan()
+    {
+        return $this->belongsTo(PesananPenjualan::class, 'pesanan_penjualan_id', 'id');
+    }
 }

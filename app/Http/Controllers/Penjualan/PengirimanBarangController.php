@@ -598,11 +598,14 @@ class PengirimanBarangController extends Controller
 
     public function print_a5(PengirimanBarang $pengirimanbarang)
     {
+    
         $title = "Print Surat Jalan";
-        $pengirimanbarangdetails = PengirimanBarangDetail::with('products')
+        $pengirimanbarangdetails = PengirimanBarangDetail::with(['products','pesananpenjualan'])
             ->where('pengiriman_barang_id', '=', $pengirimanbarang->id)->get();
+
+        // dd($pengirimanbarangdetails);
         $jmlBaris  = $pengirimanbarangdetails->count();
-        $perBaris = 7;
+        $perBaris = 9;
         $totalPage = ceil($jmlBaris / $perBaris);
         $listExp = StokExpDetail::with('stockExp')->where('id_sj', '=', $pengirimanbarang->id)->get();
         //dd($listExp);
