@@ -115,7 +115,7 @@ class PembayaranPiutangController extends Controller
                     ->addColumn('action', function (Piutang $row) {
                         $pilihUrl = route('pembayaranpiutang.create', ['piutang' => $row->id]);
                         $id = $row->id;
-                        return view('pembayaran.pembayaranpiutang._pilihAction', compact('pilihUrl', 'id'));
+                        return view( 'pembayaran.pembayaranpiutang._pilihAction', compact('pilihUrl', 'id'));
                     })
                     ->make(true);
             }

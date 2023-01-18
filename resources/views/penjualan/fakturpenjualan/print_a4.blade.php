@@ -206,10 +206,10 @@
         <hr style="margin-bottom: 0px; margin-top: 0px; border-width: 1px 0px 0px;">
         <table>
             <tr>
-                <td style="font-size: 70%;">SO Cust. : {{ $fakturpenjualan->SO->no_so ? $fakturpenjualan->SO->no_so : '-' }}</td>
-            </tr>
-            <tr>
-                <td style="font-size: 70%;">Tanggal SO Cust. : {{ $fakturpenjualan->SO->tanggal_pesanan_customer ? \Carbon\Carbon::parse($fakturpenjualan->SO->tanggal_pesanan_customer)->format('d/m/Y') : '-' }}</td>
+                <td style="font-size: 60%;">SO Cust. : {{ $fakturpenjualan->SO->no_so ? $fakturpenjualan->SO->no_so : '-' }}</td> 
+                <td></td>
+                <td></td>
+                <td style="font-size: 60%;">Tanggal SO Cust. : {{ $fakturpenjualan->SO->tanggal_pesanan_customer ? \Carbon\Carbon::parse($fakturpenjualan->SO->tanggal_pesanan_customer)->format('d/m/Y') : '-' }}</td>
             </tr>
         </table>
         <br />    
