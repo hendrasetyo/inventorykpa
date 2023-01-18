@@ -108,13 +108,20 @@
               processing: true,
               serverSide: true,
               autoWidth: false,
-              ajax: "{{ route('pembayaranpiutang.listpiutang') }}",
+              ajax: {
+                type : 'POST',
+                url :"{{ route('piutang.datatable') }}",
+                data: function(params) {
+                        params._token = "{{ csrf_token() }}";                
+                        return params;
+                       }
+              },
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                  {data: 'faktur_fj', name: 'kode_fj'},
-                  {data: 'no_kpa', name: 'kode_kpa'},
+                  {data: 'fakturso', name: 'FakturSO.kode',},
+                  {data: 'no_kpa', name: 'FakturSO.no_kpa'},
                   {data: 'tanggal', name: 'tanggal'},
-                  {data: 'customers', name: 'nama_customer'},
+                  {data: 'customers', name: 'customers.nama',searchable:true},
                   {data: 'total', name: 'total'},
                   {data: 'dibayar', name: 'dibayar'},
                   {data: 'sisa', name: 'sisa'},

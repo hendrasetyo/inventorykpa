@@ -64,4 +64,10 @@ class FakturPembelian extends Model
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
+
+    
+    public function hutangs()
+    {
+        return $this->hasMany(Hutang::class, 'faktur_pembelian_id', 'id');
+    }
 }

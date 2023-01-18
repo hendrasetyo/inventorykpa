@@ -629,6 +629,7 @@ Route::middleware('has.role')->prefix('pembayaran')->group(function () {
     });
 
     Route::prefix('pembayaranpiutang')->group(function () {
+        Route::post('datatable', [PembayaranPiutangController::class, 'datatable'])->name('piutang.datatable');
         Route::get('', [PembayaranPiutangController::class, 'index'])->name('pembayaranpiutang.index');
         Route::get('listpiutang', [PembayaranPiutangController::class, 'listpiutang'])->name('pembayaranpiutang.listpiutang');
         Route::get('{piutang}/create', [PembayaranPiutangController::class, 'create'])->name('pembayaranpiutang.create');

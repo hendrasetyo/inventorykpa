@@ -84,7 +84,7 @@ class FakturPenjualan extends Model
     
     public function piutang()
     {
-        return $this->belongsTo(FakturPenjualan::class, 'faktur_penjualan_id');
+        return $this->hasMany(Piutang::class, 'faktur_penjualan_id');
     }
     
 }

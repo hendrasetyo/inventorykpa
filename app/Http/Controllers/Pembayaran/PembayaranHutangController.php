@@ -67,45 +67,41 @@ class PembayaranHutangController extends Controller
     public function listhutang()
     {
         $title = "Daftar Hutang";
-        // $hutangs =  Hutang::with('suppliers')
-        //             ->with('FakturPO')
-        //             ->where('status', '=', '1')
-        //             ->orderByDesc('id')
-        //             ->get();
-
-        $hutangs = DB::table('hutangs as h')
-                    ->join('faktur_pembelians as fb','h.faktur_pembelian_id','=','fb.id')
-                    ->join('suppliers as s','h.supplier_id','=','s.id')
-                    ->where('status', '=', '1')
-                    ->select('s.nama as nama_supplier','fb.kode as kode_fb','h.*')
-                    ->orderBy('fb.tanggal','desc');
-
+                    $hutangs =  Hutang::where('status', '=', '1')
+                    ->with(['suppliers' => function ($query){
+                        $query->select('id','nama');
+                    },'FakturPO' => function($query){
+                        $query->select('id','kode');
+                    }])                    
+                    ->orderBy('id','desc')
+                    ->get();
+                    
         if (request()->ajax()) {
             return Datatables::of($hutangs)
                 ->addIndexColumn()
-                ->addColumn('suppliers', function ($pb) {
-                    return $pb->nama_supplier;
+                ->addColumn('nama_supplier', function (Hutang $pb) {
+                    return $pb->suppliers->nama;
                 })
-                ->addColumn('faktur_po', function ($pb) {
-                    return $pb->kode_fb;
+                ->addColumn('kode_faktur', function (Hutang $pb) {
+                    return $pb->FakturPO->kode;
                 })
-                ->editColumn('tanggal', function ($pb) {
+                ->editColumn('tanggal', function (Hutang $pb) {
                     return $pb->tanggal ? with(new Carbon($pb->tanggal))->format('d-m-Y') : '';
                 })
-                ->editColumn('total', function ($pb) {
+                ->editColumn('total', function (Hutang $pb) {
                     return $pb->total ? with(number_format($pb->total, 0, ',', '.')) : '';
                 })
-                ->editColumn('dibayar', function ($pb) {
+                ->editColumn('dibayar', function (Hutang $pb) {
                     return $pb->dibayar ? with(number_format($pb->dibayar, 0, ',', '.')) : '0';
                 })
-                ->editColumn('sisa', function ($pb) {
+                ->editColumn('sisa', function (Hutang $pb) {
                     $sisa = $pb->total - $pb->dibayar;
                     return $sisa ? with(number_format($sisa, 0, ',', '.')) : '0';
                 })
-                ->editColumn('tanggal_top', function ($pb) {
+                ->editColumn('tanggal_top', function (Hutang $pb) {
                     return $pb->tanggal_top ? with(new Carbon($pb->tanggal_top))->format('d-m-Y') : '';
                 })
-                ->addColumn('action', function ($row) {
+                ->addColumn('action', function (Hutang $row) {
                     $pilihUrl = route('pembayaranhutang.create', ['hutang' => $row->id]);
                     $id = $row->id;
                     return view('pembayaran.pembayaranhutang._pilihAction', compact('pilihUrl', 'id'));

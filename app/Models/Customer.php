@@ -71,10 +71,8 @@ class Customer extends Model
         return $this->belongsTo(Sales::class, 'sales_id', 'id');
     }
 
-
-    
     public function piutang()
     {
-        return $this->belongsTo(Customer::class, 'customer_id');
+        return $this->hasMany(Piutang::class, 'customer_id');
     }
 }

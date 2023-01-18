@@ -112,9 +112,9 @@
               ajax: "{{ route('pembayaranhutang.listhutang') }}",
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                  {data: 'faktur_po', name: 'kode_fb'},
+                  {data: 'kode_faktur', name: 'FakturPO.kode'},
                   {data: 'tanggal', name: 'tanggal'},
-                  {data: 'suppliers', name: 'nama_supplier'},
+                  {data: 'nama_supplier', name: 'suppliers.nama'},
                   {data: 'total', name: 'total'},
                   {data: 'dibayar', name: 'dibayar'},
                   {data: 'tanggal_top', name: 'tanggal_top'},

@@ -78,4 +78,9 @@ class Supplier extends Model
     {
         return $this->hasMany(FakturPembelian::class, 'supplier_id', 'id');
     }
+
+    public function hutangs()
+    {
+        return $this->hasMany(Hutang::class, 'supplier_id','id');
+    }
 }

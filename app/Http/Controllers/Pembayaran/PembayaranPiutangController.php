@@ -72,58 +72,53 @@ class PembayaranPiutangController extends Controller
     public function listpiutang()
     {
         $title = "Daftar Piutang";
-        // $piutangs = Piutang::with('customers', 'FakturSO')
-        //     ->where('status', '=', '1')  
-        //     ->orderBy('id','desc')          
-        //     ->get();
-
-        $piutangs = DB::table('piutangs as p')
-                ->join('faktur_penjualans as fp','p.faktur_penjualan_id','=','fp.id')              
-                ->join('customers as c','p.customer_id','=','c.id')
-                ->where('p.status', '=', '1')  
-                ->select('c.nama as nama_customer','fp.kode as kode_fj','fp.no_kpa as kode_kpa','p.*')                
-                ->latest()
-                ->get(); 
-
-        
-        if (request()->ajax()) {
-            return Datatables::of($piutangs)
-                ->addIndexColumn()
-                ->addColumn('customers', function ($pb) {
-                    return $pb->nama_customer;
-                })
-                ->addColumn('faktur_fj', function ($pb) {
-                    return $pb->kode_fj;
-                })               
-                ->addColumn('no_kpa', function ($pb) {
-                    return $pb->kode_kpa;
-                })         
-                ->editColumn('tanggal', function ($pb) {
-                    return $pb->tanggal ? with(new Carbon($pb->tanggal))->format('d-m-Y') : '';
-                })
-                ->editColumn('total', function ($pb) {
-                    return $pb->total ? with(number_format($pb->total, 0, ',', '.')) : '';
-                })
-                ->editColumn('dibayar', function ($pb) {
-                    return $pb->dibayar ? with(number_format($pb->dibayar, 0, ',', '.')) : '0';
-                })
-                ->editColumn('sisa', function ($pb) {
-                    $sisa = $pb->total - $pb->dibayar;
-                    return $sisa ? with(number_format($sisa, 0, ',', '.')) : '0';
-                })
-                ->editColumn('tanggal_top', function ($pb) {                    
-                    return $pb->tanggal_top ? with(new Carbon($pb->tanggal_top))->format('d-m-Y') : '';
-                })
-                ->addColumn('action', function ($row) {
-                    $pilihUrl = route('pembayaranpiutang.create', ['piutang' => $row->id]);
-                    $id = $row->id;
-                    return view('pembayaran.pembayaranpiutang._pilihAction', compact('pilihUrl', 'id'));
-                })
-                ->make(true);
-        }
-
         //dd($pesananpembelian);
-        return view('pembayaran.pembayaranpiutang.listpiutang', compact('title', 'piutangs'));
+        return view('pembayaran.pembayaranpiutang.listpiutang', compact('title'));
+    }
+
+    public function datatable(Request $request)
+    {
+            $piutangs = Piutang::where('status','1')->with(['customers' => function ($query) {
+                $query->select('id','nama');
+            }, 'FakturSO' => function ($query){
+                $query->select('id','kode','no_kpa');
+            }])->orderBy('id','DESC')->get();
+            
+            if (request()->ajax()) {
+                return Datatables::of($piutangs)
+                    ->addIndexColumn()
+                    ->addColumn('customers', function (Piutang $pb) {
+                        return $pb->customers->nama;
+                    })
+                    ->addColumn('fakturso', function (Piutang $pb) {
+                        return $pb->FakturSO->kode;
+                    })               
+                    ->addColumn('no_kpa', function (Piutang $pb) {
+                        return $pb->FakturSO->no_kpa;
+                    })         
+                    ->editColumn('tanggal', function (Piutang $pb) {
+                        return $pb->tanggal ? with(new Carbon($pb->tanggal))->format('d-m-Y') : '';
+                    })
+                    ->editColumn('total', function (Piutang $pb) {
+                        return $pb->total ? with(number_format($pb->total, 0, ',', '.')) : '';
+                    })
+                    ->editColumn('dibayar', function (Piutang $pb) {
+                        return $pb->dibayar ? with(number_format($pb->dibayar, 0, ',', '.')) : '0';
+                    })
+                    ->editColumn('sisa', function (Piutang $pb) {
+                        $sisa = $pb->total - $pb->dibayar;
+                        return $sisa ? with(number_format($sisa, 0, ',', '.')) : '0';
+                    })
+                    ->editColumn('tanggal_top', function (Piutang $pb) {                    
+                        return $pb->tanggal_top ? with(new Carbon($pb->tanggal_top))->format('d-m-Y') : '';
+                    })
+                    ->addColumn('action', function (Piutang $row) {
+                        $pilihUrl = route('pembayaranpiutang.create', ['piutang' => $row->id]);
+                        $id = $row->id;
+                        return view('pembayaran.pembayaranpiutang._pilihAction', compact('pilihUrl', 'id'));
+                    })
+                    ->make(true);
+            }
     }
     public function create(Piutang $piutang)
     {
