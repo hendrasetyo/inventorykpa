@@ -65,6 +65,9 @@
                                     <input type="hidden" name="sales" value="{{$form['sales']}}"> 
                                     <input type="hidden" name="produk" value="{{$form['produk']}}"> 
                                     <input type="hidden" name="merk" value="{{$form['merk']}}"> 
+                                    <input type="hidden" name="kategori_pesanan" value="{{$form['kategori_pesanan']}}"> 
+                                    <input type="hidden" name="komoditas" value="{{$form['komoditas']}}"> 
+                                    <input type="hidden" name="kategori_customer" value="{{$form['kategori_customer']}}"> 
 
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <span class="svg-icon svg-icon-default svg-icon-1x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo2\dist/../src/media/svg/icons\Files\Import.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">

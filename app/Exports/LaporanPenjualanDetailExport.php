@@ -32,7 +32,15 @@ class LaporanPenjualanDetailExport implements FromView
                     ->join('pengiriman_barangs as pb','fp.pengiriman_barang_id','=','pb.id')
                     ->join('faktur_penjualan_details as fpb','fpb.faktur_penjualan_id','=','fp.id')
                     ->join('users as u','fp.created_by','=','u.id')
-                    ->where('fp.deleted_at',null);;
+                    ->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')
+                    ->join('sales as s','pp.sales_id','=','s.id')
+                    ->join('kategoripesanans as kp','pp.kategoripesanan_id','=','kp.id')
+                    ->join('komoditas as km','pp.komoditas_id','=','km.id')
+                    ->join('customers as cs','fp.customer_id','=','cs.id')
+                    ->join('customer_categories as cc','cs.kategori_id','=','cc.id')
+                    ->join('products as p','p.id','=','fpb.product_id')
+                    ->join('merks as m','p.merk_id','=','m.id')
+                    ->where('fp.deleted_at',null);
                     
                         
                 if ($this->data['tgl1']) {            
@@ -56,43 +64,52 @@ class LaporanPenjualanDetailExport implements FromView
                                     
 
                 if ($this->data['customer'] == 'all') {            
-                $customerfilter = $tanggalFilter->join('customers as cs','fp.customer_id','=','cs.id');                                  
+                         $customerfilter = $tanggalFilter;                                  
                 }else{
-                $customerfilter = $penjualan->join('customers as cs','fp.customer_id','=','cs.id')
-                                ->where('fp.customer_id','=',$this->data['customer']);     
+                         $customerfilter = $penjualan->where('fp.customer_id','=',$this->data['customer']);     
                 }
 
                 if ($this->data['sales'] == 'all') {
-                $salesfilter = $customerfilter->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')
-                            ->join('sales as s','pp.sales_id','=','s.id');                                          
+                          $salesfilter = $customerfilter;                                          
                 }else{
-                $salesfilter = $customerfilter->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')
-                            ->join('sales as s','pp.sales_id','=','s.id')
-                            ->where('pp.sales_id','=',$this->data['sales']);                
+                          $salesfilter = $customerfilter->where('pp.sales_id','=',$this->data['sales']);                
+                }
+                
+                if ($this->data['kategori_pesanan'] !== 'all') {
+                        $salesfilter->where('pp.kategoripesanan_id',$this->data['kategori_pesanan']);               
+                }
+        
+                if ($this->data['komoditas'] !== 'all') {
+                    $salesfilter->where('pp.komoditas_id',$this->data['komoditas']);
+                }
+
+                if ($this->data['kategori_customer'] !== 'all') {
+                    $salesfilter->where('cs.kategori_id',$this->data['kategori_customer']);
                 }
 
                 if ($this->data['produk'] == 'all') {
-                $produkfilter = $salesfilter ->join('products as p','p.id','=','fpb.product_id');            
+                    $produkfilter = $salesfilter;            
                 } else {
-                $produkfilter = $salesfilter ->join('products as p','p.id','=','fpb.product_id')
-                                            ->where('p.id','=',$this->data['produk']);
+                    $produkfilter = $salesfilter->where('p.id','=',$this->data['produk']);
                 }
 
 
                 if ($this->data['merk'] == 'all') {
-                $merkfilter  = $produkfilter->join('merks as m','p.merk_id','=','m.id');
+                       $merkfilter  = $produkfilter;
                 } else {
-                $merkfilter  = $produkfilter->join('merks as m','p.merk_id','=','m.id')
-                                ->where('m.id','=',$this->data['merk']);
+                       $merkfilter  = $produkfilter->where('m.id','=',$this->data['merk']);
                 }
 
 
                 $filter = $merkfilter->orderBy('fp.tanggal','desc')->select('fp.*','fpb.qty as qty_det','fpb.satuan as satuan_det','fpb.hargajual as hargajual_det'
-                                            ,'fpb.diskon_persen as dikson_persen_det','fpb.diskon_rp as diskon_rp_det','fpb.subtotal as subtotal_det'
-                                            ,'fpb.total as total_det','fpb.total_diskon as total_diskon_det','fpb.ongkir as ongkir_det','fpb.keterangan as keterangan_det' 
-                                            ,'pb.kode as kode_SJ','pp.kode as kode_SP'
-                                            ,'s.nama as nama_sales','u.name as nama_pembuat'
-                                            ,'cs.nama as nama_customer','p.nama as nama_produk','m.nama as nama_merk','p.kode as kode_produk')->get();  
+                ,'fpb.diskon_persen as dikson_persen_det','fpb.diskon_rp as diskon_rp_det','fpb.subtotal as subtotal_det'
+                ,'fpb.total as total_det','fpb.total_diskon as total_diskon_det','fpb.ongkir as ongkir_det','fpb.keterangan as keterangan_det' 
+                ,'pb.kode as kode_SJ','pp.kode as kode_SP'
+                ,'s.nama as nama_sales','u.name as nama_pembuat'
+                ,'cs.nama as nama_customer','p.nama as nama_produk'
+                ,'m.nama as nama_merk','p.kode as kode_produk'
+                ,'km.nama as nama_komoditas','kp.nama as nama_kategori_pesanan','cc.nama as nama_kategori_customer'
+                )->get();     
                 // dd($filter[0]);
                 foreach ($filter as $key ) {
                     $totHargaJual += $key->hargajual_det;

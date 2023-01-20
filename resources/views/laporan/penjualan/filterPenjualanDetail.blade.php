@@ -88,8 +88,28 @@
                                         <label>Tanggal Akhir :</label>
                                         <input type="text" class="form-control" name="tgl2" readonly value=""
                                             id="tgl2" />
+                                    </div>       
+                                    
+                                    <div class="form-group">
+                                        <label for="">Kategori Pesanan</label>
+                                        <select name="kategori_pesanan" id="kt_select2_7" class="form-control select2">
+                                            <option value="all">Semua</option>
+                                            @foreach ($kategory as $item)                                            
+                                                <option value="{{$item->id}}">{{$item->nama}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
-                                    </div>                                    
+                                    <div class="form-group">
+                                        <label for="">Kategori Customer</label>
+                                        <select name="kategori_customer" id="kt_select2_8" class="form-control select2">
+                                            <option value="all">Semua</option>
+                                            @foreach ($kategoryCustomer as $item)                                            
+                                                <option value="{{$item->id}}">{{$item->nama}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    
 
                                     <div class="form-group">
                                         <label for="">Customer</label>
@@ -131,6 +151,18 @@
                                             @endforeach
                                         </select>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="">Komoditas</label>
+                                        <select name="komoditas" id="kt_select2_5" class="form-control select2">
+                                            <option value="all">Semua</option>
+                                            @foreach ($komoditas as $item)                                            
+                                                <option value="{{$item->id}}">{{$item->nama}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                   
 
                                 </div>
 

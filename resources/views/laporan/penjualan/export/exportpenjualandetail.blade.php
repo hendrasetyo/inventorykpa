@@ -8,7 +8,10 @@
             <th>Kode SO</th>
             <th>Kode SJ</th>
             <th>No Pajak</th>
-            <th>Customer</th>                                        
+            <th>Komoditas</th>
+            <th>Kategori Pesanan</th>
+            <th>Customer</th>    
+            <th>Kategori Customer</th>                                    
             <th>Diskon Rupiah Faktur</th>
             <th>Diskon Persen Faktur</th>
             <th>Subtotal Faktur</th>
@@ -52,7 +55,10 @@
                 <td>{{$item->kode_SP}}</td>
                 <td>{{$item->kode_SJ}}</td>
                 <td>{{$item->no_seri_pajak ? $item->no_seri_pajak : ''}} - {{ $item->no_pajak ? $item->no_pajak : ''}}</td>
+                <td>{{$item->nama_komoditas}}</td>
+                <td>{{$item->nama_kategori_pesanan}}</td>
                 <td>{{$item->nama_customer}}</td>
+                <td>{{$item->nama_kategori_customer}}</td>
                 <td>{{$item->diskon_rupiah}}</td>
                 <td>{{$item->diskon_persen}}</td>
                 <td>{{$item->subtotal}}</td>
