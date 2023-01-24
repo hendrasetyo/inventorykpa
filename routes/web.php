@@ -9,6 +9,7 @@ use Spatie\Permission\Contracts\Role;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\Konversi\KonversiController;
+use App\Http\Controllers\KunjunganSales\KunjunganSalesController;
 use App\Http\Controllers\Laporan\LaporanAdjustmentStokController;
 use App\Http\Controllers\Laporan\LaporanBiayaOperationalController;
 use App\Http\Controllers\Laporan\LaporanFakturPajakController;
@@ -878,5 +879,20 @@ Route::middleware('has.role')->prefix('biaya')->group(function () {
             Route::delete('/delete', [BiayaOperationalController::class, 'destroy'])->name('biayaoperational.destroy');       
             
         });
+});
+
+Route::middleware('has.role')->prefix('sales')->group(function () {
+    Route::prefix('kunjungansales')->group(function () {
+        Route::get('', [KunjunganSalesController::class, 'index'])->name('kunjungansales.index');     
+        
+         
+        Route::get('/create', [KunjunganSalesController::class, 'create'])->name('kunjungansales.create');        
+        Route::post('/store', [KunjunganSalesController::class, 'store'])->name('kunjungansales.store');        
+        Route::get('/{kunjungansales}/edit', [KunjunganSalesController::class, 'edit'])->name('kunjungansales.edit');       
+        Route::put('/{kunjungansales}/update', [KunjunganSalesController::class, 'update'])->name('kunjungansales.update');                   
+        Route::post('/delete', [KunjunganSalesController::class, 'delete'])->name('kunjungansales.delete');       
+        Route::delete('/delete', [KunjunganSalesController::class, 'destroy'])->name('kunjungansales.destroy');       
+        
+    });
 });
 

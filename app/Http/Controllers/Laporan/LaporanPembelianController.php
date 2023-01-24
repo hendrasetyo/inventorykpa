@@ -61,6 +61,7 @@ class LaporanPembelianController extends Controller
 
     public function filterDataPembelian(Request $request)
     {
+        
         $title = 'Laporan Pembelian';
         $data = $request->all();
         $tgl1 = Carbon::parse($data['tgl1'])->format('Y-m-d');
@@ -100,24 +101,24 @@ class LaporanPembelianController extends Controller
 
         }
 
-        if ($data['produk'] == 'all') {
-            $produkfilter = $customerfilter ->join('products as p','p.id','=','fpb.product_id');            
-        } else {
-            $produkfilter = $customerfilter ->join('products as p','p.id','=','fpb.product_id')
-                                         ->where('p.id','=',$data['produk']);
-        }
+        // if ($data['produk'] == 'all') {
+        //     $produkfilter = $customerfilter ->join('products as p','p.id','=','fpb.product_id');            
+        // } else {
+        //     $produkfilter = $customerfilter ->join('products as p','p.id','=','fpb.product_id')
+        //                                  ->where('p.id','=',$data['produk']);
+        // }
         
 
-        if ($data['merk'] == 'all') {
-            $merkfilter  = $produkfilter->join('merks as m','p.merk_id','=','m.id');
-        } else {
-            $merkfilter  = $produkfilter->join('merks as m','p.merk_id','=','m.id')
-                            ->where('m.id','=',$data['merk']);
-        }
+        // if ($data['merk'] == 'all') {
+        //     $merkfilter  = $produkfilter->join('merks as m','p.merk_id','=','m.id');
+        // } else {
+        //     $merkfilter  = $produkfilter->join('merks as m','p.merk_id','=','m.id')
+        //                     ->where('m.id','=',$data['merk']);
+        // }
 
 
 
-        $filter = $merkfilter->select('fp.*','pb.kode as kode_SJ','pp.kode as kode_SP','s.nama as nama_supplier','u.name as nama_pembuat')->get();                                        
+        $filter = $customerfilter->select('fp.*','pb.kode as kode_SJ','pp.kode as kode_SP','s.nama as nama_supplier','u.name as nama_pembuat')->get();                                        
                 
         if (count($filter) <= 0) {
             return redirect()->back()->with('status_danger', 'Data tidak ditemukan');
