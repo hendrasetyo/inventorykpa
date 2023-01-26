@@ -13,8 +13,15 @@ class KunjunganSales extends Model
     protected $fillable = [
         'customer',
         'aktifitas',
-        'ttd'
+        'ttd',
+        'image',
+        'user_id'
     ];
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 
     
 }

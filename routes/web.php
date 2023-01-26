@@ -32,6 +32,7 @@ use App\Http\Controllers\Profile\ProfilePicController;
 use App\Http\Controllers\Laporan\LaporanStokController;
 use App\Http\Controllers\Laporan\LaporanPembayaranController;
 use App\Http\Controllers\Laporan\LaporanPembelianController;
+use App\Http\Controllers\Laporan\LaporanSalesController;
 use App\Http\Controllers\Master\ProductGroupController;
 use App\Http\Controllers\Master\KategoriPesananController;
 use App\Http\Controllers\Master\ProductCategoryController;
@@ -764,6 +765,16 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
         
     });
 
+    Route::prefix('laporansales')->group(function () {
+    
+        Route::get('', [LaporanSalesController::class, 'index'])->name('laporansales.index');        
+        Route::post('/result', [LaporanSalesController::class, 'datatable'])->name('laporansales.datatable');
+        Route::get('/{id}/show', [LaporanSalesController::class, 'show'])->name('laporansales.show');
+
+        Route::post('/print', [LaporanSalesController::class, 'print'])->name('laporansales.print');        
+        
+    });
+
 
 });
 
@@ -883,7 +894,9 @@ Route::middleware('has.role')->prefix('biaya')->group(function () {
 
 Route::middleware('has.role')->prefix('sales')->group(function () {
     Route::prefix('kunjungansales')->group(function () {
-        Route::get('', [KunjunganSalesController::class, 'index'])->name('kunjungansales.index');     
+        Route::post('/datatable', [KunjunganSalesController::class, 'datatable'])->name('kunjungansales.datatable'); 
+        Route::get('/show/{kunjungansales}', [KunjunganSalesController::class, 'show'])->name('kunjungansales.show');        
+        Route::get('', [KunjunganSalesController::class, 'index'])->name('kunjungansales.index');          
         
          
         Route::get('/create', [KunjunganSalesController::class, 'create'])->name('kunjungansales.create');        

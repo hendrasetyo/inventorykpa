@@ -29,6 +29,15 @@
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
 
+    <style type="text/css">
+        .signature-pad{
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            height: 260px;
+        }
+    </style>
+
 </head>
 <!--end::Head-->
 

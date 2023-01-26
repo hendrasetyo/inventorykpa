@@ -100,24 +100,7 @@ class LaporanPembelianController extends Controller
                               ->where('fp.supplier_id','=',$data['supplier']);                 
 
         }
-
-        // if ($data['produk'] == 'all') {
-        //     $produkfilter = $customerfilter ->join('products as p','p.id','=','fpb.product_id');            
-        // } else {
-        //     $produkfilter = $customerfilter ->join('products as p','p.id','=','fpb.product_id')
-        //                                  ->where('p.id','=',$data['produk']);
-        // }
         
-
-        // if ($data['merk'] == 'all') {
-        //     $merkfilter  = $produkfilter->join('merks as m','p.merk_id','=','m.id');
-        // } else {
-        //     $merkfilter  = $produkfilter->join('merks as m','p.merk_id','=','m.id')
-        //                     ->where('m.id','=',$data['merk']);
-        // }
-
-
-
         $filter = $customerfilter->select('fp.*','pb.kode as kode_SJ','pp.kode as kode_SP','s.nama as nama_supplier','u.name as nama_pembuat')->get();                                        
                 
         if (count($filter) <= 0) {
