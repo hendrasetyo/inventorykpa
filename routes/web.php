@@ -768,7 +768,9 @@ Route::middleware('has.role')->prefix('laporan')->group(function () {
     Route::prefix('laporansales')->group(function () {
     
         Route::get('', [LaporanSalesController::class, 'index'])->name('laporansales.index');        
-        Route::post('/result', [LaporanSalesController::class, 'datatable'])->name('laporansales.datatable');
+        Route::post('/datatable', [LaporanSalesController::class, 'datatable'])->name('laporansales.datatable');
+
+
         Route::get('/{id}/show', [LaporanSalesController::class, 'show'])->name('laporansales.show');
 
         Route::post('/print', [LaporanSalesController::class, 'print'])->name('laporansales.print');        

@@ -50,4 +50,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(TempBiaya::class, 'id');
     }
+
+    
+    public function kunjungan()
+    {
+        return $this->hasMany(KunjunganSales::class, 'user_id');
+    }
 }

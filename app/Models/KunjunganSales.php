@@ -12,6 +12,7 @@ class KunjunganSales extends Model
     protected $table = 'kunjungan_sales';
     protected $fillable = [
         'customer',
+        'tanggal',
         'aktifitas',
         'ttd',
         'image',
