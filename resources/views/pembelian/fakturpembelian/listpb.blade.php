@@ -124,7 +124,7 @@
                   {data: 'kode', name: 'kode'},
                   {data: 'tanggal', name: 'tanggal'},
                   {data: 'supplier', name: 'suppliers.nama'},
-                  {data: 'status', name: 'statusPO.nama'},
+                  {data: 'status', name: 'statusPB.nama'},
                   {
                       data: 'action', 
                       render: function(data){

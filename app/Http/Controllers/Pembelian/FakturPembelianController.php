@@ -73,9 +73,9 @@ class FakturPembelianController extends Controller
     public function listpb()
     {
         $title = "Daftar Pesanan Pembelian";
-        $penerimaanbarangs = PenerimaanBarang::with('suppliers', 'statusPB')
+        $penerimaanbarangs = PenerimaanBarang::with(['suppliers','statusPB'])
             ->where('status_pb_id', '=', '1')
-            ->orderBy('tanggal','desc');
+            ->orderBy('id','desc');
 
             
         if (request()->ajax()) {
