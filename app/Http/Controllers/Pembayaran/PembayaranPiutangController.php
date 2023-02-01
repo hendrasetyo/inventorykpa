@@ -78,11 +78,8 @@ class PembayaranPiutangController extends Controller
 
     public function datatable(Request $request)
     {
-            $piutangs = Piutang::with(['customers','fakturpenjualan' => function ($query){
-                    $query->select('id as id_faktur','kode','no_kpa');  
-            }])
+            $piutangs = Piutang::with(['customers','fakturpenjualan'])
                         ->where('status','1')
-                        ->select('id' , 'tanggal','total','dibayar','tanggal_top')
                         ->orderBy('piutangs.id','desc');
 
                 return Datatables::of($piutangs)
@@ -113,7 +110,7 @@ class PembayaranPiutangController extends Controller
                         return $pb->tanggal_top ? with(new Carbon($pb->tanggal_top))->format('d-m-Y') : '';
                     })
                     ->addColumn('action', function (Piutang $row) {
-                        $pilihUrl = route('pembayaranpiutang.create', ['id' => $row->id_piutang]);
+                        $pilihUrl = route('pembayaranpiutang.create', ['id' => $row->id]);
                         $id = $row->id;
                         return view( 'pembayaran.pembayaranpiutang._pilihAction', compact('pilihUrl', 'id'));
                     })
@@ -125,7 +122,8 @@ class PembayaranPiutangController extends Controller
         $title = "Pembayaran Piutang";
         $pembayaranpiutang = new PembayaranPiutang;
         $banks = Bank::get();
-        $piutang = Piutang::with(['customers','fakturpenjualan'])->where('id',$id)->first();
+        $faktur = FakturPenjualan::where('id',$id)->select('id')->first();
+        $piutang = Piutang::with(['customers','fakturpenjualan'])->where('faktur_penjualan_id',$faktur->id)->first();
 
         return view('pembayaran.pembayaranpiutang.create', compact('title', 'pembayaranpiutang', 'piutang', 'banks'));
     }
