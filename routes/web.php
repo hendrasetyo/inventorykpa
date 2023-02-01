@@ -632,11 +632,10 @@ Route::middleware('has.role')->prefix('pembayaran')->group(function () {
 
     Route::prefix('pembayaranpiutang')->group(function () {
         Route::post('datatable', [PembayaranPiutangController::class, 'datatable'])->name('piutang.datatable');
+        Route::get('{id}/create', [PembayaranPiutangController::class, 'create'])->name('pembayaranpiutang.create');
+        Route::post('{id}/store', [PembayaranPiutangController::class, 'store'])->name('pembayaranpiutang.store');
         Route::get('', [PembayaranPiutangController::class, 'index'])->name('pembayaranpiutang.index');
         Route::get('listpiutang', [PembayaranPiutangController::class, 'listpiutang'])->name('pembayaranpiutang.listpiutang');
-        Route::get('{piutang}/create', [PembayaranPiutangController::class, 'create'])->name('pembayaranpiutang.create');
-        Route::get('{piutang}/create', [PembayaranPiutangController::class, 'create'])->name('pembayaranpiutang.create');
-        Route::post('{piutang}/create', [PembayaranPiutangController::class, 'store']);
         Route::post('show', [PembayaranPiutangController::class, 'show'])->name('pembayaranpiutang.show');
         Route::post('delete', [PembayaranPiutangController::class, 'delete'])->name('pembayaranpiutang.delete');
         Route::delete('delete', [PembayaranPiutangController::class, 'destroy'])->name('pembayaranpiutang.destroy');
@@ -904,7 +903,7 @@ Route::middleware('has.role')->prefix('sales')->group(function () {
         Route::get('/create', [KunjunganSalesController::class, 'create'])->name('kunjungansales.create');        
         Route::post('/store', [KunjunganSalesController::class, 'store'])->name('kunjungansales.store');        
         Route::get('/{kunjungansales}/edit', [KunjunganSalesController::class, 'edit'])->name('kunjungansales.edit');       
-        Route::put('/{kunjungansales}/update', [KunjunganSalesController::class, 'update'])->name('kunjungansales.update');                   
+        Route::PUT('/{kunjungansales}/update', [KunjunganSalesController::class, 'update'])->name('kunjungansales.update');                   
         Route::post('/delete', [KunjunganSalesController::class, 'delete'])->name('kunjungansales.delete');       
         Route::delete('/delete', [KunjunganSalesController::class, 'destroy'])->name('kunjungansales.destroy');       
         

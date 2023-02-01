@@ -2,7 +2,7 @@
 
     <div class="form-group">
         <label>No. Faktur :</label>
-        <input type="text" name="no_faktur" readonly="readonly" value="{{ $piutang->FakturSO->kode }}"
+        <input type="text" name="no_faktur" readonly="readonly" value="{{ $piutang->fakturpenjualan->kode }}"
             class="form-control form-control-solid" />
 
     </div>

@@ -30,7 +30,7 @@ class PembayaranPiutangController extends Controller
     public function index()
     {
         $title = "Pembayaran Piutang";
-        $pembayaranpiutang = PembayaranPiutang::with(['customers',  'piutangs', 'banks', 'FakturSO'])
+        $pembayaranpiutang = PembayaranPiutang::with(['customers',  'piutangs', 'banks', 'fakturpenjualan'])
         ->orderBy('id','desc');
 
         if (request()->ajax()) {
@@ -39,11 +39,11 @@ class PembayaranPiutangController extends Controller
                 ->addColumn('customers', function (PembayaranPiutang $ph) {
                     return $ph->customers->nama;
                 })
-                ->addColumn('faktur_so', function (PembayaranPiutang $ph) {
-                    return $ph->FakturSO->kode;
+                ->addColumn('kode', function (PembayaranPiutang $ph) {
+                    return $ph->fakturpenjualan->kode;
                 })
                 ->addColumn('no_kpa', function (PembayaranPiutang $ph) {
-                    return $ph->FakturSO->no_kpa;
+                    return $ph->fakturpenjualan->no_kpa;
                 })
                 ->addColumn('banks', function (PembayaranPiutang $ph) {
                     return $ph->banks->nama;
@@ -78,23 +78,23 @@ class PembayaranPiutangController extends Controller
 
     public function datatable(Request $request)
     {
-            $piutangs = Piutang::where('status','1')->with(['customers' => function ($query) {
-                $query->select('id','nama');
-            }, 'FakturSO' => function ($query){
-                $query->select('id','kode','no_kpa');
-            }])->orderBy('id','DESC')->get();
-            
-            if (request()->ajax()) {
+            $piutangs = Piutang::with(['customers','fakturpenjualan' => function ($query){
+                    $query->select('id as id_faktur','kode','no_kpa');  
+            }])
+                        ->where('status','1')
+                        ->select('id' , 'tanggal','total','dibayar','tanggal_top')
+                        ->orderBy('piutangs.id','desc');
+
                 return Datatables::of($piutangs)
                     ->addIndexColumn()
                     ->addColumn('customers', function (Piutang $pb) {
                         return $pb->customers->nama;
                     })
-                    ->addColumn('fakturso', function (Piutang $pb) {
-                        return $pb->FakturSO->kode;
+                    ->addColumn('fakturpenjualan', function (Piutang $pb) {
+                        return $pb->fakturpenjualan->kode;
                     })               
                     ->addColumn('no_kpa', function (Piutang $pb) {
-                        return $pb->FakturSO->no_kpa;
+                        return $pb->fakturpenjualan->no_kpa;
                     })         
                     ->editColumn('tanggal', function (Piutang $pb) {
                         return $pb->tanggal ? with(new Carbon($pb->tanggal))->format('d-m-Y') : '';
@@ -105,7 +105,7 @@ class PembayaranPiutangController extends Controller
                     ->editColumn('dibayar', function (Piutang $pb) {
                         return $pb->dibayar ? with(number_format($pb->dibayar, 0, ',', '.')) : '0';
                     })
-                    ->editColumn('sisa', function (Piutang $pb) {
+                    ->addColumn('sisa', function (Piutang $pb) {
                         $sisa = $pb->total - $pb->dibayar;
                         return $sisa ? with(number_format($sisa, 0, ',', '.')) : '0';
                     })
@@ -113,23 +113,26 @@ class PembayaranPiutangController extends Controller
                         return $pb->tanggal_top ? with(new Carbon($pb->tanggal_top))->format('d-m-Y') : '';
                     })
                     ->addColumn('action', function (Piutang $row) {
-                        $pilihUrl = route('pembayaranpiutang.create', ['piutang' => $row->id]);
+                        $pilihUrl = route('pembayaranpiutang.create', ['id' => $row->id_piutang]);
                         $id = $row->id;
                         return view( 'pembayaran.pembayaranpiutang._pilihAction', compact('pilihUrl', 'id'));
                     })
                     ->make(true);
-            }
+            
     }
-    public function create(Piutang $piutang)
+    public function create($id)
     {
         $title = "Pembayaran Piutang";
         $pembayaranpiutang = new PembayaranPiutang;
         $banks = Bank::get();
+        $piutang = Piutang::with(['customers','fakturpenjualan'])->where('id',$id)->first();
+
         return view('pembayaran.pembayaranpiutang.create', compact('title', 'pembayaranpiutang', 'piutang', 'banks'));
     }
 
-    public function store(Request $request, Piutang $piutang)
-    {
+    public function store(Request $request, $id)
+    {   
+        $piutang = Piutang::with(['customers','fakturpenjualan'])->where('id',$id)->first();
         $request->validate([
             'tanggal' => ['required'],
             'nominal' => ['required'],
@@ -208,7 +211,7 @@ class PembayaranPiutangController extends Controller
 
     public function show(Request $request)
     {
-        $pembayaranpiutang = PembayaranPiutang::with('FakturSO', 'customers', 'banks')
+        $pembayaranpiutang = PembayaranPiutang::with('fakturpenjualan', 'customers', 'banks')
             ->where('id', '=', $request->id)->get()->first();
 
         return view('pembayaran.pembayaranpiutang._showDetail', compact('pembayaranpiutang'));

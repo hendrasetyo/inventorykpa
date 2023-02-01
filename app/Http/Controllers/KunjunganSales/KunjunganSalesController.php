@@ -53,6 +53,8 @@ class KunjunganSalesController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
+
         $img = $request->file('image');
         $signed = $request->input('signed');
         $nameFile = null;
@@ -105,6 +107,73 @@ class KunjunganSalesController extends Controller
         $title = 'Kunjungan Sales';
         $kunjungan = KunjunganSales::where('id',$id)->first();
         return view('kunjungansales.show',compact('title','kunjungan'));
+    }
+
+    public function edit($id)
+    {
+        $title = 'Kunjungan Sales';
+        $kunjungan = KunjunganSales::where('id',$id)->first();
+        return view('kunjungansales.edit',compact('title','kunjungan'));
+    }
+
+    public function update(Request $request,$id)
+    {
+        
+        $img = $request->file('image');
+        $signed = $request->input('signed');
+        $tanggal = Carbon::parse(now())->format('Y-m-d');
+        $kunjungan = KunjunganSales::where('id',$id)->first();
+
+        $ttd = $signed ? $signed: $kunjungan->ttd;
+        $nameFile = $img ? $img : $kunjungan->image;
+        
+        if ($img) { 
+            // dd($img);     
+            if ($kunjungan->image) {
+                Storage::disk('public')->delete($kunjungan->image);  
+            }
+            $dataFoto =$img->getClientOriginalName();
+            $waktu = time();
+            $name = $waktu.$dataFoto;
+            $nameFile = Storage::putFileAs('kunjungan',$img,$name);            
+            $nameFile = $name;
+
+        }
+
+       
+        if ($signed) {            
+            $folderPath = public_path('ttd/');
+
+            if ($kunjungan->ttd) {
+                unlink($folderPath . $kunjungan->ttd);
+            }
+
+            $image_parts = explode(";base64,", $request->signed);
+                       
+            $image_type_aux = explode("image/", $image_parts[0]);
+                    
+            $image_type = $image_type_aux[1];
+                    
+            $image_base64 = base64_decode($image_parts[1]);
+            $name = uniqid() . '.'.$image_type;
+                    
+            $file = $folderPath . $name;
+            file_put_contents($file, $image_base64);
+
+            $ttd = $name; 
+        }
+
+        $kunjungan->update([
+            'tanggal' => $tanggal,
+            'customer' => $request->customer,
+            'aktifitas' => $request->aktifitas,
+            'ttd' => $ttd,
+            'image' => $nameFile,
+            'user_id' => auth()->user()->id
+        ]);
+
+
+        return redirect()->route('kunjungansales.index');
     }
 
     public function destroy(Request $request)

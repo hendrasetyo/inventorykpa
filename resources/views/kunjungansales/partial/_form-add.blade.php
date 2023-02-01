@@ -34,8 +34,6 @@
              <canvas id="signature-pad" class="signature-pad"></canvas>
       </div>
       <br>
-
-      <button type="button" class="btn btn-info btn-sm" id="save-jpeg">Simpan TTD</button>
       <div id="ttd"></div>
     </div>
       
@@ -45,7 +43,7 @@
 <div class="card-footer text-right">
     <div class="row">
         <div class="col-lg-12 ">
-            <button type="submit" class="btn btn-success font-weight-bold mr-2"><i class="flaticon2-paperplane"></i>
+            <button type="submit" class="btn btn-success font-weight-bold mr-2 submit" id="save-jpeg"><i class="flaticon2-paperplane"></i>
                Save </button>
             <a href="{{ route('kunjungansales.index') }}" class="btn btn-secondary font-weight-bold mr-2">
                 Cancel</a>

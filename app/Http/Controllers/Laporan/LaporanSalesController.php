@@ -43,11 +43,11 @@ class LaporanSalesController extends Controller
         $sales = KunjunganSales::with('user')->select('id','customer','user_id','aktifitas','tanggal')->orderByDesc('id');
 
         if ($request->tanggalMulai) {
-           $sales->where('tanggal','>',$request->tanggalMulai);
+           $sales->where('tanggal','>=',$request->tanggalMulai);
         }
 
         if ($request->tanggalSelesai) {
-            $sales->where('tanggal','<',$request->tanggalSelesai);
+            $sales->where('tanggal','<=',$request->tanggalSelesai);
         }
 
         if ($request->sales !== 'all') {

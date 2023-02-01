@@ -118,8 +118,8 @@
               },
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                  {data: 'fakturso', name: 'FakturSO.kode',},
-                  {data: 'no_kpa', name: 'FakturSO.no_kpa'},
+                  {data: 'kode', name: 'fakturpenjualan.kode',},
+                  {data: 'no_kpa', name: 'fakturpenjualan.no_kpa'},
                   {data: 'tanggal', name: 'tanggal'},
                   {data: 'customers', name: 'customers.nama',searchable:true},
                   {data: 'total', name: 'total'},

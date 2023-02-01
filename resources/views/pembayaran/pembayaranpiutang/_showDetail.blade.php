@@ -29,7 +29,7 @@
                         <tr>
                             <th scope="row">No. Faktur</th>
                             <td>:</td>
-                            <td>{{ $pembayaranpiutang->FakturSO->kode }}</td>
+                            <td>{{ $pembayaranpiutang->fakturpenjualan->kode }}</td>
                         </tr>
                         <tr>
                             <th scope="row">Media Pembayaran</th>

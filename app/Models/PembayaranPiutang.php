@@ -30,7 +30,7 @@ class PembayaranPiutang extends Model
         return $this->belongsTo(Customer::class, 'customer_id', 'id');
     }
 
-    public function FakturSO()
+    public function fakturpenjualan()
     {
         return $this->belongsTo(FakturPenjualan::class, 'faktur_penjualan_id', 'id');
     }
