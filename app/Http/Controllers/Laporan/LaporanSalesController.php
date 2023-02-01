@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Laporan;
 
+use App\Exports\LaporanKunjunganSales;
 use App\Http\Controllers\Controller;
 use App\Models\KunjunganSales;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class LaporanSalesController extends Controller
@@ -71,5 +73,13 @@ class LaporanSalesController extends Controller
                 })
                 ->make(true);
          }
+    }
+
+    public function print(Request $request)
+    {
+        $data = $request->all();   
+        // dd($data);     
+        $now = Carbon::parse(now())->format('Y-m-d');
+        return Excel::download(new LaporanKunjunganSales($data), 'laporankunjungansales-'.$now.'.xlsx');
     }
 }

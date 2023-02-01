@@ -67,14 +67,20 @@
                             </div>
                             <div class="card-toolbar">
                                 <!--begin::Button-->
+                                <form method="POST" action="{{ route('laporansales.print') }}">
+                                    @csrf
 
-                                @can('laporanlabarugi-print')
-                                <a href="{{ route('laporanlabarugi.print') }}"
-                                    class="btn btn-primary font-weight-bolder ">
-                                    <i class="flaticon2-printer "></i>
-                                   Print Laporan
-                                </a>
-                                @endcan
+                                    <input type="hidden" name="sales" value="all" id="formsales">
+                                    <input type="hidden" name="tanggal_mulai" id="formtanggal_mulai">
+                                    <input type="hidden" name="tanggal_selesai" id="formtanggal_selesai">
+                                    @can('laporansales-print')
+                                    <button type="submit"
+                                        class="btn btn-primary font-weight-bolder " >
+                                        <i class="flaticon2-printer "></i>
+                                    Print Laporan
+                                    </a>
+                                    @endcan
+                              </form>
 
                                 <!--end::Button-->
                             </div>
@@ -154,8 +160,6 @@
         let tanggalSelesai = '';
 
     $(function () {
-        
-   
           var table = $('.yajra-datatable').DataTable({
               responsive: true,
               processing: true,
@@ -214,21 +218,46 @@
 
     function filterTanggalMulai(){
        tanggalMulai = document.getElementById('tanggal_mulai').value;
+       $('#formtanggal_mulai').val(tanggalMulai);
        $('.yajra-datatable').DataTable().ajax.reload(null,false);
     }
 
     function filterTanggalSelesai(){
        tanggalSelesai = document.getElementById('tanggal_selesai').value;
+       $('#formtanggal_selesai').val(tanggalSelesai);
        $('.yajra-datatable').DataTable().ajax.reload(null,false);
     }
 
     function filterCustomer() {
         let e = document.getElementById("kt_select2_1");
         sales = e.options[e.selectedIndex].value; 
+        $('#formsales').val(sales);
         $('.yajra-datatable').DataTable().ajax.reload(null,false);
        
     }
 
-    
+    // function printKunjungan() {
+    //     $.ajax({
+    //             type: 'POST',
+    //             url: '{{ route('laporansales.print') }}',
+    //             dataType: 'html',
+    //             headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+    //             data: {
+    //                  "sales" : sales,
+    //                  "tanggal_mulai" : tanggalMulai,
+    //                  "tanggal_selesai" : tanggalSelesai, 
+    //                  "_token": "{{ csrf_token() }}"
+    //                 },
+                
+    //             success: function (data){   
+
+    //                 location.reload();
+    //             },
+    //             error: function(data){
+    //                 console.log(data);
+    //             }
+    //     });
+    // }
+
 </script>
 @endpush
