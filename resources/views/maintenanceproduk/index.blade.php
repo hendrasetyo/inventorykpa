@@ -23,19 +23,6 @@
             </div>
 
             @endif
-
-            @if (session('error'))
-            <div class="alert alert-custom alert-success fade show pb-2 pt-2" role="alert">
-                <div class="alert-icon"><i class="flaticon-warning"></i></div>
-                <div class="alert-text">{{ session('error') }}</div>
-                <div class="alert-close">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true"><i class="ki ki-close"></i></span>
-                    </button>
-                </div>
-            </div>
-
-            @endif
             <div class="row">
 
                 <div class="col-lg-12">
@@ -63,69 +50,30 @@
                                             </g>
                                         </svg>
                                         <!--end::Svg Icon--></span> </span>
-                                <h3 class="card-label">Laporan Kunjungan Sales</h3>
+                                <h3 class="card-label">Data Perawatan Produk</h3>
                             </div>
                             <div class="card-toolbar">
-                                <!--begin::Button-->
-                                <form method="POST" action="{{ route('laporansales.print') }}">
-                                    @csrf
-
-                                    <input type="hidden" name="sales" value="all" id="formsales">
-                                    <input type="hidden" name="tanggal_mulai" id="formtanggal_mulai">
-                                    <input type="hidden" name="tanggal_selesai" id="formtanggal_selesai">
-                                    @can('laporansales-print')
-                                    <button type="submit"
-                                        class="btn btn-primary font-weight-bolder " >
-                                        <i class="flaticon2-printer "></i>
-                                    Print Laporan
+                                <!--begin::Button-->                            
+                                @can('teknisi-create')
+                                    <a href="{{ route('maintenanceproduk.create') }}"
+                                        class="btn btn-primary font-weight-bolder">
+                                        <i class="flaticon2-add"></i>
+                                    Perawatan Produk
                                     </a>
-                                    @endcan
-                              </form>
+                                @endcan
 
                                 <!--end::Button-->
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="">Tanggal Mulai</label>
-                                        <input type="date" class="form-control" id="tanggal_mulai" onchange="filterTanggalMulai()">
-                                    </div>
-                                </div> 
-                                
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="">Tanggal Selesei</label>
-                                        <input type="date" class="form-control" id="tanggal_selesai" onchange="filterTanggalSelesai()">
-                                    </div>
-                                </div>
-
-                               
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="">Sales</label>
-                                        <select id="kt_select2_1" id="" name="sales_id" class="form-control"  onchange="filterCustomer()">
-                                            <option value="all">Semua</option>
-                                            @foreach ($sales as $item)
-                                                <option value="{{$item['id']}}">{{$item['name']}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div> 
-                                </div>
-
-                            </div>
-
-                            <!--begin: Datatable-->
-                            <table class="table yajra-datatable collapsed ">
-                                <thead class="datatable-head">
-                                    <tr>
+                            <!--begin: Datatable-->                         
+                            <table class="table table-separate table-head-custom table-checkable table  yajra-datatable collapsed ">
+                                <thead >
+                                    <tr>                                        
                                         <th>Tanggal</th>
-                                        <th>Sales</th>
                                         <th>Customer</th>
-                                        <th>Aktivitas</th>                                    
-                                        <th style="width: 15%">Action</th>
+                                        <th>Aktivitas</th>                                       
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -144,40 +92,34 @@
 </div>
 <!--end::Content-->
 <div id="modal-confirm-delete"></div>
-<div id="modal-show-detail"></div>
 @endsection
 @push('script')
-<script src="{{ asset('/assets/js/pages/crud/forms/widgets/select2.js?v=7.0.6') }}"></script>
+<script src="{{ asset('/assets/js/pages/crud/forms/widgets/select2.js?v=7.0.6"') }}"></script>
 <script src="{{ asset('/assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6') }}"></script>
 <script src="{{ asset('/assets/js/pages/crud/datatables/extensions/responsive.js?v=7.0.6') }}"></script>
 
+
+
 <script type="text/javascript">
-        let tanggalMulai = ''; 
-        let sales = 'all';
-        let tanggalSelesai = '';
-    $(function () {
+    $(function () {          
           var table = $('.yajra-datatable').DataTable({
               responsive: true,
               processing: true,
               serverSide: true,
-              autoWidth: false,
               ajax: {
-                type : 'POST',
-                url :"{{ route('laporansales.datatable') }}",
-                data: function(params) {
-                        params.tanggalMulai = tanggalMulai;
-                        params.tanggalSelesai = tanggalSelesai;
-                        params.sales =  sales;
+                    url : "{{ route('kunjungansales.datatable') }}", 
+                    type : "POST",
+                     data: function(params) {
                         params._token = "{{ csrf_token() }}";                
                         return params;
                        }
+
               },
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                   {data: 'tanggal', name: 'tanggal'},
-                  {data: 'user', name:'user'},
                   {data: 'customer', name:'customer'},
-                  {data: 'aktifitas', name:'aktifitas'},                 
+                  {data: 'aktifitas', name:'aktifitas'},
                   {
                       data: 'action', 
                       render: function(data){
@@ -187,24 +129,19 @@
                   },
               ],
               columnDefs: [
-                
+
                 {
-                    responsivePriority: 3,
-                    targets: 2,
-                    
+                    responsivePriority: 1,
+                    targets: 0
                 },
-                {responsivePriority: 10001, targets: 4},
                 {
                     responsivePriority: 2,
                     targets: -1
                 },
-               
-                
             ],
         });
           
     });
-   
 
     function htmlDecode(data){
         var txt = document.createElement('textarea');
@@ -212,27 +149,23 @@
         return txt.value;
     }
 
-    function filterTanggalMulai(){
-       tanggalMulai = document.getElementById('tanggal_mulai').value;
-       $('#formtanggal_mulai').val(tanggalMulai);
-       $('.yajra-datatable').DataTable().ajax.reload(null,false);
-    }
-
-    function filterTanggalSelesai(){
-       tanggalSelesai = document.getElementById('tanggal_selesai').value;
-       $('#formtanggal_selesai').val(tanggalSelesai);
-       $('.yajra-datatable').DataTable().ajax.reload(null,false);
-    }
-
-    function filterCustomer() {
-        let e = document.getElementById("kt_select2_1");
-        sales = e.options[e.selectedIndex].value; 
-        $('#formsales').val(sales);
-        $('.yajra-datatable').DataTable().ajax.reload(null,false);
-
-    }
-
-
-
+    function show_confirm(data_id){
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('biayaoperational.delete') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {id:data_id, "_token": "{{ csrf_token() }}"},
+                
+                success: function (data){
+                    console.log(data);
+                    $('#modal-confirm-delete').html(data);
+                    $('#exampleModal').modal('show');
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });
+        }
 </script>
 @endpush

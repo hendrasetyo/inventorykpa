@@ -54,6 +54,7 @@ use App\Http\Controllers\Pembayaran\PembayaranPiutangController;
 use App\Http\Controllers\Penjualan\BiayaLainController;
 use App\Http\Controllers\Penjualan\LabaRugiController;
 use App\Http\Controllers\Permissions\AssignPermissionController;
+use App\Http\Controllers\Teknisi\MaintenanceController;
 use App\Models\CanvassingPesanan;
 use App\Models\InventoryTransaction;
 
@@ -906,6 +907,23 @@ Route::middleware('has.role')->prefix('sales')->group(function () {
         Route::PUT('/{kunjungansales}/update', [KunjunganSalesController::class, 'update'])->name('kunjungansales.update');                   
         Route::post('/delete', [KunjunganSalesController::class, 'delete'])->name('kunjungansales.delete');       
         Route::delete('/delete', [KunjunganSalesController::class, 'destroy'])->name('kunjungansales.destroy');       
+        
+    });
+});
+
+Route::middleware('has.role')->prefix('teknisi')->group(function () {
+    Route::prefix('maintenanceproduk')->group(function () {
+        Route::post('/datatable', [MaintenanceController::class, 'datatable'])->name('maintenanceproduk.datatable'); 
+        Route::get('/show/{maintenanceproduk}', [MaintenanceController::class, 'show'])->name('maintenanceproduk.show');        
+        Route::get('', [MaintenanceController::class, 'index'])->name('maintenanceproduk.index');          
+        
+         
+        Route::get('/create', [MaintenanceController::class, 'create'])->name('maintenanceproduk.create');        
+        Route::post('/store', [MaintenanceController::class, 'store'])->name('maintenanceproduk.store');        
+        Route::get('/{maintenanceproduk}/edit', [MaintenanceController::class, 'edit'])->name('maintenanceproduk.edit');       
+        Route::PUT('/{maintenanceproduk}/update', [MaintenanceController::class, 'update'])->name('maintenanceproduk.update');                   
+        Route::post('/delete', [MaintenanceController::class, 'delete'])->name('maintenanceproduk.delete');       
+        Route::delete('/delete', [MaintenanceController::class, 'destroy'])->name('maintenanceproduk.destroy');       
         
     });
 });
