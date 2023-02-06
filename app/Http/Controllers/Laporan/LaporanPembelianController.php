@@ -162,7 +162,7 @@ class LaporanPembelianController extends Controller
             
                         $customerfilter = $tanggalFilter->join('suppliers as s','fp.supplier_id','=','s.id');                           
                     }else{
-                        $customerfilter = $tanggalFilter->join('supplier as s','fp.supplier_id','=','s.id')
+                        $customerfilter = $tanggalFilter->join('suppliers as s','fp.supplier_id','=','s.id')
                                           ->where('fp.supplier_id','=',$data['supplier']);                 
             
                     }

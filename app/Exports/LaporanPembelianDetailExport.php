@@ -26,7 +26,7 @@ class LaporanPembelianDetailExport implements FromView
                     ->join('pesanan_pembelians as pp','fp.pesanan_pembelian_id','=','pp.id')
                     ->join('faktur_pembelian_details as fpb','fpb.faktur_pembelian_id','=','fp.id')
                     ->join('users as u','fp.created_by','=','u.id')
-                    ->where('fp.deleted_at',null);;
+                    ->where('fp.deleted_at',null);
 
 
                     if ($this->data['tgl1']) {            
@@ -55,7 +55,7 @@ class LaporanPembelianDetailExport implements FromView
             
                         $customerfilter = $tanggalFilter->join('suppliers as s','fp.supplier_id','=','s.id');                           
                     }else{
-                        $customerfilter = $tanggalFilter->join('supplier as s','fp.supplier_id','=','s.id')
+                        $customerfilter = $tanggalFilter->join('suppliers as s','fp.supplier_id','=','s.id')
                                           ->where('fp.supplier_id','=',$this->data['supplier']);                 
             
                     }
