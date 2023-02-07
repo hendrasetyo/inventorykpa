@@ -374,7 +374,7 @@
               <div class="modal-body">
                 <div class="form-group">
                     <label for="">Persen CN</label>
-                    <input type="number" name="cn_persen" class="form-control" placeholder="Masukan CN persen disini !">
+                    <input type="text" name="cn_persen" class="form-control" placeholder="Masukan CN persen disini !">
                 </div>
               </div>
               <div class="modal-footer">
@@ -402,7 +402,7 @@
               <div class="modal-body">
                 <div class="form-group">
                     <label for="">Persen CN</label>
-                    <input type="number" name="cn_persen"  class="form-control" value="{{$a->cn_persen}}">
+                    <input type="text" name="cn_persen"  class="form-control" value="{{$a->cn_persen}}">
                 </div>
               </div>
               <div class="modal-footer">

@@ -217,6 +217,7 @@ class ProductController extends Controller
 
         // dapatkan temp yang baru
         $temp  = TempProduct::where('user_id',auth()->user()->id)->get();
+        
 
         $kode = $this->getKodeData("products", "P");
         foreach ($temp as $item) {
@@ -246,11 +247,11 @@ class ProductController extends Controller
                 'keterangan' => $item->keterangan,
                 'status' => $item->status,
                 'status_exp' => $item->status_exp,
-                'stok_canvassing' => $item->stok_canvassing
+                // 'stok_canvassing' => $item->stok_canvassing
             ]);
         }
 
-        DB::commit();
+           DB::commit();
 
             // hapus temp lagi 
             TempProduct::where('user_id',auth()->user()->id)->delete();            

@@ -227,7 +227,6 @@ class PesananPenjualanController extends Controller
         
         if ($request->ppn > 0) {
             $harga = $harga / (1 + $request->ppn/100);
-            
         }
 
         $subtotal = $request->qty * $harga;
@@ -276,9 +275,6 @@ class PesananPenjualanController extends Controller
         if ($request->tanggal_pesanan_customer <> null) {
             $tanggalcustomer = Carbon::createFromFormat('d/m/Y', $request->tanggal_pesanan_customer)->format('Y-m-d');;
         }
-        
-
-        
         
 
 
