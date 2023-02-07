@@ -72,6 +72,15 @@
                                     />
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">PPN Ongkir(%) * (KHUSUS E-KATALOG)</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" id="ppn_ongkir" name="ppn_ongkir" value="0"
+                                    />
+                            </div>
+                        </div>
+
                         <div class="form-group row">
                             <label class="col-lg-2 col-form-label">Keterangan</label>
                             <div class="col-lg-10">
@@ -170,6 +179,16 @@
                                     />
                             </div>
                         </div>
+
+                        
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">PPN Ongkir(%) * (KHUSUS E-KATALOG)</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" id="ppn_ongkir" name="ppn_ongkir" value="0"
+                                    />
+                            </div>
+                        </div>
+                        
                         <div class="form-group row">
                             <label class="col-lg-2 col-form-label">Keterangan</label>
                             <div class="col-lg-10">

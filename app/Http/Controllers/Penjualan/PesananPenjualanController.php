@@ -217,6 +217,7 @@ class PesananPenjualanController extends Controller
 
     public function inputtempso(Request $request)
     {
+        $ppnOngkir=0;
         $datas = $request->all();
     
         $harga1 = $request->hargajual;        
@@ -229,12 +230,15 @@ class PesananPenjualanController extends Controller
             $harga = $harga / (1 + $request->ppn/100);
         }
 
-        $subtotal = $request->qty * $harga;
-
 
         $ongkir1 = $request->ongkir;
         $ongkir2 = str_replace('.', '', $ongkir1);
         $ongkir = str_replace(',', '.', $ongkir2) * 1;
+
+        if ($request->ppn_ongkir > 0) {
+            $ppnOngkir += $ongkir * $request->ppn_ongkir/100;   
+            $ongkir +=$ppnOngkir;         
+        }
 
         $subtotal = $request->qty * $harga;
         $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
@@ -312,17 +316,20 @@ class PesananPenjualanController extends Controller
         $harga1 = $request->hargajual;        
         $harga2 = str_replace('.', '', $harga1);
         $harga = str_replace(',', '.', $harga2) * 1;
-        $subtotal = $request->qty * $harga;
-
+       
         if ($request->ppn > 0) {
-            $harga = $harga / (1 + $request->ppn/100);
-            
+            $harga = $harga / (1 + $request->ppn/100);            
         }
 
         $ongkir1 = $request->ongkir;
         $ongkir2 = str_replace('.', '', $ongkir1);
         $ongkir = str_replace(',', '.', $ongkir2) * 1;
 
+        if ($request->ppn_ongkir > 0) {
+            $ongkir = $ongkir / (1 + $request->ppn_ongkir/100);            
+        }
+
+        $subtotal = $request->qty * $harga;
         $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
         $total = $subtotal - $total_diskon;        
                 

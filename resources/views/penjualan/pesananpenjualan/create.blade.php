@@ -279,6 +279,7 @@
         var diskon_persen = document.getElementById('diskon_persen').value;
         var diskon_rp = document.getElementById('diskon_rp').value;
         var ongkir = document.getElementById('ongkir').value;
+        var ppn_ongkir = document.getElementById('ppn_ongkir').value;
         var keterangan = document.getElementById('keterangan').value;
         var ppn =  document.getElementById('ppnprice').value;
 
@@ -297,6 +298,7 @@
                     "diskon_persen": diskon_persen,
                     "diskon_rp": diskon_rp,
                     "ongkir": ongkir,
+                    "ppn_ongkir" : ppn_ongkir,
                     "keterangan": keterangan,
                     "ppn" : ppn,
                      "_token": "{{ csrf_token() }}"
@@ -323,6 +325,7 @@
         var diskon_persen = document.getElementById('diskon_persen').value;
         var diskon_rp = document.getElementById('diskon_rp').value;
         var ongkir = document.getElementById('ongkir').value;
+        var ppn_ongkir = document.getElementById('ppn_ongkir').value;
         var keterangan = document.getElementById('keterangan').value;
         var ppn =  document.getElementById('ppnprice').value;
 
@@ -340,6 +343,7 @@
                     "diskon_persen": diskon_persen,
                     "diskon_rp": diskon_rp,
                     "ongkir": ongkir,
+                    "ppn_ongkir" : ppn_ongkir,
                     "keterangan": keterangan,
                     'ppn' : ppn,
                      "_token": "{{ csrf_token() }}"

@@ -36,7 +36,6 @@ class FakturPenjualan extends Model
         'biaya_lain',
         'no_seri_pajak',
         'no_pajak',
-        'cn_persen'
     ];
 
     protected $dates = ['tanggal'];
