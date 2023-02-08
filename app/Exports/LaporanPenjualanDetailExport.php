@@ -108,7 +108,8 @@ class LaporanPenjualanDetailExport implements FromView
                 ,'cs.nama','p.nama'
                 ,'m.nama','p.kode'
                 ,'km.nama','kp.nama','cc.nama'                
-                )->orderBy('fp.tanggal','desc')->select('fp.*','fpb.qty as qty_det','fpb.satuan as satuan_det','fpb.hargajual as hargajual_det'
+                )->orderBy('fp.tanggal','desc')
+                ->orderBy('fp.kode','desc')->select('fp.*','fpb.qty as qty_det','fpb.satuan as satuan_det','fpb.hargajual as hargajual_det'
                 ,'fpb.diskon_persen as dikson_persen_det','fpb.diskon_rp as diskon_rp_det','fpb.subtotal as subtotal_det'
                 ,'fpb.total as total_det','fpb.total_diskon as total_diskon_det','fpb.ongkir as ongkir_det','fpb.keterangan as keterangan_det','fpb.cn_persen as cn_persen',
                 'fpb.cn_total as cn_total'
@@ -118,6 +119,8 @@ class LaporanPenjualanDetailExport implements FromView
                 ,'m.nama as nama_merk','p.kode as kode_produk'
                 ,'km.nama as nama_komoditas','kp.nama as nama_kategori_pesanan','cc.nama as nama_kategori_customer'
                 )->get();     
+
+
                 // dd($filter[0]);
                 foreach ($filter as $key ) {
                     $totHargaJual += $key->hargajual_det;
