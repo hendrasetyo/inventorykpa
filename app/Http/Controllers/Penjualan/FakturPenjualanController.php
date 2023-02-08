@@ -561,13 +561,11 @@ class FakturPenjualanController extends Controller
             'cn_persen' => $harga,
             'cn_rupiah' => $data['cn_rupiah'],
             'cn_total' => $data['cn_total']
-        ]);   
+        ]);  
 
-        $fakturPenjualan = FakturPenjualan::where('id',$fakturpenjualandetail->faktur_penjualan_id)->first();
-        $totalCNFaktur = $fakturPenjualan->total_cn + $data['cn_total'];        
-
-        $fakturPenjualan->update([
-            'total_cn' => $totalCNFaktur,
+        $totalCN = FakturPenjualanDetail::where('faktur_penjualan_id',$fakturpenjualandetail->faktur_penjualan_id)->sum('cn_total');      
+        FakturPenjualan::where('id',$fakturpenjualandetail->faktur_penjualan_id)->update([
+            'total_cn' => $totalCN,
         ]);
                      
         return back();
@@ -582,20 +580,24 @@ class FakturPenjualanController extends Controller
         $data = $request->except('_token');        
         $subtotal = $fakturpenjualandetail->subtotal;
         $data['cn_rupiah'] = $subtotal * $harga/100;
+      
         
         $data['cn_total'] = $data['cn_rupiah'];
-
-        $totalCN = FakturPenjualanDetail::where('faktur_penjualan_id',$fakturpenjualandetail->faktur_penjualan_id)->sum('cn_total');
-
-        FakturPenjualan::where('id',$fakturpenjualandetail->faktur_penjualan_id)->update([
-            'total_cn' => $totalCN
-        ]);
 
         $fakturpenjualandetail->update([
             'cn_persen' => $harga,
             'cn_rupiah' => $data['cn_rupiah'],
             'cn_total' => $data['cn_total']
         ]);   
+
+        $totalCN = FakturPenjualanDetail::where('faktur_penjualan_id',$fakturpenjualandetail->faktur_penjualan_id)->sum('cn_total');
+        
+
+        FakturPenjualan::where('id',$fakturpenjualandetail->faktur_penjualan_id)->update([
+            'total_cn' => $totalCN
+        ]);
+
+       
         
         return back();
 

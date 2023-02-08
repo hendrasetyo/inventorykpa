@@ -79,7 +79,7 @@
                 <td>{{$item->subtotal_det}}</td>
                 <td>{{$item->total_diskon_det}}</td>
                 <td>{{11/100 * $item->total_det}}</td>
-                <td>{{ $item->total_cn ? $item->total_cn : 0 }}</td>
+                <td>{{$item->cn_total ? $item->cn_total : 0 }}</td>
                 <td>{{$item->total_det + (11/100 * $item->total_det)}}</td>
                 <td>{{$item->ongkir_det}}</td>
                 <td>{{$item->total_det + (11/100 * $item->total_det) - ($item->total_cn ? $item->total_cn : 0)}}</td>
@@ -91,6 +91,9 @@
         @endforeach
 
         <tr>
+           <td></td>
+           <td></td>
+           <td></td>
            <td></td>
            <td></td>
            <td></td>
