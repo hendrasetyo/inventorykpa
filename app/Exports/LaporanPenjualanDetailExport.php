@@ -102,7 +102,7 @@ class LaporanPenjualanDetailExport implements FromView
 
                 $filter = $merkfilter
                 ->orderBy('fp.tanggal','desc')
-                ->orderBy('fpb.created_at','asc')
+                ->orderBy('fpb.id','asc')
                 ->orderBy('fp.kode','desc')                
                 ->select('fp.*','fpb.qty as qty_det','fpb.satuan as satuan_det','fpb.hargajual as hargajual_det'
                 ,'fpb.diskon_persen as dikson_persen_det','fpb.diskon_rp as diskon_rp_det','fpb.subtotal as subtotal_det'
