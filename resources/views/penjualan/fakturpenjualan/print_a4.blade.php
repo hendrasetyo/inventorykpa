@@ -99,17 +99,17 @@
                         $j=1;
                         @endphp
                         @foreach($fakturpenjualandetails as $a)
-                        @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="" style="vertical-align: top">
-                            <td style="font-size: 62%;vertical-align: top">{{ $j}}.</td>
-                            <td style="font-size: 62%;vertical-align: top ">{{ $a->qty }} {{ $a->satuan }}</td>
-                            <td style="font-size: 62%;font-family: DejaVu Sans; sans-serif;vertical-align: top ">{{ $a->products->nama }}</td>
-                            <td style="font-size: 62%; text-align:right;vertical-align: top">{{ number_format($a->hargajual, 0, ',', '.')
+                        @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris) <tr class="" style="vertical-align:top">
+                            <td style="font-size: 62%;">{{ $j}}.</td>
+                            <td style="font-size: 62%; ">{{ $a->qty }} {{ $a->satuan }}</td>
+                            <td style="font-size: 67%;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">{{ $a->products->nama }}</td>
+                            <td style="font-size: 62%; text-align:right;">{{ number_format($a->hargajual, 0, ',', '.')
                                 }}</td>
-                            <td style="font-size: 62%; text-align:right;vertical-align: top">{{ number_format($a->subtotal, 0, ',', '.')
+                            <td style="font-size: 62%; text-align:right;">{{ number_format($a->subtotal, 0, ',', '.')
                                 }}</td>
-                            <td style="font-size: 62%; text-align:right;vertical-align: top">{{ number_format($a->total_diskon, 0, ',',
+                            <td style="font-size: 62%; text-align:right;">{{ number_format($a->total_diskon, 0, ',',
                                 '.') }}</td>
-                            <td style="font-size: 62%; text-align:right;vertical-align: top">{{ number_format($a->total, 0, ',',
+                            <td style="font-size: 62%; text-align:right;">{{ number_format($a->total, 0, ',',
                                 '.') }}</td>
 
 

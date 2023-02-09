@@ -531,7 +531,15 @@ class FakturPenjualanController extends Controller
         $pdf = PDF::loadView('penjualan.fakturpenjualan.print_a4', $data)->setPaper('a4', 'potrait');;
         return $pdf->download($fakturpenjualan->no_kpa.'-'.$fakturpenjualan->kode.'.pdf');
 
-        //return view('penjualan.fakturpenjualan.print_a4', compact('title',  'totalPage'));
+        // return view('penjualan.fakturpenjualan.print_a4', [
+        //     'title' => $title,
+        //     'totalPage' => $totalPage,
+        //     'totalPage' => $totalPage,
+        //     'perBaris' => $perBaris,
+        //     'date' => date('d/m/Y'),
+        //     'fakturpenjualan' => $fakturpenjualan,
+        //     'fakturpenjualandetails' => $fakturpenjualandetails
+        // ]);
     }
 
     public function editCN(FakturPenjualan $fakturpenjualan)
