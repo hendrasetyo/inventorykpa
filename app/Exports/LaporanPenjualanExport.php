@@ -47,7 +47,7 @@ class LaporanPenjualanExport implements FromView
         }else{
             $tanggalFilter = $penjualan;
         }
-        
+
 
         if ($this->data['customer'] == 'all') {            
             $customerfilter = $tanggalFilter;                           
@@ -63,7 +63,6 @@ class LaporanPenjualanExport implements FromView
 
         $dataFilter = $salesfilter->orderBy('fp.tanggal','desc')->select('fp.*','pb.kode as kode_SJ','pp.kode as kode_SP','s.nama as nama_sales','u.name as nama_pembuat','cs.nama as nama_customer')->get();
         
-        // return $dataFilter;
         return view('laporan.penjualan.export.exportpenjualan',[
             'penjualan' => $dataFilter
         ]);
