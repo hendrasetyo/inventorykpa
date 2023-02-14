@@ -205,6 +205,7 @@ class PesananPembelianController extends Controller
     {
         $datas = $request->all();
         $harga1 = $request->hargabeli;
+        $diskon = $request->diskon_persen;
         
         $harga = str_replace(',', '.', $harga1) * 1;
 
@@ -215,12 +216,14 @@ class PesananPembelianController extends Controller
 
         $ongkir1 = $request->ongkir;        
         $ongkir = str_replace(',', '.', $ongkir1) * 1;
+        $diskonpersen = str_replace(',', '.', $diskon) * 1;
 
         $subtotal = $request->qty * $harga;
-        $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
+        $total_diskon = (($subtotal * ($diskonpersen / 100)) + $request->diskon_rp);
         $total = $subtotal - $total_diskon;
 
         $datas['hargabeli'] = $harga;
+        $datas['diskon_persen'] = $diskonpersen;
         $datas['subtotal'] = $subtotal;
         $datas['total_diskon'] = $total_diskon;
         $datas['total'] = $total;
@@ -264,14 +267,17 @@ class PesananPembelianController extends Controller
         $harga1 = $request->hargabeli;
         $harga2 = str_replace('.', '', $harga1);
         $harga = str_replace(',', '.', $harga2) * 1;
+        $diskon = $request->diskon_persen;
 
         if ($request->ppn > 0) {
             $harga = $harga / (1 + $request->ppn/100);
             
         }
 
+        $diskonpersen = str_replace(',', '.', $diskon) * 1;
+
         $subtotal = $request->qty * $harga;
-        $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
+        $total_diskon = (($subtotal * ($diskonpersen / 100)) + $request->diskon_rp);
         $total = $subtotal - $total_diskon;
         $ongkir1 = $request->ongkir;
         $ongkir2 = str_replace('.', '', $ongkir1);
@@ -280,7 +286,7 @@ class PesananPembelianController extends Controller
         $temp = TempPo::find($request->id);
         $temp->hargabeli = $harga;
         $temp->qty = $request->qty;
-        $temp->diskon_persen = $request->diskon_persen;
+        $temp->diskon_persen = $diskonpersen;
         $temp->diskon_rp = $request->diskon_rp;
         $temp->ongkir = $ongkir;
         $temp->keterangan = $request->keterangan;
@@ -740,6 +746,7 @@ class PesananPembelianController extends Controller
         $harga1 = $request->hargabeli;        
         $harga2 = str_replace('.', '', $harga1);
         $harga = str_replace(',', '.', $harga2) * 1;
+        $diskon = $request->diskon_persen;
 
         if ($request->ppn > 0) {
             $harga = $harga / (1 + $request->ppn/100);
@@ -750,8 +757,10 @@ class PesananPembelianController extends Controller
         $ongkir2 = str_replace('.', '', $ongkir1);
         $ongkir = str_replace(',', '.', $ongkir2) * 1;
 
+        $diskonpersen = str_replace(',', '.', $diskon) * 1;
+
         $subtotal = $request->qty * $harga;
-        $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
+        $total_diskon = (($subtotal * ($diskonpersen / 100)) + $request->diskon_rp);
 
         $total = $subtotal - $total_diskon;
 
@@ -759,7 +768,7 @@ class PesananPembelianController extends Controller
         $PP->hargabeli = $harga;
         $PP->qty = $request->qty;
         $PP->qty_sisa = $request->qty;
-        $PP->diskon_persen = $request->diskon_persen;
+        $PP->diskon_persen = $diskonpersen;
         $PP->diskon_rp = $request->diskon_rp;
         $PP->ongkir = $ongkir;
         $PP->keterangan = $request->keterangan;
