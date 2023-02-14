@@ -167,7 +167,6 @@ class LaporanPenjualanController extends Controller
     public function exportPenjualan(Request $request)
     {
         $data = $request->all();        
-        dd($data);
         $now = Carbon::parse(now())->format('Y-m-d');
         return Excel::download(new LaporanPenjualanExport($data), 'laporanpenjualan-'.$now.'.xlsx');
     }
