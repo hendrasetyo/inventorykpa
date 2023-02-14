@@ -104,7 +104,8 @@ class LaporanPenjualanController extends Controller
         $tgl2 = Carbon::parse($data['tgl2'])->format('Y-m-d');                
         $penjualan = DB::table('faktur_penjualans as fp')
                     ->join('pengiriman_barangs as pb','fp.pengiriman_barang_id','=','pb.id')
-                    ->join('users as u','fp.created_by','=','u.id');                    
+                    ->join('users as u','fp.created_by','=','u.id')
+                    ->join('fp.deleted_at','=',null);                    
 
                     
 
