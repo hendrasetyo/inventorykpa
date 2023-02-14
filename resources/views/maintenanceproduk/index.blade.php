@@ -72,6 +72,7 @@
                                     <tr>                                        
                                         <th>Tanggal</th>
                                         <th>Customer</th>
+                                        <th>Aktivitas</th> 
                                         <th>Aktivitas</th>                                       
                                         <th>Action</th>
                                     </tr>
@@ -107,7 +108,7 @@
               processing: true,
               serverSide: true,
               ajax: {
-                    url : "{{ route('kunjungansales.datatable') }}", 
+                    url : "{{ route('maintenanceproduk.datatable') }}", 
                     type : "POST",
                      data: function(params) {
                         params._token = "{{ csrf_token() }}";                
@@ -118,8 +119,9 @@
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                   {data: 'tanggal', name: 'tanggal'},
-                  {data: 'customer', name:'customer'},
-                  {data: 'aktifitas', name:'aktifitas'},
+                  {data: 'nama_lab', name:'nama_lab'},
+                  {data: 'pemohon', name:'pemohon'},
+                  {data: 'bagian', name:'bagian'},
                   {
                       data: 'action', 
                       render: function(data){

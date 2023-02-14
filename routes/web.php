@@ -915,13 +915,30 @@ Route::middleware('has.role')->prefix('teknisi')->group(function () {
     Route::prefix('maintenanceproduk')->group(function () {
         Route::post('/datatable', [MaintenanceController::class, 'datatable'])->name('maintenanceproduk.datatable'); 
         Route::get('/show/{maintenanceproduk}', [MaintenanceController::class, 'show'])->name('maintenanceproduk.show');        
-        Route::get('', [MaintenanceController::class, 'index'])->name('maintenanceproduk.index');          
+        Route::get('', [MaintenanceController::class, 'index'])->name('maintenanceproduk.index');         
+        
+        //############################### CREATE ##########################################################################
+        //=============================== Before Action ===================================================================
+        Route::post('/submitbefore', [MaintenanceController::class, 'submitBefore'])->name('maintenanceproduk.submitbefore');
+        Route::post('/editbefore', [MaintenanceController::class, 'editBefore'])->name('maintenanceproduk.editbefore');
+        Route::post('/updatebefore', [MaintenanceController::class, 'updateBefore'])->name('maintenanceproduk.updatebefore');
+        Route::post('/deletebefore', [MaintenanceController::class, 'deleteBefore'])->name('maintenanceproduk.deletebefore');
+        Route::post('/tabelbefore', [MaintenanceController::class, 'tabelBefore'])->name('maintenanceproduk.tabelbefore');
+
+         //=============================== After Action ===================================================================
+         Route::post('/submitafter', [MaintenanceController::class, 'submitAfter'])->name('maintenanceproduk.submitafter');
+         Route::post('/editafter', [MaintenanceController::class, 'editAfter'])->name('maintenanceproduk.editafter');
+         Route::post('/updateafter', [MaintenanceController::class, 'updateAfter'])->name('maintenanceproduk.updateafter');
+         Route::post('/deleteafter', [MaintenanceController::class, 'deleteAfter'])->name('maintenanceproduk.deleteafter');
+         Route::post('/tabelafter', [MaintenanceController::class, 'tabelAfter'])->name('maintenanceproduk.tabelafter');
         
          
         Route::get('/create', [MaintenanceController::class, 'create'])->name('maintenanceproduk.create');        
-        Route::post('/store', [MaintenanceController::class, 'store'])->name('maintenanceproduk.store');        
+        Route::post('/store', [MaintenanceController::class, 'store'])->name('maintenanceproduk.store'); 
+
         Route::get('/{maintenanceproduk}/edit', [MaintenanceController::class, 'edit'])->name('maintenanceproduk.edit');       
         Route::PUT('/{maintenanceproduk}/update', [MaintenanceController::class, 'update'])->name('maintenanceproduk.update');                   
+        
         Route::post('/delete', [MaintenanceController::class, 'delete'])->name('maintenanceproduk.delete');       
         Route::delete('/delete', [MaintenanceController::class, 'destroy'])->name('maintenanceproduk.destroy');       
         

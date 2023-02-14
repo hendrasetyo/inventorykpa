@@ -198,6 +198,8 @@
     <script src="{{ asset('assets/js/pages/crud/datatables/basic/scrollable.js?v=7.0.6') }}"></script>
     
     <script src="{{ asset('assets/js/pages/features/miscellaneous/sweetalert2.js?v=7.0.6') }}"></script>
+
+    <script src="{{ asset('assets/js/pages/features/miscellaneous/sweetalert2.js?v=7.0.6') }}"></script>
     
     <!--end::Page Scripts-->
     @stack('script')

@@ -29,7 +29,7 @@
         <label class="col-lg-2 col-form-label text-right">Bagian:</label>
         <div class="col-lg-4">
             <div class="input-group date">
-                <input type="text" class="form-control" name="bagian" placeholder="Masukan Nama Bagian"/>
+                <input type="text" name="bagian" class="form-control"  placeholder="Masukan Nama Bagian"/>
             </div>  
             
             @error('bagian')
@@ -41,7 +41,7 @@
         <label class="col-lg-1 col-form-label text-right">Tanggal :</label>
         <div class="col-lg-4">
             <div class="input-group date">
-                <input type="text" class="form-control" name="tanggal" readonly value="{{now()->format('d-m-Y')}}" id="tgl1" required/>
+                <input type="text" name="tanggal" class="form-control"  readonly value="{{now()->format('d-m-Y')}}" id="tgl1" required/>
             </div>            
         </div>
         <label class="col-lg-2 col-form-label text-right">Alamat:</label>
@@ -60,7 +60,7 @@
             <button type="button" class="btn btn-sm btn-danger "><i class="fas fa-volume-up"></i> Sebelum Tindakan</button>
         </div>
         <div class=" mb-3">
-            <a href="javascript:caribarang()" class="btn btn-sm btn-primary"><i class="flaticon2-add"></i>Tambah Barang</a>
+            <a href="javascript:modalbefore()" class="btn btn-sm btn-primary"><i class="flaticon2-add"></i>Tambah Data</a>
         </div>
     </div>
     <div class="form-group row">
@@ -100,7 +100,7 @@
         <label class="col-lg-1 col-form-label text-right">Tanggal Pengerjaan</label>
         <div class="col-lg-4">
             <div class="input-group  date">
-                <input type="date" class="form-control" name="tanggal" value="{{now()->format('d-m-Y')}}" id="tgl1" required/>
+                <input type="text" name="tanggal_pengerjaan" class="form-control" placeholder="Top left" id="kt_datepicker_4_1"   value="{{now()->format('d/m/Y')}}" required/>
             </div>            
         </div>
     </div>
@@ -111,8 +111,8 @@
         </div>
         <label class="col-lg-1 col-form-label text-right">Tanggal Selesai Pengerjaan</label>
         <div class="col-lg-4">
-            <div class="input-group date">
-                <input type="date" class="form-control" name="tanggal"  value="{{now()->format('d-m-Y')}}" id="tgl1" required/>
+            <div class="input-group date">        
+                <input type="text" name="tanggal_selesai_pengerjaan" class="form-control" placeholder="Top left" id="kt_datepicker_4_2"   value="{{now()->format('d/m/Y')}}" required/>
             </div>            
         </div>
     </div>
@@ -123,13 +123,13 @@
             <button type="button" class="btn btn-sm btn-success"><i class="fas fa-volume-up"></i> Setelah Tindakan</button>
         </div>
         <div class=" mb-3">
-            <a href="javascript:caribarang()" class="btn btn-sm btn-primary"><i class="flaticon2-add"></i>Tambah Barang</a>
+            <a href="javascript:modalafter()" class="btn btn-sm btn-primary"><i class="flaticon2-add"></i>Tambah Data</a>
         </div>
     </div>
     
     <div class="form-group row">
         <div class="col-lg-12">
-            <div id="tabel_detil" class="table-responsive">
+            <div id="tabel_detil_after" class="table-responsive">
                 <table class="table">
                     <thead class="thead-light">
                         <tr>
@@ -153,7 +153,7 @@
         <div class="col-lg-6">
             <label class="">Saran:</label>
             <div class="kt-input-icon kt-input-icon--right">
-                <textarea class="form-control" name="keterangan" id="keterangan"></textarea>
+                <textarea class="form-control" name="saran" id="keterangan"></textarea>
             </div>
 
         </div>

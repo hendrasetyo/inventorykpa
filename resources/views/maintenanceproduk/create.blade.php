@@ -133,51 +133,12 @@
         <!-- Modal-->
     </div>
     <div id="modal-caribarang"></div>
-    <div id="modal-setbarang"></div>
-    <div id="modal-setdiskon"></div>
-    <div id="modal-setppn"></div>
+    <div id="modal-before"></div>
+    <div id="modal-after"></div>
+    @include('maintenanceproduk.modal._form-before-action')
+    @include('maintenanceproduk.modal._form-after-action')
 
-    <div id="xcontohmodal">
-        <!-- Modal-->
 
-        <div class="modal fade" id="caribarang" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Cari Barang</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <i aria-hidden="true" class="ki ki-close"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body" style="height: 400px;">
-
-                        <table class="table  yajra-datatable collapsed ">
-                            <thead class="datatable-head">
-                                <tr>
-                                    <th>Kode</th>
-                                    <th>Nama Barang</th>
-                                    <th>Katalog</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light-primary font-weight-bold"
-                            data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <script>
-
-        </script>
-        <!-- Modal-->
-    </div>
     @endsection
     @push('script')
     <script src="{{ asset('/assets/js/pages/crud/forms/widgets/select2.js?v=7.0.6"') }}"></script>
@@ -193,24 +154,37 @@
         txt.innerHTML=data;
         return txt.value;
     }
-    function caribarang(){
-        $('#caribarang').modal('show');
+    function modalbefore(){
+        $('#modalbefore').modal('show');
+    }
+    function modalafter(){
+        $('#modalafter').modal('show');
         
     }
-    function pilihBarang(data_id){
-        $('#caribarang').modal('hide');
-        //alert(data_id);
+
+    function submitBefore() {
+        var nama_alat = document.getElementById('nama_alat').value;
+        var no_seri = document.getElementById('no_seri').value;
+        var keluhan = document.getElementById('keluhan').value;
+
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.setbarang') }}',
+                url: '{{ route('maintenanceproduk.submitbefore') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {id:data_id, "_token": "{{ csrf_token() }}"},
+                data: {
+                    'nama_alat':nama_alat,
+                    'no_seri' : no_seri,
+                    'keluhan':keluhan, 
+                    "_token": "{{ csrf_token() }}"},
                 
                 success: function (data){
-                    console.log(data);
-                    $('#modal-setbarang').html(data);
-                    $('#setBarangModal').modal('show');
+                    $('#modalbefore').modal('hide');
+                    $('#nama_alat').val('');
+                    $('#no_seri').val('');
+                    $('#keluhan').val('');
+
+                    loadData();
                 },
                 error: function(data){
                     console.log(data);
@@ -218,33 +192,97 @@
         });
     }
 
-    function editBarang(data_id){
+    function deletebefore(id) {
+        Swal.fire({
+        title: "Apakah Anda Yakin ?",
+        text: "Kamu Tidak Akan Bisa Mengembalikan Data Ini !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Hapus!"
+        }).then(function(result) {
+            if (result.value) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('maintenanceproduk.deletebefore') }}',
+                    dataType: 'html',
+                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                    data: {
+                        'id_temp':id,
+                        "_token": "{{ csrf_token() }}"},
+                    
+                    success: function (data){
+                        Swal.fire(
+                                "Terhapus!",
+                                "Anda Berhasil menghapus Data",
+                                "success"
+                                 )
+                        loadData();
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
+                });
+
+               
+            }
+        });
+    }
+
+    function editBefore(id) {
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.editbarang') }}',
+                url: '{{ route('maintenanceproduk.editbefore') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {id:data_id, "_token": "{{ csrf_token() }}"},
-                
+                data: {id:id, "_token": "{{ csrf_token() }}"},                
                 success: function (data){
-                    console.log(data);
-                    $('#modal-setbarang').html(data);
-                    $('#setBarangModal').modal('show');
+                    $('#modal-before').html(data);
+                    $('#modalbeforeedit').modal('show');
                 },
                 error: function(data){
                     console.log(data);
                 }
         });
     }
-    
-    function loadTempSO(){
+
+    function updateBefore(id) {
+        var nama_alat = document.getElementById('nama_alat').value;
+        var no_seri = document.getElementById('no_seri').value;
+        var keluhan = document.getElementById('keluhan').value;
+
         $.ajax({
                 type: 'POST',
-                url: '{{ route('pesananpenjualan.loadtempso') }}',
+                url: '{{ route('maintenanceproduk.updatebefore') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
-                    "id" : "",
+                    'id' : id,
+                    'nama_alat':nama_alat,
+                    'no_seri' : no_seri,
+                    'keluhan':keluhan, 
+                    "_token": "{{ csrf_token() }}"},
+                
+                success: function (data){
+                    $('#modalbeforeedit').modal('hide');
+                    $('#nama_alat').val('');
+                    $('#no_seri').val('');
+                    $('#keluhan').val('');
+
+                    loadData();
+                },
+                error: function(data){
+                    console.log(data);
+                }
+        });
+    }
+
+    function tabelBefore(){
+        $.ajax({
+                type: 'POST',
+                url: '{{ route('maintenanceproduk.tabelbefore') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {
                      "_token": "{{ csrf_token() }}"
                     },
                 
@@ -257,6 +295,147 @@
                     console.log(data);
                 }
         });
+    }
+    // ################################################# AFTER #############################################################
+    function submitAfter() {
+        var nama_sparepart = document.getElementById('nama_sparepart').value;
+        var qty = document.getElementById('qty').value;
+        var pekerjaan = document.getElementById('pekerjaan').value;
+
+        $.ajax({
+                type: 'POST',
+                url: '{{ route('maintenanceproduk.submitafter') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {
+                    'nama_sparepart':nama_sparepart,
+                    'qty' : qty,
+                    'pekerjaan':pekerjaan, 
+                    "_token": "{{ csrf_token() }}"},
+                
+                success: function (data){
+                    $('#modalafter').modal('hide');
+                    $('#nama_sparepart').val('');
+                    $('#qty').val('');
+                    $('#pekerjaan').val('');
+                    loadData();
+                },
+                error: function(data){
+                    console.log(data);
+                }
+        });
+    }
+
+    function tabelAfter(){
+        $.ajax({
+                type: 'POST',
+                url: '{{ route('maintenanceproduk.tabelafter') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {
+                     "_token": "{{ csrf_token() }}"
+                    },
+                
+                success: function (data){
+                    console.log(data);
+                    $('#tabel_detil_after').html(data);
+
+                },
+                error: function(data){
+                    console.log(data);
+                }
+        });
+    }
+
+    function deleteAfter(id) {
+        Swal.fire({
+        title: "Apakah Anda Yakin ?",
+        text: "Kamu Tidak Akan Bisa Mengembalikan Data Ini !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Hapus!"
+        }).then(function(result) {
+            if (result.value) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('maintenanceproduk.deleteafter') }}',
+                    dataType: 'html',
+                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                    data: {
+                        'id_temp':id,
+                        "_token": "{{ csrf_token() }}"},
+                    
+                    success: function (data){
+                        Swal.fire(
+                                "Terhapus!",
+                                "Anda Berhasil menghapus Data",
+                                "success"
+                                 )
+                        loadData();
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
+                });               
+            }
+        });
+    }
+
+    function editAfter(id) {
+        $.ajax({
+                type: 'POST',
+                url: '{{ route('maintenanceproduk.editafter') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {id:id, "_token": "{{ csrf_token() }}"},                
+                success: function (data){
+                    $('#modal-after').html(data);
+                    $('#modalafteredit').modal('show');
+                },
+                error: function(data){
+                    console.log(data);
+                }
+        });
+    }
+
+    function updateAfter() {
+        var nama_sparepart = document.getElementById('nama_sparepart').value;
+        var qty = document.getElementById('qty').value;
+        var pekerjaan = document.getElementById('pekerjaan').value;
+        var id = document.getElementById('id_temp_after').value;
+
+        $.ajax({
+                type: 'POST',
+                url: '{{ route('maintenanceproduk.updateafter') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {
+                    'id' : id,
+                    'nama_sparepart':nama_sparepart,
+                    'qty' : qty,
+                    'pekerjaan':pekerjaan, 
+                    "_token": "{{ csrf_token() }}"},
+                
+                success: function (data){
+                    $('#modalafteredit').modal('hide');
+                    $('#nama_sparepart').val('');
+                    $('#qty').val('');
+                    $('#pekerjaan').val('');
+                    loadData();
+                },
+                error: function(data){
+                    console.log(data);
+                }
+        });
+    }
+
+  
+    
+    
+
+    function loadData() {
+        tabelBefore();
+        tabelAfter();
     }
 
     </script>

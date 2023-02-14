@@ -23,6 +23,9 @@ class LaporanPenjualanExport implements FromView
         $penjualan = DB::table('faktur_penjualans as fp')
                     ->join('pengiriman_barangs as pb','fp.pengiriman_barang_id','=','pb.id')
                     ->join('users as u','fp.created_by','=','u.id')
+                    ->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')
+                    ->join('sales as s','pp.sales_id','=','s.id')
+                    ->join('customers as cs','fp.customer_id','=','cs.id')            
                     ->where('fp.deleted_at',null);
                     
         
@@ -45,38 +48,17 @@ class LaporanPenjualanExport implements FromView
             $tanggalFilter = $penjualan;
         }
         
-        
-    
-        // dd($penjualan->get());
 
         if ($this->data['customer'] == 'all') {            
-
-            $customerfilter = $tanggalFilter->join('customers as cs','fp.customer_id','=','cs.id');
-
-            if ($this->data['sales'] == 'all') {
-                $salesfilter = $customerfilter->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')
-                              ->join('sales as s','pp.sales_id','=','s.id');                
-                              
-            }else{
-                $salesfilter = $customerfilter->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')
-                              ->join('sales as s','pp.sales_id','=','s.id')
-                              ->where('pp.sales_id','=',$this->data['sales']);                
-            }
-                       
-            
+            $customerfilter = $tanggalFilter;                           
         }else{
-            $customerfilter = $penjualan->join('customers as cs','fp.customer_id','=','cs.id')
-                              ->where('fp.customer_id','=',$this->data['customer']);
+            $customerfilter = $tanggalFilter->where('fp.customer_id','=',$this->data['customer']);
+        }
 
-            if ($this->data['sales'] == 'all') {  
-                $salesfilter = $customerfilter->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')
-                            ->join('sales as s','pp.sales_id','=','s.id');
-            }else{
-                $salesfilter = $customerfilter->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')
-                                ->join('sales as s','pp.sales_id','=','s.id')
-                                ->where('pp.sales_id','=',$this->data['sales']);                
-            }         
-
+        if ($this->data['sales'] == 'all') {
+            $salesfilter = $customerfilter;                                          
+        }else{
+            $salesfilter = $customerfilter->where('pp.sales_id','=',$this->data['sales']);                
         }
 
         $dataFilter = $salesfilter->orderBy('fp.tanggal','desc')->select('fp.*','pb.kode as kode_SJ','pp.kode as kode_SP','s.nama as nama_sales','u.name as nama_pembuat','cs.nama as nama_customer')->get();

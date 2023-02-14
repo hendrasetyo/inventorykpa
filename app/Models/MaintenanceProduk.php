@@ -14,7 +14,6 @@ class MaintenanceProduk extends Model
     protected $table = 'maintenance_produk';
     protected $fillable = [
         'nama_lab',
-        'customer',
         'pemohon',
         'bagian',
         'telepon',
