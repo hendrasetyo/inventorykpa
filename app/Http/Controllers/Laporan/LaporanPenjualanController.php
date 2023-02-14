@@ -105,7 +105,7 @@ class LaporanPenjualanController extends Controller
         $penjualan = DB::table('faktur_penjualans as fp')
                     ->join('pengiriman_barangs as pb','fp.pengiriman_barang_id','=','pb.id')
                     ->join('users as u','fp.created_by','=','u.id')
-                    ->join('fp.deleted_at','=',null);                    
+                    ->where('fp.deleted_at','=',null);                    
 
                     
 
