@@ -206,7 +206,7 @@ class FakturPenjualanController extends Controller
         $total_diskon_header = ($subtotal_header * ($diskon_persen_so / 100)) + $diskon_rupiah_so;
         $total_header = $subtotal_header - $total_diskon_header + $ongkir_header;
         $ppn_header = round(($total_header * ($ppn_so / 100)), 2);
-        $grandtotal_header = $total_header + $ppn_header + $ongkir_header;
+        $grandtotal_header = $total_header + $ppn_header ;
 
         $nopajak = NoFakturPajak::where('status','Aktif')->get();
         $nokpa = NoKPA::where('status','Aktif')->get();
