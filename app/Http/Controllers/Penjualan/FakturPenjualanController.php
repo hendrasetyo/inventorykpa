@@ -285,9 +285,9 @@ class FakturPenjualanController extends Controller
             ->where('user_id', '=', Auth::user()->id)->sum('total_diskon');
 
         $total_diskon_header = ($subtotal_header * ($diskon_persen_so / 100)) + $diskon_rupiah_so;
-        $total_header = $subtotal_header - $total_diskon_header;
+        $total_header = $subtotal_header - $total_diskon_header+$ongkir_header;
         $ppn_header = round(($total_header * ($ppn_so / 100)), 2);
-        $grandtotal_header = $total_header + $ppn_header + $ongkir_header + $biayalainlain;
+        $grandtotal_header = $total_header + $ppn_header  + $biayalainlain;
 
         $datas['kode'] = $kode;
         $datas['tanggal'] = $tanggal;
