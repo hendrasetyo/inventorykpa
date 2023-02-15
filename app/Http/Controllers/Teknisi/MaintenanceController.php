@@ -33,8 +33,7 @@ class MaintenanceController extends Controller
 
     public function datatable(Request $request)
     {
-        $maintenance = MaintenanceProduk::all();
-        dd($maintenance);
+        $maintenance = MaintenanceProduk::with(['creator','updater']);
 
         return DataTables::of($maintenance)
                 ->addIndexColumn()
@@ -43,7 +42,7 @@ class MaintenanceController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $id = $row->id;
-                    return view('kunjungansales.partial._form-action',[
+                    return view('maintenanceproduk.partial._action',[
                         'id' => $id
                     ]);
                 })
@@ -189,11 +188,11 @@ class MaintenanceController extends Controller
             }
 
             if ($request->tanggal_pengerjaan) {
-                $tanggal_pengerjaan = Carbon::parse($request->tanggal_pengerjaan)->format('Y-m-d');
+                $tanggal_pengerjaan = Carbon::createFromFormat('d/m/Y',$request->tanggal_pengerjaan)->format('Y-m-d');
             }
 
             if ($request->tanggal_selesai_pengerjaan) {
-                $tanggal_pengerjaan = Carbon::parse($request->tanggal_selesai_pengerjaan)->format('Y-m-d');
+                $tanggal_pengerjaan = Carbon::createFromFormat('d/m/Y',$request->tanggal_selesai_pengerjaan)->format('Y-m-d');
             }
 
             $maintenance = MaintenanceProduk::create([
@@ -227,15 +226,44 @@ class MaintenanceController extends Controller
                 ]);
             }
 
-            $tempAfter->delete();
-            $tempBefore->delete();
+            tempSebelumKondisi::where('user_id',auth()->user()->id)->delete();
+            tempSetelahKondisi::where('user_id',auth()->user()->id)->delete();
 
             DB::commit();
+
             return redirect()->route('maintenanceproduk.index')->with('sukses','Data Berhasil Ditambahkan');
             
         } catch (Exception $th) {
             return back()->with('error',$th->getMessage());
         }
+    }
+
+
+    public function destroy(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $id = $request->id;
+            $maintenance = MaintenanceProduk::where('id',$id)->with(['sebelumKondisi','setelahKondisi'])->first();
+            
+            if ($maintenance) {
+                $maintenance->sebelumKondisi()->delete();
+                $maintenance->setelahKondisi()->delete();
+                $maintenance->delete();
+
+                DB::commit();
+    
+                return response()->json('Data Berhasil Dihapus');
+            }else{
+                return response()->json('Data Tidak Ditemukan');
+            }
+
+        } catch (Exception $th) {
+            DB::rollBack();
+            return response()->json($th->getMessage());
+        }
+      
+
     }
 
 

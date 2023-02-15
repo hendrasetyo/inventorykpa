@@ -175,9 +175,10 @@ class FakturPenjualanController extends Controller
 
             $subtotal = $hargajual * $sj->qty;
             $totaldiskon = (($subtotal * ($diskon_persen / 100)) + $diskon_rp);
+            $ongkir_det = $ongkir_det + $ongkir;
             $total = $subtotal - $totaldiskon;
             $total_det = $total_det + $total;
-            $ongkir_det = $ongkir_det + $ongkir;
+          
 
             $temp->product_id = $sj->product_id;
             $temp->pengiriman_barang_id = $sj->pengiriman_barang_id;
@@ -203,7 +204,7 @@ class FakturPenjualanController extends Controller
         $subtotal_header = $total_det;
         $ongkir_header = $ongkir_det;
         $total_diskon_header = ($subtotal_header * ($diskon_persen_so / 100)) + $diskon_rupiah_so;
-        $total_header = $subtotal_header - $total_diskon_header;
+        $total_header = $subtotal_header - $total_diskon_header+$ongkir_header;
         $ppn_header = round(($total_header * ($ppn_so / 100)), 2);
         $grandtotal_header = $total_header + $ppn_header + $ongkir_header;
 

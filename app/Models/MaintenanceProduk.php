@@ -11,7 +11,7 @@ class MaintenanceProduk extends Model
 {
     use HasFactory,Blameable,SoftDeletes;
 
-    protected $table = 'maintenance_produk';
+    protected $table = 'maintenance';
     protected $fillable = [
         'nama_lab',
         'pemohon',
@@ -19,11 +19,10 @@ class MaintenanceProduk extends Model
         'telepon',
         'tanggal',
         'alamat',
-        'saran',
         'tanggal_dikerjakan',
         'tanggal_selesai_dikerjakan',
         'tempat_pengerjaan',
-        'saran'
+        'saran' 
     ];
     
     public function sebelumKondisi()
@@ -34,6 +33,17 @@ class MaintenanceProduk extends Model
     public function setelahKondisi()
     {
         return $this->hasMany(MaintenanceSetelahKondisi::class, 'maintenance_id');
+    }
+
+    
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updater()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
     }
 
     

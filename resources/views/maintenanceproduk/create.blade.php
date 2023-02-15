@@ -11,10 +11,10 @@
     <div class="d-flex flex-column-fluid mt-10">
         <!--begin::Container-->
         <div class=" container ">
-            @if (session('status'))
+            @if (session('error'))
             <div class="alert alert-custom alert-success fade show pb-2 pt-2" role="alert">
                 <div class="alert-icon"><i class="flaticon-warning"></i></div>
-                <div class="alert-text">{{ session('status') }}</div>
+                <div class="alert-text">{{ session('error') }}</div>
                 <div class="alert-close">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true"><i class="ki ki-close"></i></span>

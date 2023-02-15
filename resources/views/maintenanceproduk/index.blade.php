@@ -169,5 +169,40 @@
                 }
             });
         }
+
+    function deleteData(id) {
+        console.log(id);
+        Swal.fire({
+        title: "Apakah Anda Yakin ?",
+        text: "Kamu Tidak Akan Bisa Mengembalikan Data Ini !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Hapus!"
+        }).then(function(result) {
+            if (result.value) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('maintenanceproduk.delete') }}',
+                    dataType: 'html',
+                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                    data: {
+                        'id_temp':id,
+                        "_token": "{{ csrf_token() }}"},
+                    
+                    success: function (data){
+                        Swal.fire(
+                                "Terhapus!",
+                                "Anda Berhasil menghapus Data",
+                                "success"
+                                 )
+                        loadData();
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
+                });               
+            }
+        });
+    }
 </script>
 @endpush

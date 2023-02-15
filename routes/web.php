@@ -939,8 +939,8 @@ Route::middleware('has.role')->prefix('teknisi')->group(function () {
         Route::get('/{maintenanceproduk}/edit', [MaintenanceController::class, 'edit'])->name('maintenanceproduk.edit');       
         Route::PUT('/{maintenanceproduk}/update', [MaintenanceController::class, 'update'])->name('maintenanceproduk.update');                   
         
-        Route::post('/delete', [MaintenanceController::class, 'delete'])->name('maintenanceproduk.delete');       
-        Route::delete('/delete', [MaintenanceController::class, 'destroy'])->name('maintenanceproduk.destroy');       
+        Route::post('/delete', [MaintenanceController::class, 'destroy'])->name('maintenanceproduk.delete');       
+        // Route::delete('/delete', [MaintenanceController::class, 'destroy'])->name('maintenanceproduk.destroy');       
         
     });
 });
