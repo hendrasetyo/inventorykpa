@@ -171,7 +171,6 @@
         }
 
     function deleteData(id) {
-        console.log(id);
         Swal.fire({
         title: "Apakah Anda Yakin ?",
         text: "Kamu Tidak Akan Bisa Mengembalikan Data Ini !",
@@ -186,7 +185,7 @@
                     dataType: 'html',
                     headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                     data: {
-                        'id_temp':id,
+                        'id':id,
                         "_token": "{{ csrf_token() }}"},
                     
                     success: function (data){
@@ -195,7 +194,8 @@
                                 "Anda Berhasil menghapus Data",
                                 "success"
                                  )
-                        loadData();
+                       
+                        $('.yajra-datatable').DataTable().ajax.reload(null,false);
                     },
                     error: function(data){
                         console.log(data);

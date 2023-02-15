@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MaintenanceSebelumKondisi extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $table = 'maintenance_sebelum_kondisi';
     protected $fillable  = [
         'maintenance_id',
