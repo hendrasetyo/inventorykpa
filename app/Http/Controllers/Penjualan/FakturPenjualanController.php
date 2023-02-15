@@ -117,10 +117,10 @@ class FakturPenjualanController extends Controller
         $tglNow = Carbon::now()->format('d-m-Y');
 
         //delete temp
-        $deletedTempDetil = TempFaktursos::where('created_at', '<', Carbon::today())->delete();
-        $deletedTempBiaya = TempBiaya::where('created_at', '<', Carbon::today())->delete();
-        $deletedTempDetil = TempFaktursos::where('user_id', '=', Auth::user()->id)->delete();
-        $deletedTempBiaya = TempBiaya::where('user_id', '=', Auth::user()->id)->delete();        
+        $deletedTempDetil = TempFaktursos::where('created_at', '<', Carbon::today())->where('user_id',auth()->user()->id)->delete();
+        $deletedTempBiaya = TempBiaya::where('created_at', '<', Carbon::today())->where('user_id',auth()->user()->id)->delete();
+        $deletedTempDetil = TempFaktursos::where('user_id', '=', Auth::user()->id)->where('user_id',auth()->user()->id)->delete();
+        $deletedTempBiaya = TempBiaya::where('user_id', '=', Auth::user()->id)->where('user_id',auth()->user()->id)->delete();        
 
 
         //masukkan tempDetil Faktur
