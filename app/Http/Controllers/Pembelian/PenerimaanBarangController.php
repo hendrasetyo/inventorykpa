@@ -48,6 +48,9 @@ class PenerimaanBarangController extends Controller
                 ->addColumn('kode_po', function (PenerimaanBarang $pb) {
                     return $pb->po->kode;
                 })
+                ->addColumn('no_so', function (PenerimaanBarang $pb) {
+                    return $pb->po->no_so;
+                })
                 ->addColumn('status', function (PenerimaanBarang $pb) {
                     return $pb->statusPB->nama;
                 })

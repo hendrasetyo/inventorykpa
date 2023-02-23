@@ -16,6 +16,7 @@ class ProductExpiredImport implements ToModel
 {
     use CodeTrait;
     protected $no=0;
+    protected $id= [];
    
 
     public function model(array $row)
@@ -31,23 +32,28 @@ class ProductExpiredImport implements ToModel
               $product = Product::where('kode',$row[0])->first();   
               if ($product) {
                 
-                   // stok exp berdasarkan exp nya 
+                // stok exp berdasarkan exp nya 
                 // insert masing-masing exp stok dan exp date sesuai dengan product id dan tanggal 
                 // cek jika ada tanggal yang sama maka ditambah
-                $tanggal = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[4]))->format('Y-m-d');                
+                    $tanggal = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[4]))->format('Y-m-d');               
+                    $now =  Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(today()))->format('Y-m-d');
+                   
                 
-                // ubah stok yang lama menjadi 0
-                     StokExp::where('product_id',$product->id)                    
-                            ->update([
-                                'qty' => 0
-                            ]);   
-                         
+                    // ubah stok yang lama menjadi 0                      
+                    StokExp::where('product_id',$product->id)     
+                        ->where('updated_at','<=',$now)            
+                        ->update([
+                           'qty' => 0
+                        ]); 
+
                     //tidak ada data, harus insert stok
                     $datas['tanggal'] = $tanggal;
                     $datas['product_id'] = $product->id;
                     $datas['qty'] = $row[2];                    
                     $datas['lot'] = $row[3];         
-                    $id_stokExp = StokExp::create($datas)->id;
+                    $id_stokExp = StokExp::create($datas)->id;                    
+                    
+                    
 
                     //insert detail;
                     $stokExpDetail = new StokExpDetail;
@@ -63,9 +69,7 @@ class ProductExpiredImport implements ToModel
                     $tahun = Carbon::now()->format('y');
                     $bulan = Carbon::now()->format('m');
         
-                    $kode = 'AJS'.$tahun.$bulan.rand(1000,9999) ;        
-
-                    
+                    $kode = 'AJS'.$tahun.$bulan.rand(1000,9999);
 
                     // save di tabel adjustmen stok
                     $ajs = AdjustmentStok::create([
@@ -90,11 +94,18 @@ class ProductExpiredImport implements ToModel
                         'stok' => $row[5]
                     ]);
               }
+
+              
              
         }
 
+        
+
+      
+
 
         $this->no++;
+        
 
         return ;
     }

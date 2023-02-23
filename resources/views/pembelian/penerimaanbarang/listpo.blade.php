@@ -65,6 +65,7 @@
                                 <thead class="datatable-head">
                                     <tr>
                                         <th>Kode</th>
+                                        <th>No KPA</th>
                                         <th>Tanggal</th>
                                         <th>Supplier</th>
                                         <th>Status</th>
@@ -110,6 +111,7 @@
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                   {data: 'kode', name: 'kode'},
+                  {data: 'no_so', name: 'no_so'},
                   {data: 'tanggal', name: 'tanggal'},
                   {data: 'supplier', name: 'suppliers.nama'},
                   {data: 'status', name: 'statusPO.nama'},

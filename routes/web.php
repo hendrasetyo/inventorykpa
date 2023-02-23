@@ -55,19 +55,6 @@ use App\Http\Controllers\Penjualan\BiayaLainController;
 use App\Http\Controllers\Penjualan\LabaRugiController;
 use App\Http\Controllers\Permissions\AssignPermissionController;
 use App\Http\Controllers\Teknisi\MaintenanceController;
-use App\Models\CanvassingPesanan;
-use App\Models\InventoryTransaction;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 
 Route::middleware('auth', 'verified')->group(function () {
@@ -936,11 +923,27 @@ Route::middleware('has.role')->prefix('teknisi')->group(function () {
         Route::get('/create', [MaintenanceController::class, 'create'])->name('maintenanceproduk.create');        
         Route::post('/store', [MaintenanceController::class, 'store'])->name('maintenanceproduk.store'); 
 
-        Route::get('/{maintenanceproduk}/edit', [MaintenanceController::class, 'edit'])->name('maintenanceproduk.edit');       
-        Route::PUT('/{maintenanceproduk}/update', [MaintenanceController::class, 'update'])->name('maintenanceproduk.update');                   
+        // ##################################### EDIT ###################################################################
+        // ==================================== Before Action ===========================================================
+        Route::post('/submitbefore', [MaintenanceController::class, 'EditsubmitBefore'])->name('maintenanceproduk.edit.submitbefore');
+        Route::post('/editbefore', [MaintenanceController::class, 'editDataBefore'])->name('maintenanceproduk.edit.editbefore');
+        Route::post('/updatebefore', [MaintenanceController::class, 'updateDataBefore'])->name('maintenanceproduk.edit.updatebefore');
+        Route::post('/deletebefore', [MaintenanceController::class, 'destroyEditBefore'])->name('maintenanceproduk.edit.deletebefore');
+        Route::post('/tabelbefore', [MaintenanceController::class, 'loadTabelEditBefore'])->name('maintenanceproduk.edit.tabelbefore');
+
+         //=============================== After Action ===================================================================
+         Route::post('/submitafter', [MaintenanceController::class, 'EditsubmitAfter'])->name('maintenanceproduk.edit.submitafter');
+         Route::post('/editafter', [MaintenanceController::class, 'editDataAfter'])->name('maintenanceproduk.edit.editafter');
+         Route::post('/updateafter', [MaintenanceController::class, 'updateDataAfter'])->name('maintenanceproduk.edit.updateafter');
+         Route::post('/deleteafter', [MaintenanceController::class, 'destroyEditAfter'])->name('maintenanceproduk.edit.deleteafter');
+         Route::post('/tabelafter', [MaintenanceController::class, 'loadTabelEditAfter'])->name('maintenanceproduk.edit.tabelafter');
+
+         Route::get('/{maintenanceproduk}/edit', [MaintenanceController::class, 'edit'])->name('maintenanceproduk.edit');       
+         Route::PUT('/{maintenanceproduk}/update', [MaintenanceController::class, 'update'])->name('maintenanceproduk.update');                   
         
-        Route::post('/delete', [MaintenanceController::class, 'destroy'])->name('maintenanceproduk.delete');       
-        // Route::delete('/delete', [MaintenanceController::class, 'destroy'])->name('maintenanceproduk.destroy');       
+         Route::post('/delete', [MaintenanceController::class, 'destroy'])->name('maintenanceproduk.delete');       
+
+         Route::get('/{maintenanceproduk}/print', [MaintenanceController::class, 'print'])->name('maintenanceproduk.print');                       
         
     });
 });

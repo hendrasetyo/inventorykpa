@@ -87,6 +87,7 @@
                                         <th>Kode</th>
                                         <th>Tanggal</th>
                                         <th>No. Surat Pesanan</th>
+                                        <th>No KPA</th>
                                         <th>No. Penerimaan</th>
                                         <th>Supplier</th>
                                         <th style="width: 15%">Action</th>
@@ -132,6 +133,7 @@
                   {data: 'kode', name: 'kode'},
                   {data: 'tanggal', name: 'tanggal'},
                   {data: 'kode_po', name: 'po.kode'},
+                  {data: 'no_so', name: 'po.no_so'},
                   {data: 'kode_pb', name: 'pb.kode'},
                   {data: 'supplier', name: 'suppliers.nama'},
                   {

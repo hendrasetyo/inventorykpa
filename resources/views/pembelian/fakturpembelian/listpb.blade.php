@@ -77,6 +77,7 @@
                                 <thead class="datatable-head">
                                     <tr>
                                         <th>Kode Penerimaan</th>
+                                        <th>No KPA</th>
                                         <th>Tanggal Penerimaan</th>
                                         <th>Supplier</th>
                                         <th>Status</th>
@@ -122,6 +123,7 @@
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                   {data: 'kode', name: 'kode'},
+                  {data: 'no_so', name: 'PO.no_so'},
                   {data: 'tanggal', name: 'tanggal'},
                   {data: 'supplier', name: 'suppliers.nama'},
                   {data: 'status', name: 'statusPB.nama'},

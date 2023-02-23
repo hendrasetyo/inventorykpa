@@ -111,8 +111,6 @@
                                 '.') }}</td>
                             <td style="font-size: 62%; text-align:right;">{{ number_format($a->total, 0, ',',
                                 '.') }}</td>
-
-
         </tr>
 
         @endif

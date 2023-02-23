@@ -97,7 +97,8 @@ class AdjustmentStokController extends Controller
 
     public function importExpired(Request $request)
     {        
-        Excel::import(new ProductExpiredImport, $request->file('file_import'));        
+       $data= Excel::import(new ProductExpiredImport, $request->file('file_import'));        
+     
 
         return back();
     }

@@ -47,6 +47,9 @@ class FakturPembelianController extends Controller
                 ->addColumn('kode_po', function (FakturPembelian $pb) {
                     return $pb->po->kode;
                 })
+                ->addColumn('no_so', function (FakturPembelian $pb) {
+                    return $pb->po->no_so;
+                })
                 ->addColumn('kode_pb', function (FakturPembelian $pb) {
                     return $pb->pb->kode;
                 })
@@ -73,7 +76,7 @@ class FakturPembelianController extends Controller
     public function listpb()
     {
         $title = "Daftar Pesanan Pembelian";
-        $penerimaanbarangs = PenerimaanBarang::with(['suppliers','statusPB'])
+        $penerimaanbarangs = PenerimaanBarang::with(['suppliers','statusPB','PO'])
             ->where('status_pb_id', '=', '1')
             ->orderBy('id','desc');
 
@@ -83,6 +86,9 @@ class FakturPembelianController extends Controller
                 ->addIndexColumn()
                 ->addColumn('supplier', function (PenerimaanBarang $pb) {
                     return $pb->suppliers->nama;
+                })
+                ->addColumn('no_so', function (PenerimaanBarang $pb) {
+                    return $pb->PO->no_so;
                 })
                 ->addColumn('status', function (PenerimaanBarang $pb) {
                     return $pb->statusPB->nama;

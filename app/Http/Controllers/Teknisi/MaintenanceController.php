@@ -8,6 +8,7 @@ use App\Models\MaintenanceSebelumKondisi;
 use App\Models\MaintenanceSetelahKondisi;
 use App\Models\tempSebelumKondisi;
 use App\Models\tempSetelahKondisi;
+use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Promise\Create;
@@ -117,7 +118,6 @@ class MaintenanceController extends Controller
     }
 
     // ########################################## AFTER ########################################################
-
     public function submitAfter(Request $request)
     {
         try {
@@ -127,7 +127,7 @@ class MaintenanceController extends Controller
                 'pekerjaan' => $request->pekerjaan,
                 'user_id' => auth()->user()->id
             ]);
-    
+     
             return response()->json('Data Berhasil Di Inputkan');
         } catch (Exception $th) {
             return response()->json($th->getMessage());
@@ -187,12 +187,12 @@ class MaintenanceController extends Controller
                 $tanggal = Carbon::parse($request->tanggal)->format('Y-m-d');
             }
 
-            if ($request->tanggal_pengerjaan) {
+            if ($request->tanggal_pengerjaan <> null) {
                 $tanggal_pengerjaan = Carbon::createFromFormat('d/m/Y',$request->tanggal_pengerjaan)->format('Y-m-d');
             }
 
-            if ($request->tanggal_selesai_pengerjaan) {
-                $tanggal_pengerjaan = Carbon::createFromFormat('d/m/Y',$request->tanggal_selesai_pengerjaan)->format('Y-m-d');
+            if ($request->tanggal_selesai_pengerjaan <> null) {
+                $tanggal_selesai_pengerjaan = Carbon::createFromFormat('d/m/Y',$request->tanggal_selesai_pengerjaan)->format('Y-m-d');
             }
 
             $maintenance = MaintenanceProduk::create([
@@ -265,6 +265,210 @@ class MaintenanceController extends Controller
       
 
     }
+
+    public function show($id)
+    {
+        $maintenance = MaintenanceProduk::where('id',$id)->with(['sebelumKondisi','setelahKondisi','creator','updater'])->first();
+        $title = 'MAINTENANCE PRODUK';
+
+        if ($maintenance) {
+            return view('maintenanceproduk.show',compact('maintenance','title'));
+        }else{
+            return back()->with('error','Data tidak ditemukan');
+        }
+    }
+
+    // ########################################## EDIT DATA ######################################################################
+    // ========================================== BEFORE =========================================================================
+
+    public function edit($id)
+    {
+        $maintenance = MaintenanceProduk::where('id',$id)->with(['sebelumKondisi','setelahKondisi','creator','updater'])->first();
+        $title = 'MAINTENANCE PRODUK';
+
+        if ($maintenance) {
+            return view('maintenanceproduk.edit',compact('maintenance','title'));
+        }else{
+            return back()->with('error','Data tidak ditemukan');
+        }
+    }
+
+    public function loadTabelEditBefore(Request $request)
+    {
+        $tempBefore = MaintenanceSebelumKondisi::where('maintenance_id',$request->id)->get();
+        
+        return view('maintenanceproduk.tabel.edit.tabel-before-edit',compact('tempBefore'));
+    }
+
+    public function EditsubmitBefore(Request $request)
+    {
+        try {
+            MaintenanceSebelumKondisi::create([
+                'maintenance_id' => $request->id,
+                'nama_alat' => $request->nama_alat,
+                'no_seri' => $request->no_seri,
+                'keluhan' => $request->keluhan
+            ]);
+    
+            return response()->json('Data Berhasil Di Inputkan');
+        } catch (Exception $th) {
+            return response()->json($th->getMessage());
+        }       
+    }
+
+    public function editDataBefore(Request $request)
+    {
+        $id = $request->id;
+        $tempBefore = MaintenanceSebelumKondisi::where('id',$id)->first();
+        return view('maintenanceproduk.modal.edit._form-before-edit-action',compact('tempBefore'));
+    }
+
+    public function updateDataBefore(Request $request)
+    {
+        MaintenanceSebelumKondisi::where('id',$request->id)->update([
+            'nama_alat' => $request->nama_alat,
+            'no_seri' => $request->no_seri,
+            'keluhan' => $request->keluhan
+        ]);
+
+        return response()->json('Data Berhasil Di Inputkan');
+    }
+
+    public function destroyEditBefore(Request $request)
+    {
+        try {
+            $id = $request->id_temp;
+            MaintenanceSebelumKondisi::where('id',$id)->delete();
+
+            return response()->json('Data Berhasil Dihapus');
+        } catch (Exception $th) {
+            return response()->json($th->getMessage());
+        }
+    }
+    // ******************************************* AFTER ***********************************************************
+
+    public function loadTabelEditAfter(Request $request)
+    {
+        $tempAfter = MaintenanceSetelahKondisi::where('maintenance_id',$request->id)->get();
+        
+        return view('maintenanceproduk.tabel.edit.tabel-after-edit',compact('tempAfter'));
+    }
+
+    public function EditsubmitAfter(Request $request)
+    {
+        try {
+            MaintenanceSetelahKondisi::create([
+                'maintenance_id' => $request->id,
+                'nama_sparepart' => $request->nama_sparepart,
+                'qty' => $request->qty,
+                'pekerjaan' => $request->pekerjaan,
+            ]);
+
+            return response()->json('Data Berhasil Di Inputkan');
+        } catch (Exception $th) {
+            return response()->json($th->getMessage());
+        }       
+    }
+
+    public function editDataAfter(Request $request)
+    {
+        $id = $request->id;
+        $tempafter = MaintenanceSetelahKondisi::where('id',$id)->first();
+        return view('maintenanceproduk.modal.edit._form-after-edit-action',compact('tempafter'));
+    }
+
+    public function updateDataAfter(Request $request)
+    {
+        MaintenanceSetelahKondisi::where('id',$request->id)->update([
+            'nama_sparepart' => $request->nama_sparepart,
+            'qty' => $request->qty,
+            'pekerjaan' => $request->pekerjaan,
+        ]);
+
+        return response()->json('Data Berhasil Dihapus');
+    }
+
+    public function destroyEditAfter(Request $request)
+    {
+        try {
+            $id = $request->id_temp;
+            MaintenanceSetelahKondisi::where('id',$id)->delete();
+
+            return response()->json('Data Berhasil Dihapus');
+        } catch (Exception $th) {
+            return response()->json($th->getMessage());
+        }
+    }
+
+    public function update(Request $request,$id)
+    {
+        
+        $tanggal = Carbon::parse(now())->format('Y-m-d');
+        $tanggal_pengerjaan = $tanggal;
+        $tanggal_selesai_pengerjaan = $tanggal;  
+
+        if ($request->tanggal !== null) {
+            
+            $tanggal = Carbon::parse($request->tanggal)->format('Y-m-d');
+        }
+
+        if ($request->tanggal_pengerjaan !==  null) {
+            $tanggal_pengerjaan = Carbon::createFromFormat('d/m/Y',$request->tanggal_pengerjaan)->format('Y-m-d');
+        }
+
+        if ($request->tanggal_selesai_pengerjaan !==  null) {
+            
+            $tanggal_selesai_pengerjaan = Carbon::createFromFormat('d/m/Y',$request->tanggal_selesai_pengerjaan)->format('Y-m-d');
+            
+        }
+
+        $maintenance = MaintenanceProduk::where('id',$id)->update([
+                'nama_lab' => $request->nama_lab,
+                'pemohon' => $request->pemohon,
+                'bagian' => $request->bagian,
+                'telepon' => $request->telepon,
+                'tanggal' => $tanggal,
+                'alamat' => $request->alamat,
+                'tanggal_dikerjakan' => $tanggal_pengerjaan,
+                'tanggal_selesai_dikerjakan' => $tanggal_selesai_pengerjaan,
+                'tempat_pengerjaan' => $request->lokasi_pengerjaan,
+                'saran' => $request->saran
+        ]);
+
+        return redirect()->route('maintenanceproduk.index')->with('sukses','Data Berhasil Dirubah');
+    }
+
+    public function print($id)
+    {
+        $title = "Print Faktur penjualan";
+        $maintenance = MaintenanceProduk::with(['sebelumKondisi','creator','setelahKondisi'])            
+            ->where('id', '=', $id)->first();
+        $jmlBaris  = $maintenance->count();
+        $perBaris = 13;
+        $totalPage = ceil($jmlBaris / $perBaris);
+
+        $data = [
+            'totalPage' => $totalPage,
+            'totalPage' => $totalPage,
+            'perBaris' => $perBaris,
+            'date' => date('d/m/Y'),
+            'maintenance' => $maintenance
+        ];
+        // dd($data);
+        
+        $pdf = PDF::loadView('maintenanceproduk.print', $data)->setPaper('legal', 'portrait');
+        return $pdf->download('maintenance.pdf');
+
+        // return view('maintenanceproduk.print', [
+        //     'title' => $title,
+        //     'totalPage' => $totalPage,
+        //     'totalPage' => $totalPage,
+        //     'perBaris' => $perBaris,
+        //     'date' => date('d/m/Y')
+        // ]);
+    }
+
+
 
 
 }
