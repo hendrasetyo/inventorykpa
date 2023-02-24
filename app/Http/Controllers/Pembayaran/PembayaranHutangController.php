@@ -29,7 +29,7 @@ class PembayaranHutangController extends Controller
     public function index()
     {
         $title = "Pembayaran Hutang";
-        $pembayaranhutang = PembayaranHutang::with(['suppliers',  'hutangs', 'banks', 'FakturPO'])->orderBy('id','desc');
+        $pembayaranhutang = PembayaranHutang::with(['suppliers',  'hutangs', 'banks', 'FakturPO.PO'])->orderBy('id','desc');
 
         if (request()->ajax()) {
             return Datatables::of($pembayaranhutang)
@@ -39,6 +39,9 @@ class PembayaranHutangController extends Controller
                 })
                 ->addColumn('faktur_po', function (PembayaranHutang $ph) {
                     return $ph->FakturPO->kode;
+                }) 
+                ->addColumn('no_so', function (PembayaranHutang $ph) {
+                    return $ph->FakturPO->PO->no_so;
                 })                
                 ->addColumn('banks', function (PembayaranHutang $ph) {
                     return $ph->banks->nama;
@@ -71,7 +74,7 @@ class PembayaranHutangController extends Controller
                     ->with(['suppliers' => function ($query){
                         $query->select('id','nama');
                     },'FakturPO' => function($query){
-                        $query->select('id','kode');
+                        $query->with('PO');
                     }])                    
                     ->orderBy('id','desc')
                     ->get();
@@ -84,6 +87,9 @@ class PembayaranHutangController extends Controller
                 })
                 ->addColumn('kode_faktur', function (Hutang $pb) {
                     return $pb->FakturPO->kode;
+                })
+                ->addColumn('no_so', function (Hutang $pb) {
+                    return $pb->FakturPO->PO->no_so;
                 })
                 ->editColumn('tanggal', function (Hutang $pb) {
                     return $pb->tanggal ? with(new Carbon($pb->tanggal))->format('d-m-Y') : '';
@@ -114,6 +120,8 @@ class PembayaranHutangController extends Controller
     }
     public function create(Hutang $hutang)
     {
+
+        
         $title = "Faktur Pembelian";
         $pembayaranhutang = new PembayaranHutang;
         $banks = Bank::get();

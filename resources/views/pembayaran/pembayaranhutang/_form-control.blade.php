@@ -7,6 +7,18 @@
 
     </div>
     <div class="form-group">
+        <label>No. KPA :</label>
+        <input type="text" name="no_faktur" readonly="readonly" value="{{ $hutang->PO->no_so }}"
+            class="form-control form-control-solid" />
+
+    </div>
+    <div class="form-group">
+        <label>No. SO Customer :</label>
+        <input type="text" name="no_faktur" readonly="readonly" value="{{ $hutang->PO->no_so_customer }}"
+            class="form-control form-control-solid" />
+
+    </div>
+    <div class="form-group">
         <label>Supplier :</label>
         <input type="text" readonly="readonly" name="supplier" value="{{ $hutang->suppliers->nama }}"
             class="form-control form-control-solid" />
