@@ -69,19 +69,32 @@
                         </div>
                         <!--end::Header-->
                         <div class="card-body">
-                            <div class="col-md-4">
-                                <div class="form-group">    
-                                    <label for="">Tahun</label>                                                    
-                                    <select name="chart_year" class="form-control" id="kt_select2_1" onchange="filterYear()">                               
-                                        @php
-                                        $year = 2020;
-                                        @endphp
-                                        @foreach (range(date('Y'), $year) as $x)
-                                            <option value="{{$x}}">{{$x}}</option>
-                                        @endforeach
-                                    </select>
+                          <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">    
+                                        <label for="">Tahun</label>                                                    
+                                        <select name="chart_year" class="form-control" id="kt_select2_1" onchange="filterYear()">                               
+                                            @php
+                                            $year = 2020;
+                                            @endphp
+                                            @foreach (range(date('Y'), $year) as $x)
+                                                <option value="{{$x}}">{{$x}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">    
+                                        <label for="">Kategori Pesanan</label>                                                    
+                                        <select name="chart_year" class="form-control" id="kt_select2_2" onchange="filterYear()">                                                                       
+                                            @foreach ($kategori as $x)
+                                                <option value="{{$x->id}}">{{$x->nama}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                          </div>
                           
                             <!--begin::Chart-->
                             <div id="penjualanchart"></div>

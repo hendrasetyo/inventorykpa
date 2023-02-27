@@ -101,7 +101,7 @@
 
         $.ajax({
                 type: 'POST',
-                url: '{{ route('maintenanceproduk.edit.submitbefore') }}',
+                url: '{{ route('maintenanceprodukedit.submitbefore') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
@@ -136,7 +136,7 @@
             if (result.value) {
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route('maintenanceproduk.edit.deletebefore') }}',
+                    url: '{{ route('maintenanceprodukedit.deletebefore') }}',
                     dataType: 'html',
                     headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                     data: {
@@ -164,7 +164,7 @@
     function editBefore(id) {
         $.ajax({
                 type: 'POST',
-                url: '{{ route('maintenanceproduk.edit.editbefore') }}',
+                url: '{{ route('maintenanceprodukedit.editbefore') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {id:id, "_token": "{{ csrf_token() }}"},                
@@ -185,7 +185,7 @@
 
         $.ajax({
                 type: 'POST',
-                url: '{{ route('maintenanceproduk.edit.updatebefore') }}',
+                url: '{{ route('maintenanceprodukedit.updatebefore') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
@@ -212,7 +212,7 @@
     function tabelBefore(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('maintenanceproduk.edit.tabelbefore') }}',
+                url: '{{ route('maintenanceprodukedit.tabelbefore') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
@@ -238,7 +238,7 @@
 
         $.ajax({
                 type: 'POST',
-                url: '{{ route('maintenanceproduk.edit.submitafter') }}',
+                url: '{{ route('maintenanceprodukedit.submitafter') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
@@ -264,7 +264,7 @@
     function tabelAfter(){
         $.ajax({
                 type: 'POST',
-                url: '{{ route('maintenanceproduk.edit.tabelafter') }}',
+                url: '{{ route('maintenanceprodukedit.tabelafter') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
@@ -294,7 +294,7 @@
             if (result.value) {
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route('maintenanceproduk.edit.deleteafter') }}',
+                    url: '{{ route('maintenanceprodukedit.deleteafter') }}',
                     dataType: 'html',
                     headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                     data: {
@@ -320,7 +320,7 @@
     function editAfter(id) {
         $.ajax({
                 type: 'POST',
-                url: '{{ route('maintenanceproduk.edit.editafter') }}',
+                url: '{{ route('maintenanceprodukedit.editafter') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {id:id, "_token": "{{ csrf_token() }}"},                
@@ -342,7 +342,7 @@
 
         $.ajax({
                 type: 'POST',
-                url: '{{ route('maintenanceproduk.edit.updateafter') }}',
+                url: '{{ route('maintenanceprodukedit.updateafter') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {

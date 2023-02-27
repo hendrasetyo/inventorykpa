@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FakturPenjualan;
+use App\Models\Kategoripesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -10,10 +11,12 @@ class HomeController extends Controller
 {
     public function index()
     {        
-        
+        $kategori = Kategoripesanan::get();
        
         
-        return view('home');
+        return view('home',[
+            'kategori' => $kategori
+        ]);
     }
 
 
