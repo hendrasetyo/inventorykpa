@@ -32,7 +32,9 @@
             <button type="button" class="btn btn-default btn-sm" id="undo"><i class="fa fa-undo"></i> Undo</button>
             <button type="button" class="btn btn-danger btn-sm" id="clear"><i class="fa fa-eraser"></i> Clear</button>
              <canvas id="signature-pad" class="signature-pad"></canvas>
+            
       </div>
+      <button type="button" class="btn btn-primary btn-sm" id="save-jpeg"><i class="fa fa-save"></i> save ttd</button>
       <br>
       <div id="ttd"></div>
     </div>
@@ -43,7 +45,7 @@
 <div class="card-footer text-right">
     <div class="row">
         <div class="col-lg-12 ">
-            <button type="submit" class="btn btn-success font-weight-bold mr-2 submit" id="save-jpeg"><i class="flaticon2-paperplane"></i>
+            <button type="submit" class="btn btn-success font-weight-bold mr-2 submit" ><i class="flaticon2-paperplane"></i>
                Save </button>
             <a href="{{ route('kunjungansales.index') }}" class="btn btn-secondary font-weight-bold mr-2">
                 Cancel</a>
