@@ -362,14 +362,14 @@
 <script src="{{ asset('/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js?v=7.0.6') }}"></script>
     
 <script>
-     let year = {{now()->format('Y')}};
+        let year = {{now()->format('Y')}};
+        let dataRange = null;
 
-      var chart1 = function () {
         const apexChart = "#penjualanchart";                   
         var options = {
             series: [{
                 name: "Penjualan",
-                data: year
+                data: dataRange
             }],
             chart: {
                 height: 350,
@@ -395,9 +395,6 @@
             },
             colors: [primary]
         };
-
-        
-	}
           
      $(document).ready(function() {
         chartyear(year);        
@@ -415,10 +412,10 @@
                 
                 success: function (data){
                    res = JSON.parse("[" + data + "]");
-                    for(var i in res) {                        
-                            chart1.options.series.data[0].year.push(res[i]);
-                        }
-                  var chart = new ApexCharts(document.querySelector(apexChart), options);   
+                   dataRes = res[0];
+                   options.series[0].data=dataRes;
+                   
+                   var chart = new ApexCharts(document.querySelector(apexChart), options);   
 	               chart.render();
                    
                          
@@ -431,11 +428,8 @@
 
     function filterYear() {
         let e = document.getElementById("kt_select2_1");
-        customer = e.options[e.selectedIndex].value; 
-        chart.options.data[0].options = [];
-        chartyear(null);
-        chartyear(customer);
-
+        year = e.options[e.selectedIndex].value; 
+        chartyear(year);
     }
 
    
