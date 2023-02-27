@@ -28,9 +28,8 @@
                             Dashboard </a>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <span class="label label-dot label-sm bg-white opacity-75 mx-3"></span>
-                        <a href="" class="text-white text-hover-white opacity-75 hover-opacity-100">
-                            Latest Updated </a>
+                       
+                        
                         <!--end::Item-->
                     </div>
                     <!--end::Breadcrumb-->
@@ -52,6 +51,47 @@
         <!--begin::Container-->
         <div class=" container ">
             <!--begin::Dashboard-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b">
+                        <!--begin::Header-->
+                        <div class="card-header h-auto d-flex justify-content-between">
+                            <!--begin::Title-->
+                            <div class="card-title py-5">                               
+                                <h3 class="card-label">
+                                    Grafik Penjualan
+                                </h3>
+                            </div>
+
+                            
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Header-->
+                        <div class="card-body">
+                            <div class="col-md-4">
+                                <div class="form-group">    
+                                    <label for="">Tahun</label>                                                    
+                                    <select name="chart_year" class="form-control" id="kt_select2_1" onchange="filterYear()">                               
+                                        @php
+                                        $year = 2020;
+                                        @endphp
+                                        @foreach (range(date('Y'), $year) as $x)
+                                            <option value="{{$x}}">{{$x}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                          
+                            <!--begin::Chart-->
+                            <div id="penjualanchart"></div>
+                            <!--end::Chart-->
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                </div>
+            </div>
+
             <!--begin::Row-->
             <div class="row">
                 <div class="col-xl-4">
@@ -314,3 +354,92 @@
     <!--end::Entry-->
 </div>
 @endsection
+
+@push('script')
+<script src="{{ asset('/assets/js/pages/crud/forms/widgets/select2.js?v=7.0.6"') }}"></script>
+<script src="{{ asset('/assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6') }}"></script>
+<script src="{{ asset('/assets/js/pages/crud/datatables/extensions/responsive.js?v=7.0.6') }}"></script>
+<script src="{{ asset('/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js?v=7.0.6') }}"></script>
+    
+<script>
+     let year = {{now()->format('Y')}};
+
+      var chart1 = function () {
+        const apexChart = "#penjualanchart";                   
+        var options = {
+            series: [{
+                name: "Penjualan",
+                data: year
+            }],
+            chart: {
+                height: 350,
+                type: 'line',
+                zoom: {
+                    enabled: false
+                }
+            },
+            dataLabels: { 	
+                enabled: false
+            },
+            stroke: {
+                curve: 'straight'
+            },
+            grid: {
+                row: {
+                    colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                    opacity: 0.5
+                },
+            },
+            xaxis: {
+                categories: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September','Oktober','November','Desember'],
+            },
+            colors: [primary]
+        };
+
+        
+	}
+          
+     $(document).ready(function() {
+        chartyear(year);        
+     })
+
+     function chartyear(year) {        
+           $.ajax({
+                type: 'POST',
+                url: '{{ route('chart.year') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {
+                    'year' : year,
+                    "_token": "{{ csrf_token() }}"},
+                
+                success: function (data){
+                   res = JSON.parse("[" + data + "]");
+                    for(var i in res) {                        
+                            chart1.options.series.data[0].year.push(res[i]);
+                        }
+                  var chart = new ApexCharts(document.querySelector(apexChart), options);   
+	               chart.render();
+                   
+                         
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });	   
+	}
+
+    function filterYear() {
+        let e = document.getElementById("kt_select2_1");
+        customer = e.options[e.selectedIndex].value; 
+        chart.options.data[0].options = [];
+        chartyear(null);
+        chartyear(customer);
+
+    }
+
+   
+
+
+</script>
+@endpush

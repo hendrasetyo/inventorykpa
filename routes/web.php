@@ -62,6 +62,8 @@ Route::middleware('auth', 'verified')->group(function () {
     //     return view('home');
     // });
     Route::get('/', [HomeController::class, 'index']);
+    Route::post('/chartyear', [HomeController::class, 'chartyear'])->name('chart.year');
+
     Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('profile/edit', [ProfileController::class, 'updateProfileInformation']);
 
