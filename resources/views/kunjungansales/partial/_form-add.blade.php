@@ -44,7 +44,7 @@
 <div class="card-footer text-right">
     <div class="row">
         <div class="col-lg-12 ">
-            <button type="submit" class="btn btn-success font-weight-bold mr-2 submit" ><i class="flaticon2-paperplane"></i>
+            <button type="submit" class="btn btn-success font-weight-bold mr-2 submit" id="save-jpeg"><i class="flaticon2-paperplane"></i>
                Save </button>
             <a href="{{ route('kunjungansales.index') }}" class="btn btn-secondary font-weight-bold mr-2">
                 Cancel</a>
