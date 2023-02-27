@@ -605,7 +605,7 @@ class PengirimanBarangController extends Controller
 
         // dd($pengirimanbarangdetails);
         $jmlBaris  = $pengirimanbarangdetails->count();
-        $perBaris = 7;
+        $perBaris = 8;
         $totalPage = ceil($jmlBaris / $perBaris);
         $listExp = StokExpDetail::with('stockExp')->where('id_sj', '=', $pengirimanbarang->id)->get();
         //dd($listExp);
