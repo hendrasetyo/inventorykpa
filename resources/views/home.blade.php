@@ -70,6 +70,15 @@
                         <!--end::Header-->
                         <div class="card-body">
                           <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">    
+                                    <label for="">Tipe Grafik</label>                                                    
+                                    <select name="chart_year" class="form-control" id="kt_select2_4" onchange="filterType()">                               
+                                        <option value="tahun" selected>Tahunan</option>
+                                        <option value="bulan">Bulanan</option>                                        
+                                    </select>
+                                </div>
+                            </div>
                                 <div class="col-md-4">
                                     <div class="form-group">    
                                         <label for="">Tahun</label>                                                    
@@ -87,13 +96,28 @@
                                 <div class="col-md-4">
                                     <div class="form-group">    
                                         <label for="">Kategori Pesanan</label>                                                    
-                                        <select name="chart_year" class="form-control" id="kt_select2_2" onchange="filterYear()">                                                                       
+                                        <select name="chart_kategori" class="form-control" id="kt_select2_2" onchange="filterKategori()">   
+                                            <option value="All" selected>Semua</option>                                                                    
                                             @foreach ($kategori as $x)
                                                 <option value="{{$x->id}}">{{$x->nama}}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
+                          </div>
+
+                          <div class="row d-none">
+                            <div class="col-md-4">
+                                <div class="form-group">    
+                                    <label for="">Bulan</label>                                                    
+                                    <select name="chart_year" class="form-control" id="kt_select2_4" onchange="filterType()">  
+                                            <option value="All" selected>Semua</option>                             
+                                       @foreach ($bulan as $item)
+                                            <option value="{{$item['id']}}">{{$item['bulan']}}</option>                                    
+                                       @endforeach
+                                    </select>                                
+                                </div>
+                           </div>
                           </div>
                           
                             <!--begin::Chart-->
@@ -376,7 +400,11 @@
     
 <script>
         let year = {{now()->format('Y')}};
+        let kategori = 'All';
         let dataRange = null;
+        let tipe = 'tahunan';
+        let bulan = 13;
+        let dataBulan=null;
 
         const apexChart = "#penjualanchart";                   
         var options = {
@@ -408,12 +436,42 @@
             },
             colors: [primary]
         };
+
+        var optionsMonth = {
+            series: [{
+                name: "Penjualan",
+                data: dataRange
+            }],
+            chart: {
+                height: 350,
+                type: 'line',
+                zoom: {
+                    enabled: false
+                }
+            },
+            dataLabels: { 	
+                enabled: false
+            },
+            stroke: {
+                curve: 'straight'
+            },
+            grid: {
+                row: {
+                    colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                    opacity: 0.5
+                },
+            },
+            xaxis: {
+                categories: dataBulan,
+            },
+            colors: [primary]
+        };
           
      $(document).ready(function() {
-        chartyear(year);        
+        chartyear();        
      })
 
-     function chartyear(year) {        
+     function chartyear() {        
            $.ajax({
                 type: 'POST',
                 url: '{{ route('chart.year') }}',
@@ -421,17 +479,18 @@
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                 data: {
                     'year' : year,
+                    'kategori' : kategori,
+                    'tipe' : tipe,
+                    'bulan' : bulan,
                     "_token": "{{ csrf_token() }}"},
                 
                 success: function (data){
                    res = JSON.parse("[" + data + "]");
-                   dataRes = res[0];
+                   dataRes = res[0].laba;
                    options.series[0].data=dataRes;
                    
                    var chart = new ApexCharts(document.querySelector(apexChart), options);   
-	               chart.render();
-                   
-                         
+	               chart.render();                         
                 },
                 error: function(data){
                     console.log(data);
@@ -439,10 +498,55 @@
             });	   
 	}
 
+    function chartbulan() {
+        $.ajax({
+                type: 'POST',
+                url: '{{ route('chart.year') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {
+                    'year' : year,
+                    'kategori' : kategori,
+                    'tipe' : tipe,
+                    'bulan' : bulan,
+                    "_token": "{{ csrf_token() }}"},
+                
+                success: function (data){
+                   res = JSON.parse("[" + data + "]");
+                   dataRes = res[0].laba;
+                   dataBulan = res[0].bulan;
+                   
+                //    console.log(optionsMonth.xaxis.categories);
+                   optionsMonth.series[0].data=dataRes;
+                   optionsMonth.xaxis.categories=dataBulan;
+
+
+                   var chart = new ApexCharts(document.querySelector(apexChart), optionsMonth);   
+	               chart.render();
+
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });	  
+    }
+
     function filterYear() {
         let e = document.getElementById("kt_select2_1");
         year = e.options[e.selectedIndex].value; 
-        chartyear(year);
+        chartyear();
+    }
+
+    function filterKategori() {
+        let e = document.getElementById("kt_select2_2");
+        kategori = e.options[e.selectedIndex].value;         
+        chartyear();
+    }
+
+    function filterType(params) {
+        let e = document.getElementById("kt_select2_4");
+        tipe = e.options[e.selectedIndex].value;         
+        chartbulan();
     }
 
    

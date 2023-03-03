@@ -12,33 +12,71 @@ class HomeController extends Controller
     public function index()
     {        
         $kategori = Kategoripesanan::get();
-       
-        
+        $months =  [];
+        for ($i = 1; $i <=12; $i++) {
+            $months[] = [
+                'bulan' => date('F', mktime(0,0,0,$i)),
+                'id' => $i
+            ];
+        }
+
         return view('home',[
-            'kategori' => $kategori
+            'kategori' => $kategori,
+            'bulan' => $months
         ]);
     }
 
 
     public function chartyear(Request $request)
     {
-        $results = FakturPenjualan::orderBy('tanggal');
+        $results = DB::table('faktur_penjualans as fp')
+                ->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')
+                ->where('fp.deleted_at','=',null)
+                ->orderBy('fp.tanggal');
+                 
+        // FakturPenjualan::orderBy('tanggal');
+
         if ($request->year) {
-            $res=$results->whereYear('tanggal',$request->year);       
+            $res=$results->whereYear('fp.tanggal',$request->year);       
         }else{
             $res=$results;
         }
+
+        if ($request->kategori !== 'All') {            
+            $kategori=$res->where('pp.kategoripesanan_id',$request->kategori); 
+        }else{
+            $kategori=$res;
+        }
+
+        if ($request->bulan == '13') {
+            $bulan = $kategori;
+        }elseif ($request->bulan !== '13' && $request->bulan !== null) {
+            $bulan = $kategori->whereMonth('fp.tanggal',$request->bulan);
+        }else{
+            $bulan = $kategori;
+        }
+
+        if ($request->tipe == 'bulan') {
+            $tipe = $bulan->groupBy(DB::raw("DATE_FORMAT(fp.tanggal, '%d-%m-%Y')"))
+                    ->select(
+                        DB::raw("DATE_FORMAT(fp.tanggal, '%d') as tanggal_penjualan"),
+                        DB::raw("sum(fp.grandtotal) as grandtotal_penjualan")
+                    );     
+        }else{
+            $tipe = $bulan->groupBy(DB::raw("DATE_FORMAT(fp.tanggal, '%m-%Y')"))
+                    ->select(
+                        DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
+                        DB::raw("sum(fp.grandtotal) as grandtotal_penjualan")
+                    ); 
+        }
         
-       $hasil= $res->groupBy(DB::raw("DATE_FORMAT(tanggal, '%m-%Y')"))
-             ->select(
-                    DB::raw("DATE_FORMAT(tanggal, '%m') as tanggal_penjualan"),
-                    DB::raw("sum(grandtotal) as grandtotal_penjualan")
-                )        
-                ->get();
-    
+       $hasil= $tipe->get();
+        
+        
+        
         $laba = array();  
         $data=[]; 
-        $j=0;
+        
 
         
         
@@ -56,9 +94,15 @@ class HomeController extends Controller
                 $laba[] = 0;
             }
         }
+        $bulan=array();
 
-        return response()->json(
-            $laba
-        );
+        for ($i=1; $i <= 31; $i++) { 
+            $bulan[]=$i;
+        }
+
+        return response()->json([
+            'laba' => $laba,
+            'bulan' => $bulan
+        ]);
     }
 }

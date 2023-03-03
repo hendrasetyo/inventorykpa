@@ -118,10 +118,10 @@
 
                             </td>
                             <td width="40%" style=' text-align:center; vertical-align:top;border: 1px double white'>
-                                <h3>
-                                    Surabaya, {{ \Carbon\Carbon::now()->format("d F Y") }}
-                
-                                    <br /><br /> <br /><br /> <br /> <br />
+                                <h3 style="margin-top: -10px">Surabaya, {{ \Carbon\Carbon::now()->format("d F Y") }}</h3>
+                                <br /><br /> <br /><br /> <br /> <br />
+                                <h3>                                   
+                                    
                                     <u>AHMAD MUHTAROM</u> <br />
                                     Direktur
                                 </h3>
