@@ -80,7 +80,8 @@ class LaporanPembayaranHutangExportDetail implements FromView
         }
 
         $datafilter = $filter->select('s.nama as nama_supplier',
-                                      'pp.kode as kode_pp','pb.kode as kode_pb','fb.kode as kode_fp'
+                                      'pp.kode as kode_pp','pb.kode as kode_pb','fb.kode as kode_fp',
+                                      'pp.no_so','pp.no_so_customer','fb.no_faktur_supplier'
                                       ,'h.*','b.nama as nama_bank','ph.nominal as nominal_pembayaran')->get();
 
         if (count($datafilter) <= 0) {

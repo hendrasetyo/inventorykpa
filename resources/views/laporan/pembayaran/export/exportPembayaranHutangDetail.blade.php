@@ -3,6 +3,9 @@
         <tr>
             <th>No</th>
             <th>Tanggal</th>
+            <th>No KPA</th>
+            <th>No SO Supplier</th>
+            <th>No Faktur Supplier</th>
             <th>Supplier</th>
             <th>Kode SO</th>
             <th>Kode SJ</th>
@@ -25,6 +28,9 @@
             <tr>
                 <td>{{$no++}}</td>
                 <td>{{ date('d/m/Y', strtotime($item->tanggal)) }}</td>
+                <td>{{$item->no_so}}</td>
+                <td>{{$item->no_so_customer}}</td>
+                <td>{{$item->no_faktur_supplier}}</td>
                 <td>{{$item->nama_supplier}}</td>
                 <td>{{$item->kode_pp}}</td>
                 <td>{{$item->kode_pb}}</td>

@@ -5,7 +5,7 @@
             <th>Tanggal</th>
             <th>Tanggal TOP</th>
             <th>No KPA</th>
-            <th>No SO Customer</th>
+            <th>No SO Supplier</th>
             <th>No Faktur Supplier</th>
             <th>Supplier</th>
             <th>Kode SO</th>
