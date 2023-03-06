@@ -127,7 +127,7 @@
                         @if($n > (($i-1)*$perBaris) && $n <= ($i)*$perBaris)<tr class="" style="vertical-align: top"> 
                             <td style="font-size: 70%; ">{{ $j++}}.</td>
                                 <td style="font-size: 70%; ">{{ $a->qty }} {{ $a->satuan }}</td>
-                                <td style="font-size: 70%;font-family: DejaVu Sans; sans-serif; ">{{ $a->products->nama }}</td>
+                                <td style="font-size: 70% ">{{ $a->products->nama }}</td>
                                 <td style="font-size: 70%; text-align:right;">{{ $a->products->merks->nama }}</td>
                                 <td style="font-size: 70%; text-align:right">{{ number_format($a->hargajual, 0, ',', '.')
                                     }}</td>
