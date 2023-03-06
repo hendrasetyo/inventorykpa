@@ -78,7 +78,7 @@ class LaporanHutangExport implements FromView
         $statusFilter = $filter->where('status','=',$this->data['status']);
 
         $datafilter = $statusFilter->select('s.nama as nama_supplier','pp.kode as kode_pp','pb.kode as kode_pb','fb.kode as kode_fp'
-                                ,'h.*')->get();
+                                            ,'fb.no_faktur_supplier','pp.no_so_customer','pp.no_so','h.*')->get();
 
         foreach ($datafilter as $key ) {
             $totalhutang = $totalhutang + $key->total - $key->dibayar;

@@ -4,6 +4,9 @@
             <th>No</th>
             <th>Tanggal</th>
             <th>Tanggal TOP</th>
+            <th>No KPA</th>
+            <th>No SO Customer</th>
+            <th>No Faktur Supplier</th>
             <th>Supplier</th>
             <th>Kode SO</th>
             <th>Kode SJ</th>
@@ -23,9 +26,12 @@
         @endphp
         @foreach ($hutang as $item)
             <tr>
-                <td>{{$no++}}</td>
+                <td>{{$no++}}</td>               
                 <td>{{ $item->tanggal ? date('d/m/Y', strtotime($item->tanggal)) : 'Tidak ada'}}</td>
                 <td>{{ $item->tanggal_top ? date('d/m/Y', strtotime($item->tanggal_top)) : 'Tidak ada'}}</td>
+                <td>{{$item->no_so}}</td>
+                <td>{{$item->no_so_customer}}</td>
+                <td>{{$item->no_faktur_supplier}}</td>
                 <td>{{$item->nama_supplier}}</td>
                 <td>{{$item->kode_pp}}</td>
                 <td>{{$item->kode_pb}}</td>
