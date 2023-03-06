@@ -131,7 +131,7 @@
                   {data: 'kode', name: 'kode'},
                   {data: 'tanggal', name: 'tanggal'},
                   {data: 'kode_po', name: 'po.kode'},
-                  {data: 'no_so', name: 'po.no_so'},
+                  {data: 'no_so', name: 'po.no_so'},              
                   {data: 'supplier', name: 'suppliers.nama'},
                   {data: 'status', name: 'statusPB.nama'},
                   { 

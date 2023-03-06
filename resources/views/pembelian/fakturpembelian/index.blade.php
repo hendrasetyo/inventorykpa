@@ -85,10 +85,11 @@
                                 <thead class="datatable-head">
                                     <tr>
                                         <th>Kode</th>
+                                        <th>No. Penerimaan</th>
                                         <th>Tanggal</th>
                                         <th>No. Surat Pesanan</th>
                                         <th>No KPA</th>
-                                        <th>No. Penerimaan</th>
+                                        <th>No Faktur Supplier</th>                                        
                                         <th>Supplier</th>
                                         <th style="width: 15%">Action</th>
                                     </tr>
@@ -131,10 +132,11 @@
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                   {data: 'kode', name: 'kode'},
+                  {data: 'kode_pb', name: 'pb.kode'},
                   {data: 'tanggal', name: 'tanggal'},
                   {data: 'kode_po', name: 'po.kode'},
                   {data: 'no_so', name: 'po.no_so'},
-                  {data: 'kode_pb', name: 'pb.kode'},
+                  {data: 'no_faktur_supplier', name: 'no_faktur_supplier'},                 
                   {data: 'supplier', name: 'suppliers.nama'},
                   {
                       data: 'action', 
