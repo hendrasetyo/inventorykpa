@@ -74,6 +74,7 @@
                                         <th>Tanggal</th>
                                         <th>Supplier</th>
                                         <th>Faktur</th> 
+                                        <th>Faktur Supplier</th> 
                                         <th>No KPA</th>                                        
                                         <th>Akun Bank</th>
                                         <th>Nominal</th>
@@ -121,6 +122,7 @@
                   {data: 'tanggal', name: 'tanggal'},
                   {data: 'suppliers', name: 'suppliers.nama'},
                   {data: 'faktur_po', name: 'FakturPO.kode'}, 
+                  {data: 'no_faktur_supplier', name: 'FakturPO.no_faktur_supplier'}, 
                   {data: 'no_so', name: 'FakturPO.PO.no_so'},                                   
                   {data: 'banks', name: 'banks.nama'},
                   {data: 'nominal', name: 'nominal'},

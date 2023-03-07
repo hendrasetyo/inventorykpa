@@ -40,6 +40,9 @@ class PembayaranHutangController extends Controller
                 ->addColumn('faktur_po', function (PembayaranHutang $ph) {
                     return $ph->FakturPO->kode;
                 }) 
+                ->addColumn('no_faktur_supplier', function (PembayaranHutang $ph) {
+                    return $ph->FakturPO->no_faktur_supplier;
+                }) 
                 ->addColumn('no_so', function (PembayaranHutang $ph) {
                     return $ph->FakturPO->PO->no_so;
                 })                
@@ -90,6 +93,9 @@ class PembayaranHutangController extends Controller
                 })
                 ->addColumn('no_so', function (Hutang $pb) {
                     return $pb->FakturPO->PO->no_so;
+                })
+                ->addColumn('no_faktur_supplier', function (Hutang $pb) {
+                    return $pb->FakturPO->no_faktur_supplier;
                 })
                 ->editColumn('tanggal', function (Hutang $pb) {
                     return $pb->tanggal ? with(new Carbon($pb->tanggal))->format('d-m-Y') : '';

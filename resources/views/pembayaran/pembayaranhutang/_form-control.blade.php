@@ -13,6 +13,12 @@
 
     </div>
     <div class="form-group">
+        <label>No. Faktur Supplier :</label>
+        <input type="text" name="no_faktur_supplier" readonly="readonly" value="{{ $hutang->FakturPO->no_faktur_supplier }}"
+            class="form-control form-control-solid" />
+
+    </div>
+    <div class="form-group">
         <label>No. SO Customer :</label>
         <input type="text" name="no_faktur" readonly="readonly" value="{{ $hutang->PO->no_so_customer }}"
             class="form-control form-control-solid" />

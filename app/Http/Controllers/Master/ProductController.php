@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Laravolt\Indonesia\Models\City;
 use App\Http\Controllers\Controller;
 use App\Imports\NewProductImport;
+use App\Models\PesananPembelianDetail;
 use App\Models\Productsubcategory;
 use App\Models\TempProduct;
 use Exception;
@@ -277,6 +278,16 @@ class ProductController extends Controller
         
 
     }
+
+
+    // public function syncronisasi()
+    // {
+    //     $produk = Product::get();
+
+    //     foreach ($produk as $item) {
+    //         $pembelian = PesananPembelianDetail::where('')
+    //     }
+    // }
 
 
 }
