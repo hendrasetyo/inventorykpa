@@ -62,6 +62,8 @@
                                     <i class="flaticon-folder-3"></i>                                  
                                     Import Product
                                   </button>
+
+                                  <a href="{{ route('product.syncronisasi') }}" class="btn btn-danger ml-2">Syncronisasi</a>
                                 
                             </div>
                                                     

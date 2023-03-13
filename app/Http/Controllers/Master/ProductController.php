@@ -280,14 +280,32 @@ class ProductController extends Controller
     }
 
 
-    // public function syncronisasi()
-    // {
-    //     $produk = Product::get();
+    public function syncronisasi()
+    {
+        $produk = Product::get();
 
-    //     foreach ($produk as $item) {
-    //         $pembelian = PesananPembelianDetail::where('')
-    //     }
-    // }
+        foreach ($produk as $item) {
+            $pembelian = PesananPembelianDetail::where('product_id',$item->id)->latest()->first();
+            $hargabeli = $item->hargabeli;            
+
+            $data = $pembelian->diskon_persen ?  $pembelian->diskon_persen : 0;
+
+            
+            // if ($pembelian->diskon_persen == 0) {
+            //    $diskonpersen = 0;
+            // }else{
+            //     $diskonpersen=$pembelian->diskon_persen;    
+            // }
+            
+            
+            Product::where('id',$item->id)->update([
+                'diskon_persen'=> $data
+            ]);
+        }
+        
+
+        return back();
+    }
 
 
 }

@@ -52,6 +52,16 @@
                             <td>{{ "Rp. " . number_format($product->hargabeli, 0, ',', '.') }}</td>
                         </tr>
                         <tr>
+                            <th scope="row">Diskon (%)</th>
+                            <td>:</td>
+                            <td>{{ $product->diskon_persen}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Diskon (Rp)</th>
+                            <td>:</td>
+                            <td>{{$product->diskon_rp}}</td>
+                        </tr>
+                        <tr>
                             <th scope="row">HPP</th>
                             <td>:</td>
                             <td>{{ "Rp. " . number_format($product->hpp, 0, ',', '.') }}</td>

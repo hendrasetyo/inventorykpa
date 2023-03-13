@@ -311,8 +311,7 @@ class PesananPenjualanController extends Controller
     }
 
     public function updatebarang(Request $request)
-    {
-        //dd($request->hargajual);
+    {        
         $harga1 = $request->hargajual;        
         $harga2 = str_replace('.', '', $harga1);
         $harga = str_replace(',', '.', $harga2) * 1;
@@ -575,7 +574,6 @@ class PesananPenjualanController extends Controller
         $data=$so->update();
         return back();
 
-
     }
 
     public function edit($id)
@@ -650,6 +648,10 @@ class PesananPenjualanController extends Controller
         $ongkir1 = $request->ongkir;
     
         $ongkir = str_replace('.', ',', $ongkir1) * 1;
+
+        if ($request->ppn_ongkir > 0) {
+            $ongkir = $ongkir / (1 + $request->ppn_ongkir/100);            
+        }
 
         $subtotal = $request->qty * $harga;
         $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
@@ -753,7 +755,7 @@ class PesananPenjualanController extends Controller
 
     public function updateBarangDetail(Request $request)
     {
-        //dd($request->hargajual);
+        
         $harga1 = $request->hargajual;        
         $harga2 = str_replace('.', '', $harga1);
         $harga = str_replace(',', '.', $harga2) * 1;
@@ -765,6 +767,10 @@ class PesananPenjualanController extends Controller
         if ($request->ppn > 0) {
             $harga = $harga / (1 + $request->ppn/100);
             
+        }
+
+        if ($request->ppn_ongkir > 0) {
+            $ongkir = $ongkir / (1 + $request->ppn_ongkir/100);            
         }
 
         $subtotal = $request->qty * $harga;

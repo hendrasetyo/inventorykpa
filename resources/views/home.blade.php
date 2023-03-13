@@ -70,7 +70,7 @@
                         <!--end::Header-->
                         <div class="card-body">
                           <div class="row">
-                            <div class="col-md-4">
+                            {{-- <div class="col-md-4">
                                 <div class="form-group">    
                                     <label for="">Tipe Grafik</label>                                                    
                                     <select name="chart_year" class="form-control" id="kt_select2_4" onchange="filterType()">                               
@@ -78,7 +78,7 @@
                                         <option value="bulan">Bulanan</option>                                        
                                     </select>
                                 </div>
-                            </div>
+                            </div> --}}
                                 <div class="col-md-4">
                                     <div class="form-group">    
                                         <label for="">Tahun</label>                                                    

@@ -192,6 +192,8 @@ Route::middleware('has.role')->prefix('master')->group(function () {
         Route::post('import', [ProductController::class, 'import'])->name('product.import');
 
         Route::post('export', [ProductController::class, 'export'])->name('product.export');
+        
+        Route::get('syncronisasi', [ProductController::class, 'syncronisasi'])->name('product.syncronisasi');
 
 
 

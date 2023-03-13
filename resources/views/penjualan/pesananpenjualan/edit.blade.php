@@ -290,6 +290,7 @@
         var ongkir = document.getElementById('ongkir').value;
         var keterangan = document.getElementById('keterangan').value;
         var ppn = document.getElementById('ppnprice').value;
+        var ppn_ongkir = document.getElementById('ppn_ongkir').value;
 
 
         //alert(product_id);
@@ -309,6 +310,7 @@
                     "ongkir": ongkir,
                     "keterangan": keterangan,
                     "ppn" : ppn,
+                    "ppn_ongkir" : ppn_ongkir,
                      "_token": "{{ csrf_token() }}"
                     },
                                     
@@ -335,6 +337,7 @@
         var ongkir = document.getElementById('ongkir').value;
         var keterangan = document.getElementById('keterangan').value;
         var ppn = document.getElementById('ppnprice').value;
+        var ppn_ongkir = document.getElementById('ppn_ongkir').value;
 
         $.ajax({
                 type: 'POST',
@@ -353,6 +356,7 @@
                     "ongkir": ongkir,
                     "keterangan": keterangan,
                     "ppn" : ppn,
+                    "ppn_ongkir" : ppn_ongkir,
                      "_token": "{{ csrf_token() }}"
                     },
                 
