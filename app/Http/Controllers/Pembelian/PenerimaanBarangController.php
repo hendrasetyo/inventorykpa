@@ -354,6 +354,7 @@ class PenerimaanBarangController extends Controller
         } else {
             $status = "3";
         }
+        
         $POmain = PesananPembelian::find($pesanan_pembelian_id);
         $POmain->status_po_id = $status;
         $POmain->save();
