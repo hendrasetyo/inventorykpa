@@ -51,12 +51,12 @@ class FakturPenjualanController extends Controller
                 ->addColumn('customer', function (FakturPenjualan $sj) {
                     return $sj->customers->nama;
                 })
-                // ->addColumn('kode_so', function (FakturPenjualan $sj) {
-                //     return $sj->so->kode;
-                // })
-                // ->addColumn('kode_sj', function (FakturPenjualan $sj) {
-                //     return $sj->sj->kode;
-                // })
+                ->addColumn('kode_so', function (FakturPenjualan $sj) {
+                    return $sj->so->kode;
+                })
+                ->addColumn('kode_sj', function (FakturPenjualan $sj) {
+                    return $sj->sj->kode;
+                })
                 ->editColumn('tanggal', function (FakturPenjualan $sj) {
                     return $sj->tanggal ? with(new Carbon($sj->tanggal))->format('d-m-Y') : '';
                 })
