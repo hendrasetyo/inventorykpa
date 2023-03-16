@@ -70,7 +70,7 @@ class FakturPenjualanController extends Controller
                     $status = $row->status_sj_id;
 
                     return view('penjualan.fakturpenjualan._formAction', compact('id', 'status', 'showUrl','editUrl'));
-                })
+                })            
                 ->make(true);
         }
 

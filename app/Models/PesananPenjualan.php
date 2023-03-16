@@ -71,7 +71,7 @@ class PesananPenjualan extends Model
 
     public function FakturSO()
     {
-        return $this->hasMany(FakturPenjualan::class, 'pesanan_penjualan_id', 'id');
+        return $this->hasMany(FakturPenjualan::class, 'pesanan_penjualan_id');
     }
 
     public function creator()

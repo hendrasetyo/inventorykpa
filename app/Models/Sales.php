@@ -18,7 +18,8 @@ class Sales extends Model
         'email',
         'hp',
         'nip',
-        'keterangan'
+        'keterangan',
+        'user_id'
     ];
 
     public function customers()

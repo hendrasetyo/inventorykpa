@@ -900,6 +900,23 @@ Route::middleware('has.role')->prefix('sales')->group(function () {
         Route::delete('/delete', [KunjunganSalesController::class, 'destroy'])->name('kunjungansales.destroy');       
         
     });
+
+    Route::prefix('penjualansales')->group(function () {
+        Route::post('/datatablepenjualan', [KunjunganSalesController::class, 'datatablepenjualan'])->name('sales.datatablepenjualan'); 
+        Route::get('/show/{kunjungansales}', [KunjunganSalesController::class, 'show'])->name('kunjungansales.show');        
+        Route::get('', [KunjunganSalesController::class, 'indexpenjulaan'])->name('kunjungansales.index');          
+        
+         
+        // Route::get('/create', [KunjunganSalesController::class, 'create'])->name('kunjungansales.create');        
+        // Route::post('/store', [KunjunganSalesController::class, 'store'])->name('kunjungansales.store');        
+        // Route::get('/{kunjungansales}/edit', [KunjunganSalesController::class, 'edit'])->name('kunjungansales.edit');       
+        // Route::PUT('/{kunjungansales}/update', [KunjunganSalesController::class, 'update'])->name('kunjungansales.update');                   
+        // Route::post('/delete', [KunjunganSalesController::class, 'delete'])->name('kunjungansales.delete');       
+        // Route::delete('/delete', [KunjunganSalesController::class, 'destroy'])->name('kunjungansales.destroy');       
+        
+    });
+
+
 });
 
 Route::middleware('has.role')->prefix('teknisi')->group(function () {

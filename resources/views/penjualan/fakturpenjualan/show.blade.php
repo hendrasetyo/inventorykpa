@@ -176,6 +176,7 @@
 
                                 </table>
 
+                                @can('fakturpenjulan-edit')
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -190,6 +191,8 @@
                                             </td>                                        
                                         </tr>                                        
                                 </table>
+                                @endcan
+                               
 
                                 <br />
                                 <h4>Keterangan :</h4>
@@ -250,31 +253,39 @@
                         <div class="col-md-9">
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex justify-content-between ">
+                                    @can('fakturpenjualan-create')
                                     <a href="{{ route('fakturpenjualan.print_a4', $fakturpenjualan) }}"
                                         class="btn btn-primary mr-2" target="_blank">
                                         <i class="flaticon2-print font-weight-bold"></i> Download & Print
-                                    </a>
-
+                                      </a>
+                                    @endcan
+                                    @can('fakturpenjualan-delete')
                                     <a href="{{ route('fakturpenjualan.kwitansi', $fakturpenjualan) }}"
                                         class="btn btn-success " target="_blank">
                                         <i class="flaticon2-print font-weight-bold"></i> Kwitansi
                                     </a>
+                                    @endcan
 
+                                    @can('fakturpenjualan-delete')
                                     <a href="{{ route('fakturpenjualan.editCN', $fakturpenjualan) }}"
-                                    class="btn btn-warning ml-4" >
+                                         class="btn btn-warning ml-4" >
                                         <i class="flaticon2-print font-weight-bold"></i> CN
                                     </a>
+                                    @endcan
 
-                                    <a href="{{ route('fakturpenjualan.biayalain.index', ['fakturpenjualan'=>$fakturpenjualan->id]) }}"
-                                    class="btn btn-info ml-4" >
-                                    <i class="fas fa-cash-register"></i> Biaya Lain - Lain
-                                    </a>
-
-                                    <a href="{{ route('fakturpenjualan.labarugi.show', ['fakturpenjualan'=>$fakturpenjualan->id]) }}"
-                                        class="btn btn-primary ml-4" >
-                                        <i class="fas fa-paper-plane"></i> Laba / Rugi
+                                    @can('fakturpenjualan-delete')
+                                         <a href="{{ route('fakturpenjualan.biayalain.index', ['fakturpenjualan'=>$fakturpenjualan->id]) }}"
+                                            class="btn btn-info ml-4" >
+                                            <i class="fas fa-cash-register"></i> Biaya Lain - Lain
                                         </a>
+                                    @endcan
 
+                                    @can('labarugi')
+                                        <a href="{{ route('fakturpenjualan.labarugi.show', ['fakturpenjualan'=>$fakturpenjualan->id]) }}"
+                                            class="btn btn-primary ml-4" >
+                                            <i class="fas fa-paper-plane"></i> Laba / Rugi
+                                        </a>
+                                    @endcan                                                                                                                                                            
                                 </div>
                             
                                 <a class="btn btn-danger font-weight-bold"

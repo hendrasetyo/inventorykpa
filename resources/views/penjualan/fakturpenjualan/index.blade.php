@@ -123,10 +123,11 @@
     $(function () {
    
           var table = $('.yajra-datatable').DataTable({
-              responsive: true,
+            //   responsive: true,
               processing: true,
               serverSide: true,
-              autoWidth: false,
+              autoWidth: true,
+              scrollX: true,
               ajax: "{{ route('fakturpenjualan.index') }}",
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},

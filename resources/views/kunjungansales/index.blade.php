@@ -68,8 +68,8 @@
                         </div>
                         <div class="card-body">
                             <!--begin: Datatable-->                         
-                            <table class="table table-separate table-head-custom table-checkable table  yajra-datatable collapsed ">
-                                <thead >
+                            <table class="table yajra-datatable collapsed">
+                                <thead class="datatable-head">
                                     <tr>                                        
                                         <th>Tanggal</th>
                                         <th>Customer</th>
@@ -104,9 +104,9 @@
 <script type="text/javascript">
     $(function () {          
           var table = $('.yajra-datatable').DataTable({
-              responsive: true,
               processing: true,
               serverSide: true,
+              scrollX:true,
               ajax: {
                     url : "{{ route('kunjungansales.datatable') }}", 
                     type : "POST",

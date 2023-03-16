@@ -23,6 +23,19 @@
             </div>
 
             @endif
+
+            @if (session('error'))
+            <div class="alert alert-custom alert-success fade show pb-2 pt-2" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">{{ session('error') }}</div>
+                <div class="alert-close">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"><i class="ki ki-close"></i></span>
+                    </button>
+                </div>
+            </div>
+
+            @endif
             <div class="row">
 
                 <div class="col-lg-12">
@@ -50,10 +63,18 @@
                                             </g>
                                         </svg>
                                         <!--end::Svg Icon--></span> </span>
-                                <h3 class="card-label">Data Stok Produk (Pilih Produk Untuk Melihat Kartu Stok)</h3>
+                                <h3 class="card-label">Data Faktur Penjualan</h3>
                             </div>
                             <div class="card-toolbar">
                                 <!--begin::Button-->
+
+                                @can('fakturpenjualan-create')
+                                <a href="{{ route('fakturpenjualan.listsj') }}"
+                                    class="btn btn-primary font-weight-bolder ">
+                                    <i class="flaticon2-add"></i>
+                                    Faktur Penjualan
+                                </a>
+                                @endcan
 
                                 <!--end::Button-->
                             </div>
@@ -61,14 +82,15 @@
                         <div class="card-body">
                             <!--begin: Datatable-->
                             <table class="table yajra-datatable collapsed ">
-                                <thead class="datatable-head"> 
+                                <thead class="datatable-head">
                                     <tr>
                                         {{-- <th>Kode</th>  --}}
-                                        <th>Nama Barang</th>
-                                        <th>Kategori</th>
-                                        <th>Sub Kategori</th>                                                                            
-                                        <th>Stok</th>                                      
-                                        <th>Action</th>
+                                        <th>No KPA</th>
+                                        <th>Customer</th>
+                                        <th>Tanggal</th> 
+                                        {{-- <th>No. Surat Pesanan</th> --}}
+                                        <th>No. Pengiriman</th>                                        
+                                        <th style="width: 15%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -99,25 +121,31 @@
 
 <script type="text/javascript">
     $(function () {
-        $('#provinsi').on('change', function () {
-        // Kode untuk ajax request disini 
-
-        });
    
           var table = $('.yajra-datatable').DataTable({
-            //   responsive: false,
+            //   responsive: true,
               processing: true,
               serverSide: true,
-              autoWidth: false,
+              autoWidth: true,
               scrollX: true,
-              ajax: "{{ route('laporanstok.kartustok') }}",
+              ajax: {
+                    url : "{{ route('sales.datatablepenjualan') }}", 
+                    type : "POST",
+                     data: function(params) {
+                        params._token = "{{ csrf_token() }}";  
+                        params.id =  {{ auth()->user()->id}}              
+                        return params;
+                       }
+
+              },
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                    // {data: 'kode', name: 'kode'},
-                  {data: 'nama', name: 'nama'},
-                  {data: 'kategori', name: 'categories.nama'},
-                  {data: 'subkategori', name: 'subcategories.nama'},             
-                  {data: 'stok', name: 'stok'},
+                //   {data: 'kode', name: 'kode'},
+                  {data: 'no_kpa', name: 'no_kpa'},
+                  {data: 'customer', name: 'customers.nama'},
+                  {data: 'tanggal', name: 'tanggal'},
+                //   {data: 'kode_so', name: 'SO.kode'},
+                  {data: 'kode_sj', name: 'SJ.kode'},
                  
                   {
                       data: 'action', 
@@ -131,10 +159,10 @@
                 
                 {
                     responsivePriority: 3,
-                    targets: 1,
+                    targets: 2,
                     
                 },
-                {responsivePriority: 10001, targets: 2},
+                {responsivePriority: 10001, targets: 4},
                 {
                     responsivePriority: 2,
                     targets: -1
@@ -153,24 +181,25 @@
         return txt.value;
     }
 
-    
-    function show_detail(data_id){
+    function show_confirm(data_id){
         $.ajax({
-                type: 'POST',
-                url: '{{ route('customer.detail') }}',
-                dataType: 'html',
-                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {id:data_id, "_token": "{{ csrf_token() }}"},
-                
-                success: function (data){
-                    console.log(data);
-                    $('#modal-show-detail').html(data);
-                    $('#detailModal').modal('show');
-                },
-                error: function(data){
-                    console.log(data);
-                }
+            type: 'POST',
+            url: '{{ route('fakturpenjualan.delete') }}',
+            dataType: 'html',
+            headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+            data: {id:data_id, "_token": "{{ csrf_token() }}"},
+            
+            success: function (data){
+                console.log(data);
+                $('#modal-confirm-delete').html(data);
+                $('#exampleModal').modal('show');
+            },
+            error: function(data){
+                console.log(data);
+            }
         });
     }
+
+    
 </script>
 @endpush

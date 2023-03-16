@@ -54,6 +54,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <!--begin::Card-->
+                    @can('grafikpenjualan-list')
                     <div class="card card-custom gutter-b">
                         <!--begin::Header-->
                         <div class="card-header h-auto d-flex justify-content-between">
@@ -125,6 +126,8 @@
                             <!--end::Chart-->
                         </div>
                     </div>
+                    @endcan
+                    
                     <!--end::Card-->
                 </div>
             </div>

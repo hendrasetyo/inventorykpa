@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\KunjunganSales;
 
 use App\Http\Controllers\Controller;
+use App\Models\FakturPenjualan;
 use App\Models\KunjunganSales;
+use App\Models\Sales;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -196,6 +199,59 @@ class KunjunganSalesController extends Controller
         
 
     }
+
+    public function indexpenjulaan()
+    {
+        $title = 'Penjualan Sales';
+        return view('sales.index',compact('title'));
+    }
+
+    public function datatablepenjualan(Request $request)
+    {
+            $datasales = [];
+            $sales = Sales::where('user_id',$request->id)->get();
+          
+            if (count($sales) > 0) {
+                foreach ($sales as $key  => $value) {
+                    $datasales[$key] = $value->id;
+                }             
+            }
+          
+            $fakturpenjualan = FakturPenjualan::with(['customers','statusFJ', 'sj'])
+                            ->whereHas('SO',function($query) use ($datasales){
+                                $query->whereIn('sales_id',[$datasales]);
+                            })->orderByDesc('id');
+
+            return Datatables::of($fakturpenjualan)
+                ->addIndexColumn()
+                ->addColumn('customer', function (FakturPenjualan $sj) {
+                    return $sj->customers->nama;
+                })
+                ->addColumn('kode_so', function (FakturPenjualan $sj) {
+                    return $sj->so->kode;
+                })
+                ->addColumn('kode_sj', function (FakturPenjualan $sj) {
+                    return $sj->sj->kode;
+                })
+                ->editColumn('tanggal', function (FakturPenjualan $sj) {
+                    return $sj->tanggal ? with(new Carbon($sj->tanggal))->format('d-m-Y') : '';
+                })
+                ->editColumn('no_kpa', function (FakturPenjualan $sj) {
+                    return $sj->no_kpa;
+                })
+                ->addColumn('action', function ($row) {
+                    $editUrl = route('fakturpenjualan.edit', ['fakturpenjualan' => $row->id]);
+                    $showUrl = route('fakturpenjualan.show', ['fakturpenjualan' => $row->id]);
+                    $id = $row->id;
+                    $status = $row->status_sj_id;
+
+                    return view('penjualan.fakturpenjualan._formAction', compact('id', 'status', 'showUrl','editUrl'));
+                })            
+                ->make(true);
+        
+    }
+
+
 
 
 }
