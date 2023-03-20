@@ -903,8 +903,8 @@ Route::middleware('has.role')->prefix('sales')->group(function () {
 
     Route::prefix('penjualansales')->group(function () {
         Route::post('/datatablepenjualan', [KunjunganSalesController::class, 'datatablepenjualan'])->name('sales.datatablepenjualan'); 
-        Route::get('/show/{kunjungansales}', [KunjunganSalesController::class, 'show'])->name('kunjungansales.show');        
-        Route::get('', [KunjunganSalesController::class, 'indexpenjulaan'])->name('kunjungansales.index');          
+        Route::get('/show/{kunjungansales}', [KunjunganSalesController::class, 'show'])->name('penjualansales.show');        
+        Route::get('', [KunjunganSalesController::class, 'indexpenjulaan'])->name('penjualansales.index');          
         
          
         // Route::get('/create', [KunjunganSalesController::class, 'create'])->name('kunjungansales.create');        

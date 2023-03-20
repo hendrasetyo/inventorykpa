@@ -144,8 +144,7 @@
                   {data: 'no_kpa', name: 'no_kpa'},
                   {data: 'customer', name: 'customers.nama'},
                   {data: 'tanggal', name: 'tanggal'},
-                //   {data: 'kode_so', name: 'SO.kode'},
-                  {data: 'kode_sj', name: 'SJ.kode'},
+                  {data: 'kode_sj', name: 'sj.kode'},
                  
                   {
                       data: 'action', 
