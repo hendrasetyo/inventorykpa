@@ -63,7 +63,7 @@
                             <table class="table yajra-datatable collapsed ">
                                 <thead class="datatable-head"> 
                                     <tr>
-                                        {{-- <th>Kode</th>  --}}
+                                        <th>Kode</th> 
                                         <th>Nama Barang</th>
                                         <th>Kategori</th>
                                         <th>Sub Kategori</th>                                                                            
@@ -113,7 +113,7 @@
               ajax: "{{ route('laporanstok.kartustok') }}",
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                    // {data: 'kode', name: 'kode'},
+                    {data: 'kode', name: 'kode'},
                   {data: 'nama', name: 'nama'},
                   {data: 'kategori', name: 'categories.nama'},
                   {data: 'subkategori', name: 'subcategories.nama'},             
