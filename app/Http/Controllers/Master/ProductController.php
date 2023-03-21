@@ -284,25 +284,22 @@ class ProductController extends Controller
     {
         $produk = Product::get();
 
-        foreach ($produk as $item) {
+        foreach ($produk as $key => $item) {
             $pembelian = PesananPembelianDetail::where('product_id',$item->id)->latest()->first();
-            $hargabeli = $item->hargabeli;            
+            if ($pembelian) {
+                $diskon_rp = $pembelian->diskon_rp;     
+                $diskon_persen = $pembelian->diskon_persen;
+                $hargabeli = $pembelian->hargabeli;
 
-            $data = $pembelian->diskon_persen ?  $pembelian->diskon_persen : 0;
+                Product::where('id',$item->id)->update([
+                    'hargabeli' => $hargabeli,
+                    'diskon_persen' => $diskon_persen,
+                    'diskon_rp' => $diskon_rp
+                ]);
+            }
+          
 
-            
-            // if ($pembelian->diskon_persen == 0) {
-            //    $diskonpersen = 0;
-            // }else{
-            //     $diskonpersen=$pembelian->diskon_persen;    
-            // }
-            
-            
-            Product::where('id',$item->id)->update([
-                'diskon_persen'=> $data
-            ]);
         }
-        
 
         return back();
     }
