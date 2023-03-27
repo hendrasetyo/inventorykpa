@@ -236,8 +236,7 @@ class PesananPenjualanController extends Controller
         $ongkir = str_replace(',', '.', $ongkir2) * 1;
 
         if ($request->ppn_ongkir > 0) {
-            $ppnOngkir += $ongkir * $request->ppn_ongkir/100;   
-            $ongkir +=$ppnOngkir;         
+            $ongkir = $ongkir / ( 1 + $request->ppn_ongkir/100 );       
         }
 
         $subtotal = $request->qty * $harga;
@@ -324,8 +323,9 @@ class PesananPenjualanController extends Controller
         $ongkir2 = str_replace('.', '', $ongkir1);
         $ongkir = str_replace(',', '.', $ongkir2) * 1;
 
+        $ppnOngkir=0;
         if ($request->ppn_ongkir > 0) {
-            $ongkir = $ongkir / (1 + $request->ppn_ongkir/100);            
+            $ongkir = $ongkir / ( 1 + $request->ppn_ongkir/100 );         
         }
 
         $subtotal = $request->qty * $harga;
@@ -649,8 +649,9 @@ class PesananPenjualanController extends Controller
     
         $ongkir = str_replace('.', ',', $ongkir1) * 1;
 
+        $ppnOngkir=0;
         if ($request->ppn_ongkir > 0) {
-            $ongkir = $ongkir / (1 + $request->ppn_ongkir/100);            
+            $ongkir = $ongkir / ( 1 + $request->ppn_ongkir/100 );             
         }
 
         $subtotal = $request->qty * $harga;
@@ -769,8 +770,9 @@ class PesananPenjualanController extends Controller
             
         }
 
+        $ppnOngkir=0;
         if ($request->ppn_ongkir > 0) {
-            $ongkir = $ongkir / (1 + $request->ppn_ongkir/100);            
+            $ongkir = $ongkir / ( 1 + $request->ppn_ongkir/100 );             
         }
 
         $subtotal = $request->qty * $harga;
