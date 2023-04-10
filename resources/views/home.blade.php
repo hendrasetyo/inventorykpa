@@ -408,12 +408,13 @@
    
 
     const ctx = document.getElementById('myChart');
-        let year = 2022;
+        let year = {{now()->format('Y')}};
         let kategori = 'All';
         let dataRange = null;
         let tipe = 'tahunan';
         let bulan = 13;
         let dataBulan=null;
+        let chart = null;
         // var bulan = @json($bulan);
     
 
@@ -421,30 +422,31 @@
         chartyear();
     })
 
-    chartLaba = {
-        ChartData:function (ctx , label , data ) {
-               new Chart(ctx, {
-                type: 'line',
-                data: {
-                labels: label ,
-                datasets: [{
-                    label: 'Penjualan',
-                    data: data,
-                    borderWidth: 1
-                }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                    title: {
-                        display: true,
-                        text: (ctx) => 'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
-                    }
+        let options= {
+                    type: 'bar',
+                    data: {
+                        labels: null ,
+                        datasets: [{
+                            label: 'Penjualan',
+                            data: null,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                        title: {
+                            display: true,
+                            text: (ctx) => 'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
+                        }
+                        },
+                        scales: {
+                            y: {
+                                stacked: true
+                            }
+                        }
                     }
                 }
-        });
-        }        
-    }
 
     function chartyear() {        
            $.ajax({
@@ -463,10 +465,9 @@
                    res = JSON.parse("[" + data + "]");
                    dataLaba = res[0].laba;
                    dataBulan = res[0].bulan;
-
-                   chartLaba.ChartData(ctx,dataBulan,dataLaba);
-                                              
-                                          
+                   options.data.labels =  dataBulan;
+                   options.data.datasets[0].data = dataLaba;
+                   chart = new Chart(ctx,options);                                                                                      
                 },
                 error: function(data){
                     console.log(data);
@@ -474,6 +475,71 @@
             });	   
 	}
 
+    function filterYear() {
+        let e = document.getElementById("kt_select2_1");
+        year = e.options[e.selectedIndex].value; 
+        $.ajax({
+                type: 'POST',
+                url: '{{ route('chart.year') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {
+                    'year' : year,
+                    'kategori' : kategori,
+                    'tipe' : tipe,
+                    'bulan' : bulan,
+                    "_token": "{{ csrf_token() }}"},
+                
+                success: function (data){
+                   res = JSON.parse("[" + data + "]");
+                   dataLaba = res[0].laba;
+                   dataBulan = res[0].bulan;
+                   options.data.labels =  dataBulan;
+                   options.data.datasets[0].data = dataLaba;
+
+                   chart.destroy();
+                   chart = new Chart(ctx,options);                                                                                      
+                   chart.update();
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });	   
+    }
+
+    function filterKategori() {
+        let e = document.getElementById("kt_select2_2");
+        kategori = e.options[e.selectedIndex].value;         
+        $.ajax({
+                type: 'POST',
+                url: '{{ route('chart.year') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {
+                    'year' : year,
+                    'kategori' : kategori,
+                    'tipe' : tipe,
+                    'bulan' : bulan,
+                    "_token": "{{ csrf_token() }}"},
+                
+                success: function (data){
+                   res = JSON.parse("[" + data + "]");
+                   dataLaba = res[0].laba;
+                   dataBulan = res[0].bulan;
+                   options.data.labels =  dataBulan;
+                   options.data.datasets[0].data = dataLaba;
+
+                   chart.destroy();
+                   chart = new Chart(ctx,options);                                                                                      
+                   chart.update();
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });	 
+    }
+
+   
   </script>
     
 {{-- <script>
