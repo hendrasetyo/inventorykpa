@@ -63,6 +63,7 @@ class HomeController extends Controller
                         DB::raw("sum(fp.grandtotal) as grandtotal_penjualan")
                     );     
         }else{
+            
             $tipe = $bulan->groupBy(DB::raw("DATE_FORMAT(fp.tanggal, '%m-%Y')"))
                     ->select(
                         DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
@@ -71,15 +72,10 @@ class HomeController extends Controller
         }
         
        $hasil= $tipe->get();
-        
-        
-        
+                        
         $laba = array();  
         $data=[]; 
-        
-
-        
-        
+                        
         foreach ($hasil as $key => $value) {
             $data[(int)$value->tanggal_penjualan] = [
                 'grandtotal' => (int)$value->grandtotal_penjualan
@@ -87,22 +83,31 @@ class HomeController extends Controller
         }
         
         
-        for ($i=1; $i <= 12; $i++) { 
-            if (!empty($data[$i])) {
-                $laba[] = $data[$i]['grandtotal'];
-            }else{
+        for ($i=0; $i <= 12; $i++) { 
+            if ($i==0) {
                 $laba[] = 0;
+            }else{
+                if (!empty($data[$i])) {
+                    $laba[] = $data[$i]['grandtotal'];
+                }else{
+                    $laba[] = 0;
+                }
             }
+            
         }
-        $bulan=array();
 
-        for ($i=1; $i <= 31; $i++) { 
-            $bulan[]=$i;
+        for ($i = 0; $i <=12; $i++) {
+            if ($i==0) {
+                $months[] = 0;
+            }else{ 
+                $months[] = date('F', mktime(0,0,0,$i));
+            }
+            
         }
 
         return response()->json([
             'laba' => $laba,
-            'bulan' => $bulan
+            'bulan' => $months
         ]);
     }
 }

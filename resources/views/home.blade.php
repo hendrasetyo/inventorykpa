@@ -122,7 +122,10 @@
                           </div>
                           
                             <!--begin::Chart-->
-                            <div id="penjualanchart"></div>
+                            {{-- <div id="penjualanchart"></div> --}}
+                              <div>
+                                 <canvas id="myChart"></canvas>
+                              </div>
                             <!--end::Chart-->
                         </div>
                     </div>
@@ -400,8 +403,80 @@
 <script src="{{ asset('/assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6') }}"></script>
 <script src="{{ asset('/assets/js/pages/crud/datatables/extensions/responsive.js?v=7.0.6') }}"></script>
 <script src="{{ asset('/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js?v=7.0.6') }}"></script>
-    
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+   
+
+    const ctx = document.getElementById('myChart');
+        let year = 2022;
+        let kategori = 'All';
+        let dataRange = null;
+        let tipe = 'tahunan';
+        let bulan = 13;
+        let dataBulan=null;
+        // var bulan = @json($bulan);
+    
+
+    $(document).ready(function() {
+        chartyear();
+    })
+
+    chartLaba = {
+        ChartData:function (ctx , label , data ) {
+               new Chart(ctx, {
+                type: 'line',
+                data: {
+                labels: label ,
+                datasets: [{
+                    label: 'Penjualan',
+                    data: data,
+                    borderWidth: 1
+                }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                    title: {
+                        display: true,
+                        text: (ctx) => 'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
+                    }
+                    }
+                }
+        });
+        }        
+    }
+
+    function chartyear() {        
+           $.ajax({
+                type: 'POST',
+                url: '{{ route('chart.year') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {
+                    'year' : year,
+                    'kategori' : kategori,
+                    'tipe' : tipe,
+                    'bulan' : bulan,
+                    "_token": "{{ csrf_token() }}"},
+                
+                success: function (data){
+                   res = JSON.parse("[" + data + "]");
+                   dataLaba = res[0].laba;
+                   dataBulan = res[0].bulan;
+
+                   chartLaba.ChartData(ctx,dataBulan,dataLaba);
+                                              
+                                          
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });	   
+	}
+
+  </script>
+    
+{{-- <script>
         let year = {{now()->format('Y')}};
         let kategori = 'All';
         let dataRange = null;
@@ -555,5 +630,5 @@
    
 
 
-</script>
+</script> --}}
 @endpush
