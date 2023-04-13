@@ -363,8 +363,10 @@
                         labels: null ,
                         datasets: [{
                             label: 'Penjualan',
-                            data: null,
-                            borderWidth: 1
+                            data : null,
+                            pointStyle: 'circle',
+                            pointRadius: 10,
+                            pointHoverRadius: 15
                         }]
                     },
                     options: {
