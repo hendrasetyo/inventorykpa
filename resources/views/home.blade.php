@@ -445,6 +445,9 @@
                                 stacked: true
                             }
                         }
+                    },
+                    interaction: {
+                         intersect: false,
                     }
                 }
 

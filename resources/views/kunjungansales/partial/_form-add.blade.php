@@ -33,7 +33,7 @@
             <button type="button" class="btn btn-danger btn-sm" id="clear"><i class="fa fa-eraser"></i> Clear</button>
              <canvas id="signature-pad" class="signature-pad"></canvas>            
       </div>
-      <button type="button" class="btn btn-primary btn-sm" id="save-jpeg"><i class="fa fa-save"></i> save ttd</button>
+      {{-- <button type="button" class="btn btn-primary btn-sm" id="save-jpeg"><i class="fa fa-save"></i> save ttd</button> --}}
       <br>
       <div id="ttd"></div>
     </div>
