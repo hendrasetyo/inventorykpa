@@ -20,10 +20,14 @@ class HomeController extends Controller
             ];
         }
 
+       
+
         return view('home',[
             'kategori' => $kategori,
             'bulan' => $months
         ]);
+
+       
     }
 
 
@@ -109,5 +113,48 @@ class HomeController extends Controller
             'laba' => $laba,
             'bulan' => $months
         ]);
+    }
+
+    public function chartkategori(Request $request)
+    {
+        $results = DB::table('faktur_penjualans as fp')
+                    ->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')
+                    ->join('kategoripesanans as kp','pp.kategoripesanan_id','=','kp.id')
+                    ->where('fp.deleted_at','=',null);
+
+        if ($request->year) {
+            $res=$results->whereYear('fp.tanggal',$request->year);       
+        }else{
+            $res=$results;
+        }
+
+        $hasil = $res->select(
+                        'kp.nama as kategori',
+                        DB::raw("sum(fp.grandtotal) as grandtotal_penjualan")
+                    )
+                    ->groupBy('pp.kategoripesanan_id')
+                    ->get(); 
+
+        $datakategori = [];
+        $sum = 0;
+
+        foreach ($hasil as $value) {
+                $sum += $value->grandtotal_penjualan;
+        }
+        
+
+        foreach ($hasil as  $value) {
+           
+            $kategori[] = $value->kategori;
+            $penjualan[] = $value->grandtotal_penjualan / $sum * 100;
+        }       
+
+        
+
+       return response()->json([
+            'datakategori' => $kategori,
+            'datapenjualan' => $penjualan
+        ]);
+        
     }
 }

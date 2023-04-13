@@ -63,6 +63,7 @@ Route::middleware('auth', 'verified')->group(function () {
     // });
     Route::get('/', [HomeController::class, 'index']);
     Route::post('/chartyear', [HomeController::class, 'chartyear'])->name('chart.year');
+    Route::post('/chartkategori', [HomeController::class, 'chartkategori'])->name('chart.kategori');
 
     Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('profile/edit', [ProfileController::class, 'updateProfileInformation']);

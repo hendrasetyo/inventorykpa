@@ -71,15 +71,6 @@
                         <!--end::Header-->
                         <div class="card-body">
                           <div class="row">
-                            {{-- <div class="col-md-4">
-                                <div class="form-group">    
-                                    <label for="">Tipe Grafik</label>                                                    
-                                    <select name="chart_year" class="form-control" id="kt_select2_4" onchange="filterType()">                               
-                                        <option value="tahun" selected>Tahunan</option>
-                                        <option value="bulan">Bulanan</option>                                        
-                                    </select>
-                                </div>
-                            </div> --}}
                                 <div class="col-md-4">
                                     <div class="form-group">    
                                         <label for="">Tahun</label>                                                    
@@ -137,102 +128,42 @@
 
             <!--begin::Row-->
             <div class="row">
-                <div class="col-xl-4">
+                <div class="col-xl-8">
                     <!--begin::Tiles Widget 1-->
                     <div class="card card-custom gutter-b card-stretch">
                         <!--begin::Header-->
                         <div class="card-header border-0 pt-5">
                             <div class="card-title">
                                 <div class="card-label">
-                                    <div class="font-weight-bolder">Weekly Sales Stats</div>
-                                    <div class="font-size-sm text-muted mt-2">xxx,xxx Sales</div>
+                                    <div class="font-weight-bolder">Grafik Per Kategori</div>                                
                                 </div>
                             </div>
-
                         </div>
                         <!--end::Header-->
 
-                        <!--begin::Body-->
-                        <div class="card-body d-flex flex-column px-0">
-                            <!--begin::Chart-->
-                            <div id="kt_tiles_widget_1_chart" data-color="danger" style="height: 125px">
+                        {{-- Grafik --}}
+                            <div class="card-body">
+                                <div class="form-group">    
+                                    <label for="">Tahun</label>                                                    
+                                    <select name="chart_year" class="form-control" id="kt_select2_7" onchange="filterYearKategori()">                               
+                                        @php
+                                        $year = 2020;
+                                        @endphp
+                                        @foreach (range(date('Y'), $year) as $x)
+                                            <option value="{{$x}}">{{$x}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <canvas id="KategoriChart"></canvas>
                             </div>
-                            <!--end::Chart-->
 
-                            <!--begin::Items-->
-                            <div class="flex-grow-1 card-spacer-x">
-                                <!--begin::Item-->
-                                <div class="d-flex align-items-center justify-content-between mb-10">
-                                    <div class="d-flex align-items-center mr-2">
-                                        <div class="symbol symbol-50 symbol-light mr-3 flex-shrink-0">
-                                            <div class="symbol-label">
-                                                <img src="assets/media/svg/misc/006-plurk.svg" alt="" class="h-50" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <a href="#"
-                                                class="font-size-h6 text-dark-75 text-hover-primary font-weight-bolder">Top
-                                                Authors</a>
-                                            <div class="font-size-sm text-muted font-weight-bold mt-1">
-                                                Coming Soon</div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="label label-light label-inline font-weight-bold text-dark-50 py-4 px-3 font-size-base">
-                                        +00$</div>
-                                </div>
-                                <!--end::Item-->
-
-                                <!--begin::Item-->
-                                <div class="d-flex align-items-center justify-content-between mb-10">
-                                    <div class="d-flex align-items-center mr-2">
-                                        <div class="symbol symbol-50 symbol-light mr-3 flex-shrink-0">
-                                            <div class="symbol-label">
-                                                <img src="assets/media/svg/misc/015-telegram.svg" alt="" class="h-50" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <a href="#"
-                                                class="font-size-h6 text-dark-75 text-hover-primary font-weight-bolder">Bestsellers</a>
-                                            <div class="font-size-sm text-muted font-weight-bold mt-1">
-                                                Pitstop Email Marketing</div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="label label-light label-inline font-weight-bold text-dark-50 py-4 px-3 font-size-base">
-                                        000$</div>
-                                </div>
-                                <!--end::Item-->
-
-                                <!--begin::Item-->
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex align-items-center mr-2">
-                                        <div class="symbol symbol-50 symbol-light mr-3 flex-shrink-0">
-                                            <div class="symbol-label">
-                                                <img src="assets/media/svg/misc/003-puzzle.svg" alt="" class="h-50" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <a href="#"
-                                                class="font-size-h6 text-dark-75 text-hover-primary font-weight-bolder">Top
-                                                Engagement</a>
-                                            <div class="font-size-sm text-muted font-weight-bold mt-1">
-                                                solution provider</div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="label label-light label-inline font-weight-bold text-dark-50 py-4 px-3 font-size-base">
-                                        +00$</div>
-                                </div>
-                                <!--end::Item-->
-                            </div>
-                            <!--end::Items-->
-                        </div>
-                        <!--end::Body-->
+                        {{-- end Of Grafik --}}
+                      
                     </div>
                     <!--end::Tiles Widget 1-->
                 </div>
-                <div class="col-xl-8">
+                {{-- <div class="col-xl-8">
                     <div class="row">
                         <div class="col-xl-3">
                             <!--begin::Tiles Widget 3-->
@@ -384,7 +315,7 @@
                             <!--end::Mixed Widget 14-->
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <!--end::Row-->
 
@@ -407,7 +338,8 @@
 <script>
    
 
-    const ctx = document.getElementById('myChart');
+        const ctx = document.getElementById('myChart');
+        const chartKategori = document.getElementById('KategoriChart');
         let year = {{now()->format('Y')}};
         let kategori = 'All';
         let dataRange = null;
@@ -418,12 +350,15 @@
         // var bulan = @json($bulan);
     
 
-    $(document).ready(function() {
-        chartyear();
-    })
+        $(document).ready(function() {
+            chartyear();
 
-        let options= {
-                    type: 'bar',
+            chart_kategori();
+        })
+
+        // chart Bar Pejualan
+         let options= {
+                    type: 'line',
                     data: {
                         labels: null ,
                         datasets: [{
@@ -437,7 +372,7 @@
                         plugins: {
                         title: {
                             display: true,
-                            text: (ctx) => 'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
+                            text: (ctx) => 'Data Dalam Persen Rupiah ',
                         }
                         },
                         scales: {
@@ -451,253 +386,185 @@
                     }
                 }
 
-    function chartyear() {        
-           $.ajax({
-                type: 'POST',
-                url: '{{ route('chart.year') }}',
-                dataType: 'html',
-                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {
-                    'year' : year,
-                    'kategori' : kategori,
-                    'tipe' : tipe,
-                    'bulan' : bulan,
-                    "_token": "{{ csrf_token() }}"},
-                
-                success: function (data){
-                   res = JSON.parse("[" + data + "]");
-                   dataLaba = res[0].laba;
-                   dataBulan = res[0].bulan;
-                   options.data.labels =  dataBulan;
-                   options.data.datasets[0].data = dataLaba;
-                   chart = new Chart(ctx,options);                                                                                      
-                },
-                error: function(data){
-                    console.log(data);
+        function chartyear() {        
+            $.ajax({
+                    type: 'POST',
+                    url: '{{ route('chart.year') }}',
+                    dataType: 'html',
+                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                    data: {
+                        'year' : year,
+                        'kategori' : kategori,
+                        'tipe' : tipe,
+                        'bulan' : bulan,
+                        "_token": "{{ csrf_token() }}"},
+                    
+                    success: function (data){
+                    res = JSON.parse("[" + data + "]");
+                    dataLaba = res[0].laba;
+                    dataBulan = res[0].bulan;
+                    options.data.labels =  dataBulan;
+                    options.data.datasets[0].data = dataLaba;
+                    chart = new Chart(ctx,options);                                                                                      
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
+                });	   
+        }
+
+        function filterYear() {
+            let e = document.getElementById("kt_select2_1");
+            year = e.options[e.selectedIndex].value; 
+            $.ajax({
+                    type: 'POST',
+                    url: '{{ route('chart.year') }}',
+                    dataType: 'html',
+                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                    data: {
+                        'year' : year,
+                        'kategori' : kategori,
+                        'tipe' : tipe,
+                        'bulan' : bulan,
+                        "_token": "{{ csrf_token() }}"},
+                    
+                    success: function (data){
+                    res = JSON.parse("[" + data + "]");
+                    dataLaba = res[0].laba;
+                    dataBulan = res[0].bulan;
+                    options.data.labels =  dataBulan;
+                    options.data.datasets[0].data = dataLaba;
+
+                    chart.destroy();
+                    chart = new Chart(ctx,options);                                                                                      
+                    chart.update();
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
+                });	   
+        }
+
+        function filterKategori() {
+            let e = document.getElementById("kt_select2_2");
+            kategori = e.options[e.selectedIndex].value;         
+            $.ajax({
+                    type: 'POST',
+                    url: '{{ route('chart.year') }}',
+                    dataType: 'html',
+                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                    data: {
+                        'year' : year,
+                        'kategori' : kategori,
+                        'tipe' : tipe,
+                        'bulan' : bulan,
+                        "_token": "{{ csrf_token() }}"},
+                    
+                    success: function (data){
+                    res = JSON.parse("[" + data + "]");
+                    dataLaba = res[0].laba;
+                    dataBulan = res[0].bulan;
+                    options.data.labels =  dataBulan;
+                    options.data.datasets[0].data = dataLaba;
+
+                    chart.destroy();
+                    chart = new Chart(ctx,options);                                                                                      
+                    chart.update();
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
+                });	 
+        }
+
+    // end of Chart Penjualan Bar
+    
+            let dougnut= {
+                    type: 'bar',
+                    data: {
+                        labels: null ,
+                        datasets: [{
+                            label: 'Grafik Penjualan Per Kategori',
+                            data: null,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                        title: {
+                            display: true,
+                            text: (ctx) => 'Data Dalam Persen Rupiah ',
+                        }
+                        },
+                        scales: {
+                            y: {
+                                stacked: true
+                            }
+                        }
+                    },
+                    interaction: {
+                         intersect: false,
+                    }
                 }
-            });	   
-	}
 
-    function filterYear() {
-        let e = document.getElementById("kt_select2_1");
-        year = e.options[e.selectedIndex].value; 
-        $.ajax({
-                type: 'POST',
-                url: '{{ route('chart.year') }}',
-                dataType: 'html',
-                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {
-                    'year' : year,
-                    'kategori' : kategori,
-                    'tipe' : tipe,
-                    'bulan' : bulan,
-                    "_token": "{{ csrf_token() }}"},
-                
-                success: function (data){
-                   res = JSON.parse("[" + data + "]");
-                   dataLaba = res[0].laba;
-                   dataBulan = res[0].bulan;
-                   options.data.labels =  dataBulan;
-                   options.data.datasets[0].data = dataLaba;
+    // Chart dougnut Kategori Penjualan
+    function chart_kategori() {        
+            $.ajax({
+                    type: 'POST',
+                    url: '{{ route('chart.kategori') }}',
+                    dataType: 'html',
+                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                    data: {
+                        'year' : year,
+                        "_token": "{{ csrf_token() }}"},
+                    
+                    success: function (data){
+                            res = JSON.parse("[" + data + "]");
+                            datakategori  = res[0].datakategori;
+                            datapenjualan = res[0].datapenjualan;
 
-                   chart.destroy();
-                   chart = new Chart(ctx,options);                                                                                      
-                   chart.update();
-                },
-                error: function(data){
-                    console.log(data);
-                }
-            });	   
-    }
+                            dougnut.data.labels =  datakategori;
+                            dougnut.data.datasets[0].data = datapenjualan;
+                            chartkategori = new Chart(chartKategori,dougnut);                                                                                      
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
+                });	   
+        }
 
-    function filterKategori() {
-        let e = document.getElementById("kt_select2_2");
-        kategori = e.options[e.selectedIndex].value;         
-        $.ajax({
-                type: 'POST',
-                url: '{{ route('chart.year') }}',
-                dataType: 'html',
-                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {
-                    'year' : year,
-                    'kategori' : kategori,
-                    'tipe' : tipe,
-                    'bulan' : bulan,
-                    "_token": "{{ csrf_token() }}"},
-                
-                success: function (data){
-                   res = JSON.parse("[" + data + "]");
-                   dataLaba = res[0].laba;
-                   dataBulan = res[0].bulan;
-                   options.data.labels =  dataBulan;
-                   options.data.datasets[0].data = dataLaba;
+        function filterYearKategori() {
+            let e = document.getElementById("kt_select2_7");
+            year = e.options[e.selectedIndex].value; 
+            $.ajax({
+                    type: 'POST',
+                    url: '{{ route('chart.kategori') }}',
+                    dataType: 'html',
+                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                    data: {
+                        'year' : year,                      
+                        "_token": "{{ csrf_token() }}"},
+                    
+                    success: function (data){
+                    res = JSON.parse("[" + data + "]");
+                    datakategori  = res[0].datakategori;
+                    datapenjualan = res[0].datapenjualan;
 
-                   chart.destroy();
-                   chart = new Chart(ctx,options);                                                                                      
-                   chart.update();
-                },
-                error: function(data){
-                    console.log(data);
-                }
-            });	 
-    }
+                    dougnut.data.labels =  datakategori;
+                    dougnut.data.datasets[0].data = datapenjualan;
+
+                    chartkategori.destroy();
+                    chartkategori = new Chart(chartKategori,dougnut);                                                                                      
+                    chartkategori.update();
+
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
+                });	   
+        }
 
    
   </script>
-    
-{{-- <script>
-        let year = {{now()->format('Y')}};
-        let kategori = 'All';
-        let dataRange = null;
-        let tipe = 'tahunan';
-        let bulan = 13;
-        let dataBulan=null;
-
-        const apexChart = "#penjualanchart";                   
-        var options = {
-            series: [{
-                name: "Penjualan",
-                data: dataRange
-            }],
-            chart: {
-                height: 350,
-                type: 'line',
-                zoom: {
-                    enabled: false
-                }
-            },
-            dataLabels: { 	
-                enabled: false
-            },
-            stroke: {
-                curve: 'straight'
-            },
-            grid: {
-                row: {
-                    colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                    opacity: 0.5
-                },
-            },
-            xaxis: {
-                categories: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September','Oktober','November','Desember'],
-            },
-            colors: [primary]
-        };
-
-        var optionsMonth = {
-            series: [{
-                name: "Penjualan",
-                data: dataRange
-            }],
-            chart: {
-                height: 350,
-                type: 'line',
-                zoom: {
-                    enabled: false
-                }
-            },
-            dataLabels: { 	
-                enabled: false
-            },
-            stroke: {
-                curve: 'straight'
-            },
-            grid: {
-                row: {
-                    colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                    opacity: 0.5
-                },
-            },
-            xaxis: {
-                categories: dataBulan,
-            },
-            colors: [primary]
-        };
-          
-     $(document).ready(function() {
-        chartyear();        
-     })
-
-     function chartyear() {        
-           $.ajax({
-                type: 'POST',
-                url: '{{ route('chart.year') }}',
-                dataType: 'html',
-                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {
-                    'year' : year,
-                    'kategori' : kategori,
-                    'tipe' : tipe,
-                    'bulan' : bulan,
-                    "_token": "{{ csrf_token() }}"},
-                
-                success: function (data){
-                   res = JSON.parse("[" + data + "]");
-                   dataRes = res[0].laba;
-                   options.series[0].data=dataRes;
-                   
-                   var chart = new ApexCharts(document.querySelector(apexChart), options);   
-	               chart.render();                         
-                },
-                error: function(data){
-                    console.log(data);
-                }
-            });	   
-	}
-
-    function chartbulan() {
-        $.ajax({
-                type: 'POST',
-                url: '{{ route('chart.year') }}',
-                dataType: 'html',
-                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {
-                    'year' : year,
-                    'kategori' : kategori,
-                    'tipe' : tipe,
-                    'bulan' : bulan,
-                    "_token": "{{ csrf_token() }}"},
-                
-                success: function (data){
-                   res = JSON.parse("[" + data + "]");
-                   dataRes = res[0].laba;
-                   dataBulan = res[0].bulan;
-                   
-                //    console.log(optionsMonth.xaxis.categories);
-                   optionsMonth.series[0].data=dataRes;
-                   optionsMonth.xaxis.categories=dataBulan;
-
-
-                   var chart = new ApexCharts(document.querySelector(apexChart), optionsMonth);   
-	               chart.render();
-
-                },
-                error: function(data){
-                    console.log(data);
-                }
-            });	  
-    }
-
-    function filterYear() {
-        let e = document.getElementById("kt_select2_1");
-        year = e.options[e.selectedIndex].value; 
-        chartyear();
-    }
-
-    function filterKategori() {
-        let e = document.getElementById("kt_select2_2");
-        kategori = e.options[e.selectedIndex].value;         
-        chartyear();
-    }
-
-    function filterType(params) {
-        let e = document.getElementById("kt_select2_4");
-        tipe = e.options[e.selectedIndex].value;         
-        chartbulan();
-    }
-
-   
-
-
-</script> --}}
 @endpush
