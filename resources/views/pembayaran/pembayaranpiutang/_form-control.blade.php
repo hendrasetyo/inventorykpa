@@ -6,6 +6,13 @@
             class="form-control form-control-solid" />
 
     </div>
+
+    <div class="form-group">
+        <label>Kode KPA :</label>
+        <input type="text" name="no_faktur" readonly="readonly" value="{{ $piutang->fakturpenjualan->no_kpa }}"
+            class="form-control form-control-solid" />
+
+    </div>
     <div class="form-group">
         <label>Customer :</label>
         <input type="text" readonly="readonly" name="supplier" value="{{ $piutang->customers->nama }}"
