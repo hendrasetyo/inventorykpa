@@ -46,7 +46,7 @@ class PerformaSalesController extends Controller
         $hasil = $res->groupBy('pp.sales_id')
         ->select(
             DB::raw("DATE_FORMAT(fp.tanggal,'%M') as tanggal"),
-           's.nama','s.id',
+           's.nama','s.id','s.hp',
             DB::raw("sum(fp.grandtotal) as grandtotal_penjualan")
         )->get();
 
@@ -60,6 +60,7 @@ class PerformaSalesController extends Controller
                     $dataSales[] = [
                         'id' => $value->id,
                         'bulan' =>$res->tanggal,
+                        'hp' => $res->hp,
                         'nama' => $res->nama,
                         'laba' => number_format($res->grandtotal_penjualan, 0, ',', '.'),
                         'persen' => (int) ($res->grandtotal_penjualan/575000000 * 100)
