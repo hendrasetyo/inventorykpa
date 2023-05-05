@@ -54,6 +54,7 @@ use App\Http\Controllers\Pembayaran\PembayaranPiutangController;
 use App\Http\Controllers\Penjualan\BiayaLainController;
 use App\Http\Controllers\Penjualan\LabaRugiController;
 use App\Http\Controllers\Permissions\AssignPermissionController;
+use App\Http\Controllers\Sales\PerformaSalesController;
 use App\Http\Controllers\Teknisi\MaintenanceController;
 
 
@@ -905,17 +906,25 @@ Route::middleware('has.role')->prefix('sales')->group(function () {
     Route::prefix('penjualansales')->group(function () {
         Route::post('/datatablepenjualan', [KunjunganSalesController::class, 'datatablepenjualan'])->name('sales.datatablepenjualan'); 
         Route::get('/show/{kunjungansales}', [KunjunganSalesController::class, 'show'])->name('penjualansales.show');        
-        Route::get('', [KunjunganSalesController::class, 'indexpenjulaan'])->name('penjualansales.index');          
-        
-         
-        // Route::get('/create', [KunjunganSalesController::class, 'create'])->name('kunjungansales.create');        
-        // Route::post('/store', [KunjunganSalesController::class, 'store'])->name('kunjungansales.store');        
-        // Route::get('/{kunjungansales}/edit', [KunjunganSalesController::class, 'edit'])->name('kunjungansales.edit');       
-        // Route::PUT('/{kunjungansales}/update', [KunjunganSalesController::class, 'update'])->name('kunjungansales.update');                   
-        // Route::post('/delete', [KunjunganSalesController::class, 'delete'])->name('kunjungansales.delete');       
-        // Route::delete('/delete', [KunjunganSalesController::class, 'destroy'])->name('kunjungansales.destroy');       
-        
+        Route::get('', [KunjunganSalesController::class, 'indexpenjulaan'])->name('penjualansales.index');                  
     });
+
+    Route::prefix('performasales')->group(function () {       
+        Route::get('', [PerformaSalesController::class, 'index'])->name('performasales.index');  
+        Route::get('/{id}/detail', [PerformaSalesController::class, 'performasalesdetail'])->name('performasales.performasalesdetail');  
+        Route::post('/performasales', [PerformaSalesController::class, 'dataperformasales'])->name('performasales.dataperformasales'); 
+        Route::post('/grafikperformasales', [PerformaSalesController::class, 'grafikPerformaSales'])->name('performasales.grafikperformasales'); 
+
+        // PERFORMA DALES DETAIL
+        Route::post('/performasales/detailgrafik', [PerformaSalesController::class, 'grafikperformasalesdetail'])->name('performasales.dataperformasales.detailgrafik'); 
+        Route::post('/performasales/performasalesCustomer', [PerformaSalesController::class, 'performasalesCustomer'])->name('performasales.dataperformasales.performasalesCustomer'); 
+
+
+        
+
+    });
+
+
 
 
 });

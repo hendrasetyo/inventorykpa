@@ -38,7 +38,6 @@ class HomeController extends Controller
                 ->where('fp.deleted_at','=',null)
                 ->orderBy('fp.tanggal');
                  
-        // FakturPenjualan::orderBy('tanggal');
 
         if ($request->year) {
             $res=$results->whereYear('fp.tanggal',$request->year);       
@@ -146,7 +145,7 @@ class HomeController extends Controller
         foreach ($hasil as  $value) {
            
             $kategori[] = $value->kategori;
-            $penjualan[] = $value->grandtotal_penjualan / $sum * 100;
+            $penjualan[] = $value->grandtotal_penjualan;
         }       
 
         

@@ -54,7 +54,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <!--begin::Card-->
-                    @can('grafikpenjualan-list')
+                    
                     <div class="card card-custom gutter-b">
                         <!--begin::Header-->
                         <div class="card-header h-auto d-flex justify-content-between">
@@ -120,7 +120,7 @@
                             <!--end::Chart-->
                         </div>
                     </div>
-                    @endcan
+                    
                     
                     <!--end::Card-->
                 </div>
@@ -366,21 +366,41 @@
                             data : null,
                             pointStyle: 'circle',
                             pointRadius: 10,
-                            pointHoverRadius: 15
+                            pointHoverRadius: 15,                            
                         }]
                     },
                     options: {
                         responsive: true,
                         plugins: {
-                        title: {
-                            display: true,
-                            text: (ctx) => 'Data Dalam Persen Rupiah ',
-                        }
+                            title: {
+                                display: true,
+                                text: (ctx) => 'Data Dalam Persen Rupiah ',
+                            },
+                            legend: {
+                                labels: {
+                                    // This more specific font property overrides the global property
+                                    font: {
+                                        size: 11
+                                    }
+                                }
+                            }
                         },
                         scales: {
                             y: {
-                                stacked: true
-                            }
+                                stacked: true,
+                                ticks: {
+                                    font: {
+                                        size: 12,
+                                    }
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    font: {
+                                        size: 12,
+                                    }
+                                }
+                              }
                         }
                     },
                     interaction: {
@@ -405,6 +425,7 @@
                     res = JSON.parse("[" + data + "]");
                     dataLaba = res[0].laba;
                     dataBulan = res[0].bulan;
+                    
                     options.data.labels =  dataBulan;
                     options.data.datasets[0].data = dataLaba;
                     chart = new Chart(ctx,options);                                                                                      
@@ -488,16 +509,18 @@
                         datasets: [{
                             label: 'Grafik Penjualan Per Kategori',
                             data: null,
-                            borderWidth: 1
+                            borderWidth: 1,
+                            backgroundColor: ['#FF6384','#36A2EB'],
                         }]
                     },
                     options: {
                         responsive: true,
                         plugins: {
-                        title: {
-                            display: true,
-                            text: (ctx) => 'Data Dalam Persen Rupiah ',
-                        }
+                            title: {
+                                display: true,
+                                text: (ctx) => 'Data Dalam Persen Rupiah ',
+                            },
+                           
                         },
                         scales: {
                             y: {
