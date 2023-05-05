@@ -235,13 +235,17 @@ class PerformaSalesController extends Controller
         
        $hasil= $tipe->get();
 
-      foreach ($hasil as $value) {
-            $customer [] = $value->nama_customer;
-            $laba[] = $value->grandtotal_penjualan;
-      }
+       $customer = [];
+       $laba = [];
 
+       if (count($hasil) > 0) {
+            foreach ($hasil as $value) {
+                $customer [] = $value->nama_customer;
+                $laba[] = $value->grandtotal_penjualan;
+           }
+       }
 
-
+    
         return response()->json([
             'laba' => $laba,
             'customer' => $customer

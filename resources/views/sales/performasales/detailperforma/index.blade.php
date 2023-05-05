@@ -445,13 +445,19 @@
                             let customer = res[0].customer;
                             let penjualan = res[0].laba;
 
-                            barCustomer.data.labels =  customer;
-                            barCustomer.data.datasets[0].data = penjualan;
+                            if (penjualan.length > 0) {
+                                barCustomer.data.labels =  customer;
+                                barCustomer.data.datasets[0].data = penjualan;
 
 
-                            chartCustomer.destroy();
-                            chartCustomer = new Chart(grafikcustomer,barCustomer);  
-                            chartCustomer.update()
+                                chartCustomer.destroy();
+                                chartCustomer = new Chart(grafikcustomer,barCustomer);  
+                                chartCustomer.update()
+                            }else{
+                                chartCustomer.destroy();
+                            }
+
+                           
                                                                                                                 
                         },
                         error: function(data){
@@ -481,12 +487,17 @@
                             let customer = res[0].customer;
                             let penjualan = res[0].laba;
 
-                            barCustomer.data.labels =  customer;
-                            barCustomer.data.datasets[0].data = penjualan;
+                            if (penjualan.length > 0) {
+                                barCustomer.data.labels =  customer;
+                                barCustomer.data.datasets[0].data = penjualan;
 
-                            chartCustomer.destroy();
-                            chartCustomer = new Chart(grafikcustomer,barCustomer);  
-                            chartCustomer.update()
+                                chartCustomer.destroy();
+                                chartCustomer = new Chart(grafikcustomer,barCustomer);  
+                                chartCustomer.update()
+                            } else {
+                                chartCustomer.destroy();
+                            }
+                           
                                                                                                                                        
                         },
                         error: function(data){
