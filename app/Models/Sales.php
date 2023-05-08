@@ -19,7 +19,7 @@ class Sales extends Model
         'hp',
         'nip',
         'keterangan',
-        'user_id'
+        
     ];
 
     public function customers()
@@ -32,4 +32,12 @@ class Sales extends Model
     {
         return $this->hasMany(PesananPenjualan::class, 'sales_id');
     }
+
+
+    public function user()
+    {
+        return $this->hasMany(User::class, 'sales_id', 'id');
+    }
+
+
 }

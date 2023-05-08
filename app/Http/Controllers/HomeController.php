@@ -156,4 +156,10 @@ class HomeController extends Controller
         ]);
         
     }
+
+
+    public function grafikProduk(Request $request)
+    {
+        return view();
+    }
 }

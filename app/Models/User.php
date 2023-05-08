@@ -22,7 +22,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
-        'password'
+        'password',
+        'sales_id',
+        'phone'
     ];
 
     /**
@@ -56,4 +58,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(KunjunganSales::class, 'user_id');
     }
+
+   
+    public function sales()
+    {
+        return $this->belongsTo(Sales::class, 'sales_id');
+    }
+    
+   
 }

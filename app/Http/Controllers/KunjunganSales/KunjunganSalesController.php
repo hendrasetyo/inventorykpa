@@ -209,7 +209,8 @@ class KunjunganSalesController extends Controller
     public function datatablepenjualan(Request $request)
     {
             $datasales = [];
-            $sales = Sales::where('user_id',$request->id)->get();
+            $id = auth()->user()->sales_id;
+            $sales = Sales::where('id',$id)->get();
           
             if (count($sales) > 0) {
                 foreach ($sales as $key  => $value) {
