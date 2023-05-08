@@ -63,7 +63,7 @@ class PerformaSalesController extends Controller
                         'hp' => $res->hp,
                         'nama' => $res->nama,
                         'laba' => number_format($res->grandtotal_penjualan, 0, ',', '.'),
-                        'persen' => (int) ($res->grandtotal_penjualan/575000000 * 100)
+                        'persen' => (int) ($res->grandtotal_penjualan/575000000 * 100),
                     ]; 
                  }
             }    
