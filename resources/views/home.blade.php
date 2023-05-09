@@ -611,7 +611,7 @@
 
         function filterProduk() {
             let e = document.getElementById("kt_select2_3");
-            year = e.options[e.selectedIndex].value; 
+            produk = e.options[e.selectedIndex].value; 
 
             $.ajax({
                     type: 'POST',
