@@ -152,7 +152,7 @@ class HomeController extends Controller
         foreach ($hasil as  $value) {
            
             $kategori[] = $value->kategori;
-            $penjualan[] = $value->grandtotal_penjualan;
+            $penjualan[] = (int)$value->grandtotal_penjualan;
         }       
 
         
@@ -194,9 +194,9 @@ class HomeController extends Controller
                         'p.nama','p.id',
                         DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
                         DB::raw("sum(fdp.qty) as stok_produk")
-                    )
-                  
+                    )                  
                     ->get(); 
+        
         
         
         foreach ($hasil as $key => $value) {
@@ -231,5 +231,63 @@ class HomeController extends Controller
             'stok' => $stok,
             'bulan' => $months
         ]);
+    }
+
+
+    public function grafikPenjualanProdukTerbaik(Request $request)
+    {
+        $results = DB::table('faktur_penjualans as fp')
+                    ->join('faktur_penjualan_details as fdp','fdp.faktur_penjualan_id','=','fp.id')                    
+                    ->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')  
+                    ->join('products as p','fdp.product_id','=','p.id')                    
+                    ->where('fp.deleted_at','=',null);
+
+        if ($request->year) {
+            $res=$results->whereYear('fp.tanggal',$request->year);       
+        }else{
+            $res=$results;
+        }
+
+        if ($request->bulan !== 'All') {
+            $bulan = $res->whereMonth('fp.tanggal',$request->bulan)
+                    ->groupBy(DB::raw("DATE_FORMAT(fp.tanggal, '%m-%Y')"));
+        }else{
+            $bulan = $res;
+        }
+
+        $hasil = $bulan
+                ->groupBy('fdp.product_id')             
+                ->select(
+                    'p.nama','p.id',
+                    DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
+                    DB::raw("sum(fdp.qty) as stok_produk")
+                )                  
+                ->get(); 
+        
+        $count = count($hasil);
+
+        $tmp = null;
+
+        for ($i=0; $i < $count-1 ; $i++) { 
+            for ($j=$i+1; $j < $count ; $j++) { 
+                if ($hasil[$i]->stok_produk < $hasil[$j]->stok_produk) {
+                    $tmp = $hasil[$i]->stok_produk;
+                    $hasil[$i]->stok_produk = $hasil[$j]->stok_produk;
+                    $hasil[$j]->stok_produk = $tmp;
+                }
+            }
+        }
+        
+
+        for ($k=0; $k < 10; $k++) { 
+            $nama_produk[] = $hasil[$k]->nama;
+            $stok[] = $hasil[$k]->stok_produk;
+        }
+
+        return response()->json([
+            'nama_produk' => $nama_produk,
+            'stok' => $stok
+        ]);
+       
     }
 }

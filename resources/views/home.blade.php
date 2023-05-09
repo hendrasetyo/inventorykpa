@@ -115,7 +115,7 @@
                             <!--begin::Chart-->
                             {{-- <div id="penjualanchart"></div> --}}
                               <div>
-                                 <canvas id="myChart"></canvas>
+                                 <canvas id="myChart" height="100"></canvas>
                               </div>
                             <!--end::Chart-->
                         </div>
@@ -155,7 +155,7 @@
                                     </select>
                                 </div>
 
-                                <canvas id="KategoriChart"></canvas>
+                                <canvas id="KategoriChart" height="100"></canvas>
                             </div>
 
                         {{-- end Of Grafik --}}
@@ -210,7 +210,7 @@
                                 </div>
                               
 
-                                <canvas id="produkChart" height="120"></canvas>
+                                <canvas id="produkChart" height="100"></canvas>
                             </div>
 
                         {{-- end Of Grafik --}}
@@ -221,9 +221,61 @@
             </div>
             {{-- END OF GRAFIK PRODUK --}}
 
-            
 
+            {{--  BEST PRODUK --}}
+            <div class="row">
+                <div class="col-xl-12">
+                    <!--begin::Tiles Widget 1-->
+                    <div class="card card-custom gutter-b card-stretch">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-5">
+                            <div class="card-title">
+                                <div class="card-label">
+                                    <div class="font-weight-bolder">Top Produk</div>                                
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Header-->
 
+                        {{-- Grafik --}}
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">    
+                                            <label for="">Tahun</label>                                                    
+                                            <select name="chart_year" class="form-control" id="kt_select2_8" onchange="filteryearbestproduk()">                               
+                                                @php
+                                                $year = 2020;
+                                                @endphp
+                                                @foreach (range(date('Y'), $year) as $x)
+                                                    <option value="{{$x}}">{{$x}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    {{-- <div class="col-md-6">
+                                        <div class="form-group">    
+                                            <label for="">Produk</label>                                                    
+                                            <select name="chart_year" class="form-control" id="kt_select2_3" onchange="filterProduk()">                                                                           
+                                                @foreach ($produk as $item)
+                                                    <option value="{{$item->id}}">{{$item->kode}} - {{$item->nama}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div> --}}
+                                </div>
+                              
+
+                                <canvas id="chartbestproduk" height="100"></canvas>
+                            </div>
+
+                        {{-- end Of Grafik --}}
+                      
+                    </div>
+                    <!--end::Tiles Widget 1-->
+                </div>              
+            </div>
+            {{-- END OF BEST PRODUK --}}
 
             <!--end::Dashboard-->
         </div>
@@ -245,12 +297,13 @@
         const ctx = document.getElementById('myChart');
         const chartKategori = document.getElementById('KategoriChart');
         const produk_chart = document.getElementById('produkChart');
+        const best_produk = document.getElementById('chartbestproduk');
 
         let year = {{now()->format('Y')}};
         let kategori = 'All';
         let dataRange = null;
         let tipe = 'tahunan';
-        let bulan = 13;
+        let bulan = 'All';
         let dataBulan=null;
         let chart = null;
         let produk = {{$produk[0]->id}};
@@ -261,6 +314,7 @@
             chartyear();
             chart_kategori();
             chartProduk();
+            chartbestproduk();
         })
 
         // chart Bar Pejualan
@@ -641,6 +695,117 @@
                     }
                 });	   
         }
+
+
+        // GRAFIK PRODUK DENGAN PENJUALAN TERBAIK 
+         let bestproduk= {
+            type: 'bar',
+            data: {
+                labels: null ,
+                datasets: [
+                    {
+                        label: 'Grafik Performa Customer',
+                        data: null,
+                        borderWidth: 1,                        
+                        borderColor :['#ff6384','#36a2eb','#cc65fe','#ffce56'],
+                        backgroundColor :['#ff6384','#36a2eb','#cc65fe','#ffce56']                
+                    },                                           
+                ],
+            },
+            options: {
+                indexAxis: 'y',                
+                elements: {
+                    bar: {
+                        borderWidth: 2,
+                    }
+                },
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    },                    
+                },
+                scales: {
+                    y: {
+                        stacked: true,
+                        ticks: {
+                            font: {
+                                size: 9,
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 10,
+                            }
+                        }
+                        }
+                }
+            },
+        }
+
+        function chartbestproduk() {        
+            $.ajax({
+                    type: 'POST',
+                    url: '{{ route('chart.bestproduk') }}',
+                    dataType: 'html',
+                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                    data: {
+                        'year' : year,    
+                        'bulan' : bulan,                   
+                        "_token": "{{ csrf_token() }}"},
+                    
+                    success: function (data){
+                        res = JSON.parse("[" + data + "]");
+                        dataNamaProduk  = res[0].nama_produk;
+                        dataStokProduk = res[0].stok;
+
+                        bestproduk.data.labels =  dataNamaProduk;
+                        bestproduk.data.datasets[0].data = dataStokProduk;
+                        grafikbestproduk = new Chart(best_produk,bestproduk);                                                                           
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
+                });	   
+        }
+
+
+        function filteryearbestproduk() {
+            let e = document.getElementById("kt_select2_8");
+            year = e.options[e.selectedIndex].value; 
+
+            $.ajax({
+                    type: 'POST',
+                    url: '{{ route('chart.bestproduk') }}',
+                    dataType: 'html',
+                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                    data: {
+                        'year' : year, 
+                        'bulan' : bulan,                      
+                        "_token": "{{ csrf_token() }}"},
+                    
+                    success: function (data){
+                        res = JSON.parse("[" + data + "]");
+                        dataNamaProduk  = res[0].nama_produk;
+                        dataStokProduk = res[0].stok;
+
+                        bestproduk.data.labels =  dataNamaProduk;
+                        bestproduk.data.datasets[0].data = dataStokProduk;
+
+                        grafikbestproduk.destroy();
+                        grafikbestproduk = new Chart(best_produk,bestproduk);                                                                           
+                        grafikbestproduk.update();
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
+                });	   
+        }
+
+
+       
 
 
    

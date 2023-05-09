@@ -66,6 +66,10 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::post('/chartyear', [HomeController::class, 'chartyear'])->name('chart.year');
     Route::post('/chartkategori', [HomeController::class, 'chartkategori'])->name('chart.kategori');
     Route::post('/chartproduk', [HomeController::class, 'grafikProduk'])->name('chart.produk');
+    Route::post('/chartbestproduk', [HomeController::class, 'grafikPenjualanProdukTerbaik'])->name('chart.bestproduk');
+
+
+
 
     Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('profile/edit', [ProfileController::class, 'updateProfileInformation']);
