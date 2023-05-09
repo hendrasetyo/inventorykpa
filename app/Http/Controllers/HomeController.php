@@ -180,9 +180,12 @@ class HomeController extends Controller
             $res=$results;
         }
 
+        if ($request->produk) {
+            $productFilter = $res->where('fdp.product_id',$request->produk);
+        }else{
+            $productFilter = $res;
+        }
         
-
-        $productFilter = $res->where('fdp.product_id',362);
 
         $hasil = $productFilter
                     ->groupBy('fdp.product_id')
