@@ -17,12 +17,10 @@ class HomeController extends Controller
         $months =  [];
         for ($i = 1; $i <=12; $i++) {
             $months[] = [
-                'bulan' => date('F', mktime(0,0,0,$i)),
+                'nama' => date('F', mktime(0,0,0,$i)),
                 'id' => $i
             ];
         }
-
-       
 
         return view('home',[
             'kategori' => $kategori,

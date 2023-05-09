@@ -98,19 +98,7 @@
                                 </div>
                           </div>
 
-                          <div class="row d-none">
-                            <div class="col-md-4">
-                                <div class="form-group">    
-                                    <label for="">Bulan</label>                                                    
-                                    <select name="chart_year" class="form-control" id="kt_select2_4" onchange="filterType()">  
-                                            <option value="All" selected>Semua</option>                             
-                                       @foreach ($bulan as $item)
-                                            <option value="{{$item['id']}}">{{$item['bulan']}}</option>                                    
-                                       @endforeach
-                                    </select>                                
-                                </div>
-                           </div>
-                          </div>
+                       
                           
                             <!--begin::Chart-->
                             {{-- <div id="penjualanchart"></div> --}}
@@ -253,16 +241,19 @@
                                             </select>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-6">
+
+                                    
+                                    <div class="col-md-6">
                                         <div class="form-group">    
-                                            <label for="">Produk</label>                                                    
-                                            <select name="chart_year" class="form-control" id="kt_select2_3" onchange="filterProduk()">                                                                           
-                                                @foreach ($produk as $item)
-                                                    <option value="{{$item->id}}">{{$item->kode}} - {{$item->nama}}</option>
+                                            <label for="">Bulan</label>                                                    
+                                            <select name="chart_year" class="form-control" id="kt_select2_4" onchange="filterbulanbestproduk()">   
+                                                <option value="All" selected>Semua</option>                                                                        
+                                                @foreach ($bulan as $item)
+                                                    <option value="{{$item['id']}}">{{$item['nama']}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                 </div>
                               
 
@@ -803,6 +794,40 @@
                     }
                 });	   
         }
+
+        function filterbulanbestproduk() {
+            let e = document.getElementById("kt_select2_4");
+            bulan = e.options[e.selectedIndex].value; 
+
+            $.ajax({
+                    type: 'POST',
+                    url: '{{ route('chart.bestproduk') }}',
+                    dataType: 'html',
+                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                    data: {
+                        'year' : year, 
+                        'bulan' : bulan,                      
+                        "_token": "{{ csrf_token() }}"},
+                    
+                    success: function (data){
+                        res = JSON.parse("[" + data + "]");
+                        dataNamaProduk  = res[0].nama_produk;
+                        dataStokProduk = res[0].stok;
+
+                        bestproduk.data.labels =  dataNamaProduk;
+                        bestproduk.data.datasets[0].data = dataStokProduk;
+
+                        grafikbestproduk.destroy();
+                        grafikbestproduk = new Chart(best_produk,bestproduk);                                                                           
+                        grafikbestproduk.update();
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
+                });	   
+        }
+
+    
 
 
        
