@@ -754,7 +754,8 @@
 
                         bestproduk.data.labels =  dataNamaProduk;
                         bestproduk.data.datasets[0].data = dataStokProduk;
-                        grafikbestproduk = new Chart(best_produk,bestproduk);                                                                           
+                        grafikbestproduk = new Chart(best_produk,bestproduk);             
+                                                                                      
                     },
                     error: function(data){
                         console.log(data);

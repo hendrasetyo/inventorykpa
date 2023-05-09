@@ -239,7 +239,7 @@ class HomeController extends Controller
         $hasil = $bulan
                 ->groupBy('fdp.product_id')             
                 ->select(
-                    'p.nama','p.id',
+                    'p.nama','p.id','p.kode',
                     DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
                     DB::raw("sum(fdp.qty) as stok_produk")
                 )                  
@@ -249,30 +249,38 @@ class HomeController extends Controller
 
         $tmp = null;
         $nama_produk = [];
-        $stok=[];
+        $stok_produk=[];
+        
+       
+        // dd($hasil);  
 
         if ($count > 0) {
             for ($i=0; $i < $count-1 ; $i++) { 
                 for ($j=$i+1; $j < $count ; $j++) { 
                     if ($hasil[$i]->stok_produk < $hasil[$j]->stok_produk) {
-                        $tmp = $hasil[$i]->stok_produk;
-                        $hasil[$i]->stok_produk = $hasil[$j]->stok_produk;
-                        $hasil[$j]->stok_produk = $tmp;
+                        $tmp = $hasil[$i];
+                        $hasil[$i] = $hasil[$j];
+                        $hasil[$j] = $tmp;
                     }
                 }
             }
+
+            dd($hasil);
             
     
             for ($k=0; $k < 10; $k++) { 
                 $nama_produk[] = $hasil[$k]->nama;
-                $stok[] = $hasil[$k]->stok_produk;
+                $stok_produk[] = $hasil[$k]->stok_produk;
             }
+
         }
+
+        
       
 
         return response()->json([
             'nama_produk' => $nama_produk,
-            'stok' => $stok
+            'stok' => $stok_produk
         ]);
        
     }
