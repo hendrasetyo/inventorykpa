@@ -210,7 +210,7 @@
                                 </div>
                               
 
-                                <canvas id="produkChart"></canvas>
+                                <canvas id="produkChart" height="120"></canvas>
                             </div>
 
                         {{-- end Of Grafik --}}
