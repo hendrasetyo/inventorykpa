@@ -248,22 +248,27 @@ class HomeController extends Controller
         $count = count($hasil);
 
         $tmp = null;
+        $nama_produk = [];
+        $stok=[];
 
-        for ($i=0; $i < $count-1 ; $i++) { 
-            for ($j=$i+1; $j < $count ; $j++) { 
-                if ($hasil[$i]->stok_produk < $hasil[$j]->stok_produk) {
-                    $tmp = $hasil[$i]->stok_produk;
-                    $hasil[$i]->stok_produk = $hasil[$j]->stok_produk;
-                    $hasil[$j]->stok_produk = $tmp;
+        if ($count > 0) {
+            for ($i=0; $i < $count-1 ; $i++) { 
+                for ($j=$i+1; $j < $count ; $j++) { 
+                    if ($hasil[$i]->stok_produk < $hasil[$j]->stok_produk) {
+                        $tmp = $hasil[$i]->stok_produk;
+                        $hasil[$i]->stok_produk = $hasil[$j]->stok_produk;
+                        $hasil[$j]->stok_produk = $tmp;
+                    }
                 }
             }
+            
+    
+            for ($k=0; $k < 10; $k++) { 
+                $nama_produk[] = $hasil[$k]->nama;
+                $stok[] = $hasil[$k]->stok_produk;
+            }
         }
-        
-
-        for ($k=0; $k < 10; $k++) { 
-            $nama_produk[] = $hasil[$k]->nama;
-            $stok[] = $hasil[$k]->stok_produk;
-        }
+      
 
         return response()->json([
             'nama_produk' => $nama_produk,

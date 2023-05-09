@@ -781,13 +781,19 @@
                         res = JSON.parse("[" + data + "]");
                         dataNamaProduk  = res[0].nama_produk;
                         dataStokProduk = res[0].stok;
+                       
+                        
+                        if (dataStokProduk.length > 0) {
+                                bestproduk.data.labels =  dataNamaProduk;
+                                bestproduk.data.datasets[0].data = dataStokProduk;
 
-                        bestproduk.data.labels =  dataNamaProduk;
-                        bestproduk.data.datasets[0].data = dataStokProduk;
-
-                        grafikbestproduk.destroy();
-                        grafikbestproduk = new Chart(best_produk,bestproduk);                                                                           
-                        grafikbestproduk.update();
+                                grafikbestproduk.destroy();
+                                grafikbestproduk = new Chart(best_produk,bestproduk);                                                                           
+                                grafikbestproduk.update();
+                            }else{
+                                grafikbestproduk.destroy();
+                            }
+                     
                     },
                     error: function(data){
                         console.log(data);
@@ -814,12 +820,16 @@
                         dataNamaProduk  = res[0].nama_produk;
                         dataStokProduk = res[0].stok;
 
-                        bestproduk.data.labels =  dataNamaProduk;
-                        bestproduk.data.datasets[0].data = dataStokProduk;
+                        if (dataStokProduk.length > 0) {
+                                bestproduk.data.labels =  dataNamaProduk;
+                                bestproduk.data.datasets[0].data = dataStokProduk;
 
-                        grafikbestproduk.destroy();
-                        grafikbestproduk = new Chart(best_produk,bestproduk);                                                                           
-                        grafikbestproduk.update();
+                                grafikbestproduk.destroy();
+                                grafikbestproduk = new Chart(best_produk,bestproduk);                                                                           
+                                grafikbestproduk.update();
+                        }else{
+                               grafikbestproduk.destroy();
+                        }
                     },
                     error: function(data){
                         console.log(data);
@@ -828,11 +838,5 @@
         }
 
     
-
-
-       
-
-
-   
   </script>
 @endpush
