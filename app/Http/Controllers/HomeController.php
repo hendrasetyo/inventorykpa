@@ -53,29 +53,12 @@ class HomeController extends Controller
         }else{
             $kategori=$res;
         }
-
-        if ($request->bulan == '13') {
-            $bulan = $kategori;
-        }elseif ($request->bulan !== '13' && $request->bulan !== null) {
-            $bulan = $kategori->whereMonth('fp.tanggal',$request->bulan);
-        }else{
-            $bulan = $kategori;
-        }
-
-        if ($request->tipe == 'bulan') {
-            $tipe = $bulan->groupBy(DB::raw("DATE_FORMAT(fp.tanggal, '%d-%m-%Y')"))
-                    ->select(
-                        DB::raw("DATE_FORMAT(fp.tanggal, '%d') as tanggal_penjualan"),
-                        DB::raw("sum(fp.grandtotal) as grandtotal_penjualan")
-                    );     
-        }else{
-            
-            $tipe = $bulan->groupBy(DB::raw("DATE_FORMAT(fp.tanggal, '%m-%Y')"))
-                    ->select(
-                        DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
-                        DB::raw("sum(fp.grandtotal) as grandtotal_penjualan")
-                    ); 
-        }
+        $bulan = $kategori;
+        $tipe = $bulan->groupBy(DB::raw("DATE_FORMAT(fp.tanggal, '%m-%Y')"))
+        ->select(
+            DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
+            DB::raw("sum(fp.grandtotal) as grandtotal_penjualan")
+        ); 
         
         $hasil= $tipe->get();
         
