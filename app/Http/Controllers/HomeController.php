@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\FakturPenjualan;
 use App\Models\Kategoripesanan;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,6 +13,7 @@ class HomeController extends Controller
     public function index()
     {        
         $kategori = Kategoripesanan::get();
+        $produk = Product::get();
         $months =  [];
         for ($i = 1; $i <=12; $i++) {
             $months[] = [
@@ -24,7 +26,8 @@ class HomeController extends Controller
 
         return view('home',[
             'kategori' => $kategori,
-            'bulan' => $months
+            'bulan' => $months,
+            'produk' => $produk
         ]);
 
        
@@ -74,8 +77,9 @@ class HomeController extends Controller
                     ); 
         }
         
-       $hasil= $tipe->get();
-                        
+        $hasil= $tipe->get();
+        
+        
         $laba = array();  
         $data=[]; 
                         
@@ -108,6 +112,7 @@ class HomeController extends Controller
             
         }
 
+        
         return response()->json([
             'laba' => $laba,
             'bulan' => $months
@@ -126,6 +131,8 @@ class HomeController extends Controller
         }else{
             $res=$results;
         }
+
+      
 
         $hasil = $res->select(
                         'kp.nama as kategori',
@@ -160,6 +167,66 @@ class HomeController extends Controller
 
     public function grafikProduk(Request $request)
     {
-        return view();
+        
+        $results = DB::table('faktur_penjualans as fp')
+                    ->join('faktur_penjualan_details as fdp','fdp.faktur_penjualan_id','=','fp.id')                    
+                    ->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')  
+                    ->join('products as p','fdp.product_id','=','p.id')                    
+                    ->where('fp.deleted_at','=',null);
+
+        if ($request->year) {
+            $res=$results->whereYear('fp.tanggal',$request->year);       
+        }else{
+            $res=$results;
+        }
+
+        
+
+        $productFilter = $res->where('fdp.product_id',362);
+
+        $hasil = $productFilter
+                    ->groupBy('fdp.product_id')
+                    ->groupBy(DB::raw("DATE_FORMAT(fp.tanggal, '%m-%Y')"))
+                    ->select(
+                        'p.nama','p.id',
+                        DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
+                        DB::raw("sum(fdp.qty) as stok_produk")
+                    )
+                  
+                    ->get(); 
+        
+        
+        foreach ($hasil as $key => $value) {
+            $data[(int)$value->tanggal_penjualan] = [
+                'stok' => (int)$value->stok_produk
+            ];
+        }
+
+        for ($i=0; $i <= 12; $i++) { 
+            if ($i==0) {
+                $stok[] = 0;
+            }else{
+                if (!empty($data[$i])) {
+                    $stok[] = $data[$i]['stok'];
+                }else{
+                    $stok[] = 0;
+                }
+            }            
+        }
+
+
+        for ($i = 0; $i <=12; $i++) {
+            if ($i==0) {
+                $months[] = 0;
+            }else{ 
+                $months[] = date('F', mktime(0,0,0,$i));
+            }            
+        }
+
+        
+        return response()->json([
+            'stok' => $stok,
+            'bulan' => $months
+        ]);
     }
 }
