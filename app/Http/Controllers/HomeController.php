@@ -265,7 +265,7 @@ class HomeController extends Controller
                 }
             }
 
-            dd($hasil);
+            
             
     
             for ($k=0; $k < 10; $k++) { 
