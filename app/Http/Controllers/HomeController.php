@@ -255,7 +255,7 @@ class HomeController extends Controller
        
         
         $num = 10;
-        if ($count >= 0) {
+        if ($count > 0) {
             
             if ($count < 10 && $count > 0) {
                 $num = $count;
