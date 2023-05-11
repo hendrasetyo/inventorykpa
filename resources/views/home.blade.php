@@ -228,7 +228,7 @@
                         {{-- Grafik --}}
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">    
                                             <label for="">Tahun</label>                                                    
                                             <select name="chart_year" class="form-control" id="kt_select2_8" onchange="filteryearbestproduk()">                               
@@ -242,8 +242,18 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-md-4">
+                                        <div class="form-group">    
+                                            <label for="">Tipe</label>                                                    
+                                            <select name="chart_year" class="form-control" id="kt_select2_9" onchange="filtertypebestproduk()">                               
+                                               <option value="harga" selected>Harga</option>
+                                               <option value="stok">Stok</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
                                     
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">    
                                             <label for="">Bulan</label>                                                    
                                             <select name="chart_year" class="form-control" id="kt_select2_4" onchange="filterbulanbestproduk()">   
@@ -293,11 +303,12 @@
         let year = {{now()->format('Y')}};
         let kategori = 'All';
         let dataRange = null;
-        let tipe = 'tahunan';
         let bulan = 'All';
         let dataBulan=null;
         let chart = null;
         let produk = {{$produk[0]->id}};
+        let tipe = 'harga';
+
         // var bulan = @json($bulan);
     
 
@@ -695,7 +706,7 @@
                 labels: null ,
                 datasets: [
                     {
-                        label: 'Grafik Performa Customer',
+                        label: 'Grafik Top Penjualan',
                         data: null,
                         borderWidth: 1,                        
                         borderColor :['#ff6384','#36a2eb','#cc65fe','#ffce56'],
@@ -744,7 +755,8 @@
                     headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                     data: {
                         'year' : year,    
-                        'bulan' : bulan,                   
+                        'bulan' : bulan,   
+                        'tipe' : tipe,                
                         "_token": "{{ csrf_token() }}"},
                     
                     success: function (data){
@@ -775,7 +787,8 @@
                     headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                     data: {
                         'year' : year, 
-                        'bulan' : bulan,                      
+                        'bulan' : bulan,          
+                        'tipe' : tipe,            
                         "_token": "{{ csrf_token() }}"},
                     
                     success: function (data){
@@ -813,7 +826,45 @@
                     headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
                     data: {
                         'year' : year, 
-                        'bulan' : bulan,                      
+                        'bulan' : bulan,
+                        'tipe' : tipe,                      
+                        "_token": "{{ csrf_token() }}"},
+                    
+                    success: function (data){
+                        res = JSON.parse("[" + data + "]");
+                        dataNamaProduk  = res[0].nama_produk;
+                        dataStokProduk = res[0].stok;
+
+                        if (dataStokProduk.length > 0) {
+                                bestproduk.data.labels =  dataNamaProduk;
+                                bestproduk.data.datasets[0].data = dataStokProduk;
+
+                                grafikbestproduk.destroy();
+                                grafikbestproduk = new Chart(best_produk,bestproduk);                                                                           
+                                grafikbestproduk.update();
+                        }else{
+                               grafikbestproduk.destroy();
+                        }
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
+                });	   
+        }
+
+        function filtertypebestproduk() {
+            let e = document.getElementById("kt_select2_9");
+            tipe = e.options[e.selectedIndex].value; 
+
+            $.ajax({
+                    type: 'POST',
+                    url: '{{ route('chart.bestproduk') }}',
+                    dataType: 'html',
+                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                    data: {
+                        'year' : year, 
+                        'bulan' : bulan,
+                        'tipe' : tipe,                      
                         "_token": "{{ csrf_token() }}"},
                     
                     success: function (data){

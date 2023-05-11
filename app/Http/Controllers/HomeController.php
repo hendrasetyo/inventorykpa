@@ -241,7 +241,8 @@ class HomeController extends Controller
                 ->select(
                     'p.nama','p.id','p.kode',
                     DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
-                    DB::raw("sum(fdp.qty) as stok_produk")
+                    DB::raw("sum(fdp.qty) as stok_produk"),
+                    DB::raw("sum(fdp.total) as total_penjualan")
                 )                  
                 ->get(); 
         
@@ -252,26 +253,42 @@ class HomeController extends Controller
         $stok_produk=[];
         
        
-        // dd($hasil);  
+        
 
         if ($count > 0) {
-            for ($i=0; $i < $count-1 ; $i++) { 
-                for ($j=$i+1; $j < $count ; $j++) { 
-                    if ($hasil[$i]->stok_produk < $hasil[$j]->stok_produk) {
-                        $tmp = $hasil[$i];
-                        $hasil[$i] = $hasil[$j];
-                        $hasil[$j] = $tmp;
+
+            if ($request->tipe == 'stok') {
+                for ($i=0; $i < $count-1 ; $i++) { 
+                    for ($j=$i+1; $j < $count ; $j++) { 
+                        if ($hasil[$i]->stok_produk < $hasil[$j]->stok_produk) {
+                            $tmp = $hasil[$i];
+                            $hasil[$i] = $hasil[$j];
+                            $hasil[$j] = $tmp;
+                        }
                     }
                 }
-            }
-
-            
-            
     
-            for ($k=0; $k < 10; $k++) { 
-                $nama_produk[] = $hasil[$k]->nama;
-                $stok_produk[] = $hasil[$k]->stok_produk;
+                for ($k=0; $k < 10; $k++) { 
+                    $nama_produk[] = $hasil[$k]->nama;
+                    $stok_produk[] = $hasil[$k]->stok_produk;
+                }
+            }else{
+                for ($i=0; $i < $count-1 ; $i++) { 
+                    for ($j=$i+1; $j < $count ; $j++) { 
+                        if ($hasil[$i]->total_penjualan < $hasil[$j]->total_penjualan) {
+                            $tmp = $hasil[$i];
+                            $hasil[$i] = $hasil[$j];
+                            $hasil[$j] = $tmp;
+                        }
+                    }
+                }
+    
+                for ($k=0; $k < 10; $k++) { 
+                    $nama_produk[] = $hasil[$k]->nama;
+                    $stok_produk[] = $hasil[$k]->total_penjualan;
+                }
             }
+           
 
         }
 
