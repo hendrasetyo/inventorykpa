@@ -257,7 +257,6 @@ class HomeController extends Controller
         $stok_produk=[];
         
        
-        
         $num = 10;
         if ($count > 0) {
             
@@ -275,10 +274,10 @@ class HomeController extends Controller
                     }
                 }
     
-                for ($k=0; $k < $num; $k++) { 
-                    $nama_produk[] = $hasil[$k]->nama;
-                    $stok_produk[] = $hasil[$k]->stok_produk;
-                }
+                // for ($k=0; $k < $num; $k++) { 
+                //     $nama_produk[] = $hasil[$k]->nama;
+                //     $stok_produk[] = $hasil[$k]->stok_produk;
+                // }
             }else{
                 for ($i=0; $i < $count-1 ; $i++) { 
                     for ($j=$i+1; $j < $count ; $j++) { 
@@ -290,22 +289,25 @@ class HomeController extends Controller
                     }
                 }
     
-                for ($k=0; $k < $num; $k++) { 
-                    $nama_produk[] = $hasil[$k]->nama;
-                    $stok_produk[] = $hasil[$k]->total_penjualan;
-                }
+                // for ($k=0; $k < $num; $k++) { 
+                //     $nama_produk[] = $hasil[$k]->nama;
+                //     $stok_produk[] = $hasil[$k]->total_penjualan;
+                // }
             }           
         }
 
+        $data = $hasil;
+        // dd($hasil);
         
-        return DataTables::of($hasil)
+        return DataTables::of($data)
                         ->addIndexColumn() 
-                        ->editColumn('tanggal', function ($hasil) {
-                           return $hasil->tanggal_penjualan . '-'. $hasil->tahun_penjualan; 
+                        ->editColumn('tanggal', function ($data) {
+                           return $data->tanggal_penjualan . '-'. $data->tahun_penjualan; 
                         })  
-                        ->editColumn('total', function ($hasil) {
-                            return 'Rp.' . number_format($hasil->total_penjualan, 0, ',', '.');
-                        })               
+                        
+                        ->editColumn('total', function ($data) {
+                            return 'Rp.' . number_format($data->total_penjualan, 0, ',', '.');
+                        })             
                         ->make(true);
             
     }

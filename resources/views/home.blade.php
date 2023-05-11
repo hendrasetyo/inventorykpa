@@ -722,6 +722,7 @@
               responsive: true,
               processing: true,
               serverSide: true,
+              order: [],
               ajax: {
                     url : "{{ route('chart.bestproduk') }}", 
                     // headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
@@ -817,6 +818,7 @@
                     url: '{{ route('chart.bestproduk') }}',
                     dataType: 'html',
                     headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                   
                     data: {
                         'year' : year,    
                         'bulan' : bulan,   
