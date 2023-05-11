@@ -81,7 +81,7 @@ class PembayaranHutangController extends Controller
                     }])                    
                     ->orderBy('id','desc')
                     ->get();
-                    
+
         if (request()->ajax()) {
             return Datatables::of($hutangs)
                 ->addIndexColumn()

@@ -267,7 +267,20 @@
                                 </div>
                               
 
-                                <canvas id="chartbestproduk" height="100"></canvas>
+                                {{-- <canvas id="chartbestproduk" height="100"></canvas> --}}
+
+                                <table class="table table-separate table-head-custom table-checkable table  yajra-datatable collapsed ">
+                                    <thead>
+                                        <tr>                                        
+                                            <th>Tanggal</th>
+                                            <th>Nama Produk</th>
+                                            <th>Qty</th> 
+                                            <th>Total Penjualan</th>                                                                                       
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
                             </div>
 
                         {{-- end Of Grafik --}}
@@ -291,6 +304,7 @@
 <script src="{{ asset('/assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6') }}"></script>
 <script src="{{ asset('/assets/js/pages/crud/datatables/extensions/responsive.js?v=7.0.6') }}"></script>
 <script src="{{ asset('/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js?v=7.0.6') }}"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
    
@@ -316,7 +330,8 @@
             chartyear();
             chart_kategori();
             chartProduk();
-            chartbestproduk();
+            // chartbestproduk();
+            datatable();
         })
 
         // chart Bar Pejualan
@@ -700,6 +715,55 @@
 
 
         // GRAFIK PRODUK DENGAN PENJUALAN TERBAIK 
+
+
+        function datatable() {
+            var table = $('.yajra-datatable').DataTable({
+              responsive: true,
+              processing: true,
+              serverSide: true,
+              ajax: {
+                    url : "{{ route('chart.bestproduk') }}", 
+                    // headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                    type : "POST",
+                    data: function(params) {
+                        params.year = year,    
+                        params.bulan = bulan,   
+                        params.tipe = tipe,   
+                        params._token = "{{ csrf_token() }}";                
+                        return params;
+                       }
+
+              },
+              columns: [
+                //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                  {data: 'tanggal', name: 'tanggal'},
+                  {data: 'nama', name:'nama'},
+                  {data: 'stok_produk', name:'stok_produk'},
+                  {data: 'total', name:'total'},
+                  
+              ],
+              columnDefs: [
+
+                {
+                    responsivePriority: 1,
+                    targets: 0
+                },
+                {
+                    responsivePriority: 2,
+                    targets: -1
+                },
+            ],
+        });
+        }
+
+        function htmlDecode(data){
+            var txt = document.createElement('textarea');
+            txt.innerHTML=data;
+            return txt.value;
+      }
+
+
          let bestproduk= {
             type: 'bar',
             data: {
@@ -780,113 +844,21 @@
             let e = document.getElementById("kt_select2_8");
             year = e.options[e.selectedIndex].value; 
 
-            $.ajax({
-                    type: 'POST',
-                    url: '{{ route('chart.bestproduk') }}',
-                    dataType: 'html',
-                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                    data: {
-                        'year' : year, 
-                        'bulan' : bulan,          
-                        'tipe' : tipe,            
-                        "_token": "{{ csrf_token() }}"},
-                    
-                    success: function (data){
-                        res = JSON.parse("[" + data + "]");
-                        dataNamaProduk  = res[0].nama_produk;
-                        dataStokProduk = res[0].stok;
-                       
-                        
-                        if (dataStokProduk.length > 0) {
-                                bestproduk.data.labels =  dataNamaProduk;
-                                bestproduk.data.datasets[0].data = dataStokProduk;
-
-                                grafikbestproduk.destroy();
-                                grafikbestproduk = new Chart(best_produk,bestproduk);                                                                           
-                                grafikbestproduk.update();
-                            }else{
-                                grafikbestproduk.destroy();
-                            }
-                     
-                    },
-                    error: function(data){
-                        console.log(data);
-                    }
-                });	   
+            $('.yajra-datatable').DataTable().ajax.reload(null,false);
         }
 
         function filterbulanbestproduk() {
             let e = document.getElementById("kt_select2_4");
             bulan = e.options[e.selectedIndex].value; 
 
-            $.ajax({
-                    type: 'POST',
-                    url: '{{ route('chart.bestproduk') }}',
-                    dataType: 'html',
-                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                    data: {
-                        'year' : year, 
-                        'bulan' : bulan,
-                        'tipe' : tipe,                      
-                        "_token": "{{ csrf_token() }}"},
-                    
-                    success: function (data){
-                        res = JSON.parse("[" + data + "]");
-                        dataNamaProduk  = res[0].nama_produk;
-                        dataStokProduk = res[0].stok;
-
-                        if (dataStokProduk.length > 0) {
-                                bestproduk.data.labels =  dataNamaProduk;
-                                bestproduk.data.datasets[0].data = dataStokProduk;
-
-                                grafikbestproduk.destroy();
-                                grafikbestproduk = new Chart(best_produk,bestproduk);                                                                           
-                                grafikbestproduk.update();
-                        }else{
-                               grafikbestproduk.destroy();
-                        }
-                    },
-                    error: function(data){
-                        console.log(data);
-                    }
-                });	   
+            $('.yajra-datatable').DataTable().ajax.reload(null,false); 
         }
 
         function filtertypebestproduk() {
             let e = document.getElementById("kt_select2_9");
             tipe = e.options[e.selectedIndex].value; 
 
-            $.ajax({
-                    type: 'POST',
-                    url: '{{ route('chart.bestproduk') }}',
-                    dataType: 'html',
-                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                    data: {
-                        'year' : year, 
-                        'bulan' : bulan,
-                        'tipe' : tipe,                      
-                        "_token": "{{ csrf_token() }}"},
-                    
-                    success: function (data){
-                        res = JSON.parse("[" + data + "]");
-                        dataNamaProduk  = res[0].nama_produk;
-                        dataStokProduk = res[0].stok;
-
-                        if (dataStokProduk.length > 0) {
-                                bestproduk.data.labels =  dataNamaProduk;
-                                bestproduk.data.datasets[0].data = dataStokProduk;
-
-                                grafikbestproduk.destroy();
-                                grafikbestproduk = new Chart(best_produk,bestproduk);                                                                           
-                                grafikbestproduk.update();
-                        }else{
-                               grafikbestproduk.destroy();
-                        }
-                    },
-                    error: function(data){
-                        console.log(data);
-                    }
-                });	   
+            $('.yajra-datatable').DataTable().ajax.reload(null,false);
         }
 
     

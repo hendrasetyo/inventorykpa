@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\FakturPenjualan;
 use App\Models\Kategoripesanan;
 use App\Models\Product;
+use Carbon\Carbon;
+use Facade\Ignition\QueryRecorder\Query;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class HomeController extends Controller
 {
@@ -241,6 +244,7 @@ class HomeController extends Controller
                 ->select(
                     'p.nama','p.id','p.kode',
                     DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
+                    DB::raw("DATE_FORMAT(fp.tanggal, '%Y') as tahun_penjualan"),
                     DB::raw("sum(fdp.qty) as stok_produk"),
                     DB::raw("sum(fdp.total) as total_penjualan")
                 )                  
@@ -294,12 +298,15 @@ class HomeController extends Controller
         }
 
         
-      
-
-        return response()->json([
-            'nama_produk' => $nama_produk,
-            'stok' => $stok_produk
-        ]);
-       
+        return DataTables::of($hasil)
+                        ->addIndexColumn() 
+                        ->editColumn('tanggal', function ($hasil) {
+                           return $hasil->tanggal_penjualan . '-'. $hasil->tahun_penjualan; 
+                        })  
+                        ->editColumn('total', function ($hasil) {
+                            return 'Rp.' . number_format($hasil->total_penjualan, 0, ',', '.');
+                        })               
+                        ->make(true);
+            
     }
 }
