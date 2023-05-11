@@ -254,9 +254,12 @@ class HomeController extends Controller
         
        
         
-
-        if ($count > 0) {
-
+        $num = 10;
+        if ($count >= 0) {
+            
+            if ($count < 10 && $count > 0) {
+                $num = $count;
+            }
             if ($request->tipe == 'stok') {
                 for ($i=0; $i < $count-1 ; $i++) { 
                     for ($j=$i+1; $j < $count ; $j++) { 
@@ -268,7 +271,7 @@ class HomeController extends Controller
                     }
                 }
     
-                for ($k=0; $k < 10; $k++) { 
+                for ($k=0; $k < $num; $k++) { 
                     $nama_produk[] = $hasil[$k]->nama;
                     $stok_produk[] = $hasil[$k]->stok_produk;
                 }
@@ -283,13 +286,11 @@ class HomeController extends Controller
                     }
                 }
     
-                for ($k=0; $k < 10; $k++) { 
+                for ($k=0; $k < $num; $k++) { 
                     $nama_produk[] = $hasil[$k]->nama;
                     $stok_produk[] = $hasil[$k]->total_penjualan;
                 }
-            }
-           
-
+            }           
         }
 
         
