@@ -250,7 +250,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
-                            <span><strong>${item.bulan}</strong></span>
+                            <span><strong>${item.nama} </strong></span>
                             <span class="text-success"><strong> Rp.${item.laba}</strong></span>
                         </div>
                         <hr>                                           
@@ -261,7 +261,7 @@
                         <hr> 
                         
                         <div class="d-flex justify-content-between align-items-center"> 
-                            <span class="text-danger"><strong>${item.nama}</strong></span>  
+                            <span class="text-danger"><strong>${item.bulan}</strong></span>  
                             
                             <div>
                                 ${WAblast(item.user , item.persen , item.laba)}
