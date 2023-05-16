@@ -273,11 +273,6 @@ class HomeController extends Controller
                         }
                     }
                 }
-    
-                // for ($k=0; $k < $num; $k++) { 
-                //     $nama_produk[] = $hasil[$k]->nama;
-                //     $stok_produk[] = $hasil[$k]->stok_produk;
-                // }
             }else{
                 for ($i=0; $i < $count-1 ; $i++) { 
                     for ($j=$i+1; $j < $count ; $j++) { 
@@ -287,12 +282,7 @@ class HomeController extends Controller
                             $hasil[$j] = $tmp;
                         }
                     }
-                }
-    
-                // for ($k=0; $k < $num; $k++) { 
-                //     $nama_produk[] = $hasil[$k]->nama;
-                //     $stok_produk[] = $hasil[$k]->total_penjualan;
-                // }
+                }   
             }           
         }
 

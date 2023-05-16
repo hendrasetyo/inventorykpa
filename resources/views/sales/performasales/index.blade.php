@@ -231,7 +231,7 @@
                     },                    
                     success: function (data){
                         res = JSON.parse("[" + data + "]");
-                        let dataperformasales = res[0].sales;
+                        let dataperformasales = res[0].sales;                        
                         performasales.innerHTML = cardSales(dataperformasales);                                                                                                                                  
                     },
                     error: function(data){
@@ -243,7 +243,6 @@
     function cardSales(data) {        
 
         let length = data.length;
-        
         
         if (length > 0) {
             return data.map(item =>`
@@ -265,7 +264,7 @@
                             <span class="text-danger"><strong>${item.nama}</strong></span>  
                             
                             <div>
-                                <a href="whatsapp://send?text=Assalamualaikum wr wb %0AMohon Perhatian !!%0ATarget Penjualan pada bulan ini masih ${item.persen}% dengan nominal Rp.${item.laba} %0A Segera Tingkatkan strategi untuk mencapai target penjualan !! %0ASemangatt !!&app_absent=0&phone=${item.hp}" target="_blank" class="btn btn-success btn-outline btn-sm" ><i class="flaticon-whatsapp"></i></a>
+                                ${WAblast(item)};
                                 <a href="/sales/performasales/${item.id}/detail" class="btn btn-primary btn-outline btn-sm" > Detail </a>
                             </div>
                         </div>    
@@ -290,6 +289,20 @@
                 `
         }
        
+    }
+
+    function WAblast(data) {
+        let count = data.length;
+
+        if (count > 0) {
+            return data.user.map(item =>`
+                      <a href="whatsapp://send?text=Assalamualaikum wr wb %0AMohon Perhatian !!%0ATarget Penjualan pada bulan ini masih ${data.persen}% dengan nominal Rp.${data.laba} %0A 
+                      Segera Tingkatkan strategi untuk mencapai target penjualan !! %0ASemangatt !!&app_absent=0&phone=${item.phone}" 
+                      target="_blank" class="btn btn-success btn-outline btn-sm" ><i class="flaticon-whatsapp"></i></a>
+            `).join('');
+        }else{
+            return ;
+        }
     }
 
     function filterYear() {

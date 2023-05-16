@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Sales;
 use App\Http\Controllers\Controller;
 use App\Models\Kategoripesanan;
 use App\Models\Sales;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -45,13 +46,13 @@ class PerformaSalesController extends Controller
 
         $hasil = $res->groupBy('pp.sales_id')
         ->select(
-            DB::raw("DATE_FORMAT(fp.tanggal,'%M') as tanggal"),
+            DB::raw("DATE_FORMAT(fp.tanggal,'%M') as tanggal"), 
            's.nama','s.id','s.hp',
             DB::raw("sum(fp.grandtotal) as grandtotal_penjualan")
         )->get();
 
 
-        $sales = Sales::get();
+        $sales = Sales::with('user')->get();
         $dataSales = [];
 
         foreach ($sales as $value) {
@@ -60,6 +61,7 @@ class PerformaSalesController extends Controller
                     $dataSales[] = [
                         'id' => $value->id,
                         'bulan' =>$res->tanggal,
+                        'user' => $value->user,
                         'hp' => $res->hp,
                         'nama' => $res->nama,
                         'laba' => number_format($res->grandtotal_penjualan, 0, ',', '.'),
