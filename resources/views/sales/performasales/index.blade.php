@@ -264,7 +264,7 @@
                             <span class="text-danger"><strong>${item.nama}</strong></span>  
                             
                             <div>
-                                ${WAblast(item)};
+                                ${WAblast(item.user , item.persen , item.laba)}
                                 <a href="/sales/performasales/${item.id}/detail" class="btn btn-primary btn-outline btn-sm" > Detail </a>
                             </div>
                         </div>    
@@ -291,17 +291,16 @@
        
     }
 
-    function WAblast(data) {
-        let count = data.length;
+    function WAblast(user,persen,laba) {
+        let count = user.length;
 
         if (count > 0) {
-            return data.user.map(item =>`
-                      <a href="whatsapp://send?text=Assalamualaikum wr wb %0AMohon Perhatian !!%0ATarget Penjualan pada bulan ini masih ${data.persen}% dengan nominal Rp.${data.laba} %0A 
-                      Segera Tingkatkan strategi untuk mencapai target penjualan !! %0ASemangatt !!&app_absent=0&phone=${item.phone}" 
+            return user.map(item =>`
+                      <a href="whatsapp://send?text=Assalamualaikum wr wb %0AMohon Perhatian !!%0ATarget Penjualan pada bulan ini masih ${persen}% dengan nominal Rp.${laba} %0A Segera Tingkatkan strategi untuk mencapai target penjualan !! %0ASemangatt !!&app_absent=0&phone=${item.phone}" 
                       target="_blank" class="btn btn-success btn-outline btn-sm" ><i class="flaticon-whatsapp"></i></a>
-            `).join('');
+            `).join('')
         }else{
-            return ;
+            return '-'
         }
     }
 
