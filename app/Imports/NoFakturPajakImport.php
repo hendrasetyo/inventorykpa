@@ -15,7 +15,7 @@ class NoFakturPajakImport implements ToModel
         if ($this->no !== 0) {
             $nopajak = NoFakturPajak::create([
                 'no_pajak' => $row[0],
-                'no_kpa' => $row[1].'-22/KPA',
+                'no_kpa' => $row[1].'-23/KPA',
                 'status' => 'Aktif',                
             ]);
         }
