@@ -12,8 +12,9 @@ class NoKpaImport implements ToModel
     public function model(array $row)
     {
         if ($this->no !== 0) {
+            $now = now()->format('y');
             $nopajak = NoKPA::create([
-                'no_kpa' => $row[0].'-22/KPA',
+                'no_kpa' => $row[0].'-'.$now.'/KPA',
                 'status' => 'Aktif',                
             ]);
         }
