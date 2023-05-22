@@ -715,47 +715,45 @@
 
 
         // GRAFIK PRODUK DENGAN PENJUALAN TERBAIK 
-
-
         function datatable() {
-            var table = $('.yajra-datatable').DataTable({
-              responsive: true,
-              processing: true,
-              serverSide: true,
-              order: [],
-              ajax: {
-                    url : "{{ route('chart.bestproduk') }}", 
-                    // headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                    type : "POST",
-                    data: function(params) {
-                        params.year = year,    
-                        params.bulan = bulan,   
-                        params.tipe = tipe,   
-                        params._token = "{{ csrf_token() }}";                
-                        return params;
-                       }
+                var table = $('.yajra-datatable').DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                order: [],
+                ajax: {
+                        url : "{{ route('chart.bestproduk') }}", 
+                        // headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                        type : "POST",
+                        data: function(params) {
+                            params.year = year,    
+                            params.bulan = bulan,   
+                            params.tipe = tipe,   
+                            params._token = "{{ csrf_token() }}";                
+                            return params;
+                        }
 
-              },
-              columns: [
-                //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                  {data: 'tanggal', name: 'tanggal'},
-                  {data: 'nama', name:'nama'},
-                  {data: 'stok_produk', name:'stok_produk'},
-                  {data: 'total', name:'total'},
-                  
-              ],
-              columnDefs: [
+                },
+                columns: [
+                    //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                    {data: 'tanggal', name: 'tanggal'},
+                    {data: 'nama', name:'nama'},
+                    {data: 'stok_produk', name:'stok_produk'},
+                    {data: 'total', name:'total'},
+                    
+                ],
+                columnDefs: [
 
-                {
-                    responsivePriority: 1,
-                    targets: 0
-                },
-                {
-                    responsivePriority: 2,
-                    targets: -1
-                },
-            ],
-        });
+                    {
+                        responsivePriority: 1,
+                        targets: 0
+                    },
+                    {
+                        responsivePriority: 2,
+                        targets: -1
+                    },
+                ],
+            });
         }
 
         function htmlDecode(data){

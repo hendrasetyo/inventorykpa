@@ -922,7 +922,7 @@ Route::middleware('has.role')->prefix('sales')->group(function () {
 
         // PERFORMA DALES DETAIL
         Route::post('/performasales/detailgrafik', [PerformaSalesController::class, 'grafikperformasalesdetail'])->name('performasales.dataperformasales.detailgrafik'); 
-        Route::post('/performasales/performasalesCustomer', [PerformaSalesController::class, 'performasalesCustomer'])->name('performasales.dataperformasales.performasalesCustomer'); 
+        Route::post('/performasales/performasalesCustomer', [PerformaSalesController::class, 'datatableCustomer'])->name('performasales.dataperformasales.datatableCustomer'); 
 
 
         

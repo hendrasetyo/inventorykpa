@@ -139,6 +139,18 @@
                                 <div class="col-md-4">
                                     <div class="form-group">    
                                         <label for="">Bulan</label>                                                    
+                                        <select name="chart_year" class="form-control" id="kt_select2_11" onchange="filtercustomermonth()">                               
+                                            <option value="All" selected>Semua</option>                                                                        
+                                            @foreach ($bulan as $item)
+                                                <option value="{{$item['id']}}">{{$item['nama']}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">    
+                                        <label for="">Kategori</label>                                                    
                                         <select name="chart_year" class="form-control" id="kt_select2_2" onchange="filtercustomerkategori()"> 
                                             <option value="All" selected>Semua</option> 
                                                 @foreach ($kategori as $x)
@@ -147,11 +159,20 @@
                                         </select>
                                     </div>
                                 </div>
+                               
 
                             </div>
-                                <canvas class="row" height="200" id="performasalesCustomer">
-                                        
-                                </canvas>
+                            <table class="table table-separate table-head-custom table-checkable table  yajra-datatable collapsed ">
+                                <thead>
+                                    <tr>                                        
+                                        <th>Tanggal</th>
+                                        <th>Nama Customer</th>                                        
+                                        <th>Total Penjualan</th>                                                                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -184,10 +205,11 @@
     // end of customer
 
     let sales_id = {{$sales_id}};
+    let bulan = 'All';
 
     $(document).ready(function() {
         grafikperformasalesdetail();
-        grafikperformacustomer();
+        datatableCustomer();
     })
 
     let barPerformaSales= {
@@ -340,170 +362,70 @@
 
 
     // ================================ GRAFIK TOP PENCAPAIAN CUSTOMER =====================
-
-    let barCustomer= {
-            type: 'bar',
-            data: {
-                labels: null ,
-                datasets: [
-                    {
-                        label: 'Grafik Performa Customer',
-                        data: null,
-                        borderWidth: 1,                        
-                        borderColor :['#ff6384','#36a2eb','#cc65fe','#ffce56'],
-                        backgroundColor :['#ff6384','#36a2eb','#cc65fe','#ffce56']                
-                    },                                           
-                ],
-            },
-            options: {
-                indexAxis: 'y',                
-                elements: {
-                    bar: {
-                        borderWidth: 2,
-                    }
-                },
+    
+    function datatableCustomer() {
+        var table = $('.yajra-datatable').DataTable({
                 responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    },                    
+                processing: true,
+                serverSide: true,
+                order: [],
+                ajax: {
+                        url : "{{ route('performasales.dataperformasales.datatableCustomer') }}", 
+                        type : "POST",
+                        data: function(params) {
+                            params.year = yearCustomer,                    
+                            params.kategori = kategoriCustomer,   
+                            params.sales_id = sales_id,
+                            params.bulan = bulan,
+                            params._token = "{{ csrf_token() }}";                
+                            return params;
+                        }
                 },
-                scales: {
-                    y: {
-                        stacked: true,
-                        ticks: {
-                            font: {
-                                size: 9,
-                            }
-                        }
+                columns: [
+                    //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                    {data: 'tanggal', name: 'tanggal'},
+                    {data: 'nama', name:'nama'},                   
+                    {data: 'total', name:'total'},
+                    
+                ],
+                columnDefs: [
+
+                    {
+                        responsivePriority: 1,
+                        targets: 0
                     },
-                    x: {
-                        ticks: {
-                            font: {
-                                size: 10,
-                            }
-                        }
-                        }
-                }
-            },
-        }
-    
-
-    
-        function grafikperformacustomer() {
-            $.ajax({
-                        type: 'POST',
-                        url: '{{ route('performasales.dataperformasales.performasalesCustomer') }}',
-                        dataType: 'html',
-                        headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                        data: {                       
-                            "_token": "{{ csrf_token() }}",
-                            'year' : yearCustomer,
-                            'kategori' : kategoriCustomer,
-                            'id' : sales_id                       
-                        },                    
-                        success: function (data){
-                            
-                            res = JSON.parse("[" + data + "]");
-                            let customer = res[0].customer;
-                            let penjualan = res[0].laba;
-
-                            barCustomer.data.labels =  customer;
-                            barCustomer.data.datasets[0].data = penjualan;
-
-                            chartCustomer = new Chart(grafikcustomer,barCustomer);  
-                           
-
-                            
-                                                                                        
-                        },
-                        error: function(data){
-                            console.log(data);
-                        }
-                    });	   
+                    {
+                        responsivePriority: 2,
+                        targets: -1
+                    },
+                ],
+            });
     }
 
     function filtercustomeryear() {
 
         let e = document.getElementById("kt_select2_1");
         yearCustomer = e.options[e.selectedIndex].value; 
+        $('.yajra-datatable').DataTable().ajax.reload(null,false);
 
-        $.ajax({
-                        type: 'POST',
-                        url: '{{ route('performasales.dataperformasales.performasalesCustomer') }}',
-                        dataType: 'html',
-                        headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                        data: {                       
-                            "_token": "{{ csrf_token() }}",
-                            'year' : yearCustomer,
-                            'kategori' : kategoriCustomer,
-                            'id' : sales_id                       
-                        },                    
-                        success: function (data){
-                            
-                            res = JSON.parse("[" + data + "]");
-                            let customer = res[0].customer;
-                            let penjualan = res[0].laba;
-
-                            if (penjualan.length > 0) {
-                                barCustomer.data.labels =  customer;
-                                barCustomer.data.datasets[0].data = penjualan;
-
-
-                                chartCustomer.destroy();
-                                chartCustomer = new Chart(grafikcustomer,barCustomer);  
-                                chartCustomer.update()
-                            }else{
-                                chartCustomer.destroy();
-                            }
-
-                           
-                                                                                                                
-                        },
-                        error: function(data){
-                            console.log(data);
-                        }
-                    });	   
+       
     }
 
     function filtercustomerkategori() {
         let e = document.getElementById("kt_select2_2");
         kategoriCustomer = e.options[e.selectedIndex].value; 
+        $('.yajra-datatable').DataTable().ajax.reload(null,false);
 
-        $.ajax({
-                        type: 'POST',
-                        url: '{{ route('performasales.dataperformasales.performasalesCustomer') }}',
-                        dataType: 'html',
-                        headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                        data: {                       
-                            "_token": "{{ csrf_token() }}",
-                            'year' : yearCustomer,
-                            'kategori' : kategoriCustomer,
-                            'id' : sales_id                       
-                        },                    
-                        success: function (data){
-                            
-                            res = JSON.parse("[" + data + "]");
-                            let customer = res[0].customer;
-                            let penjualan = res[0].laba;
+       
+    }
 
-                            if (penjualan.length > 0) {
-                                barCustomer.data.labels =  customer;
-                                barCustomer.data.datasets[0].data = penjualan;
+    function filtercustomermonth() {
 
-                                chartCustomer.destroy();
-                                chartCustomer = new Chart(grafikcustomer,barCustomer);  
-                                chartCustomer.update()
-                            } else {
-                                chartCustomer.destroy();
-                            }
-                           
-                                                                                                                                       
-                        },
-                        error: function(data){
-                            console.log(data);
-                        }
-                    });	   
+        let e = document.getElementById("kt_select2_11");
+        bulan = e.options[e.selectedIndex].value; 
+        $('.yajra-datatable').DataTable().ajax.reload(null,false);
+
+
     }
     
 </script>

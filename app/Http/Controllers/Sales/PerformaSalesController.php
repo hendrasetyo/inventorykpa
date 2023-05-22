@@ -8,6 +8,7 @@ use App\Models\Sales;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class PerformaSalesController extends Controller
 {
@@ -125,11 +126,19 @@ class PerformaSalesController extends Controller
     {
         $title = 'Detail Performa Sales';
         $kategori = Kategoripesanan::get();
+        
+        for ($i = 1; $i <=12; $i++) {
+            $months[] = [
+                'nama' => date('F', mktime(0,0,0,$i)),
+                'id' => $i
+            ];
+        }
 
         return view('sales.performasales.detailperforma.index',[
             'sales_id' => $id,
             'title' => $title,
-            'kategori' => $kategori
+            'kategori' => $kategori,
+            'bulan' => $months
         ]);
 
 
@@ -139,12 +148,10 @@ class PerformaSalesController extends Controller
     public function grafikperformasalesdetail(Request $request)
     {
          $results = DB::table('faktur_penjualans as fp')
-                ->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')
-                ->where('fp.deleted_at','=',null)
-                ->orderBy('fp.tanggal')
-                ->where('pp.sales_id',$request->id);
-
-                 
+                    ->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')
+                    ->where('fp.deleted_at','=',null)
+                    ->orderBy('fp.tanggal')
+                    ->where('pp.sales_id',$request->id);                                 
 
         if ($request->year) {
             $res=$results->whereYear('fp.tanggal',$request->year);       
@@ -159,15 +166,14 @@ class PerformaSalesController extends Controller
         }
 
         $bulan = $kategori;
-        $tipe = $bulan->groupBy(DB::raw("DATE_FORMAT(fp.tanggal, '%m-%Y')"))
-        ->select(
-            DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
-            DB::raw("sum(fp.grandtotal) as grandtotal_penjualan")
-        ); 
 
+        $tipe = $bulan->groupBy(DB::raw("DATE_FORMAT(fp.tanggal, '%m-%Y')"))
+                ->select(
+                    DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
+                    DB::raw("sum(fp.grandtotal) as grandtotal_penjualan")
+                );         
         
-       $hasil= $tipe->get();
-                        
+        $hasil= $tipe->get();                        
         $laba = array();  
         $data=[]; 
                         
@@ -207,51 +213,72 @@ class PerformaSalesController extends Controller
     }
 
 
-    public function performasalesCustomer(Request $request)
+    public function datatableCustomer(Request $request)
     {
-        $results = DB::table('faktur_penjualans as fp')
-                ->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')
-                ->join('customers as c','pp.customer_id','=','c.id')
-                ->where('fp.deleted_at','=',null)                
-                ->where('pp.sales_id',$request->id);
+          $results = DB::table('faktur_penjualans as fp')
+                    ->join('faktur_penjualan_details as fdp','fdp.faktur_penjualan_id','=','fp.id')                    
+                    ->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')        
+                    ->join('customers as c','fp.customer_id','=','c.id')           
+                    ->where('fp.deleted_at','=',null)
+                    ->where('pp.sales_id',$request->sales_id);
 
-                if ($request->year) {
-                    $res=$results->whereYear('fp.tanggal',$request->year);       
-                }else{
-                    $res=$results;
-                }
+        if ($request->year) {
+            $res=$results->whereYear('fp.tanggal',$request->year);       
+        }else{
+            $res=$results;
+        }
 
-                if ($request->kategori !== 'All') {            
-                    $kategori=$res->where('pp.kategoripesanan_id',$request->kategori); 
-                }else{
-                    $kategori=$res;
-                }
+        if ($request->bulan !== 'All') {
+            $bulan = $res->whereMonth('fp.tanggal',$request->bulan)
+                    ->groupBy(DB::raw("DATE_FORMAT(fp.tanggal, '%m-%Y')"));
+        }else{
+            $bulan = $res;
+        }
 
-        $bulan = $kategori;
-        $tipe = $bulan->groupBy('pp.customer_id')
-                ->select(
-                    'c.nama as nama_customer',                  
-                    DB::raw("sum(fp.grandtotal) as grandtotal_penjualan")
-                ); 
-
+        if ($request->kategori !== 'All') {
+            $kategori = $bulan->where('pp.kategoripesanan_id',$request->kategori);
+        }else{
+            $kategori = $bulan;
+        }
         
-       $hasil= $tipe->get();
+        $hasil = $kategori
+                ->groupBy('pp.customer_id')             
+                ->select(     
+                    'c.nama','c.id',              
+                    DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
+                    DB::raw("DATE_FORMAT(fp.tanggal, '%Y') as tahun_penjualan"),
+                    DB::raw("sum(fdp.qty) as stok_produk"),
+                    DB::raw("sum(fdp.total) as total_penjualan")
+                )                  
+                ->get(); 
 
-       $customer = [];
-       $laba = [];
+        $count = count($hasil);
+        $tmp = null;
+        
+        if ($count > 0) {            
+            for ($i=0; $i < $count-1 ; $i++) { 
+                for ($j=$i+1; $j < $count ; $j++) { 
+                    if ($hasil[$i]->total_penjualan < $hasil[$j]->total_penjualan) {
+                        $tmp = $hasil[$i];
+                        $hasil[$i] = $hasil[$j];
+                        $hasil[$j] = $tmp;
+                    }
+                }
+            }       
+        }
 
-       if (count($hasil) > 0) {
-            foreach ($hasil as $value) {
-                $customer [] = $value->nama_customer;
-                $laba[] = $value->grandtotal_penjualan;
-           }
-       }
-
-    
-        return response()->json([
-            'laba' => $laba,
-            'customer' => $customer
-        ]);
+        $data = $hasil;
+        
+        return DataTables::of($data)
+                        ->addIndexColumn() 
+                        ->editColumn('tanggal', function ($data) {
+                           return $data->tanggal_penjualan . '-'. $data->tahun_penjualan; 
+                        })  
+                        
+                        ->editColumn('total', function ($data) {
+                            return 'Rp.' . number_format($data->total_penjualan, 0, ',', '.');
+                        })             
+                        ->make(true);
          
     }
 
