@@ -179,7 +179,6 @@ class FakturPenjualanController extends Controller
             $total = $subtotal - $totaldiskon;
             $total_det = $total_det + $total;
           
-
             $temp->product_id = $sj->product_id;
             $temp->pengiriman_barang_id = $sj->pengiriman_barang_id;
             $temp->pengiriman_barang_detail_id = $sj->id;

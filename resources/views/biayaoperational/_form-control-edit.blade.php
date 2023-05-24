@@ -38,8 +38,16 @@
     
     <div class="form-group">
         <label>Request :</label>
-        <input type="text" name="request" value="{{ $biayaoperational->request }}"
-            class="form-control @error('nama') is-invalid @enderror" placeholder="Masukkan Request nama" />
+        <select type="text" name="sales_id" class="form-control" id="kt_select2_2">
+            @foreach ($sales as $item)
+                @if ($item->id == $biayaoperational->sales_id)
+                  <option value="{{$item->id}}" selected>{{$item->nama}}</option>
+                @else
+                <option value="{{$item->id}}">{{$item->nama}}</option>
+                @endif
+                
+            @endforeach
+        </select>
         @error('nama')
         <div class="invalid-feedback">{{ $message }}</div>
         @enderror

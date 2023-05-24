@@ -39,5 +39,11 @@ class Sales extends Model
         return $this->hasMany(User::class, 'sales_id', 'id');
     }
 
+   
+    public function biayaoperational()
+    {
+        return $this->hasMany(BiayaOperational::class, 'request');
+    }
+
 
 }

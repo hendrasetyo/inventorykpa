@@ -18,7 +18,7 @@ class CreateBiayaOperationalsTable extends Migration
             $table->date('tanggal');
             $table->foreignId('jenis_biaya_id')->nullable()->constrained('jenis_biayas');
             $table->double('nominal');
-            $table->string('request');
+            $table->integer('request');
             $table->foreignId('bank_id')->nullable()->constrained('banks');
             $table->text('keterangan')->nullable();
             $table->timestamps();

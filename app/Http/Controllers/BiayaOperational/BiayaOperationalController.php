@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Bank;
 use App\Models\BiayaOperational;
 use App\Models\JenisBiaya;
+use App\Models\Sales;
+use App\Traits\CodeTrait;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -14,7 +16,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BiayaOperationalController extends Controller
 {
-
+    use CodeTrait;
     function __construct()
     {
         $this->middleware('permission:biayaoperational-list');
@@ -28,22 +30,22 @@ class BiayaOperationalController extends Controller
     {
         $title = "Biaya Operational";
 
-        $biayaoperational = BiayaOperational::with(['jenisbiaya','bank'])->orderByDesc('id');
+        $biayaoperational = BiayaOperational::with(['jenisbiaya','bank','sales'])->orderByDesc('id');
 
         if (request()->ajax()) {
             return DataTables::of($biayaoperational)
                 ->addIndexColumn()
-                ->addColumn('tanggal', function (BiayaOperational $pb) {                    
-                    return $pb->tanggal ? with(new Carbon($pb->tanggal))->format('d-F-Y') : '';
+                ->editColumn('tanggal', function (BiayaOperational $pb) {                    
+                    return $pb->tanggal ? with(new Carbon($pb->tanggal))->format('d/m/Y') : '';
                 })
                 ->addColumn('jenis_biaya', function (BiayaOperational $pb) {
                     return $pb->jenisbiaya->nama;
                 })
-                ->addColumn('nominal', function (BiayaOperational $pb) {
+                ->editColumn('nominal', function (BiayaOperational $pb) {
                     return  number_format($pb->nominal , 0, ',', '.');
                 })
-                ->addColumn('request', function (BiayaOperational $pb) {
-                    return $pb->request;
+                ->addColumn('sales_id', function (BiayaOperational $pb) {
+                    return $pb->sales->nama;
                 })
                 ->addColumn('sumberdana', function (BiayaOperational $pb) {
                     return $pb->bank->nama;
@@ -69,17 +71,26 @@ class BiayaOperationalController extends Controller
         $title = "Tambah Biaya Operational";
         $jenisbiaya = JenisBiaya::get();
         $bank = Bank::get();
+        $sales = Sales::get();
         $count = 0;
-        return view('biayaoperational.create',compact('jenisbiaya','bank','title','count'));
+        return view('biayaoperational.create',compact('jenisbiaya','bank','title','count','sales'));
     }
 
   
     public function store(Request $request)
     {        
-            $data = $request->all();
-        
-            BiayaOperational::create($data);
-           
+            $data = $request->all();            
+            BiayaOperational::create([
+                'tanggal' => $request->tanggal,
+                'jenis_biaya_id' => $request->jenis_biaya_id,
+                'nominal' => $request->nominal,        
+                'sales_id' => $data['sales_id'],
+                'bank_id' => $request->bank_id,
+                'verified' => 'Diterima',
+                'verified_by' => auth()->user()->id,
+                'keterangan' => $request->keterangan
+            ]);
+                       
             return redirect()->route('biayaoperational.index')->with('status','Biaya Operational berhasil ditambahkan');                
     }
 
@@ -93,15 +104,17 @@ class BiayaOperationalController extends Controller
     public function edit($id)
     {
         $title = 'Ubah Biaya Operational';
-        $biayaoperational = BiayaOperational::findOrFail($id);
+        $biayaoperational = BiayaOperational::with(['jenisbiaya','bank','sales'])->findOrFail($id);
         $jenisbiaya = JenisBiaya::get();
         $bank = Bank::get();
+        $sales = Sales::get();
 
         return view('biayaoperational.edit',compact(
             'title',
             'biayaoperational',
             'jenisbiaya',
-            'bank'
+            'bank',
+            'sales'
         ));
     }
 
@@ -114,7 +127,14 @@ class BiayaOperationalController extends Controller
         try {          
             $biaya = BiayaOperational::findOrFail($id);
                         
-            $biaya->update($request->all());
+            $biaya->update([
+                'tanggal' => $request->tanggal,
+                'jenis_biaya_id' => $request->jenis_biaya_id,
+                'nominal' => $request->nominal,        
+                'request' => $request->request,
+                'bank_id' => $request->bank_id,
+                'verifikasi' => 'Diterima'
+            ]);
 
             DB::commit();
             return redirect()->route('biayaoperational.index')->with('status','Biaya Operational berhasil ditambahkan');

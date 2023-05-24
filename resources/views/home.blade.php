@@ -400,13 +400,13 @@
                         "_token": "{{ csrf_token() }}"},
                     
                     success: function (data){
-                    res = JSON.parse("[" + data + "]");
-                    dataLaba = res[0].laba;
-                    dataBulan = res[0].bulan;
-                    
-                    options.data.labels =  dataBulan;
-                    options.data.datasets[0].data = dataLaba;
-                    chart = new Chart(ctx,options);                                                                                      
+                        res = JSON.parse("[" + data + "]");
+                        dataLaba = res[0].laba;
+                        dataBulan = res[0].bulan;
+                        
+                        options.data.labels =  dataBulan;
+                        options.data.datasets[0].data = dataLaba;
+                        chart = new Chart(ctx,options);                                                                                      
                     },
                     error: function(data){
                         console.log(data);

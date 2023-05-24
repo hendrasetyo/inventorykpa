@@ -79,11 +79,10 @@
                                 <thead class="datatable-head">
                                     <tr>                                        
                                         <th>Tanggal</th>
-                                        <th>Request</th>
                                         <th>Jenis Biaya</th>
-                                        <th>Nominal</th>                                       
+                                        <th>Nominal</th>
+                                        <th>Request</th>
                                         <th>Sumber Dana</th>                                        
-                                        <th>Status</th>
                                         <th>Keterangan</th>
                                         <th>Action</th>
                                     </tr>
@@ -122,11 +121,10 @@
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                   {data: 'tanggal', name: 'tanggal'},
-                  {data: 'sales.nama', name: 'sales.nama'},
-                  {data: 'jenisbiaya.nama', name: 'jenisbiaya.nama'},
-                  {data: 'nominal', name: 'nominal'},                 
-                  {data: 'bank.nama', name: 'bank.nama'},
-                  {data: 'verified', name: 'verified'},
+                  {data: 'jenis_biaya', name: 'jenisbiaya.nama'},
+                  {data: 'nominal', name: 'nominal'},
+                  {data: 'request', name: 'request'},
+                  {data: 'sumberdana', name: 'bank.nama'},
                   {data: 'keterangan', name: 'keterangan'},
                   {
                       data: 'action', 

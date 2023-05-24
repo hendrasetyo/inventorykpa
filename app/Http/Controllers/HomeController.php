@@ -253,16 +253,13 @@ class HomeController extends Controller
         $count = count($hasil);
 
         $tmp = null;
-        $nama_produk = [];
-        $stok_produk=[];
         
-       
-        $num = 10;
+        
+
+
+
         if ($count > 0) {
-            
-            if ($count < 10 && $count > 0) {
-                $num = $count;
-            }
+           
             if ($request->tipe == 'stok') {
                 for ($i=0; $i < $count-1 ; $i++) { 
                     for ($j=$i+1; $j < $count ; $j++) { 

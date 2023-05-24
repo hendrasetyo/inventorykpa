@@ -2,21 +2,28 @@
 
 namespace App\Models;
 
+use App\Blameable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BiayaOperational extends Model
 {
-    use HasFactory;
+    use HasFactory,Blameable,SoftDeletes;
 
     protected $table = 'biaya_operationals';            
     protected $fillable = [
         'tanggal',
         'jenis_biaya_id',
         'nominal',        
-        'request',
+        'sales_id',
         'bank_id',
-        'keterangan'
+        'verified',
+        'verified_by',
+        'keterangan',
+        'created_by',
+        'updated_by',
+        'deleted_by'
     ];
 
 
@@ -30,4 +37,14 @@ class BiayaOperational extends Model
     {
         return $this->belongsTo(Bank::class, 'bank_id', 'id');
     }
+
+   
+    public function sales()
+    {
+        return $this->belongsTo(Sales::class, 'sales_id', 'id');
+    }
+   
+
+  
+ 
 }

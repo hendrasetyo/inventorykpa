@@ -21,6 +21,12 @@ class JenisBiaya extends Model
     {
         return $this->hasMany(BiayaLain::class, 'jenisbiaya_id');
     }
+
+    
+    public function biayaoperational()
+    {
+        return $this->hasMany(BiayaOperational::class, 'jenis_biaya_id');
+    }
     
 
 

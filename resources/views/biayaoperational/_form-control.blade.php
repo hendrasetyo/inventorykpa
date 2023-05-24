@@ -10,7 +10,7 @@
     
     <div class="form-group">
         <label>Jenis Biaya :</label>
-        <select name="jenis_biaya_id" id="kt_select2_2" class="form-control">
+        <select name="jenis_biaya_id" id="kt_select2_3" class="form-control">
 
             @foreach ($jenisbiaya as $item)
                 <option value="{{$item->id}}">{{$item->nama}}</option>          
@@ -34,8 +34,11 @@
     
     <div class="form-group">
         <label>Request :</label>
-        <input type="text" name="request" value="{{ old('request') ? $biayaoperational->request : ''}}"
-            class="form-control @error('nama') is-invalid @enderror" placeholder="Masukkan Request nama" />
+        <select type="text" name="sales_id" class="form-control" id="kt_select2_2">
+            @foreach ($sales as $item)
+                <option value="{{$item->id}}">{{$item->nama}}</option>
+            @endforeach
+        </select>
         @error('nama')
         <div class="invalid-feedback">{{ $message }}</div>
         @enderror

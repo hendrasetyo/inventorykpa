@@ -21,9 +21,7 @@ class LaporanSalesController extends Controller
     public function index()
     {
         $title = "Laporan Kunjungan Sales";
-        $user = User::with(['roles' => function ($query){
-                $query->where('name','Sales')->select('name','id');
-        }])->select('id','name')->whereHas('roles')->get();
+        $user = User::whereNotNull('sales_id')->get();
 
         foreach ($user as $key => $value) {
             if (count($value->roles) > 0) {
