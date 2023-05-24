@@ -109,7 +109,7 @@
                                         <select id="kt_select2_1" id="" name="sales_id" class="form-control"  onchange="filterCustomer()">
                                             <option value="all">Semua</option>
                                             @foreach ($sales as $item)
-                                                <option value="{{$item['id']}}">{{$item['nama']}}</option>
+                                                <option value="{{$item->id}}">{{$item->nama}}</option>
                                             @endforeach
                                         </select>
                                     </div> 
