@@ -253,10 +253,6 @@ class HomeController extends Controller
         $count = count($hasil);
 
         $tmp = null;
-        
-        
-
-
 
         if ($count > 0) {
            
@@ -284,7 +280,7 @@ class HomeController extends Controller
         }
 
         $data = $hasil;
-        // dd($hasil);
+        
         
         return DataTables::of($data)
                         ->addIndexColumn() 
@@ -294,8 +290,89 @@ class HomeController extends Controller
                         
                         ->editColumn('total', function ($data) {
                             return 'Rp.' . number_format($data->total_penjualan, 0, ',', '.');
-                        })             
+                        })
+                        ->addColumn('action', function ($row) {
+                            $product_id =  $row->id;
+                            return view('partial.button',compact('product_id'));
+                        })                
+
                         ->make(true);
             
     }
+
+
+    public function listCustomer(Request $request)
+    {
+        $results = DB::table('faktur_penjualans as fp')
+        ->join('faktur_penjualan_details as fdp','fdp.faktur_penjualan_id','=','fp.id')                    
+        ->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')  
+        ->join('customers as c','fp.customer_id','=','c.id')  
+        ->where('fp.deleted_at','=',null)
+        ->where('fdp.product_id',$request->product_id);
+
+        if ($request->year) {
+             $res=$results->whereYear('fp.tanggal',$request->year);       
+        }else{
+            $res=$results;
+        }
+
+        if ($request->bulan !== 'All') {
+            $bulan = $res->whereMonth('fp.tanggal',$request->bulan)
+                    ->groupBy(DB::raw("DATE_FORMAT(fp.tanggal, '%m-%Y')"));
+        }else{
+            $bulan = $res;
+        }
+
+        $hasil = $bulan
+            ->groupBy('fp.customer_id')             
+            ->select(
+                'c.nama','c.id',
+                DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
+                DB::raw("DATE_FORMAT(fp.tanggal, '%Y') as tahun_penjualan"),
+                DB::raw("sum(fdp.qty) as stok_produk"),
+                DB::raw("sum(fdp.total) as total_penjualan")
+            )                  
+            ->get(); 
+        
+        
+
+        $count = count($hasil);
+
+        $tmp = null;
+
+        if ($count > 0) {
+
+        if ($request->tipe == 'stok') {
+            for ($i=0; $i < $count-1 ; $i++) { 
+                for ($j=$i+1; $j < $count ; $j++) { 
+                    if ($hasil[$i]->stok_produk < $hasil[$j]->stok_produk) {
+                        $tmp = $hasil[$i];
+                        $hasil[$i] = $hasil[$j];
+                        $hasil[$j] = $tmp;
+                    }
+                }
+            }
+        }else{
+            for ($i=0; $i < $count-1 ; $i++) { 
+                for ($j=$i+1; $j < $count ; $j++) { 
+                    if ($hasil[$i]->total_penjualan < $hasil[$j]->total_penjualan) {
+                        $tmp = $hasil[$i];
+                        $hasil[$i] = $hasil[$j];
+                        $hasil[$j] = $tmp;
+                    }
+                }
+            }   
+        }           
+        }
+
+        $data = $hasil;
+
+
+        return DataTables::of($data)
+                    ->addIndexColumn()     
+                    ->editColumn('total', function ($data) {
+                        return 'Rp.' . number_format($data->total_penjualan, 0, ',', '.');
+                    })               
+                    ->make(true);
+            }
 }

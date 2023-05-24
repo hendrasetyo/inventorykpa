@@ -67,6 +67,7 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::post('/chartkategori', [HomeController::class, 'chartkategori'])->name('chart.kategori');
     Route::post('/chartproduk', [HomeController::class, 'grafikProduk'])->name('chart.produk');
     Route::post('/chartbestproduk', [HomeController::class, 'grafikPenjualanProdukTerbaik'])->name('chart.bestproduk');
+    Route::post('/listcustomer', [HomeController::class, 'listCustomer'])->name('datatable.listcustomer');
 
 
 

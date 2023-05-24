@@ -275,7 +275,8 @@
                                             <th>Tanggal</th>
                                             <th>Nama Produk</th>
                                             <th>Qty</th> 
-                                            <th>Total Penjualan</th>                                                                                       
+                                            <th>Total Penjualan</th>    
+                                            <th>Action</th>                                                                                   
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -297,6 +298,9 @@
     </div>
     <!--end::Entry-->
 </div>
+
+{{-- modal Customer --}}
+@include('partial.modal.produk')
 @endsection
 
 @push('script')
@@ -322,6 +326,7 @@
         let chart = null;
         let produk = {{$produk[0]->id}};
         let tipe = 'harga';
+        let product_id = null;
 
         // var bulan = @json($bulan);
     
@@ -332,6 +337,7 @@
             chartProduk();
             // chartbestproduk();
             datatable();
+            datatableCustomer();
         })
 
         // chart Bar Pejualan
@@ -740,6 +746,13 @@
                     {data: 'nama', name:'nama'},
                     {data: 'stok_produk', name:'stok_produk'},
                     {data: 'total', name:'total'},
+                    {
+                      data: 'action', 
+                      render: function(data){
+                          return htmlDecode(data);
+                      },
+                      className:"nowrap",
+                  },
                     
                 ],
                 columnDefs: [
@@ -861,6 +874,55 @@
             $('.yajra-datatable').DataTable().ajax.reload(null,false);
         }
 
+    // ======================================= MODAL CUSTOMER ==========================================
+    function showCustomer(id) {
+        $('#listcustomer').modal('show');
+        product_id =  id;
+        $('.yajra-datatablecustomer').DataTable().ajax.reload(null,false); 
+        
+    }
+
+    function datatableCustomer() {
+               console.log('masuk ');
+                var tablecustomer = $('.yajra-datatablecustomer').DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                order: [],
+                ajax: {
+                        url : "{{ route('datatable.listcustomer') }}",                         
+                        type : "POST",
+                        data: function(params) {
+                            params.year = year,    
+                            params.bulan = bulan,     
+                            params.product_id = product_id,                            
+                            params._token = "{{ csrf_token() }}";                                            
+                            return params;
+                        }
+                },
+                columns: [
+                    //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                    {data: 'nama', name: 'nama'},                  
+                    {data: 'stok_produk', name:'stok_produk'},
+                    {data: 'total', name:'total'},
+                    
+                ],
+                columnDefs: [
+
+                    {
+                        responsivePriority: 1,
+                        targets: 0
+                    },
+                    {
+                        responsivePriority: 2,
+                        targets: -1
+                    },
+                ],
+            });
+        }
+
+
     
   </script>
+
 @endpush
