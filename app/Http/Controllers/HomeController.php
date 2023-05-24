@@ -238,8 +238,14 @@ class HomeController extends Controller
         }else{
             $bulan = $res;
         }
+        if ($request->kategori !== 'All') {
+            $kategori = $bulan->where('pp.kategoripesanan_id',$request->kategori);
+        }else{
+            $kategori = $bulan;
+        }
 
-        $hasil = $bulan
+
+        $hasil = $kategori
                 ->groupBy('fdp.product_id')             
                 ->select(
                     'p.nama','p.id','p.kode',
@@ -323,7 +329,14 @@ class HomeController extends Controller
             $bulan = $res;
         }
 
-        $hasil = $bulan
+        if ($request->kategori !== 'All') {
+            $kategori = $bulan->where('pp.kategoripesanan_id',$request->kategori);
+        }else{
+            $kategori = $bulan;
+        }
+
+
+        $hasil = $kategori
             ->groupBy('fp.customer_id')             
             ->select(
                 'c.nama','c.id',

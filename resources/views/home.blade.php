@@ -228,7 +228,7 @@
                         {{-- Grafik --}}
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">    
                                             <label for="">Tahun</label>                                                    
                                             <select name="chart_year" class="form-control" id="kt_select2_8" onchange="filteryearbestproduk()">                               
@@ -242,7 +242,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">    
                                             <label for="">Tipe</label>                                                    
                                             <select name="chart_year" class="form-control" id="kt_select2_9" onchange="filtertypebestproduk()">                               
@@ -253,7 +253,7 @@
                                     </div>
 
                                     
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">    
                                             <label for="">Bulan</label>                                                    
                                             <select name="chart_year" class="form-control" id="kt_select2_4" onchange="filterbulanbestproduk()">   
@@ -264,9 +264,21 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                              
 
+                                    <div class="col-md-3">
+                                        <div class="form-group">    
+                                            <label for="">Kategori Pesanan</label>                                                    
+                                            <select name="chart_year" class="form-control" id="kt_select2_11" onchange="filterkategoribestproduk()">   
+                                                    <option value="All" selected>Semua</option>                                                                    
+                                                    @foreach ($kategori as $x)
+                                                        <option value="{{$x->id}}">{{$x->nama}}</option>
+                                                    @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                        
                                 {{-- <canvas id="chartbestproduk" height="100"></canvas> --}}
 
                                 <table class="table table-separate table-head-custom table-checkable table  yajra-datatable collapsed ">
@@ -734,7 +746,8 @@
                         data: function(params) {
                             params.year = year,    
                             params.bulan = bulan,   
-                            params.tipe = tipe,   
+                            params.tipe = tipe,
+                            params.kategori = kategori,   
                             params._token = "{{ csrf_token() }}";                
                             return params;
                         }
@@ -870,7 +883,12 @@
         function filtertypebestproduk() {
             let e = document.getElementById("kt_select2_9");
             tipe = e.options[e.selectedIndex].value; 
+            $('.yajra-datatable').DataTable().ajax.reload(null,false);
+        }
 
+        function filterkategoribestproduk() {
+            let e = document.getElementById("kt_select2_11");
+            kategori = e.options[e.selectedIndex].value; 
             $('.yajra-datatable').DataTable().ajax.reload(null,false);
         }
 
@@ -895,7 +913,8 @@
                         data: function(params) {
                             params.year = year,    
                             params.bulan = bulan,     
-                            params.product_id = product_id,                            
+                            params.product_id = product_id, 
+                            params.kategori = kategori,                           
                             params._token = "{{ csrf_token() }}";                                            
                             return params;
                         }
