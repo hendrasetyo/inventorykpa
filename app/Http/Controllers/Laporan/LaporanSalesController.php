@@ -21,18 +21,7 @@ class LaporanSalesController extends Controller
     public function index()
     {
         $title = "Laporan Kunjungan Sales";
-        $user = User::whereNotNull('sales_id')->get();
-        dd($user);
-
-        foreach ($user as $key => $value) {
-            if (count($value->roles) > 0) {
-                $sales = array([
-                    'id' => $value->id,
-                    'name' => $value->name
-                ]);
-            }
-        }
-
+        $sales = User::whereNotNull('sales_id')->get();
         // dd($sales);
        
         return view('laporan.sales.index',compact('title','sales'));
