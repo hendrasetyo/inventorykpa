@@ -22,6 +22,7 @@ class LaporanSalesController extends Controller
     {
         $title = "Laporan Kunjungan Sales";
         $user = User::whereNotNull('sales_id')->get();
+        dd($user);
 
         foreach ($user as $key => $value) {
             if (count($value->roles) > 0) {
