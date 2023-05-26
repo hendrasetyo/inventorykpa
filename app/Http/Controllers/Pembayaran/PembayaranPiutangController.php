@@ -157,12 +157,15 @@ class PembayaranPiutangController extends Controller
                             
                 if ($toleransi >= -500 && $toleransi <= 500) {
                     $status = '2';
-                } else {
+                }elseif ($toleransi < -500) {
+                    $status = '1';
+                } 
+                else {
                     $status = '1';
                 }   
 
 
-                if ($toleransi < -500) {
+                if ($toleransi > 500) {
                     return back()->with('error','Nominal tidak boleh melebihi sisa piutang');
                 }
 
