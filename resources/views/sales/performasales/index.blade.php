@@ -43,7 +43,7 @@
                     
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <div class="form-group">    
                                     <label for="">Tahun</label>                                                    
                                     <select name="chart_year" class="form-control" id="kt_select2_3" onchange="filteryeargrafik()">                               
@@ -57,21 +57,29 @@
                                 </div>
                             </div>
 
-                            {{-- <div class="col-md-4">
+                            <div class="col-md-4">
                                 <div class="form-group">    
-                                    <label for="">Bulan</label>                                                    
-                                    <select name="chart_year" class="form-control" id="kt_select2_4" onchange="filterChartMonth()">    
-                                        <?php
-                                            for ($i = 0; $i < 12; $i++) {
-                                                $time = strtotime(sprintf('%d months', $i));   
-                                                $label = date('F', $time);   
-                                                $value = date('n', $time);
-                                                echo "<option value='$value'>$label</option>";
-                                            }
-                                            ?>
+                                    <label for="">Kategori</label>                                                    
+                                    <select name="chart_year" class="form-control" id="kt_select2_4" onchange="filterkategorigrafik()">    
+                                        <option value="All">Semua</option>
+                                        @foreach ($kategori as $item)
+                                          <option value="{{$item->id}}">{{$item->nama}}</option>  
+                                        @endforeach
                                     </select>
                                 </div>
-                            </div> --}}
+                            </div>
+                        
+                            <div class="col-md-4">
+                                <div class="form-group">    
+                                    <label for="">Bulan</label>                                                    
+                                    <select name="chart_year" class="form-control" id="kt_select2_5" onchange="filterbulangrafik()">    
+                                        <option value="All">Semua</option>
+                                        @foreach ($bulan as $data)
+                                          <option value="{{$data['id']}}">{{$data['nama']}}</option>  
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
 
                         </div>
                             <canvas class="row" id="chartperformasales">
@@ -187,6 +195,8 @@
 
     let year = {{now()->format('Y')}};
     let month = {{now()->format('m')}};
+    let kategori = 'All';
+    let bulan = 'All';
 
     $(document).ready(function() {
         DataPerformaSales();
@@ -335,7 +345,8 @@
                     data: {                       
                         "_token": "{{ csrf_token() }}",
                         'year' : year,
-                       
+                        'kategori' : kategori,
+                        'bulan' : bulan                       
                     },                    
                     success: function (data){
                         
@@ -357,7 +368,7 @@
 
 
     function filteryeargrafik() {
-        let e = document.getElementById("kt_select2_3");
+            let e = document.getElementById("kt_select2_3");
             year = e.options[e.selectedIndex].value; 
             
             $.ajax({
@@ -368,6 +379,8 @@
                     data: {                       
                         "_token": "{{ csrf_token() }}",
                         'year' : year,
+                        'kategori' : kategori,
+                        'bulan' : bulan
                        
                     },                    
                     success: function (data){
@@ -389,6 +402,78 @@
                     }
                 });	   
     }
+
+    function filterkategorigrafik() {
+           let e = document.getElementById("kt_select2_4");
+            kategori = e.options[e.selectedIndex].value; 
+            
+            $.ajax({
+                    type: 'POST',
+                    url: '{{ route('performasales.grafikperformasales') }}',
+                    dataType: 'html',
+                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                    data: {                       
+                        "_token": "{{ csrf_token() }}",
+                        'year' : year,
+                        'kategori' : kategori,
+                        'bulan' : bulan
+                       
+                    },                    
+                    success: function (data){
+                        
+                        res = JSON.parse("[" + data + "]");
+                        let label = res[0].sales;
+                        let dataPenjualan = res[0].penjualan;
+
+                        barPerformaSales.data.labels =  label;
+                        barPerformaSales.data.datasets[0].data = dataPenjualan;
+
+                        chartkategori.destroy();
+                        chartkategori = new Chart(idperformasales,barPerformaSales);   
+                        chartkategori.update();
+                                                                                      
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
+                });	   
+    }
+
+    function filterbulangrafik() {
+            let e = document.getElementById("kt_select2_5");
+            bulan = e.options[e.selectedIndex].value; 
+            
+            $.ajax({
+                    type: 'POST',
+                    url: '{{ route('performasales.grafikperformasales') }}',
+                    dataType: 'html',
+                    headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                    data: {                       
+                        "_token": "{{ csrf_token() }}",
+                        'year' : year,
+                        'kategori' : kategori,
+                        'bulan' : bulan
+                       
+                    },                    
+                    success: function (data){
+                        
+                        res = JSON.parse("[" + data + "]");
+                        let label = res[0].sales;
+                        let dataPenjualan = res[0].penjualan;
+
+                        barPerformaSales.data.labels =  label;
+                        barPerformaSales.data.datasets[0].data = dataPenjualan;
+
+                        chartkategori.destroy();
+                        chartkategori = new Chart(idperformasales,barPerformaSales);   
+                        chartkategori.update();
+                                                                                      
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
+                });	
+    }   
 </script>
 
 @endpush

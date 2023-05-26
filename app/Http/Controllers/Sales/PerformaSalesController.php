@@ -20,9 +20,18 @@ class PerformaSalesController extends Controller
     public function index()
     {
         $title = 'Performa Sales';
+        $kategori = Kategoripesanan::get();
         $sales = Sales::get();
 
-        return view('sales.performasales.index',compact('sales','title'));
+        $bulan =  [];
+        for ($i = 1; $i <=12; $i++) {
+            $bulan[] = [
+                'nama' => date('F', mktime(0,0,0,$i)),
+                'id' => $i
+            ];
+        }
+
+        return view('sales.performasales.index',compact('sales','title','kategori','bulan'));
     }
 
     public function dataperformasales(Request $request)
@@ -78,9 +87,7 @@ class PerformaSalesController extends Controller
     }
 
     public function grafikPerformaSales(Request $request)
-    {
-
-        
+    {        
         $results = DB::table('faktur_penjualans as fp')
                   ->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')
                   ->join('kategoripesanans as kp','pp.kategoripesanan_id','=','kp.id')
@@ -92,22 +99,37 @@ class PerformaSalesController extends Controller
         }else{
             $res=$results;
         }
-        
-       $hasil= $res->groupBy('pp.sales_id')                 
-        ->select(
-        's.id','s.nama as nama_sales','kp.nama as nama_kategori',
-        DB::raw("sum(fp.grandtotal) as grandtotal_penjualan")
-        )->get();
 
+        if ($request->kategori == 'All') {
+            $kategori = $res;
+        }else{
+            $kategori = $res->where('pp.kategoripesanan_id',$request->kategori);
+        }
 
-        
-
-        foreach ($hasil as $key => $value) {
-            $sales[] =  $value->nama_sales ;
-            $penjualan []  = $value->grandtotal_penjualan;
+        if ($request->bulan == 'All') {
+            $bulan = $kategori;
+        }else{
+            $bulan = $kategori->whereMonth('fp.tanggal',$request->bulan)
+                              ->groupBy(DB::raw("DATE_FORMAT(fp.tanggal, '%m-%Y')"));
         }
         
-        
+        $hasil= $bulan->groupBy('pp.sales_id')                 
+                            ->select(
+                                    's.id','s.nama as nama_sales','kp.nama as nama_kategori',
+                                    DB::raw("sum(fp.grandtotal) as grandtotal_penjualan")
+                            )->get();
+                             
+        $sales = [];
+        $penjualan = [];
+
+        $count = count($hasil);
+
+        if ($count > 0) {
+            foreach ($hasil as $key => $value) {
+                $sales[] =  $value->nama_sales ;
+                $penjualan []  = $value->grandtotal_penjualan;
+            }
+        }
 
         return response()->json([
             'sales' => $sales,
