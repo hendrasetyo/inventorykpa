@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Laporan;
 
 use App\Exports\LaporanKartuStok;
 use App\Exports\LaporanStockExport;
+use App\Exports\LaporanStokExp;
 use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\StokExp;
@@ -171,6 +172,7 @@ class LaporanStokController extends Controller
             'tgl2' => ['required'],
         ]);
         $datas = $request->all();
+        
         $tgl1 = $request->tgl1;
         if ($tgl1 <> null) {
             $tgl1 = Carbon::createFromFormat('d-m-Y', $tgl1)->format('Y-m-d');
@@ -181,17 +183,10 @@ class LaporanStokController extends Controller
         }
 
         $stok = StokExp::with('products')->has('products')
-            ->whereBetween('tanggal', [$tgl1, $tgl2])
-            ->orderBy('tanggal', 'ASC')->get();
-
-        // foreach ($stok as $key => $value) {
-        //     if ($value->products == null) {
-        //         dd($value);
-        //     }
-        // }
-        // dd($stok[0]);
+                      ->whereBetween('tanggal', [$tgl1, $tgl2])
+                      ->orderBy('tanggal', 'ASC')->get();
       
-        return view('laporan.stok.expstokresult', compact('stok', 'title'));
+        return view('laporan.stok.expstokresult', compact('stok', 'title','datas'));
     }
 
     public function exportStok(Request $request)
@@ -210,5 +205,12 @@ class LaporanStokController extends Controller
         $now = Carbon::parse(now())->format('Y-m-d');
 
         return Excel::download(new LaporanKartuStok($id), 'laporankartustock-'.$now.'.xlsx');
+    }
+
+    public function printExpStok(Request $request)
+    {
+        $now = Carbon::parse(now())->format('Y-m-d');
+
+        return Excel::download(new LaporanStokExp($request->all()), 'laporanstockexpired-'.$now.'.xlsx');
     }
 }
