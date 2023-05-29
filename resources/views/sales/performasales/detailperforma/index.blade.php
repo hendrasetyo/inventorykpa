@@ -465,10 +465,10 @@
                         url : "{{ route('performasales.dataperformasales.datatableProduk') }}",                         
                         type : "POST",
                         data: function(params) {
-                            params.year = year,    
+                            params.year = yearCustomer,    
                             params.bulan = bulan,     
                             params.customer_id = customer_id, 
-                            params.kategori = kategori,        
+                            params.kategori = kategoriCustomer,        
                             params.sales_id = sales_id,                   
                             params._token = "{{ csrf_token() }}";                                            
                             return params;
