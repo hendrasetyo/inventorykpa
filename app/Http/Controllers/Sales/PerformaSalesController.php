@@ -230,13 +230,11 @@ class PerformaSalesController extends Controller
         for ($i = 1; $i <=12; $i++) {
             if ($i == 2) {
                 $months[] = [
-                    'nama' => 'February',
-                    'id' => $i
+                    'February',                   
                 ];
             } else{
                 $months[] = [
-                    'nama' => date('F', mktime(0,0,0,$i)),
-                    'id' => $i
+                    date('F', mktime(0,0,0,$i)),                   
                 ];
             }
          
