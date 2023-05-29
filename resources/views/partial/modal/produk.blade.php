@@ -11,7 +11,7 @@
                 </div>
                 <div class="modal-body" style="height: 400px;">
 
-                    <table class="table yajra-datatableproduk collapsed ">
+                    <table class="table yajra-datatablecustomer collapsed ">
                         <thead class="datatable-head">
                             <tr>                                
                                 <th>Nama Customer</th>
