@@ -26,12 +26,12 @@ class PerformaSalesController extends Controller
         $bulan =  [];
         for ($i = 1; $i <=12; $i++) {
             if ($i == 2) {
-                $months[] = [
+                $bulan[] = [
                     'nama' => 'February',
                     'id' => $i
                 ];
             } else{
-                $months[] = [
+                $bulan[] = [
                     'nama' => date('F', mktime(0,0,0,$i)),
                     'id' => $i
                 ];
