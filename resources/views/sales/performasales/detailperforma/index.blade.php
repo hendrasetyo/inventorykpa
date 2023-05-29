@@ -167,7 +167,8 @@
                                     <tr>                                        
                                         <th>Tanggal</th>
                                         <th>Nama Customer</th>                                        
-                                        <th>Total Penjualan</th>                                                                                       
+                                        <th>Total Penjualan</th>   
+                                        <th>Action</th>                                                                                    
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -182,6 +183,8 @@
     </div>
     <!--end::Entry-->
 </div>
+
+@include('sales.performasales.detailperforma.modal.produk')
 
 @endsection
 @push('script')
@@ -206,10 +209,12 @@
 
     let sales_id = {{$sales_id}};
     let bulan = 'All';
+    let customer_id = 'all';
 
     $(document).ready(function() {
         grafikperformasalesdetail();
         datatableCustomer();
+        datatableProduk();
     })
 
     let barPerformaSales= {
@@ -386,6 +391,13 @@
                     {data: 'tanggal', name: 'tanggal'},
                     {data: 'nama', name:'nama'},                   
                     {data: 'total', name:'total'},
+                    {
+                      data: 'action', 
+                      render: function(data){
+                          return htmlDecode(data);
+                      },
+                      className:"nowrap",
+                  },
                     
                 ],
                 columnDefs: [
@@ -401,6 +413,13 @@
                 ],
             });
     }
+
+    
+    function htmlDecode(data){
+            var txt = document.createElement('textarea');
+            txt.innerHTML=data;
+            return txt.value;
+         }
 
     function filtercustomeryear() {
 
@@ -427,6 +446,54 @@
 
 
     }
+
+    // ====================== MODAL PRODUK ==============================
+    function showProduct(id) {
+        $('#listproduk').modal('show');
+         customer_id =  id;
+        $('.yajra-datatableproduct').DataTable().ajax.reload(null,false); 
+    }
+
+    function datatableProduk() {
+               console.log('masuk ');
+                var tablecustomer = $('.yajra-datatableproduct').DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                order: [],
+                ajax: {
+                        url : "{{ route('performasales.dataperformasales.datatableProduk') }}",                         
+                        type : "POST",
+                        data: function(params) {
+                            params.year = year,    
+                            params.bulan = bulan,     
+                            params.customer_id = customer_id, 
+                            params.kategori = kategori,        
+                            params.sales_id = sales_id,                   
+                            params._token = "{{ csrf_token() }}";                                            
+                            return params;
+                        }
+                },
+                columns: [
+                    //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                    {data: 'nama', name: 'nama'},                  
+                    {data: 'stok_produk', name:'stok_produk'},
+                    {data: 'total', name:'total'},
+                    
+                ],
+                columnDefs: [
+
+                    {
+                        responsivePriority: 1,
+                        targets: 0
+                    },
+                    {
+                        responsivePriority: 2,
+                        targets: -1
+                    },
+                ],
+            });
+        }
     
 </script>
 
