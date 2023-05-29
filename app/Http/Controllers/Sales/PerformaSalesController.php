@@ -156,12 +156,20 @@ class PerformaSalesController extends Controller
     {
         $title = 'Detail Performa Sales';
         $kategori = Kategoripesanan::get();
-        
+
         for ($i = 1; $i <=12; $i++) {
-            $months[] = [
-                'nama' => date('F', mktime(0,0,0,$i)),
-                'id' => $i
-            ];
+            if ($i == 2) {
+                $months[] = [
+                    'nama' => 'February',
+                    'id' => $i
+                ];
+            } else{
+                $months[] = [
+                    'nama' => date('F', mktime(0,0,0,$i)),
+                    'id' => $i
+                ];
+            }
+         
         }
 
         return view('sales.performasales.detailperforma.index',[
