@@ -25,10 +25,18 @@ class PerformaSalesController extends Controller
 
         $bulan =  [];
         for ($i = 1; $i <=12; $i++) {
-            $bulan[] = [
-                'nama' => date('F', mktime(0,0,0,$i)),
-                'id' => $i
-            ];
+            if ($i == 2) {
+                $months[] = [
+                    'nama' => 'February',
+                    'id' => $i
+                ];
+            } else{
+                $months[] = [
+                    'nama' => date('F', mktime(0,0,0,$i)),
+                    'id' => $i
+                ];
+            }
+         
         }
 
         return view('sales.performasales.index',compact('sales','title','kategori','bulan'));
@@ -219,13 +227,19 @@ class PerformaSalesController extends Controller
             
         }
 
-        for ($i = 0; $i <=12; $i++) {
-            if ($i==0) {
-                $months[] = 0;
-            }else{ 
-                $months[] = date('F', mktime(0,0,0,$i));
+        for ($i = 1; $i <=12; $i++) {
+            if ($i == 2) {
+                $months[] = [
+                    'nama' => 'February',
+                    'id' => $i
+                ];
+            } else{
+                $months[] = [
+                    'nama' => date('F', mktime(0,0,0,$i)),
+                    'id' => $i
+                ];
             }
-            
+         
         }
 
         return response()->json([
