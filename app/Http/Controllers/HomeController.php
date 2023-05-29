@@ -98,12 +98,17 @@ class HomeController extends Controller
             
         }
 
-        for ($i = 1; $i <=12; $i++) {
+        for ($i = 0; $i <=12; $i++) {
             if ($i == 2) {
                 $months[] = [
-                    'February',                   
+                    'February'               
                 ];
-            } else{
+            }elseif($i == 0){
+                $months[] = [
+                    0
+                ];
+            } 
+            else{
                 $months[] = [
                     date('F', mktime(0,0,0,$i)),                   
                 ];
@@ -217,12 +222,17 @@ class HomeController extends Controller
         }
 
 
-        for ($i = 1; $i <=12; $i++) {
+        for ($i = 0; $i <=12; $i++) {
             if ($i == 2) {
                 $months[] = [
-                    'February',                   
+                    'February'               
                 ];
-            } else{
+            }elseif($i == 0){
+                $months[] = [
+                    0
+                ];
+            } 
+            else{
                 $months[] = [
                     date('F', mktime(0,0,0,$i)),                   
                 ];
