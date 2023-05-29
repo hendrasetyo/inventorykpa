@@ -35,7 +35,7 @@
                                         </g>
                                     </svg>
                                     <!--end::Svg Icon--></span> </span>
-                            <h3 class="card-label">Grafik Performa Sales</h3>
+                            <h3 class="card-label">Grafik Performa Sales : <i>{{$sales->nama}}</i></h3>
 
                            
                         </div>                            
@@ -113,7 +113,7 @@
                                             </g>
                                         </svg>
                                         <!--end::Svg Icon--></span> </span>
-                                <h3 class="card-label">Data Penjualan Customer</h3>
+                                <h3 class="card-label">Data Penjualan Customer : <i>{{$sales->nama}}</i></h3>
                                
 
                                

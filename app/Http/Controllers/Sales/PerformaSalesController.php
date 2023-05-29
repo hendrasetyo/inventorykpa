@@ -173,11 +173,15 @@ class PerformaSalesController extends Controller
          
         }
 
+        $sales = Sales::where('id',$id)->first();
+        
+
         return view('sales.performasales.detailperforma.index',[
             'sales_id' => $id,
             'title' => $title,
             'kategori' => $kategori,
-            'bulan' => $months
+            'bulan' => $months,
+            'sales' => $sales
         ]);
 
 
