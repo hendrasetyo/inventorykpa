@@ -96,7 +96,7 @@ class HomeController extends Controller
             }else{
                 $months[] = [
                     Carbon::parse($databulan)->format('F') 
-                ]; 
+                ];
             }                   
         }
 
