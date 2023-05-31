@@ -50,23 +50,15 @@
                                             </g>
                                         </svg>
                                         <!--end::Svg Icon--></span> </span>
-                                <h3 class="card-label">Data Biaya Operational</h3>
+                                <h3 class="card-label">Target Sales</h3>
                             </div>
                             <div class="card-toolbar">
                                 <!--begin::Button-->
-                                @can('biayaoperational-list')
-                                <a href="{{ route('jenisbiaya.index') }}" class="btn btn-info font-weight-bolder mr-3">
-                                    <i class="flaticon2-list-2"></i>
-                                    Jenis Biaya
-                                </a>
-                                @endcan
-
-                                @can('biayaoperational-create')
-                                <a href="{{ route('biayaoperational.create') }}"
-                                    class="btn btn-primary font-weight-bolder">
+                                @can('targetsales-create')                        
+                                <button type="button"  class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#tambahtargetsales">
                                     <i class="flaticon2-add"></i>
-                                    Biaya Operational
-                                </a>
+                                    Target Sales
+                                  </button>
                                 @endcan
 
 
@@ -78,13 +70,10 @@
                             <table class="table  yajra-datatable collapsed ">
                                 <thead class="datatable-head">
                                     <tr>                                        
-                                        <th>Tanggal</th>
-                                        <th>Jenis Biaya</th>
-                                        <th>Nominal</th>
-                                        <th>Request</th>
-                                        <th>Sumber Dana</th>                                        
-                                        <th>Keterangan</th>
-                                        <th>Action</th>
+                                        <th>Tahun</th>
+                                        <th>Bulan</th>
+                                        <th>Sales</th>
+                                        <th>Nominal</th>                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -103,6 +92,9 @@
 </div>
 <!--end::Content-->
 <div id="modal-confirm-delete"></div>
+
+@include('sales.targetsales.modal.modal')
+
 @endsection
 @push('script')
 <script src="{{ asset('/assets/js/pages/crud/forms/widgets/select2.js?v=7.0.6"') }}"></script>
@@ -117,22 +109,21 @@
               responsive: true,
               processing: true,
               serverSide: true,
-              ajax: "{{ route('biayaoperational.index') }}",
+              ajax: {
+                url : "{{ route('targetsales.datatable') }}", 
+                type : "POST",
+                data: function(params) {                  
+                    params._token = "{{ csrf_token() }}";                
+                    return params;
+                }
+              }                
+              ,
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                  {data: 'tanggal', name: 'tanggal'},
-                  {data: 'jenis_biaya', name: 'jenisbiaya.nama'},
-                  {data: 'nominal', name: 'nominal'},
-                  {data: 'request', name: 'request'},
-                  {data: 'sumberdana', name: 'bank.nama'},
-                  {data: 'keterangan', name: 'keterangan'},
-                  {
-                      data: 'action', 
-                      render: function(data){
-                          return htmlDecode(data);
-                      },
-                      className:"nowrap",
-                  },
+                  {data: 'tahun', name: 'tahun'},
+                  {data: 'bulan', name: 'bulan'},
+                  {data: 'sales_id', name: 'sales_id'},
+                  {data: 'nominal', name: 'nominal'},            
               ],
               columnDefs: [
 

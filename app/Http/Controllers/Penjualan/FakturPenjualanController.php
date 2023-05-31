@@ -230,7 +230,7 @@ class FakturPenjualanController extends Controller
                 ->where('user_id', '=', Auth::user()->id)
                 ->first();
 
-        $biayalainlain = $biaya->rupiah;
+        $biayalainlain = $biaya->rupiah;    
 
         if ($tanggal <> null) {
             $tanggal = Carbon::createFromFormat('d-m-Y', $tanggal)->format('Y-m-d');

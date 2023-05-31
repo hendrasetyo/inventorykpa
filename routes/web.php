@@ -55,6 +55,7 @@ use App\Http\Controllers\Penjualan\BiayaLainController;
 use App\Http\Controllers\Penjualan\LabaRugiController;
 use App\Http\Controllers\Permissions\AssignPermissionController;
 use App\Http\Controllers\Sales\PerformaSalesController;
+use App\Http\Controllers\Sales\TargetSalesController;
 use App\Http\Controllers\Teknisi\MaintenanceController;
 
 
@@ -928,15 +929,14 @@ Route::middleware('has.role')->prefix('sales')->group(function () {
         Route::post('/performasales/performasalesCustomer', [PerformaSalesController::class, 'datatableCustomer'])->name('performasales.dataperformasales.datatableCustomer'); 
 
         Route::post('/performasales/performasalesProduk', [PerformaSalesController::class, 'datatableProduk'])->name('performasales.dataperformasales.datatableProduk'); 
-
-
-        
-
     });
 
-
-
-
+    Route::prefix('targetsales')->group(function () {
+        Route::post('/targetsales/import', [TargetSalesController::class, 'import'])->name('targetsales.import'); 
+        Route::post('/datatable', [TargetSalesController::class, 'datatable'])->name('targetsales.datatable');        
+        Route::get('', [TargetSalesController::class, 'index'])->name('targetsales.index');                  
+    });
+    
 });
 
 Route::middleware('has.role')->prefix('teknisi')->group(function () {

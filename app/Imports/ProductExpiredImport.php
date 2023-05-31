@@ -21,11 +21,8 @@ class ProductExpiredImport implements ToModel
 
     public function model(array $row)
     {
-
-        
         if ($this->no !== 0) {
             
-
             // ngecek apakah expired datenya ada 
             // cek produk    
             
@@ -53,8 +50,6 @@ class ProductExpiredImport implements ToModel
                     $datas['lot'] = $row[3];         
                     $id_stokExp = StokExp::create($datas)->id;                    
                     
-                    
-
                     //insert detail;
                     $stokExpDetail = new StokExpDetail;
                     $stokExpDetail->tanggal = $tanggal;

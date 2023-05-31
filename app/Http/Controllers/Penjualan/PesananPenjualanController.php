@@ -109,8 +109,8 @@ class PesananPenjualanController extends Controller
 
         // ambil diskon dari temporary
         $diskon = TempDiskon::where('jenis', '=', "SO")
-            ->where('user_id', '=', Auth::user()->id)
-            ->get()->first();
+                ->where('user_id', '=', Auth::user()->id)
+                ->get()->first();
 
         $diskon_persen = $diskon->persen;
         $diskon_rupiah = $diskon->rupiah;

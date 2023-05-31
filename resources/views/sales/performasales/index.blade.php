@@ -130,7 +130,7 @@
                             </div>    
                             @can('targetsales-list')
                             <div>
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-bullseye"></i>Data Target Sales</a>
+                                <a href="{{ route('targetsales.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-bullseye"></i>Data Target Sales</a>
                             </div>
                             @endcan                        
                             
@@ -156,14 +156,14 @@
                                     <div class="form-group">    
                                         <label for="">Bulan</label>                                                    
                                         <select name="chart_year" class="form-control" id="kt_select2_2" onchange="filterMonth()">    
-                                            <?php
-                                                for ($i = 0; $i < 12; $i++) {
-                                                    $time = strtotime(sprintf('%d months', $i));   
-                                                    $label = date('F', $time);   
-                                                    $value = date('n', $time);
-                                                    echo "<option value='$value'>$label</option>";
-                                                }
-                                                ?>
+                                            @foreach ($bulan as $item)
+                                              @if ($item['id'] ==  now()->format('m') )
+                                                    <option value="{{$item['id']}}" selected >{{$item['nama']}}</option>
+                                              @else 
+                                                    <option value="{{$item['id']}}">{{$item['nama']}}</option>  
+                                              @endif
+                                              
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
