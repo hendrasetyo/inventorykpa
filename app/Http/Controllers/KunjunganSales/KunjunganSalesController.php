@@ -32,19 +32,25 @@ class KunjunganSalesController extends Controller
 
     public function datatable(Request $request)
     {
-        $kunjungan = KunjunganSales::where('user_id',auth()->user()->id)->select('id','customer','aktifitas','tanggal')->orderBy('id','desc');
+        $kunjungan = KunjunganSales::with('user')->orderBy('id','desc')->get();
 
         return DataTables::of($kunjungan)
                 ->addIndexColumn()
                 ->editColumn('tanggal', function (KunjunganSales $kj) {
                     return $kj->tanggal ? with(new Carbon($kj->tanggal))->format('d F Y') : '';
                 })
-                ->addColumn('action', function ($row) {
-                    $id = $row->id;
+                ->editColumn('sales_name', function (KunjunganSales $kj) {
+                    return $kj->user->name;
+                })
+                ->addColumn('action', function ($row) {    
+                    $id = $row->id;        
+                    $sales_id = $row->user_id;                                              
                     return view('kunjungansales.partial._form-action',[
-                        'id' => $id
+                        'id' => $id,
+                        'sales_id' => $sales_id
                     ]);
                 })
+
                 ->make(true);
     }
 

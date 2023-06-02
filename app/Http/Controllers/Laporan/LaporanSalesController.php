@@ -57,7 +57,14 @@ class LaporanSalesController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $id = $row->id;
-                    return view('laporan.sales.partial._form-action', compact('id'));
+                    $tanggal = Carbon::parse($row->tanggal)->format('d-F-Y');
+                    return view('laporan.sales.partial._form-action', [
+                        'id' => $id,
+                        'tanggal' => $tanggal,
+                        'aktifitas' => $row->aktifitas,
+                        'customer' => $row->customer,
+                        'nomor' => $row->user->phone
+                    ]);
                 })
                 ->make(true);
          }

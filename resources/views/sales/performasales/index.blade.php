@@ -249,7 +249,7 @@
                         performasales.innerHTML = cardSales(dataperformasales);                                                                                                                                  
                     },
                     error: function(data){
-                        console.log(data);
+                        console.log(data.stok_obat);
                     }
                 });	   
     }
