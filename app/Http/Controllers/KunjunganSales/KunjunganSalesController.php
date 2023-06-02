@@ -32,7 +32,7 @@ class KunjunganSalesController extends Controller
 
     public function datatable(Request $request)
     {
-        $kunjungan = KunjunganSales::with('user')->orderBy('id','desc')->get();
+        $kunjungan = KunjunganSales::with('user')->orderBy('id','desc');
 
         return DataTables::of($kunjungan)
                 ->addIndexColumn()
