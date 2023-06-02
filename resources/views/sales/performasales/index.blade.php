@@ -168,6 +168,18 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-4">
+                                    <div class="form-group">    
+                                        <label for="">Kategori Pesanan</label>                                                    
+                                        <select name="chart_year" class="form-control" id="kt_select2_7" onchange="filterCategory()">    
+                                            <option value="All">Semua</option>
+                                            @foreach ($kategori as $item)
+                                              <option value="{{$item->id}}">{{$item->nama}}</option>  
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
                             </div>
                                 <div class="row" id="performasales">
                                         
@@ -197,6 +209,7 @@
     let month = {{now()->format('m')}};
     let kategori = 'All';
     let bulan = 'All';
+    let category = 'All';
 
     $(document).ready(function() {
         DataPerformaSales();
@@ -241,7 +254,8 @@
                     data: {                       
                         "_token": "{{ csrf_token() }}",
                         'year' : year,
-                        'month' : month
+                        'month' : month,
+                        'kategori' : category
                     },                    
                     success: function (data){
                         res = JSON.parse("[" + data + "]");
@@ -330,6 +344,14 @@
     function filterMonth() {
             let e = document.getElementById("kt_select2_2");
             month = e.options[e.selectedIndex].value; 
+            idperformasales.innerHTML = "";
+            
+            DataPerformaSales();
+
+    }
+    function filterCategory() {
+            let e = document.getElementById("kt_select2_7");
+            category = e.options[e.selectedIndex].value; 
             idperformasales.innerHTML = "";
             
             DataPerformaSales();

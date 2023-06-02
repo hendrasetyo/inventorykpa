@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Sales;
 use App\Http\Controllers\Controller;
 use App\Models\Kategoripesanan;
 use App\Models\Sales;
+use App\Models\TargetSales;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -51,29 +52,43 @@ class PerformaSalesController extends Controller
             $res=$results;
         }
 
-        if ($request->month) {
-            $res=$results->whereMonth('fp.tanggal',$request->month);       
+        if ($request->kategori == 'All') {
+            $kategori = $res;
         }else{
-            $res=$results;
+            $kategori = $res->where('pp.kategoripesanan_id',$request->kategori);
         }
 
-        $hasil = $res->groupBy('pp.sales_id')
+        if ($request->month) {
+            $data=$kategori->whereMonth('fp.tanggal',$request->month);       
+        }else{
+            $data=$kategori;
+        }
+
+        $hasil = $data->groupBy('pp.sales_id')
         ->select(
             DB::raw("DATE_FORMAT(fp.tanggal,'%M') as tanggal"), 
            's.nama','s.id','s.hp',
             DB::raw("sum(fp.grandtotal) as grandtotal_penjualan"),
             DB::raw("sum(fp.ppn) as total_ppn"),
             DB::raw("sum(fp.total_cn) as total_cn")
-
         )->get();
 
 
         $sales = Sales::with('user')->get();
         $dataSales = [];
+        $persen = 0;
 
         foreach ($sales as $value) {
+            
             foreach ($hasil as $res) {
                 $dataOmset = $res->grandtotal_penjualan - $res->total_cn - $res->total_ppn;
+                if ($request->kategori == 2) {
+                    $targetSales = TargetSales::where('sales_id',$value->id)->where('tahun',$request->year)->where('bulan',$request->month)->first();
+                    if ($targetSales) {
+                        $persen = $dataOmset/$targetSales->nominal * 100;    
+                    }
+                    
+                }
                  if ($value->id == $res->id) {
                     $dataSales[] = [
                         'id' => $value->id,
@@ -82,7 +97,7 @@ class PerformaSalesController extends Controller
                         'hp' => $res->hp,
                         'nama' => $res->nama,
                         'laba' => number_format($dataOmset,0, ',', '.'),
-                        'persen' => (int) ($dataOmset/575000000 * 100),
+                        'persen' => (int) $persen,
                     ]; 
                  }
             }    
@@ -188,17 +203,23 @@ class PerformaSalesController extends Controller
                     ->where('fp.deleted_at','=',null)
                     ->orderBy('fp.tanggal')
                     ->where('pp.sales_id',$request->id);                                 
-
+        
         if ($request->year) {
             $res=$results->whereYear('fp.tanggal',$request->year);       
         }else{
             $res=$results;
         }
 
+        $targetSales = [];
         if ($request->kategori !== 'All') {            
             $kategori=$res->where('pp.kategoripesanan_id',$request->kategori); 
+            
         }else{
             $kategori=$res;
+            
+        }
+        if ($request->kategori == 2) {
+            $targetSales = TargetSales::where('sales_id',$request->id)->where('tahun',$request->year)->orderBy('bulan')->get();
         }
 
         $bulan = $kategori;
@@ -246,10 +267,27 @@ class PerformaSalesController extends Controller
             }
                    
         }
+        $dataTargetSales = [];
+
+        if (count($targetSales) > 0) {
+            for ($i=-1; $i <= 11; $i++) {
+                if ($i==-1) {
+                    $dataTargetSales[] = 0;    
+                } else{
+                    $dataTargetSales[] = $targetSales[$i]->nominal;
+                }
+                
+            }
+           
+        }
+       
+
+        
 
         return response()->json([
             'laba' => $laba,
-            'bulan' => $months
+            'bulan' => $months,
+            'targetsales' => $dataTargetSales
         ]);
     }
 

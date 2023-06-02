@@ -229,7 +229,7 @@
                 },            
                 {
                     label: 'Target Tertinggi Perbulan Sales',
-                    data: [575000000,575000000,575000000,575000000,575000000,575000000,575000000,575000000,575000000,575000000,575000000,575000000,575000000],
+                    data: null,
                     borderWidth: 4,                        
                     type: 'line',
                     color:'#36A2EB',   
@@ -278,9 +278,14 @@
                         res = JSON.parse("[" + data + "]");
                         let bulan = res[0].bulan;
                         let dataPenjualan = res[0].laba;
+                        let targetSales = res[0].targetsales;
+
+                       
 
                         barPerformaSales.data.labels =  bulan;
                         barPerformaSales.data.datasets[0].data = dataPenjualan;
+                        barPerformaSales.data.datasets[1].data = targetSales;
+                        
 
                         chartkategori = new Chart(idperformasales,barPerformaSales);   
                                                                                       
@@ -313,9 +318,11 @@
                         res = JSON.parse("[" + data + "]");
                         let bulan = res[0].bulan;
                         let dataPenjualan = res[0].laba;
+                        let targetSales = res[0].targetsales;
 
                         barPerformaSales.data.labels =  bulan;
                         barPerformaSales.data.datasets[0].data = dataPenjualan;
+                        barPerformaSales.data.datasets[1].data = targetSales;
 
                         chartkategori.destroy();
                         chartkategori = new Chart(idperformasales,barPerformaSales);   
@@ -349,9 +356,12 @@
                         res = JSON.parse("[" + data + "]");
                         let bulan = res[0].bulan;
                         let dataPenjualan = res[0].laba;
+                        let targetSales = res[0].targetsales;
 
                         barPerformaSales.data.labels =  bulan;
                         barPerformaSales.data.datasets[0].data = dataPenjualan;
+                        barPerformaSales.data.datasets[1].data = targetSales;
+                        console.log(barPerformaSales.data);
 
                         chartkategori.destroy();
                         chartkategori = new Chart(idperformasales,barPerformaSales);   
