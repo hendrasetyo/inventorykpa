@@ -17,28 +17,32 @@ class ProductExpiredImport implements ToModel
     use CodeTrait;
     protected $no=0;
     protected $id= [];
+    protected $now = 0;
+
+
    
 
     public function model(array $row)
     {
         if ($this->no !== 0) {
+            $this->now = Carbon::parse(now())->subMinutes(1)->format('H:i:s');
             
             // ngecek apakah expired datenya ada 
             // cek produk    
             
               $product = Product::where('kode',$row[0])->first();   
               if ($product) {
-                
-                // stok exp berdasarkan exp nya 
-                // insert masing-masing exp stok dan exp date sesuai dengan product id dan tanggal 
-                // cek jika ada tanggal yang sama maka ditambah
-                    $tanggal = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[4]))->format('Y-m-d');               
-                    // $now =  Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(today()))->format('Y-m-d');
+
+                    // stok exp berdasarkan exp nya 
+                    // insert masing-masing exp stok dan exp date sesuai dengan product id dan tanggal 
+                    // cek jika ada tanggal yang sama maka ditambah
+                    $tanggal = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[4]))->format('Y-m-d');    
+                    // $now = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(now()->subMinutes(1)))->format('H-i-s');                                  
                    
-                
+                    
                     // ubah stok yang lama menjadi 0                      
                     StokExp::where('product_id',$product->id)     
-                        // ->where('updated_at','<=',$now)            
+                       ->whereTime('updated_at', '<',  $this->now)                          
                         ->update([
                            'qty' => 0
                         ]); 
@@ -94,14 +98,7 @@ class ProductExpiredImport implements ToModel
              
         }
 
-        
-
-      
-
-
         $this->no++;
-        
-
         return ;
     }
 }
