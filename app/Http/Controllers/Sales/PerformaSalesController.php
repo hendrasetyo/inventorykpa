@@ -272,7 +272,7 @@ class PerformaSalesController extends Controller
         if (count($targetSales) > 0) {
             for ($i=-1; $i <= 11; $i++) {
                 if ($i==-1) {
-                    $dataTargetSales[] = 0;    
+                    $dataTargetSales[] = $targetSales[0]->nominal;    
                 } else{
                     $dataTargetSales[] = $targetSales[$i]->nominal;
                 }
