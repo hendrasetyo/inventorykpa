@@ -375,4 +375,171 @@ class HomeController extends Controller
                     })               
                     ->make(true);
         }
+
+        public function datatableTopCustomer(Request $request)
+        {
+            $results = DB::table('faktur_penjualans as fp')
+                    ->join('faktur_penjualan_details as fdp','fdp.faktur_penjualan_id','=','fp.id')                    
+                    ->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')  
+                    ->join('products as p','fdp.product_id','=','p.id')                 
+                    ->join('customers as c','fp.customer_id','=','c.id')   
+                    ->where('fp.deleted_at','=',null);
+
+            if ($request->year) {
+                $res=$results->whereYear('fp.tanggal',$request->year);       
+            }else{
+                $res=$results;
+            }
+
+            if ($request->bulan !== 'All') {
+                $bulan = $res->whereMonth('fp.tanggal',$request->bulan)
+                        ->groupBy(DB::raw("DATE_FORMAT(fp.tanggal, '%m-%Y')"));
+            }else{
+                $bulan = $res;
+            }
+
+            if ($request->kategori !== 'All') {
+                $kategori = $bulan->where('pp.kategoripesanan_id',$request->kategori);
+            }else{
+                $kategori = $bulan;
+            }
+
+            $hasil = $kategori                   
+                    ->groupBy('fp.customer_id')             
+                    ->select(
+                        'c.nama','c.id','c.kode',
+                        DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
+                        DB::raw("DATE_FORMAT(fp.tanggal, '%Y') as tahun_penjualan"),
+                        DB::raw("sum(fdp.qty) as stok_produk"),
+                        DB::raw("sum(fdp.total) as total_penjualan"),
+                        DB::raw("sum(fdp.cn_total) as total_cn")
+                    )                  
+                    ->get(); 
+
+        $count = count($hasil);
+        $tmp = null;
+
+        if ($count > 0) {           
+            if ($request->tipe == 'stok') {
+                for ($i=0; $i < $count-1 ; $i++) { 
+                    for ($j=$i+1; $j < $count ; $j++) { 
+                        if ($hasil[$i]->stok_produk < $hasil[$j]->stok_produk) {
+                            $tmp = $hasil[$i];
+                            $hasil[$i] = $hasil[$j];
+                            $hasil[$j] = $tmp;
+                        }
+                    }
+                }
+            }else{
+                for ($i=0; $i < $count-1 ; $i++) { 
+                    for ($j=$i+1; $j < $count ; $j++) { 
+                        if (($hasil[$i]->total_penjualan - $hasil[$i]->total_cn) < ($hasil[$j]->total_penjualan-$hasil[$i]->total_penjualan)) {
+                            $tmp = $hasil[$i];
+                            $hasil[$i] = $hasil[$j];
+                            $hasil[$j] = $tmp;
+                        }
+                    }
+                }   
+            }           
+        }
+
+        $data = $hasil;        
+        return DataTables::of($data)
+                        ->addIndexColumn() 
+                        ->editColumn('tanggal', function ($data) {
+                              return $data->tanggal_penjualan . '-'. $data->tahun_penjualan; 
+                        })                        
+                        ->editColumn('total', function ($data) {
+                            return 'Rp.' . number_format($data->total_penjualan - $data->total_cn, 0, ',', '.');
+                        })
+                        ->addColumn('action', function ($row) {
+                            $customer_id =  $row->id;
+                            return view('partial.buttontopcustomer',compact('customer_id'));
+                        })                
+                        ->make(true);
+        }
+
+        public function listProduct(Request $request)
+        {
+            $results = DB::table('faktur_penjualans as fp')
+                    ->join('faktur_penjualan_details as fdp','fdp.faktur_penjualan_id','=','fp.id')                    
+                    ->join('pesanan_penjualans as pp','fp.pesanan_penjualan_id','=','pp.id')  
+                    ->join('products as p','fdp.product_id','=','p.id')                 
+                    ->join('customers as c','fp.customer_id','=','c.id')   
+                    ->where('fp.deleted_at','=',null);
+
+            if ($request->year) {
+                $res=$results->whereYear('fp.tanggal',$request->year);       
+            }else{
+                $res=$results;
+            }
+
+            if ($request->bulan !== 'All') {
+                $bulan = $res->whereMonth('fp.tanggal',$request->bulan)
+                        ->groupBy(DB::raw("DATE_FORMAT(fp.tanggal, '%m-%Y')"));
+            }else{
+                $bulan = $res;
+            }
+
+            if ($request->kategori !== 'All') {
+                $kategori = $bulan->where('pp.kategoripesanan_id',$request->kategori);
+            }else{
+                $kategori = $bulan;
+            }
+
+            $hasil = $kategori
+                    ->where('fp.customer_id',$request->customer)
+                    ->groupBy('fdp.product_id')             
+                    ->select(
+                        'p.nama','p.id','p.kode',
+                        DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
+                        DB::raw("DATE_FORMAT(fp.tanggal, '%Y') as tahun_penjualan"),
+                        DB::raw("sum(fdp.qty) as stok_produk"),
+                        DB::raw("sum(fdp.total) as total_penjualan"),
+                        DB::raw("sum(fdp.cn_total) as total_cn")
+                    )                  
+                    ->get(); 
+
+                $count = count($hasil);
+                $tmp = null;
+
+                if ($count > 0) {           
+                    if ($request->tipe == 'stok') {
+                        for ($i=0; $i < $count-1 ; $i++) { 
+                            for ($j=$i+1; $j < $count ; $j++) { 
+                                if ($hasil[$i]->stok_produk < $hasil[$j]->stok_produk) {
+                                    $tmp = $hasil[$i];
+                                    $hasil[$i] = $hasil[$j];
+                                    $hasil[$j] = $tmp;
+                                }
+                            }
+                        }
+                    }else{
+                        for ($i=0; $i < $count-1 ; $i++) { 
+                            for ($j=$i+1; $j < $count ; $j++) { 
+                                if (($hasil[$i]->total_penjualan - $hasil[$i]->total_cn) < ($hasil[$j]->total_penjualan-$hasil[$i]->total_penjualan)) {
+                                    $tmp = $hasil[$i];
+                                    $hasil[$i] = $hasil[$j];
+                                    $hasil[$j] = $tmp;
+                                }
+                            }
+                        }   
+                    }           
+                }
+
+                $data = $hasil;        
+                return DataTables::of($data)
+                                ->addIndexColumn() 
+                                ->editColumn('tanggal', function ($data) {
+                                    return $data->tanggal_penjualan . '-'. $data->tahun_penjualan; 
+                                })                        
+                                ->editColumn('total', function ($data) {
+                                    return 'Rp.' . number_format($data->total_penjualan - $data->total_cn, 0, ',', '.');
+                                })
+                                ->addColumn('action', function ($row) {
+                                    $customer_id =  $row->id;
+                                    return view('partial.buttontopcustomer',compact('customer_id'));
+                                })                
+                                ->make(true);
+        }
 }

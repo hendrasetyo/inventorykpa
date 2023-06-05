@@ -30,7 +30,7 @@ class LaporanSalesController extends Controller
 
     public function datatable(Request $request)
     {
-        $sales = KunjunganSales::with('user')->select('id','customer','user_id','aktifitas','tanggal')->orderByDesc('id');
+        $sales = KunjunganSales::with('user')->select('id','customer','user_id','aktifitas','tanggal')->orderBy('id','desc');
 
         if ($request->tanggalMulai) {
            $sales->where('tanggal','>=',$request->tanggalMulai);

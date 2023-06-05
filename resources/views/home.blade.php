@@ -304,6 +304,92 @@
             </div>
             {{-- END OF BEST PRODUK --}}
 
+
+            {{-- TOP CUSTOMER --}}
+            <div class="row">
+                <div class="col-xl-12">
+                    <!--begin::Tiles Widget 1-->
+                    <div class="card card-custom gutter-b card-stretch">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-5">
+                            <div class="card-title">
+                                <div class="card-label">
+                                    <div class="font-weight-bolder">Top Customer</div>                                
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Header-->
+
+                        {{-- Grafik --}}
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">    
+                                            <label for="">Tahun</label>                                                    
+                                            <select name="chart_year" class="form-control" id="kt_select2_13" onchange="filteryearbestproduk()">                               
+                                                @php
+                                                $year = 2020;
+                                                @endphp
+                                                @foreach (range(date('Y'), $year) as $x)
+                                                    <option value="{{$x}}">{{$x}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>                                    
+
+                                    
+                                    <div class="col-md-3">
+                                        <div class="form-group">    
+                                            <label for="">Bulan</label>                                                    
+                                            <select name="chart_year" class="form-control" id="kt_select2_15" onchange="filterbulanbestproduk()">   
+                                                <option value="All" selected>Semua</option>                                                                        
+                                                @foreach ($bulan as $item)
+                                                    <option value="{{$item['id']}}">{{$item['nama']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">    
+                                            <label for="">Kategori Pesanan</label>                                                    
+                                            <select name="chart_year" class="form-control" id="kt_select2_16    " onchange="filterkategoribestproduk()">   
+                                                    <option value="All" selected>Semua</option>                                                                    
+                                                    @foreach ($kategori as $x)
+                                                        <option value="{{$x->id}}">{{$x->nama}}</option>
+                                                    @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                        
+                                {{-- <canvas id="chartbestproduk" height="100"></canvas> --}}
+
+                                <table class="table table-separate table-head-custom table-checkable table  yajra-datatabletopcustomer collapsed ">
+                                    <thead>
+                                        <tr>                                        
+                                            <th>Bulan Transaksi</th>
+                                            <th>Nama Customer</th>
+                                            <th>Qty</th> 
+                                            <th>Total Penjualan</th>    
+                                            <th>Action</th>                                                                                   
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        {{-- end Of Grafik --}}
+                      
+                    </div>
+                    <!--end::Tiles Widget 1-->
+                </div>              
+            </div>
+
+            {{-- END TOP CUSTOMER --}}
+
             <!--end::Dashboard-->
         </div>
         <!--end::Container-->
@@ -313,6 +399,8 @@
 
 {{-- modal Customer --}}
 @include('partial.modal.produk')
+@include('partial.modal.customer')
+
 @endsection
 
 @push('script')
@@ -329,6 +417,7 @@
         const chartKategori = document.getElementById('KategoriChart');
         const produk_chart = document.getElementById('produkChart');
         const best_produk = document.getElementById('chartbestproduk');
+        
 
         let year = {{now()->format('Y')}};
         let kategori = 'All';
@@ -339,8 +428,14 @@
         let produk = {{$produk[0]->id}};
         let tipe = 'harga';
         let product_id = null;
+        let customer_id = null;
 
         // var bulan = @json($bulan);
+
+        // variable top customer 
+        let topcustomeryear = {{now()->format('Y')}};
+        let topcustomerbulan = 'All';
+        let topcustomerkategori = 'All';
     
 
         $(document).ready(function() {
@@ -350,6 +445,8 @@
             // chartbestproduk();
             datatable();
             datatableCustomer();
+            datatabletopcustomer();
+            datatablelistproduct();
         })
 
         // chart Bar Pejualan
@@ -900,45 +997,136 @@
         
     }
 
-    function datatableCustomer() {
-               console.log('masuk ');
-                var tablecustomer = $('.yajra-datatablecustomer').DataTable({
-                responsive: true,
-                processing: true,
-                serverSide: true,
-                order: [],
-                ajax: {
-                        url : "{{ route('datatable.listcustomer') }}",                         
-                        type : "POST",
-                        data: function(params) {
-                            params.year = year,    
-                            params.bulan = bulan,     
-                            params.product_id = product_id, 
-                            params.kategori = kategori,                           
-                            params._token = "{{ csrf_token() }}";                                            
-                            return params;
-                        }
-                },
-                columns: [
-                    //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                    {data: 'nama', name: 'nama'},                  
-                    {data: 'stok_produk', name:'stok_produk'},
-                    {data: 'total', name:'total'},
-                    
-                ],
-                columnDefs: [
+    function datatableCustomer() {            
+            var tablecustomer = $('.yajra-datatablecustomer').DataTable({
+            responsive: true,
+            processing: true,
+            serverSide: true,
+            order: [],
+            ajax: {
+                    url : "{{ route('datatable.listcustomer') }}",                         
+                    type : "POST",
+                    data: function(params) {
+                        params.year = year,    
+                        params.bulan = bulan,     
+                        params.product_id = product_id, 
+                        params.kategori = kategori,                           
+                        params._token = "{{ csrf_token() }}";                                            
+                        return params;
+                    }
+            },
+            columns: [
+                //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                {data: 'nama', name: 'nama'},                  
+                {data: 'stok_produk', name:'stok_produk'},
+                {data: 'total', name:'total'},
+                
+            ],
+            columnDefs: [
 
-                    {
-                        responsivePriority: 1,
-                        targets: 0
-                    },
-                    {
-                        responsivePriority: 2,
-                        targets: -1
-                    },
-                ],
-            });
-        }
+                {
+                    responsivePriority: 1,
+                    targets: 0
+                },
+                {
+                    responsivePriority: 2,
+                    targets: -1
+                },
+            ],
+        });
+    }
+
+// ================================= TOP CUSTOMER =====================================
+    function datatabletopcustomer(params) {
+        var tabletopcustomer = $('.yajra-datatabletopcustomer').DataTable({
+            responsive: true,
+            processing: true,
+            serverSide: true,
+            order: [],
+            ajax: {
+                    url : "{{ route('datatable.topCustomer') }}",                         
+                    type : "POST",
+                    data: function(params) {
+                        params.year = topcustomeryear,    
+                        params.bulan = topcustomerbulan,                             
+                        params.kategori = topcustomerkategori,                           
+                        params._token = "{{ csrf_token() }}";                                            
+                        return params;
+                    }
+            },
+            columns: [
+                //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                {data: 'tanggal', name: 'tanggal'}, 
+                {data: 'nama', name: 'nama'},                  
+                {data: 'stok_produk', name:'stok_produk'},
+                {data: 'total', name:'total'},
+                {
+                      data: 'action', 
+                      render: function(data){
+                          return htmlDecode(data);
+                      },
+                      className:"nowrap",
+                  },
+                
+            ],
+            columnDefs: [
+
+                {
+                    responsivePriority: 1,
+                    targets: 0
+                },
+                {
+                    responsivePriority: 2,
+                    targets: -1
+                },
+            ],
+        });
+    }
+
+    function showProduct(id) {
+        $('#listproduk').modal('show');
+        customer_id =  id;
+        $('.yajra-datatabletopproduct').DataTable().ajax.reload(null,false);         
+    }
+
+    function datatablelistproduct() {
+         var tablelistproduct = $('.yajra-datatabletopproduct').DataTable({
+            responsive: true,
+            processing: true,
+            serverSide: true,
+            order: [],
+            ajax: {
+                    url : "{{ route('datatable.topCustomerProduct') }}",                         
+                    type : "POST",
+                    data: function(params) {
+                        params.year = topcustomeryear,    
+                        params.bulan = topcustomerbulan,  
+                        params.customer = customer_id,                           
+                        params.kategori = topcustomerkategori,                           
+                        params._token = "{{ csrf_token() }}";                                            
+                        return params;
+                    }
+            },
+            columns: [
+                //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},                
+                {data: 'nama', name: 'nama'},                  
+                {data: 'stok_produk', name:'stok_produk'},
+                {data: 'total', name:'total'},                
+                
+            ],
+            columnDefs: [
+
+                {
+                    responsivePriority: 1,
+                    targets: 0
+                },
+                {
+                    responsivePriority: 2,
+                    targets: -1
+                },
+            ],
+        });
+    }
 
 
     

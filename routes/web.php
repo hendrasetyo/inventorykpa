@@ -70,6 +70,12 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::post('/chartbestproduk', [HomeController::class, 'grafikPenjualanProdukTerbaik'])->name('chart.bestproduk');
     Route::post('/listcustomer', [HomeController::class, 'listCustomer'])->name('datatable.listcustomer');
 
+    // list top customer
+    Route::post('/datatabletopcustomer', [HomeController::class, 'datatableTopCustomer'])->name('datatable.topCustomer');
+    Route::post('/datatabletopcustomerproduct', [HomeController::class, 'listProduct'])->name('datatable.topCustomerProduct');
+    
+    
+
 
 
 
