@@ -326,7 +326,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group">    
                                             <label for="">Tahun</label>                                                    
-                                            <select name="chart_year" class="form-control" id="kt_select2_13" onchange="filteryearbestproduk()">                               
+                                            <select name="chart_year" class="form-control" id="kt_select2_13" onchange="filteryeartopcustomer()">                               
                                                 @php
                                                 $year = 2020;
                                                 @endphp
@@ -341,7 +341,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group">    
                                             <label for="">Bulan</label>                                                    
-                                            <select name="chart_year" class="form-control" id="kt_select2_15" onchange="filterbulanbestproduk()">   
+                                            <select name="chart_year" class="form-control" id="kt_select2_15" onchange="filterbulantopcustomer()">   
                                                 <option value="All" selected>Semua</option>                                                                        
                                                 @foreach ($bulan as $item)
                                                     <option value="{{$item['id']}}">{{$item['nama']}}</option>
@@ -353,7 +353,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group">    
                                             <label for="">Kategori Pesanan</label>                                                    
-                                            <select name="chart_year" class="form-control" id="kt_select2_16    " onchange="filterkategoribestproduk()">   
+                                            <select name="chart_year" class="form-control" id="kt_select2_16" onchange="filterkategoritopcustomer()">   
                                                     <option value="All" selected>Semua</option>                                                                    
                                                     @foreach ($kategori as $x)
                                                         <option value="{{$x->id}}">{{$x->nama}}</option>
@@ -1127,6 +1127,26 @@
             ],
         });
     }
+
+    function filteryeartopcustomer() {
+        let e = document.getElementById("kt_select2_13");
+        topcustomeryear = e.options[e.selectedIndex].value; 
+        $('.yajra-datatabletopcustomer').DataTable().ajax.reload(null,false);
+    }
+    function filterbulantopcustomer() {
+        console.log('masuk');
+        let e = document.getElementById("kt_select2_15");
+        topcustomerbulan = e.options[e.selectedIndex].value; 
+        $('.yajra-datatabletopcustomer').DataTable().ajax.reload(null,false);
+    }
+    
+    function filterkategoritopcustomer() {
+        let e = document.getElementById("kt_select2_16");
+        topcustomerkategori = e.options[e.selectedIndex].value; 
+        $('.yajra-datatabletopcustomer').DataTable().ajax.reload(null,false);
+    }
+    
+
 
 
     
