@@ -30,7 +30,7 @@ class LaporanSalesController extends Controller
 
     public function datatable(Request $request)
     {
-        $sales = KunjunganSales::with('user')->select('id','customer','user_id','aktifitas','tanggal')->orderBy('id','desc');
+        $sales = KunjunganSales::with('user');
 
         if ($request->tanggalMulai) {
            $sales->where('tanggal','>=',$request->tanggalMulai);
@@ -44,7 +44,7 @@ class LaporanSalesController extends Controller
             $sales->where('user_id',$request->sales);
         }
 
-        $datasales = $sales->get();
+        $datasales = $sales->orderBy('id','desc')->get();
 
         if (request()->ajax()) {
             return DataTables::of($datasales)
