@@ -44,7 +44,7 @@ class LaporanSalesController extends Controller
             $sales->where('user_id',$request->sales);
         }
 
-        $datasales = $sales->orderBy('id','desc')->get();
+        $datasales = $sales->orderBy('id','desc');
 
         if (request()->ajax()) {
             return DataTables::of($datasales)
