@@ -282,8 +282,6 @@ class PerformaSalesController extends Controller
         }
        
 
-        
-
         return response()->json([
             'laba' => $laba,
             'bulan' => $months,
@@ -338,7 +336,10 @@ class PerformaSalesController extends Controller
         if ($count > 0) {            
             for ($i=0; $i < $count-1 ; $i++) { 
                 for ($j=$i+1; $j < $count ; $j++) { 
-                    if (($hasil[$i]->total_penjualan - $hasil[$i]->total_cn) < ($hasil[$j]->total_penjualan - $hasil[$j]->total_cn) ) {
+                    $awal = $hasil[$i]->total_penjualan - ($hasil[$i]->total_cn ? $hasil[$i]->total_cn : 0) ;
+                    $akhir = $hasil[$j]->total_penjualan - ($hasil[$j]->total_cn ? $hasil[$j]->total_cn : 0);     
+
+                    if ($awal < $akhir) {
                         $tmp = $hasil[$i];
                         $hasil[$i] = $hasil[$j];
                         $hasil[$j] = $tmp;
@@ -411,7 +412,10 @@ class PerformaSalesController extends Controller
         if ($count > 0) {            
         for ($i=0; $i < $count-1 ; $i++) { 
             for ($j=$i+1; $j < $count ; $j++) { 
-                if (($hasil[$i]->total_penjualan - $hasil[$i]->total_cn) < ($hasil[$j]->total_penjualan - $hasil[$j]->total_cn) ) {
+                $awal = $hasil[$i]->total_penjualan - ($hasil[$i]->total_cn ? $hasil[$i]->total_cn : 0) ;
+                $akhir = $hasil[$j]->total_penjualan - ($hasil[$j]->total_cn ? $hasil[$j]->total_cn : 0);     
+
+                if ($awal < $akhir) {
                     $tmp = $hasil[$i];
                     $hasil[$i] = $hasil[$j];
                     $hasil[$j] = $tmp;

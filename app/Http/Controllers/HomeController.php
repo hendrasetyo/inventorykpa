@@ -256,6 +256,7 @@ class HomeController extends Controller
                 ->get(); 
         
         $count = count($hasil);
+        
         $tmp = null;
 
         if ($count > 0) {           
@@ -272,7 +273,11 @@ class HomeController extends Controller
             }else{
                 for ($i=0; $i < $count-1 ; $i++) { 
                     for ($j=$i+1; $j < $count ; $j++) { 
-                        if (($hasil[$i]->total_penjualan - $hasil[$i]->total_cn) < ($hasil[$j]->total_penjualan-$hasil[$i]->total_penjualan)) {
+
+                        $awal = $hasil[$i]->total_penjualan - ($hasil[$i]->total_cn ? $hasil[$i]->total_cn : 0) ;
+                        $akhir = $hasil[$j]->total_penjualan - ($hasil[$j]->total_cn ? $hasil[$j]->total_cn : 0);     
+
+                        if ($awal < $akhir) {
                             $tmp = $hasil[$i];
                             $hasil[$i] = $hasil[$j];
                             $hasil[$j] = $tmp;
@@ -338,7 +343,8 @@ class HomeController extends Controller
                     DB::raw("sum(fdp.total) as total_penjualan"), 
                     DB::raw("sum(fdp.cn_total) as total_cn")            
                 )                  
-                ->get(); 
+                ->get();
+            
         
         $count = count($hasil);
         $tmp = null;
@@ -357,14 +363,19 @@ class HomeController extends Controller
             }else{
                 for ($i=0; $i < $count-1 ; $i++) { 
                     for ($j=$i+1; $j < $count ; $j++) { 
-                        if (($hasil[$i]->total_penjualan - $hasil[$i]->total_cn) < ($hasil[$j]->total_penjualan-$hasil[$i]->total_penjualan)) {
+                        $awal = $hasil[$i]->total_penjualan - ($hasil[$i]->total_cn ? $hasil[$i]->total_cn : 0) ;
+                        $akhir = $hasil[$j]->total_penjualan - ($hasil[$j]->total_cn ? $hasil[$j]->total_cn : 0);     
+
+                        if ($awal < $akhir) {
                             $tmp = $hasil[$i];
                             $hasil[$i] = $hasil[$j];
                             $hasil[$j] = $tmp;
                         }
                     }
                 }   
-            }           
+            }
+                
+                    
         }
 
         $data = $hasil;
@@ -416,47 +427,50 @@ class HomeController extends Controller
                     )                  
                     ->get(); 
 
-        $count = count($hasil);
-        $tmp = null;
+                $count = count($hasil);
+                $tmp = null;
 
-        if ($count > 0) {           
-            if ($request->tipe == 'stok') {
-                for ($i=0; $i < $count-1 ; $i++) { 
-                    for ($j=$i+1; $j < $count ; $j++) { 
-                        if ($hasil[$i]->stok_produk < $hasil[$j]->stok_produk) {
-                            $tmp = $hasil[$i];
-                            $hasil[$i] = $hasil[$j];
-                            $hasil[$j] = $tmp;
+                if ($count > 0) {           
+                    if ($request->tipe == 'stok') {
+                        for ($i=0; $i < $count-1 ; $i++) { 
+                            for ($j=$i+1; $j < $count ; $j++) { 
+                                if ($hasil[$i]->stok_produk < $hasil[$j]->stok_produk) {
+                                    $tmp = $hasil[$i];
+                                    $hasil[$i] = $hasil[$j];
+                                    $hasil[$j] = $tmp;
+                                }
+                            }
                         }
-                    }
+                    }else{
+                        for ($i=0; $i < $count-1 ; $i++) { 
+                            for ($j=$i+1; $j < $count ; $j++) { 
+                                $awal = $hasil[$i]->total_penjualan - ($hasil[$i]->total_cn ? $hasil[$i]->total_cn : 0) ;
+                                $akhir = $hasil[$j]->total_penjualan - ($hasil[$j]->total_cn ? $hasil[$j]->total_cn : 0);     
+
+                                if ($awal < $akhir) {
+                                    $tmp = $hasil[$i];
+                                    $hasil[$i] = $hasil[$j];
+                                    $hasil[$j] = $tmp;
+                                }
+                            }
+                        }   
+                    }           
                 }
-            }else{
-                for ($i=0; $i < $count-1 ; $i++) { 
-                    for ($j=$i+1; $j < $count ; $j++) { 
-                        if (($hasil[$i]->total_penjualan - $hasil[$i]->total_cn) < ($hasil[$j]->total_penjualan-$hasil[$i]->total_penjualan)) {
-                            $tmp = $hasil[$i];
-                            $hasil[$i] = $hasil[$j];
-                            $hasil[$j] = $tmp;
-                        }
-                    }
-                }   
-            }           
-        }
 
-        $data = $hasil;        
-        return DataTables::of($data)
-                        ->addIndexColumn() 
-                        ->editColumn('tanggal', function ($data) {
-                              return $data->tanggal_penjualan . '-'. $data->tahun_penjualan; 
-                        })                        
-                        ->editColumn('total', function ($data) {
-                            return 'Rp.' . number_format($data->total_penjualan - $data->total_cn, 0, ',', '.');
-                        })
-                        ->addColumn('action', function ($row) {
-                            $customer_id =  $row->id;
-                            return view('partial.buttontopcustomer',compact('customer_id'));
-                        })                
-                        ->make(true);
+                $data = $hasil;        
+                return DataTables::of($data)
+                                ->addIndexColumn() 
+                                ->editColumn('tanggal', function ($data) {
+                                    return $data->tanggal_penjualan . '-'. $data->tahun_penjualan; 
+                                })                        
+                                ->editColumn('total', function ($data) {
+                                    return 'Rp.' . number_format($data->total_penjualan - $data->total_cn, 0, ',', '.');
+                                })
+                                ->addColumn('action', function ($row) {
+                                    $customer_id =  $row->id;
+                                    return view('partial.buttontopcustomer',compact('customer_id'));
+                                })                
+                                ->make(true);
         }
 
         public function listProduct(Request $request)
@@ -517,11 +531,15 @@ class HomeController extends Controller
                     }else{
                         for ($i=0; $i < $count-1 ; $i++) { 
                             for ($j=$i+1; $j < $count ; $j++) { 
-                                if (($hasil[$i]->total_penjualan - $hasil[$i]->total_cn) < ($hasil[$j]->total_penjualan-$hasil[$i]->total_penjualan)) {
-                                    $tmp = $hasil[$i];
-                                    $hasil[$i] = $hasil[$j];
-                                    $hasil[$j] = $tmp;
-                                }
+
+                                 $awal = $hasil[$i]->total_penjualan - ($hasil[$i]->total_cn ? $hasil[$i]->total_cn : 0) ;
+                                 $akhir = $hasil[$j]->total_penjualan - ($hasil[$j]->total_cn ? $hasil[$j]->total_cn : 0);     
+
+                                 if ($awal < $akhir) {
+                                        $tmp = $hasil[$i];
+                                        $hasil[$i] = $hasil[$j];
+                                        $hasil[$j] = $tmp;
+                                 }
                             }
                         }   
                     }           
