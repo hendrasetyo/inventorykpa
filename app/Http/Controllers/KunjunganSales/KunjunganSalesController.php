@@ -20,7 +20,7 @@ class KunjunganSalesController extends Controller
         $this->middleware('permission:kunjungansales-create', ['only' => ['create','store']]);
         $this->middleware('permission:kunjungansales-edit', ['only' => ['edit','update']]);
         $this->middleware('permission:kunjungansales-delete', ['only' => ['destroy']]);
-        // $this->middleware('permission:kunjungansales-show', ['only' => ['show']]);
+        
 
     }
 

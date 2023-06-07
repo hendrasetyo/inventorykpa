@@ -56,6 +56,7 @@ use App\Http\Controllers\Penjualan\LabaRugiController;
 use App\Http\Controllers\Permissions\AssignPermissionController;
 use App\Http\Controllers\Sales\PerformaSalesController;
 use App\Http\Controllers\Sales\TargetSalesController;
+use App\Http\Controllers\Teknisi\KunjunganTeknisiController;
 use App\Http\Controllers\Teknisi\MaintenanceController;
 
 
@@ -992,6 +993,21 @@ Route::middleware('has.role')->prefix('teknisi')->group(function () {
 
          Route::get('/{maintenanceproduk}/print', [MaintenanceController::class, 'print'])->name('maintenanceproduk.print');                       
         
+    });
+
+    Route::prefix('kunjunganteknisi')->group(function () {
+        Route::get('', [KunjunganTeknisiController::class, 'index'])->name('kunjunganteknisi.index');
+        Route::get('/show/{kunjunganteknisi}', [KunjunganTeknisiController::class, 'show'])->name('kunjunganteknisi.show');        
+        Route::post('/datatable', [KunjunganTeknisiController::class, 'datatable'])->name('kunjunganteknisi.datatable');
+
+        Route::get('/create', [KunjunganTeknisiController::class, 'create'])->name('kunjunganteknisi.create');
+        Route::post('/store', [KunjunganTeknisiController::class, 'store'])->name('kunjunganteknisi.store');
+
+        Route::get('/{kunjunganteknisi}/edit', [KunjunganTeknisiController::class, 'edit'])->name('kunjunganteknisi.edit');       
+        Route::PUT('/{kunjunganteknisi}/update', [KunjunganTeknisiController::class, 'update'])->name('kunjunganteknisi.update');  
+
+        Route::post('/destroy', [KunjunganTeknisiController::class, 'destroy'])->name('kunjunganteknisi.destroy');
+    
     });
 });
 
