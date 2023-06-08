@@ -61,8 +61,9 @@ class HomeController extends Controller
             DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
             DB::raw("sum(fp.grandtotal) as grandtotal_penjualan"),
             DB::raw("sum(fp.ppn) as ppn_penjualan"),
+            DB::raw("sum(fp.ongkir) as total_ongkir"),
             DB::raw("sum(fp.total_cn) as total_cn")
-        ); 
+        );
         
         $hasil= $tipe->get();        
         
@@ -71,7 +72,7 @@ class HomeController extends Controller
                         
         foreach ($hasil as $key => $value) {
             $data[(int)$value->tanggal_penjualan] = [
-                'grandtotal' => $value->grandtotal_penjualan - $value->total_cn - $value->ppn_penjualan
+                'grandtotal' => $value->grandtotal_penjualan - $value->ppn_penjualan -  $value->total_ongkir - ($value->total_cn ?  $value->total_cn : 0 ) 
             ];
         }
         
@@ -119,13 +120,13 @@ class HomeController extends Controller
             $res=$results;
         }
 
-      
 
         $hasil = $res->select(
                         'kp.nama as kategori',
                         DB::raw("sum(fp.grandtotal) as grandtotal_penjualan"),
                         DB::raw("sum(fp.ppn) as ppn_penjualan"),
-                        DB::raw("sum(fp.total_cn) as total_cn")
+                        DB::raw("sum(fp.total_cn) as total_cn"),
+                        DB::raw("sum(fp.ongkir) as total_ongkir")
                     )
                     ->groupBy('pp.kategoripesanan_id')
                     ->get(); 
@@ -134,7 +135,7 @@ class HomeController extends Controller
         foreach ($hasil as  $value) {
            
             $kategori[] = $value->kategori;
-            $penjualan[] = (int) ($value->grandtotal_penjualan - $value->ppn_penjualan - $value->total_cn);
+            $penjualan[] = (int) ($value->grandtotal_penjualan - $value->ppn_penjualan - $value->total_ongkir - $value->total_cn);
         }       
 
         

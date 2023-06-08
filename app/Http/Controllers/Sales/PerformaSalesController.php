@@ -70,7 +70,10 @@ class PerformaSalesController extends Controller
            's.nama','s.id','s.hp',
             DB::raw("sum(fp.grandtotal) as grandtotal_penjualan"),
             DB::raw("sum(fp.ppn) as total_ppn"),
-            DB::raw("sum(fp.total_cn) as total_cn")
+            DB::raw("sum(fp.total_cn) as total_cn"),
+            DB::raw("sum(fp.ongkir) as total_ongkir"),
+
+
         )->get();
 
 
@@ -81,7 +84,7 @@ class PerformaSalesController extends Controller
         foreach ($sales as $value) {
             
             foreach ($hasil as $res) {
-                $dataOmset = $res->grandtotal_penjualan - $res->total_cn - $res->total_ppn;
+                $dataOmset = $res->grandtotal_penjualan - $res->total_cn - $res->total_ppn - $res->total_ongkir;
                 if ($request->kategori == 2) {
                     $targetSales = TargetSales::where('sales_id',$value->id)->where('tahun',$request->year)->where('bulan',$request->month)->first();
                     if ($targetSales) {
@@ -140,7 +143,8 @@ class PerformaSalesController extends Controller
                                     's.id','s.nama as nama_sales','kp.nama as nama_kategori',
                                     DB::raw("sum(fp.grandtotal) as grandtotal_penjualan"),
                                     DB::raw("sum(fp.ppn) as total_ppn"),
-                                    DB::raw("sum(fp.total_cn) as total_cn")
+                                    DB::raw("sum(fp.total_cn) as total_cn"),
+                                    DB::raw("sum(fp.ongkir) as total_ongkir"),
                             )->get();
                              
         $sales = [];
@@ -151,7 +155,7 @@ class PerformaSalesController extends Controller
         if ($count > 0) {
             foreach ($hasil as $key => $value) {
                 $sales[] =  $value->nama_sales ;
-                $penjualan []  = $value->grandtotal_penjualan - $value->total_ppn - $value->total_cn;
+                $penjualan []  = $value->grandtotal_penjualan - $value->total_ppn - $value->total_cn - $value->total_ongkir;
             }
         }
 
@@ -229,7 +233,8 @@ class PerformaSalesController extends Controller
                     DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
                     DB::raw("sum(fp.grandtotal) as grandtotal_penjualan"),
                     DB::raw("sum(fp.ppn) as total_ppn"),
-                    DB::raw("sum(fp.total_cn) as total_cn")
+                    DB::raw("sum(fp.total_cn) as total_cn"),
+                    DB::raw("sum(fp.ongkir) as total_ongkir"),
                 );         
         
         $hasil= $tipe->get();                        
@@ -238,7 +243,7 @@ class PerformaSalesController extends Controller
                         
         foreach ($hasil as $key => $value) {
             $data[(int)$value->tanggal_penjualan] = [
-                'grandtotal' => (int) ( $value->grandtotal_penjualan - $value->total_ppn - $value->total_cn)
+                'grandtotal' => (int) ( $value->grandtotal_penjualan - $value->total_ppn- $value->total_ongkir - $value->total_cn)
             ];
         }
         
@@ -325,8 +330,7 @@ class PerformaSalesController extends Controller
                     DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
                     DB::raw("DATE_FORMAT(fp.tanggal, '%Y') as tahun_penjualan"),
                     DB::raw("sum(fdp.qty) as stok_produk"),
-                    DB::raw("sum(fdp.total) as total_penjualan"),                    
-                    DB::raw("sum(fp.total_cn) as total_cn")      
+                    DB::raw("sum(fdp.total) as total_penjualan"),                                          
                 )                  
                 ->get(); 
 
@@ -356,7 +360,8 @@ class PerformaSalesController extends Controller
                            return $data->tanggal_penjualan . '-'. $data->tahun_penjualan; 
                         })                        
                         ->editColumn('total', function ($data) {
-                            return 'Rp.' . number_format($data->total_penjualan - $data->total_cn, 0, ',', '.');
+                            $cn = $data->total_cn ? $data->total_cn : 0;
+                            return 'Rp.' . number_format($data->total_penjualan - $cn, 0, ',', '.');
                         })        
                         ->addColumn('action', function ($data) {
                             $customer_id =  $data->id;
@@ -391,7 +396,7 @@ class PerformaSalesController extends Controller
         if ($request->kategori !== 'All') {
              $kategori = $bulan->where('pp.kategoripesanan_id',$request->kategori);
         }else{
-            $kategori = $bulan;
+             $kategori = $bulan;
         }
 
         $hasil = $kategori
@@ -410,18 +415,18 @@ class PerformaSalesController extends Controller
         $tmp = null;
 
         if ($count > 0) {            
-        for ($i=0; $i < $count-1 ; $i++) { 
-            for ($j=$i+1; $j < $count ; $j++) { 
-                $awal = $hasil[$i]->total_penjualan - ($hasil[$i]->total_cn ? $hasil[$i]->total_cn : 0) ;
-                $akhir = $hasil[$j]->total_penjualan - ($hasil[$j]->total_cn ? $hasil[$j]->total_cn : 0);     
+            for ($i=0; $i < $count-1 ; $i++) { 
+                for ($j=$i+1; $j < $count ; $j++) { 
+                    $awal = $hasil[$i]->total_penjualan - ($hasil[$i]->total_cn ? $hasil[$i]->total_cn : 0) ;
+                    $akhir = $hasil[$j]->total_penjualan - ($hasil[$j]->total_cn ? $hasil[$j]->total_cn : 0);     
 
-                if ($awal < $akhir) {
-                    $tmp = $hasil[$i];
-                    $hasil[$i] = $hasil[$j];
-                    $hasil[$j] = $tmp;
+                    if ($awal < $akhir) {
+                        $tmp = $hasil[$i];
+                        $hasil[$i] = $hasil[$j];
+                        $hasil[$j] = $tmp;
+                    }
                 }
-            }
-        }       
+            }       
         }
 
         $data = $hasil;
@@ -432,7 +437,8 @@ class PerformaSalesController extends Controller
                     return $data->tanggal_penjualan . '-'. $data->tahun_penjualan; 
                     })                        
                     ->editColumn('total', function ($data) {
-                        return 'Rp.' . number_format($data->total_penjualan -  $data->total_cn, 0, ',', '.');
+                        $cn = $data->total_cn ? $data->total_cn : 0;
+                        return 'Rp.' . number_format($data->total_penjualan - $cn , 0, ',', '.');
                     })        
                     ->addColumn('action', function ($data) {
                         $customer_id =  $data->id;
