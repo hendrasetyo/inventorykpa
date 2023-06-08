@@ -330,7 +330,8 @@ class PerformaSalesController extends Controller
                     DB::raw("DATE_FORMAT(fp.tanggal, '%m') as tanggal_penjualan"),
                     DB::raw("DATE_FORMAT(fp.tanggal, '%Y') as tahun_penjualan"),
                     DB::raw("sum(fdp.qty) as stok_produk"),
-                    DB::raw("sum(fdp.total) as total_penjualan"),                                          
+                    DB::raw("sum(fdp.total) as total_penjualan"), 
+                    DB::raw("sum(fdp.cn_total) as total_cn")                                       
                 )                  
                 ->get(); 
 
