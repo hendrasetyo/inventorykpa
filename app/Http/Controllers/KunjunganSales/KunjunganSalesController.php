@@ -19,8 +19,7 @@ class KunjunganSalesController extends Controller
         $this->middleware('permission:kunjungansales-list',['only' => ['index','datatable'] ]);
         $this->middleware('permission:kunjungansales-create', ['only' => ['create','store']]);
         $this->middleware('permission:kunjungansales-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:kunjungansales-delete', ['only' => ['destroy']]);
-        
+        $this->middleware('permission:kunjungansales-delete', ['only' => ['destroy']]);        
 
     }
 
@@ -38,6 +37,9 @@ class KunjunganSalesController extends Controller
                 ->addIndexColumn()
                 ->editColumn('tanggal', function (KunjunganSales $kj) {
                     return $kj->tanggal ? with(new Carbon($kj->tanggal))->format('d F Y') : '';
+                })
+                ->editColumn('jam', function (KunjunganSales $kj) {
+                    return $kj->created_at ? with(new Carbon($kj->created_at))->format('H:i') : '';
                 })
                 ->editColumn('sales_name', function (KunjunganSales $kj) {
                     return $kj->user->name;
