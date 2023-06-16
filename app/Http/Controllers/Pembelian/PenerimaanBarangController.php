@@ -54,6 +54,7 @@ class PenerimaanBarangController extends Controller
                 ->addColumn('status', function (PenerimaanBarang $pb) {
                     $status_penerimaan = $pb->status_pb_id;
                     $status_exp = $pb->status_exp ? $pb->status_exp : 0;
+                    
 
                     return view('pembelian.penerimaanbarang.partial._status',compact('status_penerimaan','status_exp'));                    
                 })
@@ -362,9 +363,15 @@ class PenerimaanBarangController extends Controller
         
         $POmain = PesananPembelian::find($pesanan_pembelian_id);
         $POmain->status_po_id = $status;
-        $POmain->status_exp = $status_exp_header;
         $POmain->save();
+
         //############# end update status PO #############
+
+        // edit status exp penerimaan barang 
+        PenerimaanBarang::where('id',$id_pb)->update([
+            'status_exp' => $status_exp_header
+        ]);
+        // end of edit
 
         return redirect()->route('penerimaanbarang.index')->with('status', 'Penerimaan barang berhasil dibuat !');
     }
@@ -525,6 +532,12 @@ class PenerimaanBarangController extends Controller
         $stokMain = $stokExp->qty;
         $stokSisa = $stokMain - $qtyDetail;
         $penerimaanbarangdetail = PenerimaanBarangDetail::find($penerimaanbarangdetail_id);
+
+
+        // ubah status penerimaan barang 
+        PenerimaanBarang::where('id',$penerimaanbarangdetail->penerimaan_barang_id)->update([
+            'status_exp' => 0
+        ]);
 
         
         //dd($stokSisa);
