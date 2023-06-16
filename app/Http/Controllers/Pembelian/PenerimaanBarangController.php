@@ -52,7 +52,10 @@ class PenerimaanBarangController extends Controller
                     return $pb->po->no_so;
                 })
                 ->addColumn('status', function (PenerimaanBarang $pb) {
-                    return $pb->statusPB->nama;
+                    $status_penerimaan = $pb->status_pb_id;
+                    $status_exp = $pb->status_exp ? $pb->status_exp : 0;
+
+                    return view('pembelian.penerimaanbarang.partial._status',compact('status_penerimaan','status_exp'));                    
                 })
                 ->editColumn('tanggal', function (PenerimaanBarang $pb) {
                     return $pb->tanggal ? with(new Carbon($pb->tanggal))->format('d-m-Y') : '';
@@ -264,6 +267,7 @@ class PenerimaanBarangController extends Controller
             $diskon_rp = $detailPesanan->diskon_rp;
             $totaldiskon = ($hargabeli * ($diskon_persen / 100)) + $diskon_rp;
             $hargabeli_fix = $hargabeli - $totaldiskon;
+            $status_exp_header = 1 ;
 
             $stok_lama = 0;
             $hpp_lama = 0;
@@ -279,6 +283,7 @@ class PenerimaanBarangController extends Controller
 
             if ($status_exp == 1) {
                 $status_exp_detil = 0;
+                $status_exp_header = 0;
             } else {
                 $status_exp_detil = 1;
             }
@@ -357,6 +362,7 @@ class PenerimaanBarangController extends Controller
         
         $POmain = PesananPembelian::find($pesanan_pembelian_id);
         $POmain->status_po_id = $status;
+        $POmain->status_exp = $status_exp_header;
         $POmain->save();
         //############# end update status PO #############
 
@@ -408,6 +414,7 @@ class PenerimaanBarangController extends Controller
         if ($qty < 1) {
             return redirect()->route('penerimaanbarang.setexp', $penerimaanbarangdetail)->with('status', 'Qty harus lebih dari nol');
         }
+
 
         $penerimaanbarangdetail_id = $penerimaanbarangdetail->id;
         $product_id =  $penerimaanbarangdetail->product_id;
@@ -477,6 +484,16 @@ class PenerimaanBarangController extends Controller
                 $penerimaanbarangdetail->status_exp = "1";
                 $penerimaanbarangdetail->save();
             }
+        
+            // temukan product yang belum di input expnya 
+            $exp =PenerimaanBarangDetail::where('penerimaan_barang_id',$penerimaanbarangdetail->penerimaan_barang_id)->where('status_exp',0)->get();
+            if (count($exp) == 0) {
+                // ubah status exp nya ke sudah di exp 
+                PenerimaanBarang::where('id',$penerimaanbarangdetail->penerimaan_barang_id)->update([
+                    'status_exp' => 1
+                ]);
+            }
+
 
         } else {
             return redirect()->route('penerimaanbarang.setexp', $penerimaanbarangdetail)->with('status', 'Qty Expired Date Melebihi Qty Pesanan');
@@ -664,15 +681,31 @@ class PenerimaanBarangController extends Controller
 
         $pdf = PDF::loadView('pembelian.penerimaanbarang.print_a5', $data)->setPaper('a5', 'landscape');;
         return $pdf->download($penerimaanbarang->kode.'.pdf');
+    }
 
-        // return view('pembelian.penerimaanbarang.print_a5', compact(
-        //     'title',  
-        //     'totalPage',
-        //     'perBaris',
-        //     'listExp' ,
-        //     'penerimaanbarang' ,
-        //     'penerimaanbarangdetail' 
-        // ));
+
+    public function syncronisasi() {
+        $status_exp = 0;
+        $penerimaan = PenerimaanBarang::where('status_pb_id',1)->get();
+        
+        foreach ($penerimaan as $item) {
+             
+              $detail = PenerimaanBarangDetail::where('penerimaan_barang_id',$item->id)->where('status_exp',0)->get();
+              
+              if (count($detail) == 0) {
+                 $status_exp = 1;
+              }
+
+              PenerimaanBarang::where('id',$item->id)->update([
+                'status_exp' => $status_exp
+              ]);
+
+              $status_exp = 0;
+        }
+
+        return back();
+
+
     }
 
     

@@ -429,6 +429,8 @@ Route::middleware('has.role')->prefix('pembelian')->group(function () {
         Route::delete('destroy_exp', [PenerimaanBarangController::class, 'destroy_exp'])->name('penerimaanbarang.destroy_exp');
 
         Route::get('{penerimaanbarang}/print_a5', [PenerimaanBarangController::class, 'print_a5'])->name('penerimaanbarang.print_a5');
+
+        Route::get('syncronisasi', [PenerimaanBarangController::class, 'syncronisasi'])->name('penerimaanbarang.syncronisasi');
     });
 
     Route::prefix('fakturpembelian')->group(function () {

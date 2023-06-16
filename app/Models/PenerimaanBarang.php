@@ -20,6 +20,7 @@ class PenerimaanBarang extends Model
         'supplier_id',
         'status_pb_id',
         'keterangan',
+        'status_exp'
     ];
 
     protected $dates = ['tanggal'];

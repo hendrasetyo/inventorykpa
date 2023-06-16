@@ -63,16 +63,23 @@
                                         <!--end::Svg Icon--></span> </span>
                                 <h3 class="card-label">Data Penerimaan Barang</h3>
                             </div>
+                            <div>
+                                <a href="{{ route('penerimaanbarang.syncronisasi') }}" class="btn btn-danger btn-sm ml-2">
+                                    Syncronisasi
+                                </a>
+                            </div>
                             <div class="card-toolbar">
                                 <!--begin::Button-->
 
                                 @can('penerimaanbarang-create')
                                 <a href="{{ route('penerimaanbarang.listpo') }}"
-                                    class="btn btn-primary font-weight-bolder ">
+                                    class="btn btn-primary font-weight-bolder btn-sm">
                                     <i class="flaticon2-add"></i>
                                     Penerimaan Barang
                                 </a>
                                 @endcan
+
+                              
 
                                 <!--end::Button-->
                             </div>
