@@ -239,10 +239,9 @@ class FakturPenjualanController extends Controller
         $kode = $this->getKodeTransaksi("faktur_penjualans", "FJ");
         $id_sj = $pengirimanbarang->id;
         $id_so = $pengirimanbarang->pesanan_penjualan_id;
-        $tanggalPengiriman = $pengirimanbarang->tanggal;
-
+        
         $pesanan = PesananPenjualan::where('id',$id_so)->first();
-        $tanggal_top = date("Y-m-d", strtotime("+".$pesanan->top." days" . $tanggalPengiriman));        
+        $tanggal_top = date("Y-m-d", strtotime("+".$pesanan->top." days" . $tanggal));        
 
         $SJdetails = PengirimanBarangDetail::where('pengiriman_barang_id', '=', $id_sj)->get();        
 
