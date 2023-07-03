@@ -36,7 +36,7 @@ class FakturPembelianController extends Controller
     public function index()
     {
         $title = "Faktur Pembelian";
-        $fakturpembelian = FakturPembelian::with(['suppliers',  'statusFB', 'po', 'pb'])->orderByDesc('id');
+        $fakturpembelian = FakturPembelian::with(['creator','suppliers',  'statusFB', 'po', 'pb'])->orderByDesc('id');
 
         if (request()->ajax()) {
             return Datatables::of($fakturpembelian)
@@ -378,9 +378,9 @@ class FakturPembelianController extends Controller
     }
 
     public function show(FakturPembelian $fakturpembelian)
-    {
+    {                
         $title = "Faktur Pembelian Detail";
-        $fakturpembeliandetails = FakturPembelianDetail::with('products')
+        $fakturpembeliandetails = FakturPembelianDetail::with('products')           
             ->where('faktur_pembelian_id', '=', $fakturpembelian->id)->get();
         return view('pembelian.fakturpembelian.show', compact('title',  'fakturpembelian', 'fakturpembeliandetails'));
     }
@@ -394,23 +394,23 @@ class FakturPembelianController extends Controller
         $perBaris = 20;
         $totalPage = ceil($jmlBaris / $perBaris);
         
-        $data = [
-            'totalPage' => $totalPage,
-            'perBaris' => $perBaris,
-            'date' => date('d/m/Y'),
-            'fakturpembelian' => $fakturpembelian,
-            'fakturpembeliandetail' => $fakturpembeliandetail
-        ];
-        $pdf = PDF::loadView('pembelian.fakturpembelian.print_a4', $data)->setPaper('a4', 'potrait');;
-        return $pdf->download($fakturpembelian->kode.'.pdf');
+        // $data = [
+        //     'totalPage' => $totalPage,
+        //     'perBaris' => $perBaris,
+        //     'date' => date('d/m/Y'),
+        //     'fakturpembelian' => $fakturpembelian,
+        //     'fakturpembeliandetail' => $fakturpembeliandetail
+        // ];
+        // $pdf = PDF::loadView('pembelian.fakturpembelian.print_a4', $data)->setPaper('a4', 'potrait');;
+        // return $pdf->download($fakturpembelian->kode.'.pdf');
 
-        // return view('pembelian.fakturpembelian.print_a4', compact(
-        //     'title',  
-        //     'totalPage',
-        //     'perBaris',
-        //     'fakturpembelian',
-        //     'fakturpembeliandetail'
-        // ));
+        return view('pembelian.fakturpembelian.print_a4', compact(
+            'title',  
+            'totalPage',
+            'perBaris',
+            'fakturpembelian',
+            'fakturpembeliandetail'
+        ));
     }
 
     public function editbiaya(Request $request)

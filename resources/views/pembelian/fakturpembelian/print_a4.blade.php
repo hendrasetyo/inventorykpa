@@ -152,21 +152,7 @@
                                     {{ number_format(floor($fakturpembelian->total_diskon_header), 0, ',', '.') }}
                                 </b></td>
                         </tr>
-                        <tr>
-                            <td style='font-size: 70%; width: 75%; line-height:90%'><b>Dasar Pengenaan Pajak</b></td>
-                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
-                            <td style='font-size: 70%; line-height:90%; text-align:right'><b>
-                                    {{ number_format(floor($fakturpembelian->total), 0, ',', '.') }}
-                                </b></td>
-                        </tr>
-                        <tr>
-                            <td style='font-size: 70%; width: 75%;'><b>PPN</b></td>
-                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
-                            <td style='font-size: 70%; text-align:right'><b>
-                                    {{ number_format(floor($fakturpembelian->ppn), 0, ',', '.') }}
-                                </b></td>
-                        </tr>
-                        <tr>
+                         <tr>
                             <td style='font-size: 70%; width: 75%;'><b>Biaya Pengiriman</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
                             <td style='font-size: 70%; text-align:right'><b>
@@ -180,6 +166,20 @@
                                     {{ number_format(floor($fakturpembelian->biaya_lain), 0, ',', '.') }}
                                 </b></td>
                         </tr>
+                        <tr>
+                            <td style='font-size: 70%; width: 75%; line-height:90%'><b>Dasar Pengenaan Pajak</b></td>
+                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
+                            <td style='font-size: 70%; line-height:90%; text-align:right'><b>
+                                    {{ number_format(floor($fakturpembelian->total), 0, ',', '.') }}
+                                </b></td>
+                        </tr>
+                        <tr>
+                            <td style='font-size: 70%; width: 75%;'><b>PPN</b></td>
+                            <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
+                            <td style='font-size: 70%; text-align:right'><b>
+                                    {{ number_format(floor($fakturpembelian->ppn), 0, ',', '.') }}
+                                </b></td>
+                        </tr>                       
                         <tr>
                             <td style='font-size: 70%; width: 25%;'><b>Jumlah Yang Harus Dibayar</b></td>
                             <td style='font-size: 70%; width: 5%;'><b>: Rp.</b></td>
@@ -266,7 +266,7 @@
                     <i>Hal. :
                         {{ $i }}
                         {{ $totalPage }}<br />
-                        User : {{ Auth::user()->name }}</i>
+                        User : {{  $fakturpembelian->creator->name }}</i>
                 </td>
                 <td style='font-size: 70%; width: 55%; line-height:90%; vertical-align:top'><b>KETERANGAN : <br />{{
                         $fakturpembelian->keterangan }}</b>
