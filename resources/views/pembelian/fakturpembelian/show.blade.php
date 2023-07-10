@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="d-flex flex-column flex-root">
                                     <span class="font-weight-bolder mb-2">SP CUSTOMER</span>
-                                    <span class="opacity-70">{{ $fakturpembelian->no_so }} </span>
+                                    <span class="opacity-    70">{{ $fakturpembelian->no_so }} </span>
                                 </div>
                             </div> --}}
                         </div>
