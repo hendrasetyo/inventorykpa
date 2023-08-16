@@ -25,7 +25,7 @@ class NoFakturPajakController extends Controller
     public function index()
     {
         $title = "No Faktur Pajak";
-        $nopajak = NoFakturPajak::get();
+        $nopajak = NoFakturPajak::orderBy('id');
         
         if (request()->ajax()) {
             return DataTables::of($nopajak)
