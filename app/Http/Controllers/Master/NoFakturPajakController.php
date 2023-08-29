@@ -8,6 +8,7 @@ use App\Imports\NoKpaImport;
 use App\Models\FakturPenjualan;
 use App\Models\LogNoFakturPajak;
 use App\Models\NoFakturPajak;
+use App\Models\NoKPA;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -137,6 +138,19 @@ class NoFakturPajakController extends Controller
     {
         Excel::import(new NoKpaImport, $request->file('file')); 
         return back(); 
+    }
+
+    public function syncronisasinokpa() {
+        
+        $fakturpenjualan = FakturPenjualan::get();
+
+        foreach ($fakturpenjualan as $item) {
+                NoKPA::where('no_kpa',$item->no_kpa)->update([
+                    'status' => 'Tidak Aktif'
+                ]);
+        }
+
+        return back();
     }
 
 

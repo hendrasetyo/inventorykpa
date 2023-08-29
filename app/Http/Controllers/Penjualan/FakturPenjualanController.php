@@ -327,9 +327,9 @@ class FakturPenjualanController extends Controller
         ]);
  
         // // ubah status no kpa menjadi tidak aktif
-        // $kpa->update([
-        //     'status' => 'Tidak Aktif'
-        // ]);
+        $kpa->update([
+            'status' => 'Tidak Aktif'
+        ]);
 
     
         //$ongkir_header = $ongkir_det;
@@ -410,6 +410,11 @@ class FakturPenjualanController extends Controller
         // ubah status menjadi tidak aktif        
         $pajak = NoFakturPajak::where('id',$fakturpenjualan->pajak_id)->update([
             'status' => $request->status_pajak
+        ]);
+
+        // ubah status no kpa
+        NoKPA::where('no_kpa',$fakturpenjualan->no_kpa)->update([
+            'status' => 'Aktif'
         ]);
 
         //hapus Piutang 

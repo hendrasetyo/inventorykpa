@@ -318,6 +318,8 @@ Route::middleware('has.role')->prefix('master')->group(function () {
         
         
         Route::post('/importnokpa', [NoFakturPajakController::class, 'importnokpa'])->name('fakturpajak.importnokpa');  
+
+        Route::get('/syncronisasinokpa', [NoFakturPajakController::class, 'syncronisasinokpa'])->name('fakturpajak.syncronisasinokpa');    
     });
 });
 

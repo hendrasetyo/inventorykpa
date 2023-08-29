@@ -66,6 +66,10 @@
                                 <h3 class="card-label">No Faktur Pajak</h3>
                             </div>
                             <div class="card-toolbar">
+                                <a href="{{ route('fakturpajak.syncronisasinokpa') }}" class="btn btn-primary mr-2" >                                    
+                                    <i class="flaticon-upload"></i>                                 
+                                    Syncronisasi No KPA
+                                </a>
 
                                 <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#importkpa">                                    
                                     <i class="flaticon-upload"></i>                                 
