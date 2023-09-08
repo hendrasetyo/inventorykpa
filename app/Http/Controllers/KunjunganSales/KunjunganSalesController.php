@@ -38,10 +38,10 @@ class KunjunganSalesController extends Controller
                 ->editColumn('tanggal', function (KunjunganSales $kj) {
                     return $kj->tanggal ? with(new Carbon($kj->tanggal))->format('d F Y') : '';
                 })
-                ->editColumn('jam', function (KunjunganSales $kj) {
+                ->editColumn('created_at', function (KunjunganSales $kj) {
                     return $kj->created_at ? with(new Carbon($kj->created_at))->format('H:i') : '';
                 })
-                ->editColumn('sales_name', function (KunjunganSales $kj) {
+                ->editColumn('name', function (KunjunganSales $kj) {
                     return $kj->user->name;
                 })
                 ->addColumn('action', function ($row) {    
