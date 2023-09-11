@@ -19,7 +19,7 @@ class Sales extends Model
         'hp',
         'nip',
         'keterangan',
-        
+        'status'        
     ];
 
     public function customers()

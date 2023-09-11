@@ -70,7 +70,7 @@ class PesananPenjualanController extends Controller
         $customers = Customer::get();
         $komoditass = Komoditas::get();
         $kategoris = Kategoripesanan::get();
-        $saless = Sales::get();
+        $saless = Sales::where('status','Aktif')->get();
         $tglNow = Carbon::now()->format('d-m-Y');
 
         //delete temp

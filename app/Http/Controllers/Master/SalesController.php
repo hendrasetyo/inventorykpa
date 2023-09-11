@@ -56,6 +56,8 @@ class SalesController extends Controller
             'email' => ['required', 'email', 'max:255'],
         ]);
 
+        $request['status'] = 'Aktif';
+
         Sales::create($request->all());
         return redirect()->route('sales.index')->with('status', 'Salesman baru berhasil ditambahkan !');
     }
