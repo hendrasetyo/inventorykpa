@@ -108,7 +108,7 @@ class LaporanPiutangExport implements FromView
         }
 
 
-        $statusFilter = $salesfilter->where('status','=',$this->data['status']);
+        $statusFilter = $salesfilter->where('p.status','=',$this->data['status']);
 
         $datafilter = $statusFilter->select('c.nama as nama_customer','pp.kode as kode_pp','pb.kode as kode_pb','fp.kode as kode_fp','fp.no_kpa as no_kpa','p.*','s.nama as nama_sales')
         ->orderBy('c.nama')
