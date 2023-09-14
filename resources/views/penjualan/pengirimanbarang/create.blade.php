@@ -141,70 +141,7 @@
     <div id="modal-setbarang"></div>
     <div id="modal-setdiskon"></div>
     <div id="modal-setppn"></div>
-
-    <div id="xcontohmodal">
-        <!-- Modal-->
-
-        <div class="modal fade" id="caribarang" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Pesanan penjualan</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <i aria-hidden="true" class="ki ki-close"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body" style="height: 400px;">
-
-                        <table class="table  yajra-datatable collapsed ">
-                            <thead class="datatable-head">
-                                <tr>
-                                    <th>Kode</th>
-                                    <th>Nama Barang</th>
-                                    <th>Katalog</th>
-                                    <th>Stok</th>
-
-                                    <th>Satuan</th>
-                                    <th>Qty Pesanan</th>
-                                    <th>Qty Sisa</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                @foreach($SOdetails as $item)
-                                <tr>
-                                    <td>{{ $item->products->kode }}</td>
-                                    <td>{{ $item->products->nama }}</td>
-                                    <td>{{ $item->products->katalog }}</td>
-                                    <td>{{ $item->products->stok }}</td>
-
-                                    <td>{{ $item->satuan }}</td>
-                                    <td>{{ $item->qty }}</td>
-                                    <td>{{ $item->qty_sisa }}</td>
-                                    <td><a href="javascript:pilihBarang({{ $item->id }})"
-                                            class="btn btn-light-success btn-sm font-weight-bold ">Pilih</a>
-                                    </td>
-
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light-primary font-weight-bold"
-                            data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <script>
-
-        </script>
-        <!-- Modal-->
-    </div>
+    <div id="xcontohmodal"></div>
     @endsection
     @push('script')
     <script src="{{ asset('/assets/js/pages/crud/forms/widgets/select2.js?v=7.0.6"') }}"></script>
@@ -214,13 +151,32 @@
 
 
     <script type="text/javascript">
+
+        const id = {{$id_so}};
         function htmlDecode(data){
-        var txt = document.createElement('textarea');
-        txt.innerHTML=data;
-        return txt.value;
-    }
+            var txt = document.createElement('textarea');
+            txt.innerHTML=data;
+            return txt.value;
+      }
     function caribarang(){
-        $('#caribarang').modal('show');
+        // $('#').modal('show');
+        $.ajax({
+                type: 'POST',
+                url: '{{ route('pengirimanbarang.caribarang') }}',
+                dataType: 'html',
+                headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
+                data: {
+                    id:id, 
+                    "_token": "{{ csrf_token() }}"},
+                
+                success: function (data){                    
+                    $('#xcontohmodal').html(data);
+                    $('#caribarang').modal('show');
+                },
+                error: function(data){
+                    console.log(data);
+                }
+        });
     }
     function pilihBarang(data_id){
         $('#caribarang').modal('hide');
@@ -260,15 +216,22 @@
                     "keterangan": keterangan,
                      "_token": "{{ csrf_token() }}"
                     },
+                beforeSend: function(){
+                    $("#overlay").fadeIn(200);
+                }, 
                 
-                success: function (data){
-                    console.log(data);
+                success: function (data){                    
+                    setTimeout(function(){
+                        $("#overlay").fadeOut(100);
+                    },500);
 
                     $('#setBarangModal').modal('hide');
                     hitungAll();
                 },
                 error: function(data){
-                    console.log(data);
+                    setTimeout(function(){
+                        $("#overlay").fadeOut(100);
+                    },500);
                 }
         });
     }
@@ -360,15 +323,22 @@
                     "qty": qty,
                     "keterangan": keterangan,
                      "_token": "{{ csrf_token() }}"
-                    },
-                
+                    },                
+                beforeSend: function(){
+                    $("#overlay").fadeIn(200);
+                }, 
                 success: function (data){
-                    console.log(data);
+                    setTimeout(function(){
+                        $("#overlay").fadeOut(100);
+                    },500);
 
                     $('#setBarangModal').modal('hide');
                     hitungAll()
                 },
                 error: function(data){
+                    setTimeout(function(){
+                        $("#overlay").fadeOut(100);
+                    },500);
                     console.log(data);
                 }
         });

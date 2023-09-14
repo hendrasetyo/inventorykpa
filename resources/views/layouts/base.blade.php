@@ -29,6 +29,10 @@
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="{{ asset('assets/media/logos/logo_kpa_putih.png') }}" />
 
+
+    {{-- Custom Layout --}}
+    <link href="{{ asset('style.css') }}" rel="stylesheet" type="text/css" />
+
     <style type="text/css">
         .signature-pad{
             border: 1px solid #ccc;
@@ -82,6 +86,14 @@
     </div>
     <!--end::Header Mobile-->
     <div class="d-flex flex-column flex-root">
+
+        {{-- loader  --}}
+        <div id="overlay">
+            <div class="cv-spinner">
+              <span class="spinner"></span>
+            </div>
+          </div>
+         
         <!--begin::Page-->
         <div class="d-flex flex-row flex-column-fluid page">
             <!--begin::Wrapper-->
@@ -208,6 +220,27 @@
     <!--end::Page Scripts-->
     @stack('script')
     <!--end::Page Scripts-->
+
+    {{-- <script>
+        jQuery(function($){
+                $(document).ajaxSend(function() {
+                    $("#overlay").fadeIn(100);　
+                });
+                    
+                $('#button').click(function(){
+                    $.ajax({
+                    type: 'GET',
+                    success: function(data){
+                        console.log(data);
+                    }
+                    }).done(function() {
+                        setTimeout(function(){
+                            $("#overlay").fadeOut(100);
+                        },500);
+                    });
+                });	
+          });
+    </script> --}}
 
 </body>
 <!--end::Body-->

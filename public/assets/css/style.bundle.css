@@ -646,8 +646,8 @@ pre code {
 
 .container {
     width: 100%;
-    padding-right: 12.5px;
-    padding-left: 12.5px;
+    padding-right: 0px;
+    padding-left: 0px;
     margin-right: auto;
     margin-left: auto;
 }
@@ -689,8 +689,8 @@ pre code {
 .container-xl,
 .container-xxl {
     width: 100%;
-    padding-right: 12.5px;
-    padding-left: 12.5px;
+    padding-right: 0px;
+    padding-left: 0px;
     margin-right: auto;
     margin-left: auto;
 }
@@ -94257,7 +94257,7 @@ body {
     .container-lg,
     .container-xl,
     .container-xxl {
-        padding: 0 25px;
+        padding: 0 0px;
     }
 }
 
@@ -94271,7 +94271,7 @@ body {
     .container-xl,
     .container-xxl {
         max-width: none;
-        padding: 0 15px;
+        padding: 0 0px;
     }
 }
 

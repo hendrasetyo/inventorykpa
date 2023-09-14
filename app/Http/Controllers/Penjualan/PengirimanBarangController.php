@@ -73,9 +73,9 @@ class PengirimanBarangController extends Controller
     {
         $title = "Daftar Pesanan Penjualan";
         $pesananpenjualans = PesananPenjualan::with('customers', 'statusSO')
-            ->where('status_so_id', '<=', '3')
-            ->where('status_so_id', '<>', '1')
-            ->get();
+                            ->where('status_so_id', '<=', '3')
+                            ->where('status_so_id', '<>', '1')
+                            ->orderBy('id','desc');
 
         if (request()->ajax()) {
             return Datatables::of($pesananpenjualans)
@@ -115,13 +115,71 @@ class PengirimanBarangController extends Controller
         $SOdetails = PesananPenjualanDetail::with('products')
             ->where('pesanan_penjualan_id', '=', $id_so)->get();
 
-        return view('penjualan.pengirimanbarang.create', compact('title', 'pesananpenjualan', 'SOdetails'));
+        return view('penjualan.pengirimanbarang.create', compact('title', 'pesananpenjualan', 'SOdetails','id_so'));
+    }
+
+    public function caribarang(Request $request){
+        $tempSJ = TempSj::where('user_id', '=', Auth::user()->id)->get();
+        $id = $request->id;
+        $SOdetails = PesananPenjualanDetail::with('products')->where('pesanan_penjualan_id',$id)->get();
+        // dd($SOdetails);
+
+        $dataSO=[];
+        if (count($tempSJ) == 0) {
+            foreach ($SOdetails as $key) {
+                $dataSO[] = [
+                    'id' => $key->id,
+                    'kode' => $key->products->kode,
+                    'nama' => $key->products->nama,
+                    'katalog' => $key->products->katalog,
+                    'stok' => $key->products->stok,
+                    'satuan' => $key->products->satuan,
+                    'qty' => $key->qty,
+                   'qty_sisa' => $key->products->qty_sisa
+                ];
+            }
+        }else{
+            
+            for ($i=0; $i <count($tempSJ) ; $i++) {                 
+                for ($j=0; $j <count($SOdetails) ; $j++) { 
+                    if ($SOdetails[$j]->product_id !== $tempSJ[$i]->product_id) {                        
+                        $dataSO[] = [
+                            'id' => $SOdetails[$j]->id,
+                            'kode' =>$SOdetails[$j]->products->kode,
+                            'nama' => $SOdetails[$j]->products->nama,
+                            'katalog' => $SOdetails[$j]->products->katalog,
+                            'stok' => $SOdetails[$j]->products->stok,
+                            'satuan' => $SOdetails[$j]->products->satuan,
+                            'qty' => $SOdetails[$j]->qty,
+                           'qty_sisa' => $SOdetails[$j]->qty_sisa
+                        ];
+                    }else if($SOdetails[$j]->product_id == $tempSJ[$i]->product_id && $tempSJ[$i]->qty < $tempSJ[$i]->qty_sisa) {                        
+                        $dataSO[] = [
+                            'id' => $SOdetails[$j]->id,
+                            'kode' =>$SOdetails[$j]->products->kode,
+                            'nama' => $SOdetails[$j]->products->nama,
+                            'katalog' => $SOdetails[$j]->products->katalog,
+                            'stok' => $SOdetails[$j]->products->stok,
+                            'satuan' => $SOdetails[$j]->products->satuan,
+                            'qty' => $SOdetails[$j]->qty,
+                           'qty_sisa' => $SOdetails[$j]->qty_sisa
+                        ];
+                    }
+                }
+            }
+        }
+        
+
+        // dd($dataSO);
+        return view('penjualan.pengirimanbarang.partial._setbarang',compact('dataSO'));
     }
 
     public function setbarang(Request $request)
     {
 
-        $product = PesananPenjualanDetail::with('products')->where('id', '=', $request->id)->get()->first();
+      
+        $product = PesananPenjualanDetail::with('products')->where('id', $request->id)->get()->first();      
+
         $mode = "new";
         return view('penjualan.pengirimanbarang._setbarang', compact('product', 'mode'));
     }

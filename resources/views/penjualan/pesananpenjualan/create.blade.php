@@ -227,21 +227,18 @@
         txt.innerHTML=data;
         return txt.value;
     }
-    function caribarang(){
-        $('#caribarang').modal('show');
-        
+    function caribarang(){              
+        $('#caribarang').modal('show');        
     }
     function pilihBarang(data_id){
-        $('#caribarang').modal('hide');
-        //alert(data_id);
+        $('#caribarang').modal('hide');        
         $.ajax({
                 type: 'POST',
                 url: '{{ route('pesananpenjualan.setbarang') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {id:data_id, "_token": "{{ csrf_token() }}"},
-                
-                success: function (data){
+                data: {id:data_id, "_token": "{{ csrf_token() }}"},                             
+                success: function (data){                
                     console.log(data);
                     $('#modal-setbarang').html(data);
                     $('#setBarangModal').modal('show');
@@ -258,8 +255,7 @@
                 url: '{{ route('pesananpenjualan.editbarang') }}',
                 dataType: 'html',
                 headers: { 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') },
-                data: {id:data_id, "_token": "{{ csrf_token() }}"},
-                
+                data: {id:data_id, "_token": "{{ csrf_token() }}"},                              
                 success: function (data){
                     console.log(data);
                     $('#modal-setbarang').html(data);
@@ -302,14 +298,21 @@
                     "ppn" : ppn,
                      "_token": "{{ csrf_token() }}"
                     },
-                
+                beforeSend: function(){
+                    $("#overlay").fadeIn(200);
+                },               
                 success: function (data){
-                    console.log(data);
+                    setTimeout(function(){
+                        $("#overlay").fadeOut(100);
+                    },500);
 
                     $('#setBarangModal').modal('hide');
                     hitungAll();
                 },
                 error: function(data){
+                    setTimeout(function(){
+                            $("#overlay").fadeOut(100);
+                        },500);
                     console.log(data);
                 }
         });
@@ -347,15 +350,22 @@
                     'ppn' : ppn,
                      "_token": "{{ csrf_token() }}"
                     },
-                
+                beforeSend: function(){
+                    $("#overlay").fadeIn(200);
+                }, 
                 success: function (data){
-                    console.log(data);
+                    
+                    setTimeout(function(){
+                        $("#overlay").fadeOut(100);
+                    },500);
 
                     $('#setBarangModal').modal('hide');
                     hitungAll()
                 },
                 error: function(data){
-                    console.log(data);
+                    setTimeout(function(){
+                            $("#overlay").fadeOut(100);
+                        },500);                    
                 }
         });
     }
@@ -659,3 +669,4 @@
     }
     </script>
     @endpush
+

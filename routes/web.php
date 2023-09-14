@@ -546,7 +546,7 @@ Route::middleware('has.role')->prefix('penjualan')->group(function () {
 
         Route::post('delete', [PengirimanBarangController::class, 'delete'])->name('pengirimanbarang.delete');
         Route::delete('delete', [PengirimanBarangController::class, 'destroy'])->name('pengirimanbarang.destroy');
-        Route::get('caribarang', [PengirimanBarangController::class, 'caribarang'])->name('pengirimanbarang.caribarang');
+        Route::post('caribarang', [PengirimanBarangController::class, 'caribarang'])->name('pengirimanbarang.caribarang');
         Route::post('setbarang', [PengirimanBarangController::class, 'setbarang'])->name('pengirimanbarang.setbarang');
         Route::post('editbarang', [PengirimanBarangController::class, 'editbarang'])->name('pengirimanbarang.editbarang');
         Route::post('updatebarang', [PengirimanBarangController::class, 'updatebarang'])->name('pengirimanbarang.updatebarang');
