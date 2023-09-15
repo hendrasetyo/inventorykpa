@@ -125,7 +125,9 @@ class PengirimanBarangController extends Controller
         // dd($SOdetails);
 
         $dataSO=[];
-        if (count($tempSJ) == 0) {
+        $count = 0;
+        $status = 0;
+        if (!$tempSJ) {
             foreach ($SOdetails as $key) {
                 $dataSO[] = [
                     'id' => $key->id,
@@ -135,38 +137,51 @@ class PengirimanBarangController extends Controller
                     'stok' => $key->products->stok,
                     'satuan' => $key->products->satuan,
                     'qty' => $key->qty,
-                   'qty_sisa' => $key->products->qty_sisa
+                    'status' => 'belum',
+                    'qty_sisa' => $key->qty_sisa
                 ];
-            }
-        }else{
-            
-            for ($i=0; $i <count($tempSJ) ; $i++) {                 
+            }            
+        }else{            
                 for ($j=0; $j <count($SOdetails) ; $j++) { 
-                    if ($SOdetails[$j]->product_id !== $tempSJ[$i]->product_id) {                        
-                        $dataSO[] = [
-                            'id' => $SOdetails[$j]->id,
-                            'kode' =>$SOdetails[$j]->products->kode,
-                            'nama' => $SOdetails[$j]->products->nama,
-                            'katalog' => $SOdetails[$j]->products->katalog,
-                            'stok' => $SOdetails[$j]->products->stok,
-                            'satuan' => $SOdetails[$j]->products->satuan,
-                            'qty' => $SOdetails[$j]->qty,
-                           'qty_sisa' => $SOdetails[$j]->qty_sisa
-                        ];
-                    }else if($SOdetails[$j]->product_id == $tempSJ[$i]->product_id && $tempSJ[$i]->qty < $tempSJ[$i]->qty_sisa) {                        
-                        $dataSO[] = [
-                            'id' => $SOdetails[$j]->id,
-                            'kode' =>$SOdetails[$j]->products->kode,
-                            'nama' => $SOdetails[$j]->products->nama,
-                            'katalog' => $SOdetails[$j]->products->katalog,
-                            'stok' => $SOdetails[$j]->products->stok,
-                            'satuan' => $SOdetails[$j]->products->satuan,
-                            'qty' => $SOdetails[$j]->qty,
-                           'qty_sisa' => $SOdetails[$j]->qty_sisa
-                        ];
+                    for ($i=0; $i <count($tempSJ) ; $i++) {                         
+                        if ($tempSJ[$i]->product_id !== $SOdetails[$j]->product_id  ) {                        
+                            $count++;
+                        }
+                        else if(($SOdetails[$j]->product_id == $tempSJ[$i]->product_id) && ($tempSJ[$i]->qty < $tempSJ[$i]->qty_sisa)) {                                                    
+                            $count++;
+                            $status = 1;
+                        }                     
                     }
+
+                    if ($status == 1) {
+                        $dataSO[] = [
+                            'id' => $SOdetails[$j]->id,
+                            'kode' =>$SOdetails[$j]->products->kode,
+                            'nama' => $SOdetails[$j]->products->nama,
+                            'katalog' => $SOdetails[$j]->products->katalog,
+                            'stok' => $SOdetails[$j]->products->stok,
+                            'satuan' => $SOdetails[$j]->products->satuan,
+                            'qty' => $SOdetails[$j]->qty,
+                            'status' => 'sudah',
+                            'qty_sisa' => $SOdetails[$j]->qty_sisa
+                        ];     
+                    }else if ($count == count($tempSJ)) {
+                        $dataSO[] = [
+                            'id' => $SOdetails[$j]->id,
+                            'kode' =>$SOdetails[$j]->products->kode,
+                            'nama' => $SOdetails[$j]->products->nama,
+                            'katalog' => $SOdetails[$j]->products->katalog,
+                            'stok' => $SOdetails[$j]->products->stok,
+                            'satuan' => $SOdetails[$j]->products->satuan,
+                            'qty' => $SOdetails[$j]->qty,
+                            'status' => 'belum',
+                            'qty_sisa' => $SOdetails[$j]->qty_sisa
+                        ];       
+                    }                    
+
+                    $count=0;                   
+                    $status =0;
                 }
-            }
         }
         
 

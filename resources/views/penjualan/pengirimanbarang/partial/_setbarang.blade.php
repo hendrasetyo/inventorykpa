@@ -20,6 +20,7 @@
                                     <th>Satuan</th>
                                     <th>Qty Pesanan</th>
                                     <th>Qty Sisa</th>
+                                    <th>Sudah dipilih ?</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -34,8 +35,21 @@
                                     <td>{{ $item['satuan'] }}</td>
                                     <td>{{ $item['qty']}}</td>
                                     <td>{{ $item['qty_sisa'] }}</td>
-                                    <td><a href="javascript:pilihBarang({{ $item['id']}})"
-                                            class="btn btn-light-success btn-sm font-weight-bold ">Pilih</a>
+                                    <td>
+                                        @if ($item['status'] == 'belum')
+                                            <span class="badge badge-primary">Belum</span>
+                                        @else
+                                            <span class="badge badge-warning">Sudah</span>
+                                        @endif
+                                    </td>
+                                    <td>   
+                                        @if ($item['stok'] == 0)
+                                        <span class="badge badge-warning">Stok Habis</span>                                        
+                                        @elseif ($item['qty_sisa'] > 0)
+                                            <a href="javascript:pilihBarang({{ $item['id']}})"
+                                            class="btn btn-light-success btn-sm font-weight-bold ">Pilih</a>                                                                                   
+                                        @endif
+                                       
                                     </td>
                                 </tr>
                                 @endforeach
