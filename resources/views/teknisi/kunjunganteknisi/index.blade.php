@@ -122,8 +122,8 @@
               columns: [
                 //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                   {data: 'tanggal', name: 'tanggal'},
-                  {data: 'time', name: 'time'},
-                  {data: 'teknisi_name', name:'teknisi_name'},
+                  {data: 'created_at', name: 'created_at'},
+                  {data: 'name', name:'user.name'},
                   {data: 'customer', name:'customer'},
                   {data: 'aktifitas', name:'aktifitas'},
                   {

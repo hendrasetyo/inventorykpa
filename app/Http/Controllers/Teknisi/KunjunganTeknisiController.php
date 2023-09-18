@@ -35,10 +35,10 @@ class KunjunganTeknisiController extends Controller
                 ->editColumn('tanggal', function (KunjunganTeknisi $kj) {
                     return $kj->tanggal ? with(new Carbon($kj->tanggal))->format('d F Y') : '';
                 })
-                ->editColumn('teknisi_name', function (KunjunganTeknisi $kj) {
+                ->editColumn('name', function (KunjunganTeknisi $kj) {
                     return $kj->user->name;
                 })
-                ->editColumn('time',function (KunjunganTeknisi $kj){
+                ->editColumn('created_at',function (KunjunganTeknisi $kj){
                     return $kj->created_at ? with(new Carbon($kj->created_at))->format('H:i') : '';
                 })
                 ->addColumn('action', function ($row) {    
