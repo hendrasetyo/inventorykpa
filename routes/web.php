@@ -74,6 +74,8 @@ Route::middleware('auth', 'verified')->group(function () {
     // list top customer
     Route::post('/datatabletopcustomer', [HomeController::class, 'datatableTopCustomer'])->name('datatable.topCustomer');
     Route::post('/datatabletopcustomerproduct', [HomeController::class, 'listProduct'])->name('datatable.topCustomerProduct');
+
+    Route::get('print', [CustomerController::class, 'print'])->name('customer.print');
     
     
 
@@ -183,6 +185,10 @@ Route::middleware('has.role')->prefix('master')->group(function () {
         Route::post('getkota', [SupplierController::class, 'getkota'])->name('supplier.getkota');
         Route::post('getkecamatan', [SupplierController::class, 'getkecamatan'])->name('supplier.getkecamatan');
         Route::post('getkelurahan', [SupplierController::class, 'getkelurahan'])->name('supplier.getkelurahan');
+
+        Route::get('print', [SupplierController::class, 'print'])->name('supplier.print');
+
+
     });
     Route::prefix('suppliercategory')->group(function () {
         Route::get('', [SupplierCategoryController::class, 'index'])->name('suppliercategory.index');

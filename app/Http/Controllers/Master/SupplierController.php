@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\Exports\ExportSupplier;
 use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ use Laravolt\Indonesia\Models\Village;
 use Laravolt\Indonesia\Models\District;
 use Laravolt\Indonesia\Models\Province;
 use App\Traits\CodeTrait;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SupplierController extends Controller
 {
@@ -177,5 +179,11 @@ class SupplierController extends Controller
         Supplier::destroy($request->id);
 
         return redirect()->route('supplier.index')->with('status', 'Data Supplier Berhasil Dihapus !');
+    }
+
+
+    public function print()
+    {
+        return Excel::download(new ExportSupplier(), 'supplier.xlsx');  
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\Exports\ExportCustomer;
 use Carbon\Carbon;
 use App\Models\Sales;
 use App\Models\Customer;
@@ -16,6 +17,7 @@ use Laravolt\Indonesia\Models\Village;
 use Laravolt\Indonesia\Models\District;
 use Laravolt\Indonesia\Models\Province;
 use App\Traits\CodeTrait;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerController extends Controller
 {
@@ -34,7 +36,7 @@ class CustomerController extends Controller
     {
 
         $title = "CUSTOMER";
-        $customers = Customer::with(['kategori', 'salesman', 'namakota', 'prov'])->get();
+        $customers = Customer::with(['kategori', 'salesman', 'namakota', 'prov']);
         if (request()->ajax()) {
             return Datatables::of($customers)
                 ->addIndexColumn()
@@ -184,5 +186,10 @@ class CustomerController extends Controller
         Customer::destroy($request->id);
 
         return redirect()->route('customer.index')->with('status', 'Data customerman Berhasil Dihapus !');
+    }
+
+    public function print() 
+    {
+        return Excel::download(new ExportCustomer(), 'customer.xlsx');  
     }
 }

@@ -53,6 +53,12 @@
                                 <h3 class="card-label">Data Customer</h3>
                             </div>
                             <div class="card-toolbar">
+                                
+                                <a href="{{ route('customer.print') }}"
+                                    class="btn btn-success font-weight-bolder mr-3">
+                                    <i class="flaticon2-list-2"></i>
+                                    Export to Excel
+                                </a>
                                 <!--begin::Button-->
                                 @can('customercategory-create')
                                 <a href="{{ route('customercategory.index') }}"

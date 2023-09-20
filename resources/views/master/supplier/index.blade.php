@@ -53,6 +53,12 @@
                                 <h3 class="card-label">Data Supplier</h3>
                             </div>
                             <div class="card-toolbar">
+                                <a href="{{ route('supplier.print') }}"
+                                    class="btn btn-success font-weight-bolder mr-3">
+                                    <i class="flaticon2-list-2"></i>
+                                    Export to Excel
+                                </a>
+
                                 <!--begin::Button-->
                                 @can('suppliercategory-create')
                                 <a href="{{ route('suppliercategory.index') }}"
@@ -61,6 +67,9 @@
                                     Kategori Supplier
                                 </a>
                                 @endcan
+
+                               
+
                                 @can('supplier-create')
                                 <a href="{{ route('supplier.create') }}" class="btn btn-primary font-weight-bolder ">
                                     <i class="flaticon2-add"></i>
