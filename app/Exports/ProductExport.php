@@ -23,9 +23,11 @@ class ProductExport implements FromView
                             ->with('categories')
                             ->with('subcategories')
                             ->with(['inventory' => function($query){
-                                return $query->where('tanggal','<','2023-06-30')->latest()->first();
-                            }])
+                                return $query->where('tanggal','<','2023-06-30')->latest();
+                            }])                            
+                            // ->where('id',6)
                             ->where('status','Aktif');
+
         
         if ($this->data['kategori_id'] == 'all') {
             $getdata = $product;
@@ -55,7 +57,7 @@ class ProductExport implements FromView
         else{
             $stok = $ijinedar->where('stok','>=',$this->data['stok_id'])->get();
         }
-
+        
         return view('laporan.stok.export.exportProduct',[
             'product' => $stok
         ]);

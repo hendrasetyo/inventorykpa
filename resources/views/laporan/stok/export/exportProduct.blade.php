@@ -30,10 +30,12 @@
         </tr>
     </thead>
     <tbody>
+        
         @php
             $no=1;
         @endphp
         @foreach ($product as $item)
+        
             <tr>
                 <td>{{$no++}}</td>
                 <td>{{$item->kode}}</td>
@@ -44,7 +46,13 @@
                 <td>{{$item->subcategories->nama}}</td>   
                 <td>{{$item->groups->nama}}</td>   
                 <td>{{$item->jenis}}</td>   
-                <td>{{$item->stok}}</td>   
+                <td>
+                    @if (count($item->inventory) > 0)
+                        <span>{{$item->inventory[0]->stok}}</span>
+                    @else
+                        <span>0</span>
+                    @endif                    
+                </td>   
                 <td>{{$item->tipe}}</td>   
                 <td>{{$item->ukuran}}</td>   
                 <td>{{$item->kemasan}}</td>   
