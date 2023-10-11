@@ -96,4 +96,10 @@ class Product extends Model
     {
         return $this->hasMany(TempPb::class, 'product_id', 'id');
     }
+
+   
+    public function inventory()
+    {
+        return $this->hasMany(InventoryTransaction::class, 'product_id');
+    }
 }

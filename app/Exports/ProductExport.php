@@ -21,7 +21,14 @@ class ProductExport implements FromView
         $product = Product::with('categories')
                             ->with('merks')
                             ->with('categories')
-                            ->with('subcategories');
+                            ->with('subcategories')
+                            ->with(['inventory' => function($query){
+                                return $query->where('tanggal','<','2023-06-30')->latest()->first();
+                            }])
+                            ->where('status','Aktif');
+        
+        $products = $product->where('id',6)->get();
+        dd($products[0]);
 
         if ($this->data['kategori_id'] == 'all') {
             $getdata = $product;
