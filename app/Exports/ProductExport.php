@@ -27,9 +27,6 @@ class ProductExport implements FromView
                             }])
                             ->where('status','Aktif');
         
-        $products = $product->where('id',6)->get();
-        dd($products[0]);
-
         if ($this->data['kategori_id'] == 'all') {
             $getdata = $product;
         }else{
