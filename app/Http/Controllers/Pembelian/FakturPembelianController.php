@@ -394,23 +394,23 @@ class FakturPembelianController extends Controller
         $perBaris = 20;
         $totalPage = ceil($jmlBaris / $perBaris);
         
-        // $data = [
-        //     'totalPage' => $totalPage,
-        //     'perBaris' => $perBaris,
-        //     'date' => date('d/m/Y'),
-        //     'fakturpembelian' => $fakturpembelian,
-        //     'fakturpembeliandetail' => $fakturpembeliandetail
-        // ];
-        // $pdf = PDF::loadView('pembelian.fakturpembelian.print_a4', $data)->setPaper('a4', 'potrait');;
-        // return $pdf->download($fakturpembelian->kode.'.pdf');
+        $data = [
+            'totalPage' => $totalPage,
+            'perBaris' => $perBaris,
+            'date' => date('d/m/Y'),
+            'fakturpembelian' => $fakturpembelian,
+            'fakturpembeliandetail' => $fakturpembeliandetail
+        ];
+        $pdf = PDF::loadView('pembelian.fakturpembelian.print_a4', $data)->setPaper('a4', 'potrait');;
+        return $pdf->download($fakturpembelian->kode.'.pdf');
 
-        return view('pembelian.fakturpembelian.print_a4', compact(
-            'title',  
-            'totalPage',
-            'perBaris',
-            'fakturpembelian',
-            'fakturpembeliandetail'
-        ));
+        // return view('pembelian.fakturpembelian.print_a4', compact(
+        //     'title',  
+        //     'totalPage',
+        //     'perBaris',
+        //     'fakturpembelian',
+        //     'fakturpembeliandetail'
+        // ));
     }
 
     public function editbiaya(Request $request)
