@@ -182,10 +182,10 @@
                     </tr>
                     <tr style="">
                         <td style="font-size: 70%; width:3%;">NO</td>
-                        <td style="font-size: 70%; width:57%">BARANG</td>
+                        <td style="font-size: 70%; width:50%">BARANG</td>
                         <td style="font-size: 70%; width:10%">SATUAN</td>
                         <td style="font-size: 70%; width:5%">QTY</td>
-                        <td style="font-size: 70%; width:25%">KET.</td>
+                        <td style="font-size: 70%; width:32%">KET.</td>
                     </tr>
                     <tr>
                         <td colspan="5">
