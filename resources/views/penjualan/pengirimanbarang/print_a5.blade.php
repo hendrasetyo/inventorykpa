@@ -184,8 +184,8 @@
                         <td style="font-size: 70%; width:3%;">NO</td>
                         <td style="font-size: 70%; width:57%">BARANG</td>
                         <td style="font-size: 70%; width:10%">SATUAN</td>
-                        <td style="font-size: 70%; width:10%">QTY</td>
-                        <td style="font-size: 70%; width:20%">KET.</td>
+                        <td style="font-size: 70%; width:5%">QTY</td>
+                        <td style="font-size: 70%; width:25%">KET.</td>
                     </tr>
                     <tr>
                         <td colspan="5">
@@ -201,8 +201,8 @@
                         <td style="font-size: 70%;" class="text-left">{{ $j }}.</td>
                         <td style="font-size: 70%;" class="text-left">{{ $a->products->nama }}</td>
                         <td style="font-size: 70%;" class="text-left">{{ $a->satuan }}</td>
-                        <td style="font-size: 70%;" class="text-left">{{ $a->qty }}</td>
-                        <td style="font-size: 60%;" class="text-left">{{ $a->keterangan }} ED: @foreach($listExp as $x)
+                        <td style="font-size: 60%;" class="text-left">{{ $a->qty }}</td>
+                        <td style="font-size: 70%;" class="text-left">{{ $a->keterangan }} ED: @foreach($listExp as $x)
                             @if($a->product_id == $x->product_id) {{ $x->tanggal->format("m/y") }}({{ $x->qty * -1 }})-{{$x->stockExp->lot}} 
                             @endif
                             @endforeach
