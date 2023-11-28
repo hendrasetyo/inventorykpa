@@ -75,7 +75,12 @@ class LaporanPembelianDetailExport implements FromView
                                         ->where('m.id','=',$this->data['merk']);
                     }
 
-        $filter = $merkfilter->orderBy('fp.tanggal','desc')->select('fp.*','pb.kode as kode_SJ'
+
+        $filter = $merkfilter
+                             ->join('productcategories as pc','p.productcategory_id','=','pc.id')
+                             ->join('productsubcategories as psc','p.productsubcategory_id','=','psc.id')
+                             ->orderBy('fp.tanggal','desc')
+                             ->select('fp.*','pb.kode as kode_SJ'
                                         ,'pp.kode as kode_SP'
                                         ,'s.nama as nama_supplier'
                                         ,'u.name as nama_pembuat',
@@ -85,7 +90,7 @@ class LaporanPembelianDetailExport implements FromView
                                         'fpb.total_diskon as total_diskon_produk',
                                         'fpb.total as total_produk','fpb.ongkir as ongkir_produk',
                                         'fpb.keterangan as keterangan_produk','p.nama as nama_produk', 'p.kode as kode_produk',
-                                        'm.nama as nama_merk'
+                                        'm.nama as nama_merk','pc.nama as nama_kategori','psc.nama as nama_subkategori'
                                         )->get();            
                 
         if (count($filter) <= 0) {
