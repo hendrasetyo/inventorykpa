@@ -58,11 +58,11 @@
                 <td>{{$item->grandtotal}}</td>  
                 <td>{{$item->nama_produk}}</td>
                 <td>{{$item->kode_produk}}</td>
-                <td>{{$item->nama_merk}}</td>
-                <td>{{$item->qty_produk}}</td>
-                <td>{{$item->satuan_produk}}</td>
                 <td>{{$item->nama_kategori}}</td>
                 <td>{{$item->nama_subkategori}}</td>
+                <td>{{$item->nama_merk}}</td>
+                <td>{{$item->qty_produk}}</td>
+                <td>{{$item->satuan_produk}}</td>               
                 <td>{{$item->hargabeli_produk}}</td>  
                 <td>{{$item->diskon_persen_produk}}</td>  
                 <td>{{$item->diskon_rp_produk}}</td>  
