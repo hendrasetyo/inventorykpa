@@ -40,6 +40,8 @@ class LaporanPenjualanDetailExport implements FromView
                     ->join('customer_categories as cc','cs.kategori_id','=','cc.id')
                     ->join('products as p','p.id','=','fpb.product_id')
                     ->join('merks as m','p.merk_id','=','m.id')
+                    ->join('productcategories as pc','p.productcategory_id','=','pc.id')
+                    ->join('productsubcategories as psc','p.productsubcategory_id','=','psc.id')
                     ->where('fp.deleted_at',null);
                     
                         
@@ -111,7 +113,7 @@ class LaporanPenjualanDetailExport implements FromView
                 ,'pb.kode as kode_SJ','pp.kode as kode_SP'
                 ,'s.nama as nama_sales','u.name as nama_pembuat'
                 ,'cs.nama as nama_customer','p.nama as nama_produk'
-                ,'m.nama as nama_merk','p.kode as kode_produk'
+                ,'m.nama as nama_merk','p.kode as kode_produk','psc.nama as nama_subkategori','pc.nama as nama_kategori'
                 ,'km.nama as nama_komoditas','kp.nama as nama_kategori_pesanan','cc.nama as nama_kategori_customer'
                 )->get();     
 
