@@ -48,11 +48,13 @@ class ProductExport implements FromView
         if ($this->data['stok_id'] == 'all') {
             $stok = $ijinedar->get();
         }else if ($this->data['stok_id'] == 0) {
-            $stok = $ijinedar->where('stok','=',$this->data['stok_id'])->get();
+            $stok = $ijinedar->where('stok','=',$this->data['stok_id'])->where('status','Aktif')->get();
         }
         else{
             $stok = $ijinedar->where('stok','>=',$this->data['stok_id'])->get();
         }
+
+
         
         return view('laporan.stok.export.exportProduct',[
             'product' => $stok
