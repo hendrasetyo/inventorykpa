@@ -202,7 +202,7 @@
                     <select name="bulan_id" class="form-control" id="kt_select2_5" required>
                         <option value="all" selected>Semua</option>
                         @foreach ($months as $item)
-                            <option value="{{$item->id}}">{{$item->nama}}</option>
+                            <option value="{{$item['id']}}">{{$item['nama']}}</option>
                         @endforeach
                     </select>
                 </div>    
