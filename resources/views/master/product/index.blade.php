@@ -196,6 +196,18 @@
         <form action="{{ route('product.export') }}" method="post">
             @csrf
             <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="">Per Akhir Bulan : </label> <br>
+                    <select name="bulan_id" class="form-control" id="kt_select2_5" required>
+                        <option value="all" selected>Semua</option>
+                        @foreach ($months as $item)
+                            <option value="{{$item->id}}">{{$item->nama}}</option>
+                        @endforeach
+                    </select>
+                </div>    
+
+
                 <div class="form-group">
                     <label for="">Kategori : </label> <br>
                     <select name="kategori_id" class="form-control" id="kt_select2_1" required>

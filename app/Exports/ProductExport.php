@@ -21,14 +21,24 @@ class ProductExport implements FromView
         $product = Product::with('categories')
                             ->with('merks')
                             ->with('categories')
-                            ->with('subcategories')                                                                                  
+                            ->with('subcategories')                                                                                                            
                             ->where('status','Aktif');
+        
+        $request = $this->data['bulan_id'];
 
+        if ($this->data['bulan_id'] == 'all') {
+            $bulan = $product;
+        }else{
+            $bulan = $product ->with(['inventory' => function($query) use ($request){
+                $bulan = "2023-".$request.'-31';
+                return $query->where('tanggal','<',$bulan)->latest();
+            }]) ;
+        }
         
         if ($this->data['kategori_id'] == 'all') {
-            $getdata = $product;
+            $getdata = $bulan;
         }else{
-            $getdata = $product->where('productcategory_id',$this->data['kategori_id']);
+            $getdata = $bulan->where('productcategory_id',$this->data['kategori_id']);
         }
 
         if ($this->data['merk_id'] == 'all') {

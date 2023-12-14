@@ -76,8 +76,17 @@ class ProductController extends Controller
                 ->make(true);
         }
 
+        $months =  [];
+        for ($i = 1; $i <=12; $i++) {
+            $databulan = '1-'.$i.'-2023';
+            $months[] = [
+                'nama' => Carbon::parse($databulan)->format('F') ,
+                'id' => $i
+            ];         
+        }
 
-        return view('master.product.index', compact('title','kategory','merk'));
+
+        return view('master.product.index', compact('title','kategory','merk','months'));
     }
 
     public function create()
