@@ -31,7 +31,7 @@ class ProductExport implements FromView
         }else{
             $bulan = $product ->with(['inventory' => function($query) use ($request){
                 $bulan = "2023-".$request.'-31';
-                return $query->where('tanggal','<',$bulan)->latest();
+                return $query->where('created_at','<',$bulan)->latest();
             }]) ;
         }
         
