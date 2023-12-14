@@ -21,11 +21,7 @@ class ProductExport implements FromView
         $product = Product::with('categories')
                             ->with('merks')
                             ->with('categories')
-                            ->with('subcategories')
-                            ->with(['inventory' => function($query){
-                                return $query->where('tanggal','<','2023-06-30')->latest();
-                            }])                            
-                            // ->where('id',6)
+                            ->with('subcategories')                                                                                  
                             ->where('status','Aktif');
 
         
