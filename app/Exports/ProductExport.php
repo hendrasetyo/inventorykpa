@@ -28,7 +28,7 @@ class ProductExport implements FromView
 
         if ($this->data['bulan_id'] == 'all') {
             $bulan = $product ->with(['inventory' => function($query) use ($request){           
-                return $query->latest();
+                return $query->orderBy('id','desc');
             }]) ;
         }else{
             $bulan = $product ->with(['inventory' => function($query) use ($request){
