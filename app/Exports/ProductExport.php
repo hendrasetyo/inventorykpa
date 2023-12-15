@@ -27,7 +27,9 @@ class ProductExport implements FromView
         $request = $this->data['bulan_id'];
 
         if ($this->data['bulan_id'] == 'all') {
-            $bulan = $product->with('inventory');
+            $bulan = $product ->with(['inventory' => function($query) use ($request){           
+                return $query->latest();
+            }]) ;
         }else{
             $bulan = $product ->with(['inventory' => function($query) use ($request){
                 $bulan = "2023-".$request.'-31';
