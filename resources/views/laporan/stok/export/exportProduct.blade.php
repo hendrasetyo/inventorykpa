@@ -47,7 +47,7 @@
                 <td>{{$item->groups->nama}}</td>   
                 <td>{{$item->jenis}}</td>   
                 <td>
-                    @if ($item->inventory)
+                    @if ($bulan !== 'all')
                         <span>{{$item->inventory[0]->stok}}</span>
                     @else
                         <span>{{$item->stok}}</span>

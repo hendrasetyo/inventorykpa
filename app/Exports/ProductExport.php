@@ -67,7 +67,8 @@ class ProductExport implements FromView
 
         
         return view('laporan.stok.export.exportProduct',[
-            'product' => $stok
+            'product' => $stok,
+            'bulan' => $this->data['bulan_id']
         ]);
         
     }
