@@ -47,10 +47,10 @@
                 <td>{{$item->groups->nama}}</td>   
                 <td>{{$item->jenis}}</td>   
                 <td>
-                    @if (count($item->inventory) > 0)
+                    @if ($item->inventory)
                         <span>{{$item->inventory[0]->stok}}</span>
                     @else
-                        <span>0</span>
+                        <span>{{$item->stok}}</span>
                     @endif                    
                 </td>   
                 <td>{{$item->tipe}}</td>   
