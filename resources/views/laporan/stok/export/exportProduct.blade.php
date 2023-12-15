@@ -48,7 +48,12 @@
                 <td>{{$item->jenis}}</td>   
                 <td>
                     @if ($bulan !== 'all')
-                        <span>{{$item->inventory[0]->stok}}</span>
+                        @if (count($item->inventory) > 0)
+                            <span>{{$item->inventory[0]->stok}}</span>
+                        @else
+                           <span>{{$item->stok}}</span>
+                        @endif
+                        
                     @else
                         <span>{{$item->stok}}</span>
                     @endif                    
