@@ -35,9 +35,7 @@
         <tr>
             <td colspan="6" style="text-align: center; border-bottom: 1px solid black;">
                 <h1 style="margin-top: 5px; margin-bottom: 10px;">PT KARYA PUTRA ANDALAN</h1>
-                <h5 style="margin-top: 0px; margin-bottom: 5px;">Ruko Purimas - Rungkut Madya Jl. Raya I gusti Ngurah
-                    Rai Kav. A1. No. 11-12
-                    Surabaya</h5>
+                <h5 style="margin-top: 0px; margin-bottom: 5px;">JL Raya I Gusti Ngurah Rai LT.1 Blok A-1 No.11-12 RT.001 RW.007</h5>
                 <h5 style="margin-top: 0px;margin-bottom: 5px;">NPWP : 03.113.119.6-615.000</h5>
             </td>
 

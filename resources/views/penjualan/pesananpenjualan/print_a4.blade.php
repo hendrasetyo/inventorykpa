@@ -33,9 +33,7 @@
             <td width="40%" style="font-size: 70%; vertical-align: top;">
                 <h3>PT KARYA PUTRA ANDALAN</h3>
                 <p>
-                    Ruko Purimas - Rungkut Madya Jl. Raya I Gusti Ngurah
-                    Rai Kav. A1. No. 11-12
-                    Surabaya
+                    JL Raya I Gusti Ngurah Rai LT.1 Blok A-1 No.11-12 RT.001 RW.007
                 </p>
                 <hp style="margin-top: 0px;margin-bottom: 5px;">NPWP : 03.113.119.6-615.000</p>
             </td>
