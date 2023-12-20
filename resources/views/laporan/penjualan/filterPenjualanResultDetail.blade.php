@@ -87,12 +87,8 @@
                             <!--begin: Datatable-->
                             <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
                                 <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Tanggal</th>
-                                        <th>Kode Faktur</th>
-                                        <th>Kode SO</th>
-                                        <th>Kode SJ</th>
+                                    <tr>                                        
+                                        <th>Tanggal</th>                                                                              
                                         <th>No Pajak</th>
                                         <th>No KPA</th>
                                         <th>Customer</th>                                        
@@ -128,13 +124,9 @@
                                         $no=1;
                                     @endphp
                                     @foreach ($penjualan as $item)
-                                        <tr>
-                                            <td>{{$no++}}</td>
+                                        <tr>                                            
                                             <td>{{ date('d/m/Y', strtotime($item->tanggal)) }}</td>
-                                            <td>{{$item->kode}}</td>
-                                            <td>{{$item->kode_SP}}</td>
-                                            <td>{{$item->kode_SJ}}</td>
-                                            <td>{{$item->no_seri_pajak ? $item->no_seri_pajak : '' .'-'. $item->no_pajak}}</td>
+                                            <td>{{$item->kode}}</td>                                                                                        
                                             <td>{{$item->no_kpa}}</td>
                                             <td>{{$item->nama_customer}}</td>
                                             <td>{{$item->diskon_rupiah}}</td>

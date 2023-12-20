@@ -102,13 +102,13 @@
                         Surabaya
                     </p>
                 </td>
-                <td width="25%" style="font-size: 75%; vertical-align: top; text-align: center;">
+                <td width="15%" style="font-size: 75%; vertical-align: top; text-align: center;">
                     <center><b></b></center>
                     <center><b>
 
                         </b></center>
                 </td>
-                <td width="20%" style="vertical-align: top; text-align: left; font-family: sans-serif">
+                <td width="30%" style="vertical-align: top; text-align: left; font-family: sans-serif">
                     <table >
                         <tr style="padding:0px;">
                             <td style="padding:0px;font-size: 70%; " colspan="3"><br />Surabaya, {{
