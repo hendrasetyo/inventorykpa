@@ -17,6 +17,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\PesananPembelianDetail;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,34 +37,78 @@ class PesananPembelianController extends Controller
     {
 
         $title = "Pesanan Pembelian";
-        $pesananpembelian = PesananPembelian::with(['suppliers', 'kategoripesanan', 'komoditas', 'statusPO'])->orderByDesc('id');
+        $kategoripesanan = Kategoripesanan::get();
+        $user = User::get();
 
-        if (request()->ajax()) {
-            return Datatables::of($pesananpembelian)
-                ->addIndexColumn()
-                ->addColumn('supplier', function (PesananPembelian $po) {
-                    return $po->suppliers->nama;
-                })
-                ->addColumn('status', function (PesananPembelian $po) {
-                    return $po->statusPO->nama;
-                })
-                ->editColumn('tanggal', function (PesananPembelian $po) {
-                    return $po->tanggal ? with(new Carbon($po->tanggal))->format('d-m-Y') : '';
-                })
-                ->addColumn('action', function ($row) {
-                    $editUrl = route('pesananpembelian.edit', ['pesananpembelian' => $row->id]);
-                    $showUrl = route('pesananpembelian.show', ['pesananpembelian' => $row->id]);
-                    $id = $row->id;
-                    $status = $row->status_po_id;
-                    return view('pembelian.pesananpembelian._formAction', compact('editUrl', 'showUrl', 'id', 'status'));
-                })
-                ->make(true);
-        }
-
-
-        return view('pembelian.pesananpembelian.index', compact('title'));
+        return view('pembelian.pesananpembelian.index', compact('title','kategoripesanan','user'));
     }
 
+
+    public function datatable(Request $request)
+    {        
+        $pesananpembelian = PesananPembelian::with(['suppliers', 'kategoripesanan', 'komoditas', 'statusPO','creator'])->orderByDesc('id');
+        
+        
+        
+
+        if ($request->tanggalAkhir !== 'all') {            
+            if ($request->tanggalMulai == 'all') {
+                $tanggalFilter=$pesananpembelian->where('tanggal','<=',Carbon::parse($request->tanggalAkhir)->format('Y-m-d'));
+                                
+            }else{
+                $tanggalFilter=$pesananpembelian->where('tanggal','<=',Carbon::parse($request->tanggalAkhir)->format('Y-m-d'))
+                                ->where('tanggal','>=',Carbon::parse($request->tanggalMulai)->format('Y-m-d'));
+            }
+        }elseif($request->tanggalMulai !== 'all'){
+            if ($request->tanggalAkhir == 'all') {
+                $tanggalFilter=$pesananpembelian->where('tanggal','>=',Carbon::parse($request->tanggalMulai)->format('Y-m-d'));
+            }else{
+                $tanggalFilter=$pesananpembelian->where('tanggal','<=',Carbon::parse($request->tanggalAkhir)->format('Y-m-d'))
+                                ->where('tanggal','>=',Carbon::parse($request->tanggalMulai)->format('Y-m-d'));
+            }
+        }else{
+            $tanggalFilter = $pesananpembelian;
+        }
+
+        if ($request->user !== 'all') {
+            $user = $tanggalFilter->where('created_by',$request->user);
+        }else{
+            $user = $tanggalFilter;
+        }
+
+        if ($request->kategoripesanan !== 'all') {
+            $kategori = $user->where('kategoripesanan_id',$request->kategoripesanan);
+        }else{
+            $kategori=$user;
+        }
+        
+
+        
+
+        return Datatables::of($kategori)
+            ->addIndexColumn()
+            ->addColumn('supplier', function (PesananPembelian $po) {
+                return $po->suppliers->nama;
+            })
+            ->addColumn('status', function (PesananPembelian $po) {
+                return $po->statusPO->nama;
+            })
+            ->addColumn('creator', function (PesananPembelian $po) {
+                return $po->creator->name;
+            })
+            ->editColumn('tanggal', function (PesananPembelian $po) {
+                return $po->tanggal ? with(new Carbon($po->tanggal))->format('d-m-Y') : '';
+            })
+            ->addColumn('action', function ($row) {
+                $editUrl = route('pesananpembelian.edit', ['pesananpembelian' => $row->id]);
+                $showUrl = route('pesananpembelian.show', ['pesananpembelian' => $row->id]);
+                $id = $row->id;
+                $status = $row->status_po_id;
+                return view('pembelian.pesananpembelian._formAction', compact('editUrl', 'showUrl', 'id', 'status'));
+            })
+            ->make(true);
+            
+    }
     public function create()
     {
         $title = "Pesanan Pembelian";
@@ -108,7 +153,7 @@ class PesananPembelianController extends Controller
         $diskon = TempDiskon::where('jenis', '=', "PO")
             ->where('user_id', '=', Auth::user()->id)
             ->get()->first();
-            
+
         $diskon_persen = $diskon->persen;
         $diskon_rupiah = $diskon->rupiah;
 
@@ -122,7 +167,7 @@ class PesananPembelianController extends Controller
             ->where('user_id', '=', Auth::user()->id)
             ->get()->first();
         $ppn_persen = $ppnData->persen;
-        $ppn = $total * ($ppn_persen / 100);        
+        $ppn = $total * ($ppn_persen / 100);
         $grandtotal = $total + $ppn;
 
         $tanggal = $request->tanggal;
@@ -171,7 +216,6 @@ class PesananPembelianController extends Controller
             $detail->ongkir = $a->ongkir;
             $detail->keterangan = $a->keterangan;
             $detail->save();
-            
         }
 
         return redirect()->route('pesananpembelian.index')->with('status', 'Pesanan Pembelian (Purchase Order) berhasil dibuat !');
@@ -179,9 +223,9 @@ class PesananPembelianController extends Controller
 
     public function caribarang()
     {
-        $products = Product::where('status','Aktif')->with(['categories', 'subcategories']);
+        $products = Product::where('status', 'Aktif')->with(['categories', 'subcategories']);
         $produk = "";
-        
+
         if (request()->ajax()) {
             return Datatables::of($products)
                 ->addIndexColumn()
@@ -191,7 +235,7 @@ class PesananPembelianController extends Controller
                 })
                 ->make(true);
         }
-        
+
         return view('pembelian.pesananpembelian._caribarang', compact('produk'));
     }
     public function setbarang(Request $request)
@@ -206,15 +250,14 @@ class PesananPembelianController extends Controller
         $datas = $request->all();
         $harga1 = $request->hargabeli;
         $diskon = $request->diskon_persen;
-        
+
         $harga = str_replace(',', '.', $harga1) * 1;
 
         if ($request->ppn > 0) {
-            $harga = $harga / (1 + $request->ppn/100);
-            
+            $harga = $harga / (1 + $request->ppn / 100);
         }
 
-        $ongkir1 = $request->ongkir;        
+        $ongkir1 = $request->ongkir;
         $ongkir = str_replace(',', '.', $ongkir1) * 1;
         $diskonpersen = str_replace(',', '.', $diskon) * 1;
 
@@ -236,7 +279,7 @@ class PesananPembelianController extends Controller
 
     public function loadtemppo(Request $request)
     {
-       
+
         $temppo = TempPo::with(['products'])
             ->where('user_id', '=', Auth::user()->id)
             ->get();
@@ -270,8 +313,7 @@ class PesananPembelianController extends Controller
         $diskon = $request->diskon_persen;
 
         if ($request->ppn > 0) {
-            $harga = $harga / (1 + $request->ppn/100);
-            
+            $harga = $harga / (1 + $request->ppn / 100);
         }
 
         $diskonpersen = str_replace(',', '.', $diskon) * 1;
@@ -429,7 +471,7 @@ class PesananPembelianController extends Controller
         $diskon_rupiah = $diskon->rupiah;
 
         $total_diskon = ($subtotal * ($diskon_persen / 100)) + $diskon_rupiah;
-        $total = $subtotal - $total_diskon + $ongkir; 
+        $total = $subtotal - $total_diskon + $ongkir;
 
         $item = TempPpn::where('jenis', '=', "PO")
             ->where('user_id', '=', Auth::user()->id)
@@ -515,13 +557,13 @@ class PesananPembelianController extends Controller
     {
 
         $title = "Print Pesanan Penj";
-        $pesananpembeliandetail = PesananPembelianDetail::with('products.merks')            
+        $pesananpembeliandetail = PesananPembelianDetail::with('products.merks')
             ->where('pesanan_pembelian_id', '=', $pesananpembelian->id)->get();
         $jmlBaris  = $pesananpembeliandetail->count();
         $perBaris = 13;
         $totalPage = ceil($jmlBaris / $perBaris);
         // dd($totalPage);
-       
+
         $pesananpembeliandetail =  $pesananpembeliandetail;
         $date = date('d/m/Y');
         $data = [
@@ -533,7 +575,7 @@ class PesananPembelianController extends Controller
         ];
 
         $pdf = PDF::loadView('pembelian.pesananpembelian.print_a4', $data)->setPaper('a4', 'potrait');;
-        return $pdf->download($pesananpembelian->no_so.'-'.$pesananpembelian->kode.'.pdf');
+        return $pdf->download($pesananpembelian->no_so . '-' . $pesananpembelian->kode . '.pdf');
 
         // return view('pembelian.pesananpembelian.print_a4', compact('title',  'totalPage','pesananpembelian','pesananpembeliandetail','date'
         //                                                             ,'perBaris'
@@ -549,7 +591,7 @@ class PesananPembelianController extends Controller
             'status_po_id' => 1
         ]);
 
-        return back()->with('sukses','status Pembelian berhasil dirubah');
+        return back()->with('sukses', 'status Pembelian berhasil dirubah');
     }
 
 
@@ -583,16 +625,16 @@ class PesananPembelianController extends Controller
         return view('pembelian.pesananpembelian.edit', compact('title', 'tglNow', 'suppliers', 'pesananpembelian', 'komoditass', 'kategoris'));
     }
 
-    public function update(Request $request , $id)
+    public function update(Request $request, $id)
     {
         // dd($request->all());
-        $data = request()->except(['_token','_method']);;
+        $data = request()->except(['_token', '_method']);;
         $tanggal = $request->tanggal;
         if ($tanggal <> null) {
             $tanggal = Carbon::createFromFormat('d-m-Y', $tanggal)->format('Y-m-d');
         }
         $data['tanggal'] = $tanggal;
-        PesananPembelian::where('id',$id)->update([
+        PesananPembelian::where('id', $id)->update([
             'supplier_id' => $request->supplier_id,
             'tanggal' => $tanggal,
             'komoditas_id' => $request->komoditas_id,
@@ -610,9 +652,9 @@ class PesananPembelianController extends Controller
 
     public function caribarangedit(Request $request)
     {
-         $products = Product::where('status','Aktif')->with(['categories', 'subcategories']);
-         $produk = "";
-        
+        $products = Product::where('status', 'Aktif')->with(['categories', 'subcategories']);
+        $produk = "";
+
         if (request()->ajax()) {
             return Datatables::of($products)
                 ->addIndexColumn()
@@ -622,32 +664,31 @@ class PesananPembelianController extends Controller
                 })
                 ->make(true);
         }
-        
+
         return view('pembelian.pesananpembelian._caribarang', compact('produk'));
     }
 
     public function inputPesananDetail(Request $request)
     {
         $datas = $request->all();
-        $id = $request->pesanan_pembelian_id; 
+        $id = $request->pesanan_pembelian_id;
 
         $harga1 = $request->hargabeli;
 
-        
+
         $harga = str_replace(',', '.', $harga1) * 1;
-         if ($request->ppn > 0) {
-            $harga = $harga / (1 + $request->ppn/100);
-            
+        if ($request->ppn > 0) {
+            $harga = $harga / (1 + $request->ppn / 100);
         }
 
-        $ongkir1 = $request->ongkir;        
+        $ongkir1 = $request->ongkir;
         $ongkir = str_replace(',', '.', $ongkir1) * 1;
 
         $subtotal = $request->qty * $harga;
         $total_diskon = (($subtotal * ($request->diskon_persen / 100)) + $request->diskon_rp);
-        $total = $subtotal - $total_diskon; 
+        $total = $subtotal - $total_diskon;
 
-        
+
         $datas['hargabeli'] = $harga;
         $datas['subtotal'] = $subtotal;
         $datas['total_diskon'] = $total_diskon;
@@ -655,10 +696,10 @@ class PesananPembelianController extends Controller
         $datas['user_id'] = Auth::user()->id;
         $datas['ongkir'] = $ongkir;
         $datas['ppn'] = $request->ppn;
-    
+
 
         // get data dari pesanan pembelian
-        $pembelian = PesananPembelian::where('id',$id)->first();
+        $pembelian = PesananPembelian::where('id', $id)->first();
         $datas['tanggal'] =  $pembelian->tanggal;
 
         // save di detail
@@ -666,33 +707,32 @@ class PesananPembelianController extends Controller
 
 
         // ambil data transaksi terbaru 
-        $totaldetail  = PesananPembelianDetail::where('pesanan_pembelian_id',$id)->sum('total');
-        $totalongkir  = PesananPembelianDetail::where('pesanan_pembelian_id',$id)->sum('ongkir');
-        $totaldiskon  = PesananPembelianDetail::where('pesanan_pembelian_id',$id)->sum('total_diskon');
+        $totaldetail  = PesananPembelianDetail::where('pesanan_pembelian_id', $id)->sum('total');
+        $totalongkir  = PesananPembelianDetail::where('pesanan_pembelian_id', $id)->sum('ongkir');
+        $totaldiskon  = PesananPembelianDetail::where('pesanan_pembelian_id', $id)->sum('total_diskon');
 
         // kalkulasi
 
         $pembelian->subtotal = $totaldetail;
         $totaldiskonheader = ($pembelian->subtotal * ($pembelian->diskon_persen / 100)) + $pembelian->diskon_rupiah;
         $pembelian->total = $pembelian->subtotal - $totaldiskonheader + $totalongkir;
-        
+
         $pembelian->ongkir = $totalongkir;
         $pembelian->total_diskon_header = $totaldiskonheader;
         $pembelian->total_diskon_detail = $totaldiskon;
         $ppn_persen = $pembelian->ppn;
-        $ppn = $pembelian->total * ($ppn_persen / 100);   
-        
-        $grandtotal = $pembelian->total + $ppn;
-        
-        
-        $pembelian->grandtotal = $grandtotal;        
-        $pembelian->update();    
+        $ppn = $pembelian->total * ($ppn_persen / 100);
 
+        $grandtotal = $pembelian->total + $ppn;
+
+
+        $pembelian->grandtotal = $grandtotal;
+        $pembelian->update();
     }
 
     public function loadPesananDetail(Request $request)
     {
-      
+
         $id = $request->pembelian_id;
         $pesananpembelian = PesananPembelianDetail::with(['products'])
             ->where('pesanan_pembelian_id', $id)
@@ -705,32 +745,31 @@ class PesananPembelianController extends Controller
         $id = $request->id;
         $idpembelian = $request->pembelian_id;
 
-         // kurangi dulu total , grand total dll di pesanan penjualan        
-         PesananPembelianDetail::destroy($id);
+        // kurangi dulu total , grand total dll di pesanan penjualan        
+        PesananPembelianDetail::destroy($id);
 
-         $total = PesananPembelianDetail::where('pesanan_pembelian_id',$idpembelian)->sum('total');        
-         $ongkir = PesananPembelianDetail::where('pesanan_pembelian_id',$idpembelian)->sum('ongkir');        
-             
+        $total = PesananPembelianDetail::where('pesanan_pembelian_id', $idpembelian)->sum('total');
+        $ongkir = PesananPembelianDetail::where('pesanan_pembelian_id', $idpembelian)->sum('ongkir');
+
         // hitung di header          
-          $pembelian = PesananPembelian::where('id',$idpembelian)->first();                         
+        $pembelian = PesananPembelian::where('id', $idpembelian)->first();
 
-          $pembelian->subtotal = $total;
-          $pembelian->ongkir = $ongkir;    
+        $pembelian->subtotal = $total;
+        $pembelian->ongkir = $ongkir;
         //   grandtotal
-          $pembelian->total = $pembelian->subtotal - $pembelian->total_diskon_header + $pembelian->ongkir;                    
+        $pembelian->total = $pembelian->subtotal - $pembelian->total_diskon_header + $pembelian->ongkir;
 
-          $ppn_persen = $pembelian->ppn;
-          $ppn = $pembelian->total * ($ppn_persen / 100);          
-                          
-          $grandtotal = $pembelian->total + $ppn ;        
-          $pembelian->grandtotal = $grandtotal;        
-          $pembelian->update(); 
+        $ppn_persen = $pembelian->ppn;
+        $ppn = $pembelian->total * ($ppn_persen / 100);
 
+        $grandtotal = $pembelian->total + $ppn;
+        $pembelian->grandtotal = $grandtotal;
+        $pembelian->update();
     }
 
     public function editBarangDetail(Request $request)
     {
-        $item = PesananPembelianDetail::where('id', '=', $request->id)->first();        
+        $item = PesananPembelianDetail::where('id', '=', $request->id)->first();
         $id_product = $item->product_id;
 
         $product = new Product;
@@ -743,14 +782,13 @@ class PesananPembelianController extends Controller
     public function updateBarangDetail(Request $request)
     {
         //dd($request->hargajual);
-        $harga1 = $request->hargabeli;        
+        $harga1 = $request->hargabeli;
         $harga2 = str_replace('.', '', $harga1);
         $harga = str_replace(',', '.', $harga2) * 1;
         $diskon = $request->diskon_persen;
 
         if ($request->ppn > 0) {
-            $harga = $harga / (1 + $request->ppn/100);
-            
+            $harga = $harga / (1 + $request->ppn / 100);
         }
 
         $ongkir1 = $request->ongkir;
@@ -780,11 +818,11 @@ class PesananPembelianController extends Controller
         $PP->update();
 
         // kalkulasi header
-        $totaldetail = PesananPembelianDetail::where('pesanan_pembelian_id',$PP->pesanan_pembelian_id)->sum('total');
-        $ongkirdetail =PesananPembelianDetail::where('pesanan_pembelian_id',$PP->pesanan_pembelian_id)->sum('ongkir');        
-        $totalDiskon = PesananPembelianDetail::where('pesanan_pembelian_id',$PP->pesanan_pembelian_id)->sum('total_diskon');
+        $totaldetail = PesananPembelianDetail::where('pesanan_pembelian_id', $PP->pesanan_pembelian_id)->sum('total');
+        $ongkirdetail = PesananPembelianDetail::where('pesanan_pembelian_id', $PP->pesanan_pembelian_id)->sum('ongkir');
+        $totalDiskon = PesananPembelianDetail::where('pesanan_pembelian_id', $PP->pesanan_pembelian_id)->sum('total_diskon');
         // hitung semua data baru di detail dan kalkulasi total dan ongkir
-        $pesanan = PesananPembelian::where('id',$PP->pesanan_pembelian_id)->first();
+        $pesanan = PesananPembelian::where('id', $PP->pesanan_pembelian_id)->first();
 
 
         // hitung total di header 
@@ -798,38 +836,38 @@ class PesananPembelianController extends Controller
         $ongkir = $pesanan->ongkir;
         $grandtotal = $pesanan->total + $ppn;
 
-        $pesanan->grandtotal = $grandtotal;        
-        $pesanan->update();        
+        $pesanan->grandtotal = $grandtotal;
+        $pesanan->update();
         // hitung grandtotaldiheader
     }
 
     public function editDiskonDetail(Request $request)
-    {  
-        $item = PesananPembelian::where('id',$request->id)->first();        
+    {
+        $item = PesananPembelian::where('id', $request->id)->first();
         // kalkulasi persen diskon        
         $id_diskon = $item->id;
         $diskon_persen = $item->diskon_persen;
-        $diskon_rupiah = $item->diskon_rupiah;        
+        $diskon_rupiah = $item->diskon_rupiah;
 
         return view('pembelian.pesananpembelian._setdiskondetail', compact('id_diskon', 'diskon_persen', 'diskon_rupiah'));
     }
 
     public function updateDiskonDetail(Request $request)
     {
-        
-        $pesanan = PesananPembelian::where('id',$request->id)->first();
+
+        $pesanan = PesananPembelian::where('id', $request->id)->first();
 
         $id_diskon = $request->id_diskon;
         $diskon_persen = $request->diskon_persen;
         $diskon_rupiah = $request->diskon_rupiah;
 
 
-        $total_diskon = (($pesanan->subtotal * ( $diskon_persen / 100)) + $diskon_rupiah);
+        $total_diskon = (($pesanan->subtotal * ($diskon_persen / 100)) + $diskon_rupiah);
         $total = $pesanan->subtotal - $total_diskon + $pesanan->ongkir;
         $pesanan->diskon_persen = $diskon_persen;
         $pesanan->diskon_rupiah = $diskon_rupiah;
         $pesanan->total_diskon_header = $total_diskon;
-            
+
         $pesanan->total = $total;
 
         $ppn_persen = $pesanan->ppn;
@@ -838,30 +876,28 @@ class PesananPembelianController extends Controller
         $ongkir = $pesanan->ongkir;
         $pesanan->grandtotal = $pesanan->total + $ppn;
         $pesanan->update();
-        
     }
 
     public function editPPNDetail(Request $request)
     {
-        $item = PesananPembelian::where('id',$request->id)->select('ppn','id')->first();                 
+        $item = PesananPembelian::where('id', $request->id)->select('ppn', 'id')->first();
         $persen = $item->ppn;
         $id_ppn = $item->id;
 
-        return view('pembelian.pesananpembelian._setppndetail', compact('id_ppn','persen'));
+        return view('pembelian.pesananpembelian._setppndetail', compact('id_ppn', 'persen'));
     }
 
     public function updatePPNDetail(Request $request)
     {
-        $id = $request->id;        
-        $pembelian = PesananPembelian::where('id',$id)->first();
+        $id = $request->id;
+        $pembelian = PesananPembelian::where('id', $id)->first();
         $pembelian->ppn = $request->persen;
 
-        $ppn = $pembelian->total * ($request->persen / 100);          
-        $grandtotal = $pembelian->total + $ppn;        
+        $ppn = $pembelian->total * ($request->persen / 100);
+        $grandtotal = $pembelian->total + $ppn;
 
-        $pembelian->grandtotal = $grandtotal;        
-        $pembelian->update();                
-
+        $pembelian->grandtotal = $grandtotal;
+        $pembelian->update();
     }
 
     public function hitungSubTotalDetail(Request $request)
@@ -871,10 +907,10 @@ class PesananPembelianController extends Controller
     }
 
     public function hitungDiskonDetail(Request $request)
-    {   
-        $diskon =  PesananPembelian::where('id',$request->id)->first();     
-        
-        $total_diskon = $diskon->total_diskon_header;                
+    {
+        $diskon =  PesananPembelian::where('id', $request->id)->first();
+
+        $total_diskon = $diskon->total_diskon_header;
 
         if ($total_diskon == 0) {
             return $total_diskon;
@@ -885,7 +921,7 @@ class PesananPembelianController extends Controller
 
     public function hitungTotalDetail(Request $request)
     {
-        $subtotal = PesananPembelian::where('id',$request->id)->first();
+        $subtotal = PesananPembelian::where('id', $request->id)->first();
         $total = $subtotal->total;
 
         if ($total == 0) {
@@ -897,7 +933,7 @@ class PesananPembelianController extends Controller
 
     public function hitungPPNDetail(Request $request)
     {
-        $subtotal =  PesananPembelian::where('id', '=', $request->id)->first();                
+        $subtotal =  PesananPembelian::where('id', '=', $request->id)->first();
         $ppn = $subtotal->total * ($subtotal->ppn / 100);
 
         if ($ppn == 0) {
@@ -920,7 +956,7 @@ class PesananPembelianController extends Controller
 
     public function hitungGrandTotalDetail(Request $request)
     {
-       $data =  PesananPembelian::where('id',$request->id)->first();
+        $data =  PesananPembelian::where('id', $request->id)->first();
         $grandtotal = $data->grandtotal;
 
         if ($grandtotal == 0) {
@@ -929,11 +965,4 @@ class PesananPembelianController extends Controller
             return number_format($grandtotal, 2, ',', '.');
         }
     }
-
-
-
-
-
-
-    
 }

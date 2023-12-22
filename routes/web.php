@@ -331,9 +331,12 @@ Route::middleware('has.role')->prefix('master')->group(function () {
 
 Route::middleware('has.role')->prefix('pembelian')->group(function () {
     Route::prefix('pesananpembelian')->group(function () {
+        Route::post('datatable', [PesananPembelianController::class, 'datatable'])->name('pesananpembelian.datatable');
+
         Route::get('', [PesananPembelianController::class, 'index'])->name('pesananpembelian.index');
         Route::get('create', [PesananPembelianController::class, 'create'])->name('pesananpembelian.create');
-        Route::post('create', [PesananPembelianController::class, 'store']);
+        Route::post('create', [PesananPembelianController::class, 'store']);        
+        
         Route::get('{pesananpembelian}/edit', [PesananPembelianController::class, 'edit'])->name('pesananpembelian.edit');
         Route::put('{pesananpembelian}/edit', [PesananPembelianController::class, 'update'])->name('pesananpembelian.update');
         Route::post('delete', [PesananPembelianController::class, 'delete'])->name('pesananpembelian.delete');

@@ -79,14 +79,14 @@
 
                                     <div class="form-group">
                                         <label>Tgl Awal :</label>
-                                        <input type="text" class="form-control" name="tgl1" readonly value=""
+                                        <input type="text" class="form-control" name="tgl1"  value=""
                                             id="tgl1" />
 
                                     </div>
 
                                     <div class=" form-group">
                                         <label>Tanggal Akhir :</label>
-                                        <input type="text" class="form-control" name="tgl2" readonly value=""
+                                        <input type="text" class="form-control" name="tgl2"  value=""
                                             id="tgl2" />
                                     </div>       
                                     

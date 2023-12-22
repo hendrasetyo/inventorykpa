@@ -71,8 +71,8 @@ class PesananPembelian extends Model
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
-    public function updater()
+    public function updater()   
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
-    }
+    }    
 }

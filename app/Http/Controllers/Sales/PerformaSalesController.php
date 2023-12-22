@@ -146,10 +146,10 @@ class PerformaSalesController extends Controller
                                     DB::raw("sum(fp.total_cn) as total_cn"),
                                     DB::raw("sum(fp.ongkir) as total_ongkir"),
                             )->get();
-                             
+                                     
         $sales = [];
         $penjualan = [];
-
+        
         $count = count($hasil);
 
         if ($count > 0) {
@@ -158,7 +158,7 @@ class PerformaSalesController extends Controller
                 $penjualan []  = $value->grandtotal_penjualan - $value->total_ppn - $value->total_cn - $value->total_ongkir;
             }
         }
-
+ 
         return response()->json([
             'sales' => $sales,
             'penjualan' => $penjualan
@@ -235,7 +235,7 @@ class PerformaSalesController extends Controller
                     DB::raw("sum(fp.ppn) as total_ppn"),
                     DB::raw("sum(fp.total_cn) as total_cn"),
                     DB::raw("sum(fp.ongkir) as total_ongkir"),
-                );         
+                );     
         
         $hasil= $tipe->get();                        
         $laba = array();  
@@ -290,7 +290,8 @@ class PerformaSalesController extends Controller
         return response()->json([
             'laba' => $laba,
             'bulan' => $months,
-            'targetsales' => $dataTargetSales
+            'targetsales' => $dataTargetSales,
+            'hasil' => $hasil
         ]);
     }
 
