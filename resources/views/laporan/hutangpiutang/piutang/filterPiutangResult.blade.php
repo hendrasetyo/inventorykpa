@@ -63,8 +63,7 @@
                                     <input type="hidden" name="tgl2" value="{{$form['tgl2']}}"> 
                                     <input type="hidden" name="customer" value="{{$form['customer']}}"> 
                                     <input type="hidden" name="no_faktur" value="{{$form['no_faktur']}}"> 
-                                    <input type="hidden" name="sales" value="{{$form['sales']}}">  
-                                    <input type="hidden" name="status" value="{{$form['status']}}"> 
+                                    <input type="hidden" name="sales" value="{{$form['sales']}}">                                      
                                     
 
                                     <button type="submit" class="btn btn-primary btn-sm">
