@@ -28,7 +28,8 @@ class LaporanPiutangExport implements FromView
 
         $pembayaran = DB::table('piutangs as p')
                     ->join('pesanan_penjualans as pp','p.pesanan_penjualan_id','=','pp.id')                    
-                    ->join('pengiriman_barangs as pb','p.pengiriman_barang_id','=','pb.id');                    
+                    ->join('pengiriman_barangs as pb','p.pengiriman_barang_id','=','pb.id')
+                    ->where('p.deleted_at',null);              
                     
 
         if ($this->data['tgl1']) {            
@@ -108,7 +109,7 @@ class LaporanPiutangExport implements FromView
         }
 
 
-        $statusFilter = $salesfilter->where('p.status','=',$this->data['status']);
+        $statusFilter = $salesfilter;
 
         $datafilter = $statusFilter->select('c.nama as nama_customer','pp.kode as kode_pp','pb.kode as kode_pb','fp.kode as kode_fp','fp.no_kpa as no_kpa','p.*','s.nama as nama_sales')
         ->orderBy('c.nama')
