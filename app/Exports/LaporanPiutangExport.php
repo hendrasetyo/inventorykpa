@@ -28,8 +28,7 @@ class LaporanPiutangExport implements FromView
 
         $pembayaran = DB::table('piutangs as p')
                     ->join('pesanan_penjualans as pp','p.pesanan_penjualan_id','=','pp.id')                    
-                    ->join('pengiriman_barangs as pb','p.pengiriman_barang_id','=','pb.id')
-                    ->where('p.deleted_at',null);              
+                    ->join('pengiriman_barangs as pb','p.pengiriman_barang_id','=','pb.id');                             
                     
 
         if ($this->data['tgl1']) {            
