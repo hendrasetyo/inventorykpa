@@ -42,6 +42,20 @@
                     </div>
                     
                     <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-4 mb-5">
+                                <div class="card">                                    
+                                    <div class="card-body">
+                                        <h5>Total Penjualan</h5>
+                                        <h5>
+                                            <input type="text" class="form-control text-right" id="grandtotal" name="grandtotal" value="0"
+                                            readonly="readonly">
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">    
@@ -281,6 +295,10 @@
                         let dataPenjualan = res[0].laba;
                         let targetSales = res[0].targetsales;
 
+                        let grandtotalpenjualan = res[0].total_penjualan;
+
+                        hitungtotal(grandtotalpenjualan);
+
                        
 
                         barPerformaSales.data.labels =  bulan;
@@ -321,6 +339,10 @@
                         let dataPenjualan = res[0].laba;
                         let targetSales = res[0].targetsales;
 
+                        let grandtotalpenjualan = res[0].total_penjualan;
+
+                        hitungtotal(grandtotalpenjualan);
+
                         barPerformaSales.data.labels =  bulan;
                         barPerformaSales.data.datasets[0].data = dataPenjualan;
                         barPerformaSales.data.datasets[1].data = targetSales;
@@ -359,6 +381,9 @@
                         let dataPenjualan = res[0].laba;
                         let targetSales = res[0].targetsales;
 
+                        let grandtotalpenjualan = res[0].total_penjualan;
+                        hitungtotal(grandtotalpenjualan);
+
                         barPerformaSales.data.labels =  bulan;
                         barPerformaSales.data.datasets[0].data = dataPenjualan;
                         barPerformaSales.data.datasets[1].data = targetSales;
@@ -374,9 +399,6 @@
                     }
                 });	   
     }
-
-
-
     // ================================ GRAFIK TOP PENCAPAIAN CUSTOMER =====================
     
     function datatableCustomer() {
@@ -504,6 +526,10 @@
                     },
                 ],
             });
+        }
+
+        function hitungtotal(data) {
+            $('#grandtotal').val(data);
         }
     
 </script>

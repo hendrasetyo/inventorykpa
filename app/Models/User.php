@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Blameable;
+use App\Models\HRD\Karyawan;
+use App\Models\Sales\Dinas;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,24 +26,17 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'sales_id',
-        'phone'
+        'phone',
+        'karyawan_id'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
+   
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
+   
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
@@ -69,5 +64,19 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(KunjunganTeknisi::class, 'user_id');
     }
+
+  
+    public function dinas()
+    {
+        return $this->hasMany(Dinas::class, 'user_id');
+    }
+
+   
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class, 'user_id', 'id');
+    }
+
+
    
 }

@@ -34,7 +34,7 @@
     <link href="{{ asset('style.css') }}" rel="stylesheet" type="text/css" />
 
     <style type="text/css">
-        .signature-pad{
+        .signature-pad {
             border: 1px solid #ccc;
             border-radius: 5px;
             width: 100%;
@@ -47,14 +47,15 @@
 
 <!--begin::Body-->
 
-<body id="kt_body" style="background-image: url({{ asset('assets/media/bg/bg-10.jpg')}})"
+<body id="kt_body" style="background-image: url({{ asset('assets/media/bg/bg-10.jpg') }})"
     class="quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled page-loading">
     <!--begin::Main-->
     <!--begin::Header Mobile-->
     <div id="kt_header_mobile" class="header-mobile ">
         <!--begin::Logo-->
         <a href="/">
-            <img alt="Logo" src="{{ asset('assets/media/logos/logo_kpa_main.png') }}" class="logo-default max-h-30px" />
+            <img alt="Logo" src="{{ asset('assets/media/logos/logo_kpa_main.png') }}"
+                class="logo-default max-h-30px" />
         </a>
         <!--end::Logo-->
 
@@ -90,10 +91,10 @@
         {{-- loader  --}}
         <div id="overlay">
             <div class="cv-spinner">
-              <span class="spinner"></span>
+                <span class="spinner"></span>
             </div>
-          </div>
-         
+        </div>
+
         <!--begin::Page-->
         <div class="d-flex flex-row flex-column-fluid page">
             <!--begin::Wrapper-->
@@ -205,10 +206,10 @@
     <!--begin::Page Scripts(used by this page)-->
     <script src="{{ asset('assets/js/pages/widgets.js?v=7.0.6') }}"></script>
 
-    
+
     <!--begin::Page Scripts(used by this page)-->
     <script src="{{ asset('assets/js/pages/crud/datatables/basic/scrollable.js?v=7.0.6') }}"></script>
-    
+
     <script src="{{ asset('assets/js/pages/features/miscellaneous/sweetalert2.js?v=7.0.6') }}"></script>
 
     <script src="{{ asset('assets/js/pages/features/miscellaneous/sweetalert2.js?v=7.0.6') }}"></script>
@@ -216,7 +217,7 @@
     <!--begin::Page Scripts(used by this page)-->
     <script src="{{ asset('assets/js/pages/features/charts/apexcharts.js?v=7.0.6') }} "></script>
     <!--end::Page Scripts-->
-    
+
     <!--end::Page Scripts-->
     @stack('script')
     <!--end::Page Scripts-->
@@ -241,6 +242,16 @@
                 });	
           });
     </script> --}}
+
+    <script>
+        @if (session('success-create'))
+            swal("Good job!", "Anda Berhasil Menambahkan Data !", "success");
+        @endif
+
+        @if (session('success-update'))
+            swal("Good job!", "Anda Berhasil Mengubah Data !", "success");
+        @endif
+    </script>
 
 </body>
 <!--end::Body-->

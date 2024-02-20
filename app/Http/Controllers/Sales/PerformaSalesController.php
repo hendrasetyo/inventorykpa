@@ -237,14 +237,19 @@ class PerformaSalesController extends Controller
                     DB::raw("sum(fp.ongkir) as total_ongkir"),
                 );     
         
-        $hasil= $tipe->get();                        
+        $hasil= $tipe->get();  
+           
         $laba = array();  
         $data=[]; 
+
+        $grandtotal=0;
                         
         foreach ($hasil as $key => $value) {
             $data[(int)$value->tanggal_penjualan] = [
                 'grandtotal' => (int) ( $value->grandtotal_penjualan - $value->total_ppn- $value->total_ongkir - $value->total_cn)
             ];
+
+            $grandtotal += (int) ( $value->grandtotal_penjualan - $value->total_ppn- $value->total_ongkir - $value->total_cn);
         }
         
         
@@ -285,13 +290,13 @@ class PerformaSalesController extends Controller
             }
            
         }
-       
 
         return response()->json([
             'laba' => $laba,
             'bulan' => $months,
             'targetsales' => $dataTargetSales,
-            'hasil' => $hasil
+            'hasil' => $hasil,
+            'total_penjualan' => number_format($grandtotal, 0, ',', '.') 
         ]);
     }
 
