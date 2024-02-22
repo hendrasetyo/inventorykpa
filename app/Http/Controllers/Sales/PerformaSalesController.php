@@ -373,8 +373,8 @@ class PerformaSalesController extends Controller
                         ->addColumn('action', function ($data) {
                             $customer_id =  $data->id;
                             return view('sales.performasales.detailperforma.partial.button',compact('customer_id'));
-                        })      
-                        ->make(true);         
+                        })
+                        ->make(true); 
     }
 
     public function datatableProduk(Request $request)

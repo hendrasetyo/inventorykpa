@@ -15,11 +15,17 @@ class AbsensiImport implements ToModel
 
         $karyawan = Karyawan::where('no_emp',$row[0])->first();
 
+        $timetanggal = strtotime($row[5]);
+        // $clockin = strtotime($row[9]);
+        // $clockout = strtotime($row[10]);
+        // $worktime = strtotime($row[17]);
+
         if ($row[9] > Carbon::parse('08:15')->format('H:i')) {
             $status = 'terlambat';
         }else{
             $status = 'ontime';
         }
+        
 
         if ($this->no !== 0) {      
             $absensi = Absensi::create([
@@ -27,7 +33,7 @@ class AbsensiImport implements ToModel
                 'clock_in' => $row[9],
                 'clock_out' => $row[10],
                 'work_time' => $row[17],
-                'tanggal' => Carbon::parse($row[5])->format('Y-m-d'),
+                'tanggal' => Carbon::parse($timetanggal)->format('Y-m-d'),
                 'status' => $status,
                 'keterangan' =>  ''       
             ]);

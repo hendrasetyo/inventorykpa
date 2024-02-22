@@ -14,14 +14,15 @@
                     @csrf
                     <div class="form-group">
                         <label for="">Import File</label>
-                        <input type="file_import" class="form-control" >
+                        <input type="file" name="file_import" class="form-control" >
                     </div>
-                 </form>
+                 
              </div>
              <div class="modal-footer">
                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                  <button type="submit" class="btn btn-primary">Save changes</button>
              </div>
+            </form>
          </div>
      </div>
  </div>

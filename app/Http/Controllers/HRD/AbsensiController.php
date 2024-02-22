@@ -18,8 +18,9 @@ class AbsensiController extends Controller
     public function import (Request $request)
     {
         Excel::import(new AbsensiImport, $request->file('file_import'));    
-
         return back();
     }
+
+    
     
 }

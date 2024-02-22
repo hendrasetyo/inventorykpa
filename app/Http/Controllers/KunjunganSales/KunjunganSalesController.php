@@ -106,7 +106,8 @@ class KunjunganSalesController extends Controller
             'aktifitas' => $request->aktifitas,
             'ttd' => $request->ttd,
             'image' => $nameFile,
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
+            'created_at' => now()
         ]);
 
 
@@ -129,6 +130,8 @@ class KunjunganSalesController extends Controller
 
     public function update(Request $request,$id)
     {
+
+        
         
         $img = $request->file('image');
         $signed = $request->input('signed');
@@ -180,8 +183,10 @@ class KunjunganSalesController extends Controller
             'aktifitas' => $request->aktifitas,
             'ttd' => $ttd,
             'image' => $nameFile,
-            'user_id' => auth()->user()->id
-        ]);
+            'user_id' => auth()->user()->id,
+            'updated_at' => now()
+        ],
+        ['timestamps' => false]);
 
 
         return redirect()->route('kunjungansales.index');
