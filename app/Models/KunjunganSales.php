@@ -17,6 +17,7 @@ class KunjunganSales extends Model
         'tanggal',
         'aktifitas',
         'ttd',
+        'jam_buat',
         'image',
         'user_id'
     ];

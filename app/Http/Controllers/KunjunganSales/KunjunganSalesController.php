@@ -39,7 +39,7 @@ class KunjunganSalesController extends Controller
                     return $kj->tanggal ? with(new Carbon($kj->tanggal))->format('d F Y') : '';
                 })
                 ->editColumn('created_at', function (KunjunganSales $kj) {
-                    return $kj->created_at ? with(new Carbon($kj->created_at))->format('H:i') : '';
+                    return $kj->jam_buat ? with(new Carbon($kj->jam_buat))->format('H:i') : with(new Carbon($kj->created_at))->format('H:i');
                 })
                 ->editColumn('name', function (KunjunganSales $kj) {
                     return $kj->user->name;
@@ -106,8 +106,8 @@ class KunjunganSalesController extends Controller
             'aktifitas' => $request->aktifitas,
             'ttd' => $request->ttd,
             'image' => $nameFile,
-            'user_id' => auth()->user()->id,
-            'created_at' => now()
+            'user_id' => auth()->user()->id,            
+            'jam_buat' => Carbon::parse(now())->format('H:i')
         ]);
 
 
@@ -157,10 +157,10 @@ class KunjunganSalesController extends Controller
        
         if ($signed) {            
             $folderPath = public_path('ttd/');
-
-            if ($kunjungan->ttd) {
-                unlink($folderPath . $kunjungan->ttd);
-            }
+            // if ($kunjungan->ttd) {
+               
+            //     unlink($folderPath . $kunjungan->ttd);
+            // }
 
             $image_parts = explode(";base64,", $request->signed);
                        
@@ -185,8 +185,7 @@ class KunjunganSalesController extends Controller
             'image' => $nameFile,
             'user_id' => auth()->user()->id,
             'updated_at' => now()
-        ],
-        ['timestamps' => false]);
+        ]);
 
 
         return redirect()->route('kunjungansales.index');
