@@ -102,7 +102,8 @@ class KunjunganTeknisiController extends Controller
             'aktifitas' => $request->aktifitas,
             'ttd' => $request->ttd,
             'image' => $nameFile,
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
+            'jam_buat' => Carbon::parse(now())->format('H:i')
         ]);
 
 
