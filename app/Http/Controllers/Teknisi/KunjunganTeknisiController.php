@@ -39,7 +39,7 @@ class KunjunganTeknisiController extends Controller
                     return $kj->user->name;
                 })
                 ->editColumn('created_at',function (KunjunganTeknisi $kj){
-                    return $kj->created_at ? with(new Carbon($kj->created_at))->format('H:i') : '';
+                    return $kj->jam_buat ? with(new Carbon($kj->jam_buat))->format('H:i') : with(new Carbon($kj->created_at))->format('H:i');
                 })
                 ->addColumn('action', function ($row) {    
                     $id = $row->id;        
