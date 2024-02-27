@@ -246,10 +246,10 @@ class PerformaSalesController extends Controller
                         
         foreach ($hasil as $key => $value) {
             $data[(int)$value->tanggal_penjualan] = [
-                'grandtotal' => (int) ( $value->grandtotal_penjualan - $value->total_ppn- $value->total_ongkir - $value->total_cn)
+                'grandtotal' => ( $value->grandtotal_penjualan - $value->total_ppn- $value->total_ongkir - $value->total_cn)
             ];
 
-            $grandtotal += (int) ( $value->grandtotal_penjualan - $value->total_ppn- $value->total_ongkir - $value->total_cn);
+            $grandtotal += ( $value->grandtotal_penjualan - $value->total_ppn- $value->total_ongkir - $value->total_cn);
         }
         
         
