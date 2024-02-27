@@ -133,6 +133,8 @@
            <td></td>
            <td></td>
            <td><u><b>GRANDTOTAL</b></u></td>
+           <td></td>
+           <td></td>
             <td><b>{{$totHargaJual}}</b></td>
             <td><b>{{$totSubtotal}}</b></td>
             <td><b>{{$totDiskon}}</b></td>
@@ -140,7 +142,7 @@
             <td><b>{{ $totCN ? $totCN : 0 }}</b></td>
             <td><b>{{$totTotal + (11/100 * $totTotal)}}</b></td>
             <td></td>
-            <td><b>{{$totTotal + (11/100 * $totTotal) - ($totCN ? $totCN : 0)}}</b></td>
+            <td><b>{{$totTotal  - ($totCN ? $totCN : 0)}}</b></td>
             <td></td>
         </tr>
     </tbody>
