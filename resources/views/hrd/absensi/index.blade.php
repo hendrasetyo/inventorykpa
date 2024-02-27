@@ -53,9 +53,22 @@
                                 </div>
                                 <div class="card-toolbar">
                                     <div class="">                                        
-                                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal"
+                                        <a href="{{ route('settingcuti.index') }}" class="btn btn-success mr-2" >
+                                           <i class="flaticon2-gear"></i> Setting Cuti
+                                        </a>
+                                    </div>
+
+                                    <div class="">                                        
+                                        <button type="button" class="btn btn-info mr-2" data-toggle="modal"
+                                            data-target="#export">
+                                            <i class="flaticon2-printer"></i>   Export
+                                        </button>
+                                    </div>
+
+                                    <div class="">                                        
+                                        <button type="button" class="btn btn-warning mr-2" data-toggle="modal"
                                             data-target="#import">
-                                            Import
+                                           <i class="flaticon2-hourglass"></i> Import
                                         </button>
                                     </div>
                                     @can('absensi-create')
@@ -73,7 +86,9 @@
                                         <tr>
                                             <th>Nama</th>
                                             <th>Tanggal</th>
-                                            <th>Alasan</th>
+                                            <th>Clock In</th>
+                                            <th>Clock Out</th>
+                                            <th>Work Time</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -95,6 +110,7 @@
     <!--end::Content-->
 
     @include('hrd.absensi.modal._import')
+    @include('hrd.absensi.modal._export')
 @endsection
 @push('script')
     <script src="{{ asset('/assets/js/pages/crud/forms/widgets/select2.js?v=7.0.6') }}"></script>
@@ -119,7 +135,7 @@
                 serverSide: true,
                 autoWidth: false,
                 ajax: {
-                    url: "{{ route('cuti.datatable') }}",
+                    url: "{{ route('absensi.datatable') }}",
                     type: "POST",
                     data: function(params) {
                         params._token = "{{ csrf_token() }}";
@@ -138,8 +154,16 @@
                         name: 'tanggal'
                     },
                     {
-                        data: 'alasan',
-                        name: 'alasan'
+                        data: 'clock_in',
+                        name: 'clock_in'
+                    },
+                    {
+                        data: 'clock_out',
+                        name: 'clock_out'
+                    },
+                    {
+                        data: 'work_time',
+                        name: 'work_time'
                     },
                     {
                         data: 'status',

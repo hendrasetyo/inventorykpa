@@ -59,7 +59,7 @@ class CutiController extends Controller
             'alasan' => $request->alasan,
             'bulan' => $bulan,
             'tahun' => $tahun,
-            'status' => 'Menunggu Persetujuan'
+            'status' => 'DiSetujui'
         ]);
 
         return redirect()->route('cuti.index')->with('success', 'Data  Berhasil Ditambahkan');

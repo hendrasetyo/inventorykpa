@@ -16,7 +16,7 @@ class Karyawan extends Model
         'no_emp',
         'nama',
         'posisi_id',
-        'jabatan_id',
+        'jabatan_id',    
         'email',
         'hp',
         'tanggal_masuk',
@@ -56,5 +56,10 @@ class Karyawan extends Model
         return $this->hasMany(User::class, 'karyawan_id');
     }
 
+  
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class, 'karyawan_id');
+    }
 
 }

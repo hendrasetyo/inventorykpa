@@ -11,6 +11,7 @@ use App\Http\Controllers\HRD\AbsensiController;
 use App\Http\Controllers\HRD\CutiController;
 use App\Http\Controllers\HRD\KaryawanController;
 use App\Http\Controllers\HRD\LemburController;
+use App\Http\Controllers\HRD\SettingCutiController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\Konversi\KonversiController;
 use App\Http\Controllers\KunjunganSales\KunjunganSalesController;
@@ -1086,6 +1087,7 @@ Route::middleware('has.role')->prefix('hrd')->group(function () {
 
         Route::get('/{id}/edit', [KaryawanController::class, 'edit'])->name('karyawan.edit');
         Route::post('/store', [KaryawanController::class, 'store'])->name('karyawan.store');
+        Route::post('/import', [KaryawanController::class, 'import'])->name('karyawan.import');
 
         Route::put('/{id}/update', [KaryawanController::class, 'update'])->name('karyawan.update');
 
@@ -1125,6 +1127,7 @@ Route::middleware('has.role')->prefix('hrd')->group(function () {
         Route::post('/datatable', [AbsensiController::class, 'datatable'])->name('absensi.datatable');
 
         Route::post('/import', [AbsensiController::class, 'import'])->name('absensi.import');
+        Route::post('/export', [AbsensiController::class, 'export'])->name('absensi.export');
 
         Route::get('', [AbsensiController::class, 'index'])->name('absensi.index');
         Route::get('/create', [AbsensiController::class, 'create'])->name('absensi.create');
@@ -1134,6 +1137,16 @@ Route::middleware('has.role')->prefix('hrd')->group(function () {
         Route::PUT('{id}/update', [AbsensiController::class, 'update'])->name('absensi.update');
 
         Route::post('/delete', [AbsensiController::class, 'delete'])->name('absensi.delete');
+    });
+
+    Route::prefix('settingcuti')->group(function () {
+
+        Route::get('', [SettingCutiController::class, 'index'])->name('settingcuti.index');
+        Route::post('/store', [SettingCutiController::class, 'store'])->name('settingcuti.store');
+
+        Route::PUT('{id}/update', [SettingCutiController::class, 'update'])->name('settingcuti.update');
+
+        Route::get('{id}/delete', [SettingCutiController::class, 'destroy'])->name('settingcuti.delete');
     });
 
 

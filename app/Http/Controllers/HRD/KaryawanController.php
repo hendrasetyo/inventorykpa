@@ -175,4 +175,9 @@ class KaryawanController extends Controller
 
         return redirect()->route('karyawan.index')->with('success-create', 'Data Berhasil Ditambahkan');
     }
+
+    public function import (Request $request)
+    {
+       
+    }
 }

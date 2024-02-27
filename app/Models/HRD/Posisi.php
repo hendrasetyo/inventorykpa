@@ -11,8 +11,14 @@ class Posisi extends Model
     protected $table = 'posisi';
     
     protected $fillable = [
-        'nama'
+        'nama',
+        'divisi_id'
     ];
 
+    public function divisi()
+    {
+        return $this->belongsTo(Divisi::class, 'divisi_id','id');
+    }
+    
     
 }

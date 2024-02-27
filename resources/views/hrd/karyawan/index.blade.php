@@ -53,6 +53,12 @@
                                 </div>
                                 <div class="card-toolbar">
 
+                                    <button class="btn btn-info font-weight-bolder mr-2" data-toggle="modal"
+                                            data-target="#import">
+                                        <i class="flaticon2-add"></i>
+                                        Import Karyawan
+                                    </button>
+
                                     @can('karyawan-create')
                                         <a href="{{ route('karyawan.create') }}" class="btn btn-primary font-weight-bolder ">
                                             <i class="flaticon2-add"></i>
@@ -94,6 +100,8 @@
     <!--end::Content-->
     <div id="modal-confirm-delete"></div>
     <div id="modal-show-detail"></div>
+
+    @include('hrd.karyawan.modal._import')
 @endsection
 @push('script')
     <script src="{{ asset('/assets/js/pages/crud/forms/widgets/select2.js?v=7.0.6') }}"></script>
