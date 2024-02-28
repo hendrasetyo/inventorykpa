@@ -19,7 +19,7 @@
                 <!--end::Svg Icon--></span>
         </a> --}}
 
-        <a href="{{ route('cuti.edit', ['id' => $id]) }}" class="btn btn-icon btn-light btn-hover-primary btn-sm mr-3">
+        <a href="{{ route('absensi.edit', ['id' => $id]) }}" class="btn btn-icon btn-light btn-hover-primary btn-sm mr-3">
             <span class="svg-icon svg-icon-md svg-icon-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
                     height="24px" viewBox="0 0 24 24" version="1.1">

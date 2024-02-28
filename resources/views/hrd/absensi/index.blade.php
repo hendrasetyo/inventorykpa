@@ -266,7 +266,7 @@
                 if (result.value) {
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route('cuti.delete') }}',
+                        url: '{{ route('absensi.delete') }}',
                         dataType: 'html',
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

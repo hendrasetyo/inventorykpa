@@ -28,7 +28,9 @@ class BiayaPerjalananDinasController extends Controller
         if (!$biayadinas) {
             $biayadinas = BiayaPerjalananDinas::create([
                 'dinas_id' => $id_dinas,
-                'keterangan' => null
+                'keterangan' => null,
+                'status' => 'menunggu',
+                'status_direktur' => 'menunggu'
             ]);
             
             $id = $biayadinas->id;

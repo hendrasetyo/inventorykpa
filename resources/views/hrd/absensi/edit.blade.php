@@ -45,11 +45,11 @@
                                             </svg>
                                             <!--end::Svg Icon--></span>
                                     </span>
-                                    <h3 class="card-label">Karyawan</h3>
+                                    <h3 class="card-label">Absensi Karyawan</h3>
                                 </div>
 
                                 <div class="card-toolbar">
-                                    <a href="{{ route('karyawan.index') }}"
+                                    <a href="{{ route('absensi.index') }}"
                                         class="btn btn-light-danger font-weight-bold mr-2">
                                         <i class="flaticon2-left-arrow-1"></i> Back
                                     </a>
@@ -58,7 +58,7 @@
                             <!--begin::Form-->
                             <div class="card-body">
 
-                                <form class="form" method="post" action="{{ route('cuti.update', ['id'=>$cuti->id]) }}"
+                                <form class="form" method="post" action="{{ route('absensi.update', ['id'=>$absensi->id]) }}"
                                     enctype="multipart/form-data">
                                     @csrf
 
@@ -68,25 +68,45 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="">Karyawan</label>
-                                                <select name="karyawan_id" id="kt_select2_1" class="form-control">
-                                                    @foreach ($karyawan as $item)
-                                                        @if ($cuti->karyawan_id)
-                                                            <option value="{{ $item->id }}">{{ $item->nama }}</option>
-                                                        @endif
-                                                    @endforeach
-                                                </select>
+                                               <input type="text" name="karyawan_id" class="form-control" value="{{$absensi->karyawan->id}}" placeholder="{{$absensi->karyawan->nama}}" readonly>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="">Tanggal</label>
-                                                <input type="date" name="tanggal" value="{{$cuti->tanggal}}" class="form-control" required>
+                                                <input type="date" name="tanggal" value="{{$absensi->tanggal}}" class="form-control" required>
                                             </div>
-
 
                                             <div class="form-group">
-                                                <label for="">Alasan</label>
-                                                <input type="text" name="alasan" value="{{$cuti->alasan}}" class="form-control" required>
+                                                <label for="">Clock In</label>
+                                                <input type="time" name="clock_in" value="{{$absensi->clock_in}}" class="form-control" required>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label for="">Clock Out</label>
+                                                <input type="time" name="clock_out" value="{{$absensi->clock_out}}" class="form-control" required>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="">Work Time</label>
+                                                <input type="time" name="work_time" value="{{$absensi->work_time}}" class="form-control" required>
+                                            </div>                                           
+                                    
+                                            <div class="form-group">
+                                                <label for="">Status</label>
+                                                <select name="status" id="" class="form-control">
+                                                    <option value="{{$absensi->status}}" selected>{{$absensi->status}}</option>
+                                                    <option value="ijin">Ijin</option>
+                                                    <option value="tidak hadir">Tidak Hadir</option>
+                                                    <option value="terlambat">Terlambat</option>
+                                                    <option value="ontime">Ontime</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="">Keterangan</label>
+                                                <input type="text" name="keterangan" value="{{$absensi->keterangan}}" class="form-control" >
+                                            </div>
+
                                         </div>
 
                                         <div class="col-md-4">

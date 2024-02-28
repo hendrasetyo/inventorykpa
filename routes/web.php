@@ -66,6 +66,7 @@ use App\Http\Controllers\Sales\TargetSalesController;
 use App\Http\Controllers\Teknisi\KunjunganTeknisiController;
 use App\Http\Controllers\Teknisi\MaintenanceController;
 use App\Models\Sales\BiayaPerjalananDinas;
+use App\Models\Sales\PerjalananDinas;
 
 Route::middleware('auth', 'verified')->group(function () {
     // Route::get('/', function () {
@@ -934,7 +935,9 @@ Route::middleware('has.role')->prefix('sales')->group(function () {
 
     Route::prefix('perjalanandinas')->group(function () {
         Route::get('', [PerjalananDinasController::class, 'index'])->name('perjalanandinas.index');
-        Route::post('/datatable', [PerjalananDinasController::class, 'datatable'])->name('perjalanandinas.datatable');        
+        Route::post('/datatable', [PerjalananDinasController::class, 'datatable'])->name('perjalanandinas.datatable'); 
+        
+        Route::post('/delete', [PerjalananDinasController::class, 'hapus'])->name('perjalanandinas.delete');
 
         Route::get('/create', [PerjalananDinasController::class, 'create'])->name('perjalanandinas.create');
 
@@ -1012,6 +1015,9 @@ Route::middleware('has.role')->prefix('sales')->group(function () {
         Route::post('/biayastore', [BiayaPerjalananDinasController::class, 'store'])->name('biayaperjalanandinas.biayastore');
 
         Route::get('/{id}/print', [BiayaPerjalananDinasController::class, 'print'])->name('biayaperjalanandinas.print');
+
+        
+
 
 
     });

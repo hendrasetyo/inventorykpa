@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Sales;
 
 use App\Http\Controllers\Controller;
 use App\Models\HRD\Karyawan;
+use App\Models\Sales\BiayaAkomodasi;
+use App\Models\Sales\BiayaPerjalananDinas;
+use App\Models\Sales\CashAdvance;
 use App\Models\Sales\Dinas;
 use App\Models\Sales\EntertainDinas;
 use App\Models\Sales\PerjalananDinas;
@@ -23,38 +26,55 @@ class PerjalananDinasController extends Controller
   public function index()
   {
     $title = 'Perjalanan Dinas';
+    $dinas = Dinas::where('user_id', auth()->user()->id)->get();
 
-    return view('sales.perjalanandinas.index', compact('title'));
+    $count = 0;
+
+    TempPerjalananDinas::where('user_id',auth()->user()->id)->delete();
+    TempEntertainDinas::where('user_id',auth()->user()->id)->delete();
+
+    foreach ($dinas as $value) {
+      $status = BiayaPerjalananDinas::where('dinas_id', $value->id)->where('status_direktur', 'menunggu')->first();
+      if ($status) {
+        $count = 1;
+      }
+    }
+
+    return view('sales.perjalanandinas.index', compact('title', 'count'));
   }
 
   public function datatable()
   {
-    $dinas =  DB::table('dinas as d')
-      ->join('users as u', 'u.id', '=', 'd.user_id')
-      ->select('d.id as id', 'u.name as user', 'd.tujuan_dinas as tujuan_dinas', 'd.keterangan as keterangan', 'd.status as status')
-      ->where('d.deleted_at', '=', null)
-      ->get();
+      $dinas =  DB::table('dinas as d')
+              ->join('users as u', 'u.id', '=', 'd.user_id')              
+              ->select('d.id as id', 'u.name as user', 'd.tujuan_dinas as tujuan_dinas', 'd.keterangan as keterangan', 'd.status as status','d.status_direktur as status_direktur'                
+              )
+              ->where('d.deleted_at', '=', null)              
+              ->get();
 
-    $hasil = $dinas;
-    return DataTables::of($hasil)
-      ->addIndexColumn()
-      ->editColumn('user', function ($sj) {
-        return $sj->user;
-      })
-      ->editColumn('tujuan_dinas', function ($sj) {
-        return $sj->tujuan_dinas;
-      })
-      ->editColumn('keterangan', function ($sj) {
-        return $sj->keterangan;
-      })
-      ->editColumn('status', function ($sj) {
-        return $sj->status;
-      })
-      ->editColumn('action', function ($row) {
-        $id = $row->id;
-        return view('sales.perjalanandinas.partial._action', compact('id'));
-      })
-      ->make(true);
+      $hasil = $dinas;
+      return DataTables::of($hasil)
+          ->addIndexColumn()
+          ->editColumn('user', function ($sj) {
+            return $sj->user;
+          })
+          ->editColumn('tujuan_dinas', function ($sj) {
+            return $sj->tujuan_dinas;
+          })
+          ->editColumn('keterangan', function ($sj) {
+            return $sj->keterangan;
+          })
+          ->editColumn('status', function ($sj) {
+            return $sj->status;
+          })
+          ->editColumn('status_direktur', function ($sj) {
+            return $sj->status_direktur ? $sj->status_direktur : '-' ;
+          })      
+          ->editColumn('action', function ($row) {
+            $id = $row->id;
+            return view('sales.perjalanandinas.partial._action', compact('id'));
+          })
+          ->make(true);
   }
 
   public function create()
@@ -178,7 +198,8 @@ class PerjalananDinasController extends Controller
         'user_id' => auth()->user()->id,
         'tujuan_dinas' => $request->tujuan_perjalanan,
         'keterangan' => $request->keterangan,
-        'status' => 'Menunggu Diterima'
+        'status' => 'Menunggu',
+        'status_direktur' => 'Menunggu'
       ]);
 
       foreach ($tempdinas as $item) {
@@ -366,7 +387,7 @@ class PerjalananDinasController extends Controller
     $countPerjalanan = $dinas->perjalanandinas->count();
     $countEntertain = $dinas->entertaindinas->count();
 
-    $karyawan = Karyawan::with('jabatan')->where('id',$dinas->user->karyawan_id)->first();
+    $karyawan = Karyawan::with('jabatan')->where('id', $dinas->user->karyawan_id)->first();
 
     if ($countPerjalanan < $countEntertain) {
       $jmlBaris = $countEntertain;
@@ -385,18 +406,27 @@ class PerjalananDinasController extends Controller
       'karyawan' => $karyawan
     ];
 
-    
-      // return view('sales.perjalanandinas.print', [
-      //     'title' => $title,
-      //     'totalPage' => $totalPage,
-      //     'totalPage' => $totalPage,
-      //     'perBaris' => $perBaris,
-      //     'date' => date('d/m/Y') ,
-      //     'data' => $data,
-      //     'karyawan' => $karyawan
-      // ]);
+    $pdf = PDF::loadView('sales.perjalanandinas.print', $data)->setPaper('legal', 'portrait');
+    return $pdf->download('perjalanandinas.pdf');
+  }
 
-      $pdf = PDF::loadView('sales.perjalanandinas.print', $data)->setPaper('legal', 'portrait');
-        return $pdf->download('perjalanandinas.pdf');
+  public function hapus(Request $request)
+  {
+
+    $biaya = BiayaPerjalananDinas::where('dinas_id', $request->id)->with(['cashadvance', 'biayaakomodasi'])->first();
+
+    if ($biaya) {
+      CashAdvance::where('biaya_perjalanan_dinas_id', $biaya->id)->delete();
+      BiayaAkomodasi::where('biaya_perjalanan_dinas_id', $biaya->id)->delete();
+      $biaya->delete();
+    }
+  
+    $dinas = Dinas::where('id', $request->id)->with(['perjalanandinas', 'entertaindinas'])->first();
+
+    PerjalananDinas::where('dinas_id', $request->id)->delete();
+    EntertainDinas::where('dinas_id', $request->id)->delete();
+    $dinas->delete();
+
+    return response()->json('Data Berhasil Dihapus');
   }
 }

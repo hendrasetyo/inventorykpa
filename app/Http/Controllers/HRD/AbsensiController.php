@@ -61,16 +61,45 @@ class AbsensiController extends Controller
             })        
             ->addColumn('action', function ($row) {
                 $id = $row->id;
-                return view('hrd.cuti.partial.action', compact('id'));
+                return view('hrd.absensi.partial.action', compact('id'));
             })
             ->make(true);
     }
 
     public function export (Request $request)
     {
-        $data = $request->all();
-        // dd($data);
+        $data = $request->all();        
         return Excel::download(new AbsensiExport($data), 'absensi.xlsx');
+    }
+
+    public function edit ($id)
+    {
+        $absensi = Absensi::where('id',$id)->with('karyawan')->first();
+        $title = 'Absensi';
+
+        return view('hrd.absensi.edit',compact('absensi','title'));
+    }
+
+    public function update (Request $request , $id)
+    {
+       Absensi::where('id',$id)->update([
+            'karyawan_id' => $request->karyawan_id,
+            'clock_in' => Carbon::parse($request->clock_in)->format('H:i') ,
+            'clock_out' => Carbon::parse($request->clock_out)->format('H:i') ,
+            'work_time' => Carbon::parse($request->clock_out)->format('H:i') ,
+            'tanggal' => Carbon::parse($request->tanggal)->format('Y-m-d') ,
+            'status' => $request->status,
+            'keterangan' => $request->keterangan
+       ]);
+
+       return redirect()->route('absensi.index');
+    }
+
+    public function delete (Request $request)
+    {
+        Absensi::where('id',$request->id)->delete();
+
+        return response()->json('Data Berhasil Dihapus');
     }
     
     

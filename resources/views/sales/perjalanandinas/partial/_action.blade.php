@@ -58,7 +58,8 @@
                             fill="#000000" opacity="0.3" />
                     </g>
                 </svg>
-                <!--end::Svg Icon--></span> </a>
+            </span> 
+        </a>
         @endcan
     </div>
 </div>

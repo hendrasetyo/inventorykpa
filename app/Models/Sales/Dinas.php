@@ -17,7 +17,8 @@ class Dinas extends Model
         'user_id',
         'tujuan_dinas',  
         'keterangan',
-        'status'
+        'status',
+        'status_direktur'
     ];
 
    

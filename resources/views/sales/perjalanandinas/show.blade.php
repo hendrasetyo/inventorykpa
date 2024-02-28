@@ -27,7 +27,7 @@
                                     </a>
                                     <!--end::Logo-->
                                     <span class=" d-flex flex-column align-items-md-end opacity-70">
-                                        <span>{{ \Carbon\Carbon::parse($dinas->created_At)->format('d F Y') }}</span>
+                                        <span>{{ \Carbon\Carbon::parse($dinas->created_at)->format('d F Y') }}</span>
                                         <span>{{ $dinas->user->name }}</span>
 
                                     </span>

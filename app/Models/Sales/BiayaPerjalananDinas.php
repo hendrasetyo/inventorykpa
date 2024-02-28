@@ -13,6 +13,8 @@ class BiayaPerjalananDinas extends Model
     protected $table = 'biaya_perjalanan_dinas';
     protected $fillable = [
         'dinas_id',
+        'status',
+        'status_direktur',
         'keterangan'
     ];
 
