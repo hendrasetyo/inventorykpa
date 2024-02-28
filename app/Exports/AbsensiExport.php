@@ -48,7 +48,7 @@ class AbsensiExport implements FromView
                 $tanggalFilter = $absensi;
             }
 
-            $result = $tanggalFilter->select('k.nama as nama_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();
+            $result = $tanggalFilter->select('k.nama as nama_karyawan','k.id as id_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();
         } else {
             $filteryear = $absensi->whereYear('ab.tanggal', $this->data['tahun']);
             $filterbulan = $filteryear->whereMonth('ab.tanggal', $this->data['bulan']);
@@ -62,9 +62,6 @@ class AbsensiExport implements FromView
         }
 
         $divisi = Divisi::get();
-
-
-
 
         if ($this->data['tipe_export'] == 'rekap_mingguan') {
             foreach ($divisi as $asset) {
