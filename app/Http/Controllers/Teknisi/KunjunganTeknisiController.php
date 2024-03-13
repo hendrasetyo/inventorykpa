@@ -163,8 +163,7 @@ class KunjunganTeknisiController extends Controller
             $ttd = $name; 
         }
 
-        $kunjungan->update([
-            'tanggal' => $tanggal,
+        $kunjungan->update([            
             'customer' => $request->customer,
             'aktifitas' => $request->aktifitas,
             'ttd' => $ttd,
