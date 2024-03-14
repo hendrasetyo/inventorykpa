@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\HRD\Divisi;
+use App\Models\HRD\Lembur;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
@@ -48,17 +49,22 @@ class AbsensiExport implements FromView
                 $tanggalFilter = $absensi;
             }
 
-            $result = $tanggalFilter->select('k.nama as nama_karyawan','k.id as id_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();
+            $result = $tanggalFilter->where('ab.deleted_at',null)->select('k.nama as nama_karyawan','k.id as id_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();
         } else {
+            $bulanawal = $this->data['bulan']-1;
+            $tanggalawal = $this->data['tahun'] .'-'.$bulanawal.'-'.'28';
+            $tanggalakhir = $this->data['tahun'] .'-'.$this->data['bulan'].'-'.'27';
             $filteryear = $absensi->whereYear('ab.tanggal', $this->data['tahun']);
-            $filterbulan = $filteryear->whereMonth('ab.tanggal', $this->data['bulan']);
-            $result = $filterbulan->select('k.nama as nama_karyawan', 'k.id as id_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();
-            $group = $filterbulan->groupBy('k.nama')->select('k.nama as nama_karyawan', 'k.id as id_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();
+            $filtertanggalawal = $filteryear->where('ab.tanggal','>=',$tanggalawal);
+            $filtertanggalakhir = $filtertanggalawal->where('ab.tanggal','<=',$tanggalakhir);
+
+            $result = $filtertanggalakhir->where('ab.deleted_at',null)->select('k.nama as nama_karyawan', 'k.id as id_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();
+            $group = $filtertanggalakhir->where('ab.deleted_at',null)->groupBy('k.nama')->select('k.nama as nama_karyawan', 'k.id as id_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();
 
             $lembur = DB::table('lembur as lb')->whereYear('lb.tanggal', $this->data['tahun'])
-                ->whereMonth('lb.tanggal', $this->data['bulan'])
-                ->select('lb.*')
-                ->get();
+                        ->whereMonth('lb.tanggal', $this->data['bulan'])
+                        ->select('lb.*')
+                        ->get();
         }
 
         $divisi = Divisi::get();
@@ -67,8 +73,6 @@ class AbsensiExport implements FromView
             foreach ($divisi as $asset) {
                 foreach ($result as $item) {
                     if ($asset->nama == $item->nama_divisi) {
-
-
                         $data[$asset->nama][] = [
                             'nama' => $item->nama_karyawan,
                             'id_karyawan' => $item->id_karyawan,
@@ -87,6 +91,7 @@ class AbsensiExport implements FromView
             $terlambat = 0;
             $jumlah_jam = 0;
             $tidak_hadir = 0;
+            $nominalLembur=0;
             foreach ($group as $item) {
                 foreach ($result as $asset) {
                     if ($asset->nama_karyawan == $item->nama_karyawan) {
@@ -104,7 +109,17 @@ class AbsensiExport implements FromView
 
                 foreach ($lembur as $value) {
                     if ($item->id_karyawan == $value->karyawan_id) {
-                        $jumlah_jam += $value->jumlah_jam;
+                        $hari = Carbon::parse($value->tanggal)->format('D');
+
+                        if ($hari == 'Sat') {
+                            $nominalLembur = $this->hitungLemburSabtu($value->jumlah_jam);
+                        } elseif ($hari == 'Sun') {
+                            $nominalLembur = $this->hitungLemburMinggu($value->jumlah_jam);
+                        } else {
+                            $nominalLembur = $this->hitungLemburWeekDays($value->jumlah_jam);
+                        }
+                        
+                        $jumlah_jam += $nominalLembur;
                     }
                 }
 
@@ -154,5 +169,81 @@ class AbsensiExport implements FromView
         }
         
       
+    }
+
+    public function hitungLemburSabtu($jam)
+    {
+        $totalJam = $jam;
+        $gajiLembur1 = 0;
+        $gajiLembur2 = 0;
+        $gajiLembur3 = 0;
+
+        while ($totalJam > 0) {
+            if ($totalJam > 9) {
+                $nilaiJam = $totalJam - 9;
+                $totalJam = 9;
+                $gajiLembur1 = 1 / 173 * 4 * $nilaiJam ;
+            } elseif ($totalJam > 8) {
+                $nilaiJam = $totalJam - 8;
+                $totalJam = 8;
+                $gajiLembur2 = 1 / 173 * 3 * $nilaiJam ;
+            } else {
+                $jam = $totalJam;
+                $totalJam = 0;
+                $gajiLembur3 = 1 / 173 * 2 * $jam ;
+            }
+        }
+
+        $totalLembur = $gajiLembur1 + $gajiLembur2 + $gajiLembur3;
+        return $totalLembur;
+    }
+
+    public function hitungLemburMinggu($jam)
+    {
+        $totalJam = $jam;
+        $gajiLembur1 = 0;
+        $gajiLembur2 = 0;
+        $gajiLembur3 = 0;
+
+        while ($totalJam > 0) {
+            if ($totalJam > 7) {
+                $nilaiJam = $totalJam - 7;
+                $totalJam = 7;
+                $gajiLembur1 = 1 / 173 * 4 * $nilaiJam ;
+            } elseif ($totalJam > 6) {
+                $nilaiJam = $totalJam - 6;
+                $totalJam = 6;
+                $gajiLembur2 = 1 / 173 * 3 * $nilaiJam ;
+            } else {
+                $jam = $totalJam;
+                $totalJam = 0;
+                $gajiLembur3 = 1 / 173 * 2 * $jam ;
+            }
+        }
+
+        $totalLembur = $gajiLembur1 + $gajiLembur2 + $gajiLembur3;
+        return $totalLembur;
+    }
+
+    public function hitungLemburWeekDays($jam)
+    {
+        $totalJam = $jam;
+        $gajiLembur1 = 0;
+        $gajiLembur2 = 0;
+
+        while ($totalJam > 0) {
+            if ($totalJam > 1) {
+                $nilaiJam = $totalJam - 1;
+                $totalJam = 1;
+                $gajiLembur1 = 1 / 173 * 2 * $nilaiJam ;
+            } else {
+                $jam = $totalJam;
+                $totalJam = 0;
+                $gajiLembur2 = 1 / 173 * 1.5 * $jam ;
+            }
+        }
+
+        $totalLembur = $gajiLembur1 + $gajiLembur2;
+        return $totalLembur;
     }
 }
