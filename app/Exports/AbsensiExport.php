@@ -156,6 +156,8 @@ class AbsensiExport implements FromView
             }
         }
 
+        // dd($data);
+
         
 
         if ($this->data['tipe_export'] == 'rekap_mingguan') {

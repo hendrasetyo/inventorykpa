@@ -23,7 +23,7 @@
                     <td style="border : 1px solid black">{{ $item['terlambat']}}</td>
                     <td style="border : 1px solid black">{{ $item['lembur']}}</td>                    
                     <td style="border : 1px solid black">{{ $item['ijin'] + $item['ontime'] + $item['tidak_hadir'] + $item['terlambat']}}</td>
-                    <td style="border : 1px solid black">{{ $item['ontime'] + $item['terlambat'] }}</td>
+                    <td style="border : 1px solid black">{{ $item['ontime'] + $item['terlambat']  }}</td>
                 </tr>
             @endforeach
             <tr></tr>
