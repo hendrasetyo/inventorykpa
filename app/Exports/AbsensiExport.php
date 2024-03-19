@@ -154,9 +154,7 @@ class AbsensiExport implements FromView
                     }
                 }
             }
-        }
-
-        // dd($data);
+        }       
 
         
 
@@ -184,15 +182,15 @@ class AbsensiExport implements FromView
             if ($totalJam > 9) {
                 $nilaiJam = $totalJam - 9;
                 $totalJam = 9;
-                $gajiLembur1 = 1 / 173 * 4 * $nilaiJam ;
+                $gajiLembur1 =  4 * $nilaiJam ;
             } elseif ($totalJam > 8) {
                 $nilaiJam = $totalJam - 8;
                 $totalJam = 8;
-                $gajiLembur2 = 1 / 173 * 3 * $nilaiJam ;
+                $gajiLembur2 =  3 * $nilaiJam ;
             } else {
                 $jam = $totalJam;
                 $totalJam = 0;
-                $gajiLembur3 = 1 / 173 * 2 * $jam ;
+                $gajiLembur3 =  2 * $jam ;
             }
         }
 
@@ -211,15 +209,15 @@ class AbsensiExport implements FromView
             if ($totalJam > 7) {
                 $nilaiJam = $totalJam - 7;
                 $totalJam = 7;
-                $gajiLembur1 = 1 / 173 * 4 * $nilaiJam ;
+                $gajiLembur1 =  4 * $nilaiJam ;
             } elseif ($totalJam > 6) {
                 $nilaiJam = $totalJam - 6;
                 $totalJam = 6;
-                $gajiLembur2 = 1 / 173 * 3 * $nilaiJam ;
+                $gajiLembur2 =  3 * $nilaiJam ;
             } else {
                 $jam = $totalJam;
                 $totalJam = 0;
-                $gajiLembur3 = 1 / 173 * 2 * $jam ;
+                $gajiLembur3 =  2 * $jam ;
             }
         }
 
@@ -237,11 +235,11 @@ class AbsensiExport implements FromView
             if ($totalJam > 1) {
                 $nilaiJam = $totalJam - 1;
                 $totalJam = 1;
-                $gajiLembur1 = 1 / 173 * 2 * $nilaiJam ;
+                $gajiLembur1 = 2 * $nilaiJam ;
             } else {
                 $jam = $totalJam;
                 $totalJam = 0;
-                $gajiLembur2 = 1 / 173 * 1.5 * $jam ;
+                $gajiLembur2 =  1.5 * $jam ;
             }
         }
 
