@@ -49,7 +49,7 @@ class AbsensiImport implements ToModel
                         $status = 'ontime';
                     }
                 }
-                                                     
+                                              
                 $absensi = Absensi::create([
                     'karyawan_id' => $karyawan->id,
                     'clock_in' => $row[9],
@@ -59,6 +59,8 @@ class AbsensiImport implements ToModel
                     'status' => $status,
                     'keterangan' =>  ''       
                 ]);
+            }else{
+                dd($row[0]);
             }
 
             
