@@ -128,7 +128,8 @@ class AbsensiExport implements FromView
                 }
 
                 if ($terlambat > 3) {
-                    $pengurangan = (int) $terlambat/3;
+                    $hasil = $terlambat/3;
+                    $pengurangan = intval($hasil);
                 }
 
                 $array[] = [
