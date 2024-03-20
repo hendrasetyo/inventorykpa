@@ -21,3 +21,7 @@
 @if ($status == 'ijin')
     <span class="badge badge-warning">{{ucfirst($status)}}</span>    
 @endif
+
+@if ($status == 'error')
+    <span class="badge badge-warning">{{ucfirst($status)}}</span>    
+@endif

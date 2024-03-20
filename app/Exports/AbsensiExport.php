@@ -92,6 +92,8 @@ class AbsensiExport implements FromView
             $jumlah_jam = 0;
             $tidak_hadir = 0;
             $nominalLembur=0;
+            $error = 0;
+            $pengurangan = 0;
             foreach ($group as $item) {
                 foreach ($result as $asset) {
                     if ($asset->nama_karyawan == $item->nama_karyawan) {
@@ -101,8 +103,10 @@ class AbsensiExport implements FromView
                             $ijin += 1;
                         } elseif ($asset->status == 'terlambat') {
                             $terlambat += 1;
-                        }elseif ($asset->status == 'tidak hadir') {
+                        } elseif ($asset->status == 'tidak hadir') {
                             $tidak_hadir += 1;
+                        }elseif ($asset->status == 'error') {
+                            $error += 1;
                         }
                     }
                 }
@@ -123,6 +127,10 @@ class AbsensiExport implements FromView
                     }
                 }
 
+                if ($terlambat > 3) {
+                    $pengurangan = (int) $terlambat/3;
+                }
+
                 $array[] = [
                     'nama' => $item->nama_karyawan,
                     'nama_divisi' => $item->nama_divisi,
@@ -130,7 +138,9 @@ class AbsensiExport implements FromView
                     'ijin' => $ijin,
                     'terlambat' => $terlambat,
                     'lembur' => $jumlah_jam,
-                    'tidak_hadir' => $tidak_hadir
+                    'tidak_hadir' => $tidak_hadir,
+                    'error' => $error , 
+                    'pengurangan_terlambat' =>$pengurangan
                 ];
 
                 $ontime = 0;
@@ -138,6 +148,7 @@ class AbsensiExport implements FromView
                 $terlambat = 0;
                 $jumlah_jam = 0;
                 $tidak_hadir = 0;
+                $error = 0;
             }
 
             foreach ($divisi as $asset) {
@@ -149,7 +160,9 @@ class AbsensiExport implements FromView
                             'ijin' => $item['ijin'],
                             'terlambat' => $item['terlambat'],
                             'lembur' => $item['lembur'],
-                            'tidak_hadir' => $item['tidak_hadir']
+                            'tidak_hadir' => $item['tidak_hadir'],
+                            'error' => $item['error'],
+                            'pengurangan' => $item['pengurangan'],
                         ];
                     }
                 }
