@@ -140,7 +140,7 @@ class AbsensiExport implements FromView
                     'lembur' => $jumlah_jam,
                     'tidak_hadir' => $tidak_hadir,
                     'error' => $error , 
-                    'pengurangan_terlambat' =>$pengurangan
+                    'pengurangan' =>$pengurangan
                 ];
 
                 $ontime = 0;
