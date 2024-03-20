@@ -98,11 +98,10 @@ class KaryawanController extends Controller
             ->editColumn('statuskaryawan', function (Karyawan $k) {
                 return $k->statuskaryawan->nama;
             })
-            ->editColumn('tanggal_lahir', function (Karyawan $k) {
-                $birthDate = new DateTime($k->tanggal_lahir);
-                $today = new DateTime("today");
-                $umur = $today->diff($birthDate)->y;
-                return $umur;
+            ->editColumn('umur', function (Karyawan $k) {
+                $tanggal = $k->tanggal_lahir;
+                
+                return view('hrd.karyawan.partial.umur',compact('tanggal'));
             })
             ->addColumn('action', function ($row) {
                 $id = $row->id;
