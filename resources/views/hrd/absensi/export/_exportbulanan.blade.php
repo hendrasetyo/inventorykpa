@@ -27,9 +27,9 @@
                     <td style="border : 1px solid black">{{ $item['terlambat']}}</td>
                     <td style="border : 1px solid black">{{ $item['pengurangan']}}</td>
                     <td style="border : 1px solid black">{{ $item['lembur']}}</td>                    
-                    <td style="border : 1px solid black">{{ $item['ijin'] + $item['ontime'] + $item['tidak_hadir'] + $item['terlambat']}}</td>
-                    <td style="border : 1px solid black">{{ $item['ontime'] + $item['terlambat']  }}</td>
-                    <td style="border : 1px solid black">{{ $item['ontime'] + $item['terlambat'] -   $item['pengurangan'] }}</td>
+                    <td style="border : 1px solid black">{{ $item['ijin'] + $item['ontime'] + $item['tidak_hadir'] + $item['terlambat'] + $item['error']}}</td>
+                    <td style="border : 1px solid black">{{ $item['ontime'] + $item['terlambat'] + $item['error']  }}</td>
+                    <td style="border : 1px solid black">{{ $item['ontime'] + $item['terlambat'] + $item['error'] -   $item['pengurangan'] }}</td>
                 </tr>
             @endforeach
             <tr></tr>
