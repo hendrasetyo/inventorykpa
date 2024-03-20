@@ -146,7 +146,7 @@
                     //   {data: 'DT_RowIndex', name: 'DT_RowIndex'},                
                     {
                         data: 'nama',
-                        name: 'nama'
+                        name: 'karyawan.nama'
                     },
 
                     {
