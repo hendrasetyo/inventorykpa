@@ -1,5 +1,5 @@
 <?php
-$birthDate = new DateTime($tanggal_lahir);
+$birthDate = new DateTime($tanggal);
 $today = new DateTime("today");
 $umur = $today->diff($birthDate)->y;
 ?>
