@@ -149,6 +149,7 @@ class AbsensiExport implements FromView
                 $jumlah_jam = 0;
                 $tidak_hadir = 0;
                 $error = 0;
+                $pengurangan=0;
             }
 
             foreach ($divisi as $asset) {
