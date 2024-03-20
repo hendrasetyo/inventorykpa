@@ -157,8 +157,8 @@
                         name: 'statuskaryawan.nama'
                     },
                     {
-                        data: 'umur',
-                        name: 'umur'
+                        data: 'tanggal_lahir',
+                        name: 'tanggal_lahir'
                     },
                     {
                         data: 'action',
