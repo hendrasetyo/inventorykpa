@@ -75,6 +75,7 @@ class AbsensiController extends Controller
     public function edit ($id)
     {
         $absensi = Absensi::where('id',$id)->with('karyawan')->first();
+        dd($absensi);
         $title = 'Absensi';
 
         return view('hrd.absensi.edit',compact('absensi','title'));
