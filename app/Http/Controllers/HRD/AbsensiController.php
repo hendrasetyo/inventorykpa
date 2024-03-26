@@ -36,7 +36,7 @@ class AbsensiController extends Controller
 
     public function datatable (Request $request)
     {
-        $absensi = Absensi::with('karyawan');        
+        $absensi = Absensi::with(['karyawan']);        
         
         return DataTables::of($absensi)
             ->addIndexColumn()

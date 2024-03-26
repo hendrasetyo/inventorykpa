@@ -57,8 +57,7 @@
                             </div>
                             <!--begin::Form-->
                             <div class="card-body">
-
-                                @dd($absensi)
+                                
                                 <form class="form" method="post" action="{{ route('absensi.update', ['id'=>$absensi->id]) }}"
                                     enctype="multipart/form-data">
                                     @csrf
