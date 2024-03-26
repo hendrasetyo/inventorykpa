@@ -38,10 +38,7 @@ class AbsensiImport implements ToModel
                             $status = 'tidak hadir';
                         }                    
                     }        
-                }elseif ($row[9] == null && $row[10] !== null) {
-                    $status = 'error';
-                }
-                else{
+                }elseif ($row[9] !== null && $row[10] !== null) {
                     $day = Carbon::parse($timetanggal)->format('l');
                     if ($day == 'Saturday' || $day == 'Sunday') {                          
                         $status = 'weekend';                                          
@@ -50,6 +47,12 @@ class AbsensiImport implements ToModel
                     }else{
                         $status = 'ontime';
                     }
+                }
+                elseif ($row[9] == null && $row[10] !== null) {
+                    $status = 'error';
+                }
+                else{
+                   
                 }
                                               
                 $absensi = Absensi::create([
