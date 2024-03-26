@@ -73,11 +73,11 @@ class AbsensiController extends Controller
     }
 
     public function edit ($id)
-    {
-        dd($id);
-        $absensi = Absensi::where('id',$id)->with('karyawan')->first();
-        dd($absensi);
+    {        
+        $absensi = Absensi::where('id',$id)->with('karyawan')->first();        
         $title = 'Absensi';
+
+        dd($absensi);
 
         return view('hrd.absensi.edit',compact('absensi','title'));
     }
