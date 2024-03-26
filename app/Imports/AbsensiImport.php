@@ -42,9 +42,12 @@ class AbsensiImport implements ToModel
                     $status = 'error';
                 }
                 else{
-                    if (Carbon::parse($row[9])->format('H:i')  > Carbon::parse('08:15')->format('H:i')) {                    
+                    $day = Carbon::parse($timetanggal)->format('l');
+                    if ($day == 'Saturday' || $day == 'Sunday') {  
+                        $status = 'weekend';                                          
+                    }else if (Carbon::parse($row[9])->format('H:i')  > Carbon::parse('08:15')->format('H:i')) {
                         $status = 'terlambat';
-                    }else{
+                    }{
                         $status = 'ontime';
                     }
                 }
