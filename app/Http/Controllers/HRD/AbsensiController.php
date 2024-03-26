@@ -8,6 +8,7 @@ use App\Imports\AbsensiImport;
 use App\Models\HRD\Absensi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
@@ -36,27 +37,30 @@ class AbsensiController extends Controller
 
     public function datatable (Request $request)
     {
-        $absensi = Absensi::with(['karyawan']);        
+        $absensi = DB::table('absensi as ab')
+                ->join('karyawan as k','ab.karyawan_id','=','k.id')                
+                ->where('ab.deleted_at','=',null)
+                ->select('ab.id','ab.tanggal','k.nama','ab.clock_in','ab.clock_out','ab.work_time','ab.status');                       
         
         return DataTables::of($absensi)
             ->addIndexColumn()
-            ->editColumn('nama', function (Absensi $k) {
-                return $k->karyawan->nama;
+            ->editColumn('nama', function ($absensi) {
+                return $absensi->nama;
             })  
-            ->editColumn('tanggal', function (Absensi $k) {
-                return Carbon::parse($k->tanggal)->format('d/m/Y');
+            ->editColumn('tanggal', function ($absensi) {
+                return Carbon::parse($absensi->tanggal)->format('d/m/Y');
             }) 
-            ->editColumn('clock_in', function (Absensi $k) {
-                return Carbon::parse($k->clock_in)->format('H:i');
+            ->editColumn('clock_in', function ($absensi) {
+                return Carbon::parse($absensi->clock_in)->format('H:i');
             })        
-            ->editColumn('clock_out', function (Absensi $k) {
-                return Carbon::parse($k->clock_out)->format('H:i');
+            ->editColumn('clock_out', function ($absensi) {
+                return Carbon::parse($absensi->clock_out)->format('H:i');
             }) 
-            ->editColumn('work_time', function (Absensi $k) {
-                return Carbon::parse($k->work_time)->format('H:i');
+            ->editColumn('work_time', function ($absensi) {
+                return Carbon::parse($absensi->work_time)->format('H:i');
             }) 
-            ->editColumn('status', function (Absensi $k) {
-                $status = $k->status;
+            ->editColumn('status', function ($absensi) {
+                $status = $absensi->status;
                 return view('hrd.absensi.partial.status' ,compact('status')) ;
             })        
             ->addColumn('action', function ($row) {
@@ -84,8 +88,7 @@ class AbsensiController extends Controller
 
     public function update (Request $request , $id)
     {
-       Absensi::where('id',$id)->update([
-            'karyawan_id' => $request->karyawan_id,
+       Absensi::where('id',$id)->update([            
             'clock_in' => Carbon::parse($request->clock_in)->format('H:i') ,
             'clock_out' => Carbon::parse($request->clock_out)->format('H:i') ,
             'work_time' => Carbon::parse($request->clock_out)->format('H:i') ,

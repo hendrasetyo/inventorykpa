@@ -68,7 +68,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="">Karyawan</label>
-                                               <input type="text" name="karyawan_id" class="form-control" value="{{$absensi->karyawan->id}}" placeholder="{{$absensi->karyawan->nama}}" readonly>
+                                               <input type="text" name="karyawan_id" class="form-control" value="{{$absensi->karyawan->nama}}" placeholder="{{$absensi->karyawan->nama}}" readonly>
                                             </div>
 
                                             <div class="form-group">
