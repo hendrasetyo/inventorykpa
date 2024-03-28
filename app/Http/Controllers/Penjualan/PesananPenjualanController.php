@@ -71,7 +71,7 @@ class PesananPenjualanController extends Controller
         $komoditass = Komoditas::get();
         $kategoris = Kategoripesanan::get();
         $saless = Sales::where('status','Aktif')->get();
-        $tglNow = Carbon::now()->format('d-m-Y');
+        $tglNow = Carbon::now()->format('d/m/Y');
 
         //delete temp
         $deletedTempDetil = TempSo::where('created_at', '<', Carbon::today())->delete();
@@ -276,7 +276,7 @@ class PesananPenjualanController extends Controller
         $tanggalcustomer = null;
 
         if ($request->tanggal_pesanan_customer <> null) {
-            $tanggalcustomer = Carbon::createFromFormat('d/m/Y', $request->tanggal_pesanan_customer)->format('Y-m-d');;
+            $tanggalcustomer = Carbon::createFromFormat('d/m/Y', $request->tanggal_pesanan_customer)->format('Y-m-d');
         }
         
 
