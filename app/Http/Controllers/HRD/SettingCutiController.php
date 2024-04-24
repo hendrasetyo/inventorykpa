@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class SettingCutiController extends Controller
 {
     public function index ()
-    {
+    {        
         $title = 'Setting Cuti';
         $settingcuti = SettingCuti::orderBy('id','desc')->get();
 
