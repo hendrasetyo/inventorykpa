@@ -122,7 +122,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('tipesurat.store') }}" method="POST">
+                    <form action="{{ route('pembuat.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="">Nama</label>
