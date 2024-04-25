@@ -105,7 +105,7 @@ class SuratMenyuratController extends Controller
         $inisial = Pembuat::where('id',$pembuatid)->first();
 
         $company = Company::where('id',$company_id)->first();
-        $dats = SuratMenyurat::where('company_id',$company_id)->latest()->first(); 
+        $dats = SuratMenyurat::where('company_id',$company_id)->where('tipesurat_id',$tipesuratid)->latest()->first(); 
         
         if (!$dats) {             
             $count = 1;  
