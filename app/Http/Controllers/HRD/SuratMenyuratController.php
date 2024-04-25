@@ -178,10 +178,11 @@ class SuratMenyuratController extends Controller
 
    public function update (Request $request , $id)
    {
+    
 
     $suratmenyurat =SuratMenyurat::where('id',$id)->first();
         $img = $request->file('file');
-        $nama = null;
+        $nama = $suratmenyurat->file;
         if ($img) { 
             // dd($img);     
             if ($suratmenyurat->file) {
