@@ -74,7 +74,7 @@ class SuratMenyuratController extends Controller
         $waktu = time();
         $name = $waktu.$dataFoto;
         $nameFile = Storage::putFileAs('suratmenyurat',$img,$name);            
-        $nama = $name;
+        $nama = $nameFile;
     }
 
     $suratmenyurat = SuratMenyurat::create([
@@ -83,7 +83,7 @@ class SuratMenyuratController extends Controller
             'pembuat_id' => $request->pembuat_id,
             'tipesurat_id' => $request->tipesurat_id,
             'kepada' => $request->kepada,
-            'isi' => $request->status,
+            'isi' => $request->isi,
             'status' => $request->status,
             'file' => $nama,
             'company_id' => $request->company_id
@@ -178,7 +178,28 @@ class SuratMenyuratController extends Controller
 
    public function update (Request $request , $id)
    {
-      
+
+    $suratmenyurat =SuratMenyurat::where('id',$id)->first();
+        $img = $request->file('file');
+        $nama = null;
+        if ($img) { 
+            // dd($img);     
+            if ($suratmenyurat->file) {
+                Storage::disk('public')->delete($suratmenyurat->file);  
+            }
+            $dataFoto =$img->getClientOriginalName();
+            $waktu = time();
+            $name = $waktu.$dataFoto;
+            $nameFile = Storage::putFileAs('suratmenyurat',$img,$name);            
+            $nama = $name;
+        }
+
+      $surat = SuratMenyurat::where('id',$id)->update([
+         'kepada' => $request->kepada,
+         'isi' => $request->isi,
+         'status' => $request->status,
+         'file' => $nama
+      ]);
    }
 
    public function destroy (Request $request)
