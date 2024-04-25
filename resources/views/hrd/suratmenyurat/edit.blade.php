@@ -88,26 +88,26 @@
 
                                     <div class="form-group">
                                         <label for="">Pembuat</label>
-                                        <input type="text" name="name" value="{{ $surat->pembuat->nama }}"
+                                        <input type="text" name="pembuat" value="{{ $surat->pembuat->nama }}"
                                             class="form-control" readonly>
 
                                     </div>
 
                                     <div class="form-group">
                                         <label for="">Tipe Surat</label>
-                                        <input type="text" name="name" value="{{ $surat->tipesurat->nama }}"
+                                        <input type="text" name="tipesurat" value="{{ $surat->tipesurat->nama }}"
                                             class="form-control" readonly>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="">Kepada ?</label>
-                                        <input type="text" name="name" value="{{ $surat->kepada }}"
+                                        <input type="text" name="kepada" value="{{ $surat->kepada }}"
                                             class="form-control">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="">Tentang ?</label>
-                                        <input type="text" name="name" value="{{ $surat->isi }}"
+                                        <input type="text" name="tentang" value="{{ $surat->isi }}"
                                             class="form-control">
                                     </div>
 
