@@ -107,7 +107,7 @@
 
                                     <div class="form-group">
                                         <label for="">Tentang ?</label>
-                                        <input type="text" name="tentang" value="{{ $surat->isi }}"
+                                        <input type="text" name="isi" value="{{ $surat->isi }}"
                                             class="form-control">
                                     </div>
 
@@ -138,11 +138,14 @@
                                         <br>
                                         <input type="file" name="file" class="form-control mt-2">
                                     </div>
-
+                                    
                                     <div class="col-md-4">
                                         <button type="submit" class="btn btn-primary"> <i class="flaticon2-reload"></i>
                                             Dapatkan Kode</button>
                                     </div>
+                                    
+
+                                   
 
                                 </form>
                             </div>
