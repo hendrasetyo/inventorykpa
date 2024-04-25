@@ -200,6 +200,9 @@ class SuratMenyuratController extends Controller
          'status' => $request->status,
          'file' => $nama
       ]);
+
+      return redirect()->route('suratmenyurat.index')->with('status','Data Berhasil Ditambahkan');
+      
    }
 
    public function destroy (Request $request)
