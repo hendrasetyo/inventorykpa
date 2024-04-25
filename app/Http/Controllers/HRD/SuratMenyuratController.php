@@ -201,7 +201,7 @@ class SuratMenyuratController extends Controller
          'file' => $nama
       ]);
 
-      return redirect()->route('suratmenyurat.index')->with('status','Data Berhasil Ditambahkan');
+      return redirect()->route('suratmenyurat.index')->with('status','Data Berhasil Diubah');
       
    }
 
