@@ -40,7 +40,9 @@ class AbsensiController extends Controller
         $absensi = DB::table('absensi as ab')
                 ->join('karyawan as k','ab.karyawan_id','=','k.id')                
                 ->where('ab.deleted_at','=',null)
-                ->select('ab.id','ab.tanggal','k.nama','ab.clock_in','ab.clock_out','ab.work_time','ab.status')->get();                       
+                ->select('ab.id','ab.tanggal','k.nama','ab.clock_in','ab.clock_out','ab.work_time','ab.status')
+                ->orderBy('id','desc')
+                ->get();                       
         
         return DataTables::of($absensi)
             ->addIndexColumn()
