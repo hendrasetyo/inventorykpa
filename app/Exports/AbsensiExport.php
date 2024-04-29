@@ -64,8 +64,9 @@ class AbsensiExport implements FromView
             $lembur = DB::table('lembur as lb')->whereYear('lb.tanggal', $this->data['tahun'])
                         ->where('lb.tanggal','>=',$tanggalawal)
                         ->where('lb.tanggal','<=',$tanggalakhir) 
+                        ->where('lb.deleted_at',null)
                         ->select('lb.*')
-                        ->get();
+                        ->get();                
         }
 
         $divisi = Divisi::get();
