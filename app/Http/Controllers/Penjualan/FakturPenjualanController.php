@@ -385,6 +385,8 @@ class FakturPenjualanController extends Controller
 
     public function destroy(Request $request)
     {
+
+        dd($request->all());
         $id = $request->id;
         $fakturpenjualan = FakturPenjualan::find($id);
         $fakturpenjualan->deleted_by = Auth::user()->id;        
@@ -413,9 +415,9 @@ class FakturPenjualanController extends Controller
         ]);
 
         // ubah status no kpa
-        NoKPA::where('no_kpa',$fakturpenjualan->no_kpa)->update([
-            'status' => 'Aktif'
-        ]);
+        $nokpa=NoKPA::where('no_kpa',$fakturpenjualan->no_kpa)->first();
+
+        dd($nokpa);
 
         //hapus Piutang 
         $hapuspiutang = Piutang::where('faktur_penjualan_id', $id)->delete();

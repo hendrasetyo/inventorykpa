@@ -96,6 +96,7 @@ class AbsensiExport implements FromView
             $nominalLembur=0;
             $error = 0;
             $pengurangan = 0;
+            $totalMenit=0;
             foreach ($group as $item) {
                 foreach ($result as $asset) {
                     if ($asset->nama_karyawan == $item->nama_karyawan) {
@@ -104,7 +105,17 @@ class AbsensiExport implements FromView
                         } elseif ($asset->status == 'ijin') {
                             $ijin += 1;
                         } elseif ($asset->status == 'terlambat') {
-                            $terlambat += 1;
+                            $terlambat += 1;           
+                            // simpan selisih menit  lalu jika melebihi 60 menit maka tambahkan yang pengurangan
+                            // dd($asset->clock_in);
+                            $absensi = strtotime($asset->clock_in);
+                            $batas = strtotime('08:10');
+                            // dd($batas);
+                            $diff = (int)$absensi - $batas;  
+                            $menit = $diff/60;                                              
+                            $totalMenit += $menit;      
+                               
+
                         } elseif ($asset->status == 'tidak hadir') {
                             $tidak_hadir += 1;
                         }elseif ($asset->status == 'error') {
@@ -112,6 +123,8 @@ class AbsensiExport implements FromView
                         }
                     }
                 }
+
+                // dd($totalMenit);
 
                 foreach ($lembur as $value) {
                     if ($item->id_karyawan == $value->karyawan_id) {
@@ -129,8 +142,8 @@ class AbsensiExport implements FromView
                     }
                 }
 
-                if ($terlambat > 3) {
-                    $hasil = $terlambat/4;
+                if ($totalMenit > 60) {
+                    $hasil = $totalMenit/4;
                     $pengurangan = intval($hasil);
                 }
 
@@ -143,7 +156,8 @@ class AbsensiExport implements FromView
                     'lembur' => $jumlah_jam,
                     'tidak_hadir' => $tidak_hadir,
                     'error' => $error , 
-                    'pengurangan' =>$pengurangan
+                    'pengurangan' =>$pengurangan,
+                    'totalMenit' => $totalMenit
                 ];
 
                 $ontime = 0;
@@ -153,7 +167,8 @@ class AbsensiExport implements FromView
                 $tidak_hadir = 0;
                 $error = 0;
                 $pengurangan=0;
-            }
+                $totalMenit=0;
+            }            
 
             foreach ($divisi as $asset) {
                 foreach ($array as $item) {
@@ -161,16 +176,17 @@ class AbsensiExport implements FromView
                         $data[$asset->nama][] = [
                             'nama' => $item['nama'],
                             'ontime' => $item['ontime'],
-                            'ijin' => $item['ijin'],
-                            'terlambat' => $item['terlambat'],
+                            'ijin' => $item['ijin'],                            
                             'lembur' => $item['lembur'],
+                            'terlambat' => $item['terlambat'],
                             'tidak_hadir' => $item['tidak_hadir'],
                             'error' => $item['error'],
                             'pengurangan' => $item['pengurangan'],
+                            'totalMenit' => $item['totalMenit'],
                         ];
                     }
                 }
-            }
+            }            
         }       
 
         
