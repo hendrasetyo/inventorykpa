@@ -74,7 +74,7 @@ class   AbsensiController extends Controller
                 }
         
         $data = $status->select('ab.id','ab.tanggal','k.nama','ab.clock_in','ab.clock_out','ab.work_time','ab.status')
-                        ->orderBy('id','desc')
+                        ->orderBy('id','asc')
                         ->get();                       
         
         return DataTables::of($absensi)
