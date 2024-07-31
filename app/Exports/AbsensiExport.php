@@ -50,8 +50,7 @@ class AbsensiExport implements FromView
                 $tanggalFilter = $absensi;
             }
 
-            $result = $tanggalFilter->where('ab.deleted_at',null)->select('k.nama as nama_karyawan','k.id as id_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();
-            dd($result);
+            $result = $tanggalFilter->where('ab.deleted_at',null)->select('k.nama as nama_karyawan','k.id as id_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();            
         } else {
             $bulanawal = $this->data['bulan']-1;
             $tanggalawal = $this->data['tahun'] .'-'.$bulanawal.'-'.'29';
