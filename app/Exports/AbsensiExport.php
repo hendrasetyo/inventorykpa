@@ -97,6 +97,7 @@ class AbsensiExport implements FromView
             $error = 0;
             $pengurangan = 0;
             $totalMenit=0;
+            $totalDetik=0;
             foreach ($group as $item) {
                 foreach ($result as $asset) {
                     if ($asset->nama_karyawan == $item->nama_karyawan) {
@@ -112,8 +113,8 @@ class AbsensiExport implements FromView
                             $batas = strtotime('08:10');
                             // dd($batas);
                             $diff = (int)$absensi - $batas;  
-                            $menit = $diff/60;                                              
-                            $totalMenit += $menit;      
+                            // $menit = $diff/60;                                              
+                            $totalDetik += $diff;      
                                
 
                         } elseif ($asset->status == 'tidak hadir') {
@@ -142,6 +143,7 @@ class AbsensiExport implements FromView
                     }
                 }
 
+                $totalMenit = $totalDetik/60;
                 if ($totalMenit > 60) {
                     $hasil = $totalMenit/60;
                     $pengurangan = intval($hasil);
