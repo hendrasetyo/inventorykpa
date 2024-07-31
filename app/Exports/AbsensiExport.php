@@ -28,7 +28,8 @@ class AbsensiExport implements FromView
         $absensi = DB::table('absensi as ab')
             ->join('karyawan as k', 'ab.karyawan_id', '=', 'k.id')
             ->join('posisi as p', 'k.posisi_id', '=', 'p.id')
-            ->join('divisi as d', 'p.divisi_id', '=', 'd.id');
+            ->join('divisi as d', 'p.divisi_id', '=', 'd.id');            
+        
 
         if ($this->data['tipe_export'] == 'rekap_mingguan') {
             if ($this->data['tanggal_awal']) {
@@ -43,13 +44,14 @@ class AbsensiExport implements FromView
                     $tanggalFilter = $absensi->where('ab.tanggal', '<=', $tanggal_akhir);
                 } else {
                     $tanggalFilter = $absensi->where('ab.tanggal', '>=', $tanggal_awal)
-                        ->where('ab.tanggal_top', '<=', $tanggal_akhir);
+                        ->where('ab.tanggal', '<=', $tanggal_akhir);
                 }
             } else {
                 $tanggalFilter = $absensi;
             }
 
             $result = $tanggalFilter->where('ab.deleted_at',null)->select('k.nama as nama_karyawan','k.id as id_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();
+            dd($result);
         } else {
             $bulanawal = $this->data['bulan']-1;
             $tanggalawal = $this->data['tahun'] .'-'.$bulanawal.'-'.'29';
@@ -67,7 +69,7 @@ class AbsensiExport implements FromView
                         ->where('lb.deleted_at',null)
                         ->select('lb.*')
                         ->get();                
-        }
+        }        
 
         $divisi = Divisi::get();
 
@@ -112,8 +114,7 @@ class AbsensiExport implements FromView
                             $absensi = strtotime($asset->clock_in);
                             $batas = strtotime('08:10');
                             // dd($batas);
-                            $diff = (int)$absensi - $batas;  
-                            // $menit = $diff/60;                                              
+                            $diff = (int)$absensi - $batas;                                                                          
                             $totalDetik += $diff;      
                                
 
@@ -143,7 +144,8 @@ class AbsensiExport implements FromView
                     }
                 }
 
-                $totalMenit = $totalDetik/60;
+                $totalMenit = $totalDetik/60;                
+
                 if ($totalMenit > 60) {
                     $hasil = $totalMenit/60;
                     $pengurangan = intval($hasil);
