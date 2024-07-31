@@ -66,8 +66,14 @@ class   AbsensiController extends Controller
                 }else{
                     $karyawan = $data->where('ab.karyawan_id',$request->karyawan);
                 }
+
+                if ($request->status == 'All') {
+                    $status = $karyawan;
+                }else{
+                    $status = $karyawan->where('ab.status',$request->status);
+                }
         
-        $data = $karyawan->select('ab.id','ab.tanggal','k.nama','ab.clock_in','ab.clock_out','ab.work_time','ab.status')
+        $data = $status->select('ab.id','ab.tanggal','k.nama','ab.clock_in','ab.clock_out','ab.work_time','ab.status')
                         ->orderBy('id','desc')
                         ->get();                       
         
