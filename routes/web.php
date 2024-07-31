@@ -1146,6 +1146,10 @@ Route::middleware('has.role')->prefix('hrd')->group(function () {
         Route::PUT('{id}/update', [AbsensiController::class, 'update'])->name('absensi.update');
 
         Route::post('/delete', [AbsensiController::class, 'delete'])->name('absensi.delete');
+
+        Route::post('/status', [AbsensiController::class, 'status'])->name('absensi.status');
+
+        Route::post('/inputstatus', [AbsensiController::class, 'inputstatus'])->name('absensi.inputstatus');
     });
 
     Route::prefix('settingcuti')->group(function () {

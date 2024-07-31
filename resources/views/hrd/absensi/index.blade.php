@@ -52,23 +52,23 @@
                                     <h3 class="card-label">Data Absensi</h3>
                                 </div>
                                 <div class="card-toolbar">
-                                    <div class="">                                        
-                                        <a href="{{ route('settingcuti.index') }}" class="btn btn-success mr-2" >
-                                           <i class="flaticon2-gear"></i> Setting Cuti
+                                    <div class="">
+                                        <a href="{{ route('settingcuti.index') }}" class="btn btn-success mr-2">
+                                            <i class="flaticon2-gear"></i> Setting Cuti
                                         </a>
                                     </div>
 
-                                    <div class="">                                        
+                                    <div class="">
                                         <button type="button" class="btn btn-info mr-2" data-toggle="modal"
                                             data-target="#export">
-                                            <i class="flaticon2-printer"></i>   Export
+                                            <i class="flaticon2-printer"></i> Export
                                         </button>
                                     </div>
 
-                                    <div class="">                                        
+                                    <div class="">
                                         <button type="button" class="btn btn-warning mr-2" data-toggle="modal"
                                             data-target="#import">
-                                           <i class="flaticon2-hourglass"></i> Import
+                                            <i class="flaticon2-hourglass"></i> Import
                                         </button>
                                     </div>
                                     @can('absensi-create')
@@ -76,10 +76,55 @@
                                             <i class="flaticon2-add"></i>
                                             Absensi
                                         </a>
-                                    @endcan                                    
+                                    @endcan
                                 </div>
                             </div>
                             <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="">Tahun</label>
+                                            <select name="chart_year" class="form-control" id="kt_select2_1"
+                                                onchange="filterabsensiyear()">
+                                                @php
+                                                    $year = 2020;
+                                                @endphp
+                                                @foreach (range(date('Y'), $year) as $x)
+                                                    <option value="{{ $x }}">{{ $x }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="">Bulan</label>
+                                            <select name="chart_year" class="form-control" id="kt_select2_11"
+                                                onchange="filterabsensimonth()">
+                                                <option value="All" selected>Semua</option>
+                                                @foreach ($bulan as $item)
+                                                    <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="">Nama Karyawan</label>
+                                            <select name="chart_year" class="form-control" id="kt_select2_2"
+                                                onchange="filterabsensikaryawan()">
+                                                <option value="All" selected>Semua</option>
+                                                @foreach ($karyawan as $item)
+                                                    <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
                                 <!--begin: Datatable-->
                                 <table class="table yajra-datatable collapsed ">
                                     <thead class="datatable-head">
@@ -108,6 +153,7 @@
         <!--end::Entry-->
     </div>
     <!--end::Content-->
+    <div id="modal-confirm-delete"></div>
 
     @include('hrd.absensi.modal._import')
     @include('hrd.absensi.modal._export')
@@ -121,6 +167,12 @@
 
 
     <script type="text/javascript">
+        let year = {{ now()->format('Y') }};
+        let month = 'All';
+        let karyawan = 'All';
+        let status ='';
+
+
         $(function() {
             datatable();
         });
@@ -138,6 +190,9 @@
                     url: "{{ route('absensi.datatable') }}",
                     type: "POST",
                     data: function(params) {
+                        params.year = year;
+                        params.month = month;
+                        params.karyawan = karyawan;
                         params._token = "{{ csrf_token() }}";
                         return params;
                     }
@@ -289,6 +344,81 @@
                             console.log(data);
                         }
                     });
+                }
+            });
+        }
+
+        function filterabsensiyear() {
+            let e = document.getElementById("kt_select2_1");
+            year = e.options[e.selectedIndex].value;
+            $('.yajra-datatable').DataTable().ajax.reload(null, false);
+        }
+
+        function filterabsensimonth() {
+            let e = document.getElementById("kt_select2_11");
+            month = e.options[e.selectedIndex].value;
+            $('.yajra-datatable').DataTable().ajax.reload(null, false);
+        }
+
+        function filterabsensikaryawan() {
+            let e = document.getElementById("kt_select2_2");
+            karyawan = e.options[e.selectedIndex].value;
+            $('.yajra-datatable').DataTable().ajax.reload(null, false);
+        }
+
+        function updateStatus(id) {
+            console.log('1');
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('absensi.status') }}',
+                dataType: 'html',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    id: id,
+                    "_token": "{{ csrf_token() }}"
+                },
+
+                success: function(data) {
+                    console.log(data);
+                    $('#modal-confirm-delete').html(data);
+                    $('#status').modal('show');
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        }
+
+
+        function submitItem() {        
+
+            let  status = $('#status').find(":selected").val();
+            var id = document.getElementById('id_status').value;                        
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('absensi.inputstatus') }}',
+                dataType: 'html',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    "status": status,  
+                    "id" : id,  
+                    "_token": "{{ csrf_token() }}"
+                },               
+                success: function(data) {                
+                    $('#status').modal('hide');  
+
+                    Swal.fire(
+                                "Terhapus!",
+                                "Anda Berhasil menghapus Data",
+                                "success"
+                            )
+                            
+                    $('.yajra-datatable').DataTable().ajax.reload(null, false);                  
                 }
             });
         }

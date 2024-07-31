@@ -6,16 +6,19 @@ use App\Exports\AbsensiExport;
 use App\Http\Controllers\Controller;
 use App\Imports\AbsensiImport;
 use App\Models\HRD\Absensi;
+use App\Models\HRD\Karyawan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
-class AbsensiController extends Controller
+class   AbsensiController extends Controller
 {
     public function index ()
     {        
+
+        $karyawan = Karyawan::get();
         $title = 'Absensi';
         $bulan =  [];
         for ($i = 1; $i <=12; $i++) {
@@ -26,7 +29,7 @@ class AbsensiController extends Controller
             ];         
         }
 
-        return view('hrd.absensi.index',compact('title','bulan'));
+        return view('hrd.absensi.index',compact('title','bulan','karyawan'));
     }
 
     public function import (Request $request)
@@ -39,10 +42,34 @@ class AbsensiController extends Controller
     {
         $absensi = DB::table('absensi as ab')
                 ->join('karyawan as k','ab.karyawan_id','=','k.id')                
-                ->where('ab.deleted_at','=',null)
-                ->select('ab.id','ab.tanggal','k.nama','ab.clock_in','ab.clock_out','ab.work_time','ab.status')
-                ->orderBy('id','desc')
-                ->get();                       
+                ->where('ab.deleted_at','=',null); 
+                
+                if ($request->year) {
+                    $res=$absensi->whereYear('ab.tanggal',$request->year);       
+                }else{
+                    $res=$absensi;
+                }
+        
+                if ($request->month !== 'All')  {
+                    $bulanawal =  $request->month - 1;
+                    $tanggalawal = $request->year .'-'. $bulanawal . '-' . 29 ;
+                    $tanggalakhir = $request->year .'-'. $request->month . '-' . 28 ;
+
+                    $data=$res->whereDate('tanggal','>=',$tanggalawal)
+                              ->whereDate('tanggal','<=',$tanggalakhir);       
+                }else{
+                    $data=$res;
+                }
+
+                if ($request->karyawan == 'All') {
+                    $karyawan = $data;
+                }else{
+                    $karyawan = $data->where('ab.karyawan_id',$request->karyawan);
+                }
+        
+        $data = $karyawan->select('ab.id','ab.tanggal','k.nama','ab.clock_in','ab.clock_out','ab.work_time','ab.status')
+                        ->orderBy('id','desc')
+                        ->get();                       
         
         return DataTables::of($absensi)
             ->addIndexColumn()
@@ -105,9 +132,24 @@ class AbsensiController extends Controller
     public function delete (Request $request)
     {
         Absensi::where('id',$request->id)->delete();
-
         return response()->json('Data Berhasil Dihapus');
     }
+
+    public function status(Request $request)
+    {
+        $absensi = Absensi::where('id',$request->id)->first();
+        return view('hrd.absensi.modal.status',compact('absensi'));
+
+    }
     
+
+    public function inputstatus (Request $request)
+    {
+       $absensi = Absensi::where('id',$request->id)->update([
+        'status' => $request->status
+       ]);
+
+       return response()->json('Data Berhasil Diubah');
+    }
     
 }
