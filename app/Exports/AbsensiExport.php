@@ -143,7 +143,7 @@ class AbsensiExport implements FromView
                 }
 
                 if ($totalMenit > 60) {
-                    $hasil = $totalMenit/4;
+                    $hasil = $totalMenit/60;
                     $pengurangan = intval($hasil);
                 }
 

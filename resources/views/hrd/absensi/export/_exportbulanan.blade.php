@@ -27,7 +27,7 @@
                     <td style="border : 1px solid black">{{ $item['totalMenit']}}</td>
                     <td style="border : 1px solid black">{{ $item['pengurangan']}}</td>
                     <td style="border : 1px solid black">{{ $item['lembur']}}</td>                    
-                    <td style="border : 1px solid black">{{ $item['ijin'] + $item['ontime'] + $item['tidak_hadir'] + $item['pengurangan'] + $item['error']}}</td>
+                    <td style="border : 1px solid black">{{ $item['ijin'] + $item['ontime'] + $item['tidak_hadir'] + $item['terlambat'] + $item['error']}}</td>
                     <td style="border : 1px solid black">{{ $item['ontime'] + $item['terlambat'] + $item['error']  }}</td>
                     <td style="border : 1px solid black">{{ $item['ontime'] + $item['terlambat'] + $item['error'] -   $item['pengurangan'] }}</td>
                 </tr>
