@@ -81,7 +81,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="">Tahun</label>
                                             <select name="chart_year" class="form-control" id="kt_select2_1"
@@ -96,7 +96,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="">Bulan</label>
                                             <select name="chart_year" class="form-control" id="kt_select2_11"
@@ -109,7 +109,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="">Nama Karyawan</label>
                                             <select name="chart_year" class="form-control" id="kt_select2_2"
@@ -118,6 +118,20 @@
                                                 @foreach ($karyawan as $item)
                                                     <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
                                                 @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="">Status</label>
+                                            <select name="chart_year" class="form-control" id="kt_select2_3"
+                                                onchange="filterabsensistatus()">
+                                                <option value="All" selected>Semua</option>
+                                                <option value="ontime">Ontime</option>
+                                                <option value="ijin">Ijin</option>
+                                                <option value="terlambat">Terlambat</option>
+                                                <option value="cuti bersama">Cuti Bersama</option>
                                             </select>
                                         </div>
                                     </div>
@@ -171,6 +185,7 @@
         let month = 'All';
         let karyawan = 'All';
         let status ='';
+        let status_1 = 'All';
 
 
         $(function() {
@@ -194,6 +209,7 @@
                         params.month = month;
                         params.karyawan = karyawan;
                         params._token = "{{ csrf_token() }}";
+                        params.status = status_1;
                         return params;
                     }
                 },
@@ -366,6 +382,12 @@
             $('.yajra-datatable').DataTable().ajax.reload(null, false);
         }
 
+        function filterabsensistatus() {
+            let e = document.getElementById("kt_select2_3");
+            status_1 = e.options[e.selectedIndex].value;
+            $('.yajra-datatable').DataTable().ajax.reload(null, false);
+        }
+
         function updateStatus(id) {
             console.log('1');
 
@@ -417,7 +439,7 @@
                                 "Anda Berhasil menghapus Data",
                                 "success"
                             )
-                            
+
                     $('.yajra-datatable').DataTable().ajax.reload(null, false);                  
                 }
             });
