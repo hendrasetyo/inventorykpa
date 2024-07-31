@@ -18,6 +18,8 @@ class AbsensiImport implements ToModel
         $status = null;
 
         if ($this->no > 0) {
+
+            
             $karyawan = Karyawan::where('no_emp',$row[0])->first();
             if ($karyawan) {
                 $timetanggal = DateTime::createFromFormat('d/m/Y', $row[5])->format('Y-m-d');                                 
@@ -42,7 +44,10 @@ class AbsensiImport implements ToModel
                     $day = Carbon::parse($timetanggal)->format('l');
                     if ($day == 'Saturday' || $day == 'Sunday') {                          
                         $status = 'weekend';                                          
-                    }else if (Carbon::parse($row[9])->format('H:i')  > Carbon::parse('08:10')->format('H:i')) {
+                    }else if (Carbon::parse($row[9])->format('H:i') == "00:00") {
+                        $status = 'error';
+                    }
+                    else if (Carbon::parse($row[9])->format('H:i')  > Carbon::parse('08:10')->format('H:i')) {
                         $status = 'terlambat';
                     }else{
                         $status = 'ontime';
