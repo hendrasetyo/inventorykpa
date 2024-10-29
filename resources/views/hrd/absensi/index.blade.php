@@ -132,6 +132,7 @@
                                                 <option value="ijin">Ijin</option>
                                                 <option value="terlambat">Terlambat</option>
                                                 <option value="cuti bersama">Cuti Bersama</option>
+                                                <option value="error">Error</option>
                                             </select>
                                         </div>
                                     </div>
