@@ -54,13 +54,12 @@ class AbsensiExport implements FromView
         } else {
             $bulanawal = $this->data['bulan']-1;
             $tahunawal = $this->data['tahun'];
-            if ($this->data['bulan'] == 1) {
-                dd('bisa');
+            if ($this->data['bulan'] == 1) {                
                 $bulanawal = 12;
                 $tahunawal = $this->data['tahun'] -1;
             }
 
-            dd($bulanawal);
+            // dd($bulanawal);
             $tanggalawal = $tahunawal .'-'.$bulanawal.'-'.'29';
             $tanggalakhir = $this->data['tahun'] .'-'.$this->data['bulan'].'-'.'28';
             $filteryear = $absensi->whereYear('ab.tanggal', $this->data['tahun']);
@@ -71,8 +70,8 @@ class AbsensiExport implements FromView
             $group = $filtertanggalakhir->where('ab.deleted_at',null)->groupBy('k.nama')->select('k.nama as nama_karyawan', 'k.id as id_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();
 
             $lembur = DB::table('lembur as lb')->whereYear('lb.tanggal', $this->data['tahun'])
-                        ->where('lb.tanggal','>=',$tanggalawal)
-                        ->where('lb.tanggal','<=',$tanggalakhir) 
+                        ->whereBetween('tanggal', [$tanggalawal, $tanggalakhir])
+                        // ->where('lb.tanggal','<=',$tanggalakhir) 
                         ->where('lb.deleted_at',null)
                         ->select('lb.*')
                         ->get();                
