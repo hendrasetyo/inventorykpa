@@ -63,8 +63,8 @@ class AbsensiExport implements FromView
             $tanggalawal = $tahunawal .'-'.$bulanawal.'-'.'29';
             $tanggalakhir = $this->data['tahun'] .'-'.$this->data['bulan'].'-'.'28';
             $filteryear = $absensi->whereYear('ab.tanggal', $this->data['tahun']);
-            $filtertanggalawal = $filteryear->where('ab.tanggal','>=',$tanggalawal);
-            $filtertanggalakhir = $filtertanggalawal->where('ab.tanggal','<=',$tanggalakhir);
+            // $filtertanggalawal = $filteryear->where('ab.tanggal','>=',$tanggalawal);
+            $filtertanggalakhir = $filteryear->whereBetween('tanggal', [$tanggalawal, $tanggalakhir]);
 
             $result = $filtertanggalakhir->where('ab.deleted_at',null)->select('k.nama as nama_karyawan', 'k.id as id_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();
             $group = $filtertanggalakhir->where('ab.deleted_at',null)->groupBy('k.nama')->select('k.nama as nama_karyawan', 'k.id as id_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();
