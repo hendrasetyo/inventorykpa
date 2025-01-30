@@ -55,6 +55,7 @@ class AbsensiExport implements FromView
             $bulanawal = $this->data['bulan']-1;
             $tahunawal = $this->data['tahun'];
             if ($this->data['bulan'] == 1) {
+                dd('bisa');
                 $bulanawal = 12;
                 $tahunawal = $this->data['tahun'] -1;
             }
