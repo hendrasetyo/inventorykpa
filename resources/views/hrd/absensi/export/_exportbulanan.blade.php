@@ -8,7 +8,7 @@
                 <th style="background-color: yellow ; border : 1px solid black">Nama</th>
                 <th style="background-color: yellow; border : 1px solid black">Ijin / Sakit</th>
                 <th style="background-color: yellow; border : 1px solid black">Abstain</th>                
-                <th style="background-color: yellow; border : 1px solid black">Terlambat</th>                
+                {{-- <th style="background-color: yellow; border : 1px solid black">Terlambat</th>                 --}}
                 <th style="background-color: yellow; border : 1px solid black">Pengurangan</th>
                 <th style="background-color: yellow; border : 1px solid black">Lembur (Jam)</th>         
                 <th style="background-color: yellow; border : 1px solid black">Total Hari Kerja</th>                                  
@@ -22,7 +22,7 @@
                     <td style="border : 1px solid black">{{ ucfirst($item['nama'])}}</td>
                     <td style="border : 1px solid black">{{ $item['ijin']}}</td>
                     <td style="border : 1px solid black">{{ $item['tidak_hadir']}}</td>                     
-                    <td style="border : 1px solid black">{{ $item['terlambat']}}</td>    
+                    {{-- <td style="border : 1px solid black">{{ $item['terlambat']}}</td>     --}}
                     <td style="border : 1px solid black">{{ $item['pengurangan']}}</td>
                     <td style="border : 1px solid black">{{ $item['lembur']}}</td>                    
                     <td style="border : 1px solid black">{{ $item['ijin'] + $item['ontime'] + $item['tidak_hadir'] + $item['terlambat'] + $item['error']}}</td>
