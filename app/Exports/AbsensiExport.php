@@ -63,18 +63,18 @@ class AbsensiExport implements FromView
             $tanggalawal = $tahunawal .'-'.$bulanawal.'-'.'29';
             $tanggalakhir = $this->data['tahun'] .'-'.$this->data['bulan'].'-'.'26';
             $filteryear = $absensi;
-            // $filtertanggalawal = $filteryear->where('ab.tanggal','>=',$tanggalawal);
-            $filtertanggalakhir = $filteryear->whereBetween('tanggal', [$tanggalawal, $tanggalakhir]);
+            $filtertanggalawal = $filteryear->where('ab.tanggal','>=',$tanggalawal);
+            $filtertanggalakhir = $filtertanggalawal->where('ab.tanggal','<=',$tanggalakhir);
 
             $result = $filtertanggalakhir->where('ab.deleted_at',null)->select('k.nama as nama_karyawan', 'k.id as id_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();
             $group = $filtertanggalakhir->where('ab.deleted_at',null)->groupBy('k.nama')->select('k.nama as nama_karyawan', 'k.id as id_karyawan', 'd.nama as nama_divisi', 'ab.clock_in as clock_in', 'ab.clock_out as clock_out', 'ab.work_time as work_time', 'ab.tanggal as tanggal_absensi', 'ab.status as status')->get();
 
-            $lembur = DB::table('lembur as lb')->whereYear('lb.tanggal', $this->data['tahun'])
-                        ->whereBetween('tanggal', [$tanggalawal, $tanggalakhir])
-                        // ->where('lb.tanggal','<=',$tanggalakhir) 
+            $lembur = DB::table('lembur as lb')->whereYear('lb.tanggal', $this->data['tahun'])                        
+                        ->where('lb.tanggal','>=',$tanggalawal)
+                        ->where('lb.tanggal','<=',$tanggalakhir) 
                         ->where('lb.deleted_at',null)
                         ->select('lb.*')
-                        ->get();                
+                        ->get();
         }        
 
         $divisi = Divisi::get();
