@@ -71,7 +71,7 @@ class LaporanStokController extends Controller
         $title = "Laporan Stok";
         $stokExp = StokExp::where('product_id', '=', $product->id)
             ->where('qty', '<>', '0')->get();
-        return view('laporan.stok.detailstok', compact('title', 'product', 'stokExp'));
+        return view('laporan.stok.detailstok', compact('title', 'product', 'stokExp '));
     }
 
     public function detailexp(StokExp $stokexp, Product $product)

@@ -5,7 +5,6 @@ use App\Http\Controllers\BiayaOperational\BiayaOperationalController;
 use App\Http\Controllers\Canvassing\CanvassingPengembalianController;
 use App\Http\Controllers\Canvassing\CanvassingPesananController;
 use Illuminate\Support\Facades\Route;
-use Spatie\Permission\Contracts\Role;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HRD\AbsensiController;
 use App\Http\Controllers\HRD\CutiController;
@@ -68,8 +67,9 @@ use App\Http\Controllers\Sales\PerjalananDinasController;
 use App\Http\Controllers\Sales\TargetSalesController;
 use App\Http\Controllers\Teknisi\KunjunganTeknisiController;
 use App\Http\Controllers\Teknisi\MaintenanceController;
-use App\Models\Sales\BiayaPerjalananDinas;
-use App\Models\Sales\PerjalananDinas;
+use Illuminate\Support\Facades\Auth;
+
+Auth::routes();
 
 Route::middleware('auth', 'verified')->group(function () {
     // Route::get('/', function () {
@@ -1201,3 +1201,5 @@ Route::prefix('tipesurat')->group(function () {
 
     Route::get('{id}/delete', [TipeSuratController::class, 'delete'])->name('tipesurat.delete');
 });
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
