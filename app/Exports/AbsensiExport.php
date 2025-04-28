@@ -61,7 +61,7 @@ class AbsensiExport implements FromView
 
             // dd($bulanawal);
             $tanggalawal = $tahunawal .'-'.$bulanawal.'-'.'27';
-            $tanggalakhir = $this->data['tahun'] .'-'.$this->data['bulan'].'-'.'26';
+            $tanggalakhir = $this->data['tahun'] .'-'.$this->data['bulan'].'-'.'28';
             $filteryear = $absensi;
             $filtertanggalawal = $filteryear->where('ab.tanggal','>=',$tanggalawal);
             $filtertanggalakhir = $filtertanggalawal->where('ab.tanggal','<=',$tanggalakhir);
